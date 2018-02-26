@@ -1,15 +1,20 @@
 package com.kasia.core.model;
 
-public class Urole {
+public class Role {
     private Long id;
     private String name;
 
-    public Urole() {
+    public Role() {
 
     }
 
-    public Urole(String name) {
+    public Role(Long id, String name) {
+        this.id = id;
         this.name = name;
+    }
+
+    public Role(String name) {
+        this(null,name);
     }
 
     public String getName() {
@@ -33,7 +38,7 @@ public class Urole {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Urole urole = (Urole) o;
+        Role urole = (Role) o;
 
         if (this.name != null ? !this.name.equals(urole.name) : urole.name != null) return false;
         return id != null ? id.equals(urole.id) : urole.id == null;

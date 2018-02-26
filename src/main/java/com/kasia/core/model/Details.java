@@ -1,11 +1,22 @@
 package com.kasia.core.model;
 
-public class Uinfo {
+public class Details {
     private Long id;
     private String nickName;
     private String secondName;
     private String eMail;
     private String name;
+
+    public Details() {
+    }
+
+    public Details(Long id, String nickName, String secondName, String eMail, String name) {
+        this.id = id;
+        this.nickName = nickName;
+        this.secondName = secondName;
+        this.eMail = eMail;
+        this.name = name;
+    }
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
@@ -52,7 +63,7 @@ public class Uinfo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Uinfo uinfo = (Uinfo) o;
+        Details uinfo = (Details) o;
 
         if (nickName != null ? !nickName.equals(uinfo.nickName) : uinfo.nickName != null) return false;
         if (secondName != null ? !secondName.equals(uinfo.secondName) : uinfo.secondName != null) return false;

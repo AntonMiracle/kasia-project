@@ -15,14 +15,14 @@ public class UserTest {
     }
 
     @Test
-    public void setAndGetUlap() {
+    public void setAndGetSecurity() {
         String login = "login";
         String password = "password";
-        Ulap uLap = new Ulap(login, password);
-        user.setUlap(uLap);
-        Assert.assertNotNull("set and get Ulap", user.getUlap());
-        Assert.assertEquals("check Ulap#password", password, user.getUlap().getPassword());
-        Assert.assertEquals("check Ulap#login", login, user.getUlap().getLogin());
+        Security uLap = new Security(login, password);
+        user.setSecurity(uLap);
+        Assert.assertNotNull("set and get Security", user.getSecurity());
+        Assert.assertEquals("check Security#password", password, user.getSecurity().getPassword());
+        Assert.assertEquals("check Security#login", login, user.getSecurity().getLogin());
     }
 
     @Test
@@ -40,43 +40,38 @@ public class UserTest {
     }
 
     @Test
-    public void setAndGetUinfo() {
-        Uinfo uInfo = new Uinfo();
-        Assert.assertNull("set and get User#uInfo",user.getInfo());
-        user.setInfo(uInfo);
-        Assert.assertNotNull("set and get User#uInfo",user.getInfo());
+    public void setAndGetDetails() {
+        Details details = new Details();
+        Assert.assertNull("set and get User#details",user.getDetails());
+        user.setDetails(details);
+        Assert.assertNotNull("set and get User#details",user.getDetails());
 
     }
     @Test
-    public void addURole() {
-        Urole uRole1 = createNewRole(11L, "uRole1");
-        Urole uRole2 = createNewRole(211L, "role21");
-        Urole uRole3 = createNewRole(211L, "role21");
-        Urole uRole4 = createNewRole(null, "role21");
-        Assert.assertFalse(user.isHas(uRole1));
-        Assert.assertTrue("try add role1", user.addRole(uRole1));
-        Assert.assertTrue(user.isHas(uRole1));
-        Assert.assertFalse(user.isHas(uRole2));
-        Assert.assertTrue("try add role2", user.addRole(uRole2));
-        Assert.assertTrue(user.isHas(uRole2));
-        Assert.assertTrue(user.isHas(uRole3));
-        Assert.assertFalse(user.isHas(uRole4));
+    public void addRole() {
+        Role role1 = new Role(11L, "role1");
+        Role role2 = new Role(211L, "role21");
+        Role role3 = new Role(211L, "role21");
+        Role role4 = new Role(null, "role21");
+        Assert.assertFalse(user.isHas(role1));
+        Assert.assertTrue("try add role1", user.addRole(role1));
+        Assert.assertTrue(user.isHas(role1));
+        Assert.assertFalse(user.isHas(role2));
+        Assert.assertTrue("try add role2", user.addRole(role2));
+        Assert.assertTrue(user.isHas(role2));
+        Assert.assertTrue(user.isHas(role3));
+        Assert.assertFalse(user.isHas(role4));
     }
 
     @Test
-    public void removeUrole() {
-        Urole uRole = createNewRole(10L, "uRole");
-        Assert.assertFalse(user.isHas(uRole));
-        Assert.assertFalse("try remove role", user.removeRole(uRole));
-        Assert.assertTrue(user.addRole(uRole));
-        Assert.assertTrue(user.isHas(uRole));
-        Assert.assertTrue("try remove role", user.removeRole(uRole));
-        Assert.assertFalse(user.isHas(uRole));
+    public void removeRole() {
+        Role role = new Role(10L, "role");
+        Assert.assertFalse(user.isHas(role));
+        Assert.assertFalse("try remove role", user.removeRole(role));
+        Assert.assertTrue(user.addRole(role));
+        Assert.assertTrue(user.isHas(role));
+        Assert.assertTrue("try remove role", user.removeRole(role));
+        Assert.assertFalse(user.isHas(role));
     }
 
-    private Urole createNewRole(Long id, String name) {
-        Urole uRole = new Urole(name);
-        uRole.setId(id);
-        return uRole;
-    }
 }

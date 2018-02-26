@@ -6,10 +6,10 @@ import java.util.Set;
 
 public class User {
     private Long id;
-    private Uinfo uInfo;
+    private Details details;
     private LocalDateTime createOn;
-    private Set<Urole> uRoles;
-    private Ulap uLap;
+    private Set<Role> roles;
+    private Security security;
 
     public void setCreateOn(LocalDateTime createOn) {
         this.createOn = createOn;
@@ -27,34 +27,34 @@ public class User {
         this.id = id;
     }
 
-    public boolean addRole(Urole uRole) {
-        if (uRoles == null) {
-            uRoles = new HashSet<>();
+    public boolean addRole(Role uRole) {
+        if (roles == null) {
+            roles = new HashSet<>();
         }
-        return uRoles.add(uRole);
+        return roles.add(uRole);
     }
 
-    public boolean isHas(Urole uRole) {
-        return uRoles != null ? uRoles.contains(uRole) : false;
+    public boolean isHas(Role uRole) {
+        return roles != null ? roles.contains(uRole) : false;
     }
 
-    public boolean removeRole(Urole uRole) {
-        return uRoles != null ? uRoles.remove(uRole) : false;
+    public boolean removeRole(Role uRole) {
+        return roles != null ? roles.remove(uRole) : false;
     }
 
-    public void setUlap(Ulap uLap) {
-        this.uLap = uLap;
+    public void setSecurity(Security uLap) {
+        this.security = uLap;
     }
 
-    public Ulap getUlap() {
-        return this.uLap;
+    public Security getSecurity() {
+        return this.security;
     }
 
-    public void setInfo(Uinfo uInfo) {
-        this.uInfo = uInfo;
+    public void setDetails(Details uInfo) {
+        this.details = uInfo;
     }
 
-    public Uinfo getInfo() {
-        return this.uInfo;
+    public Details getDetails() {
+        return this.details;
     }
 }
