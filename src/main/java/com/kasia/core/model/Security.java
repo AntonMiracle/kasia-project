@@ -17,13 +17,21 @@ public class Security {
     }
 
     public Security(String login, String password) {
-        this(null,login,password);
+        this(null, login, password);
     }
 
     public Security(Long id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
+    }
+
+    public Security(Security security) {
+        this(security.getId(),security.getLogin(),security.getPassword());
+    }
+
+    protected void setCrypt(boolean crypt) {
+        isCrypt = crypt;
     }
 
     public boolean isCrypt() {
@@ -44,6 +52,14 @@ public class Security {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return this.id;
     }
 
     public boolean isPasswordEquals(String password) {
@@ -76,14 +92,6 @@ public class Security {
         getMD5();
         md5.update(text.getBytes(), 0, text.length());
         return new BigInteger(1, md5.digest()).toString(16);
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return this.id;
     }
 
     @Override

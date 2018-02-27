@@ -114,7 +114,33 @@ public class UserTest {
         for (Role currentRole : user.getRoles()) {
             Assert.assertFalse(currentRole.getName().equals(role.getName()));
         }
-
     }
 
+    @Test
+    public void checkEqualsAndHashCode() {
+        Details details = new Details(100L, "nickname", "secondName", "email", "name");
+        Security security = new Security(100L, "login", "password");
+        LocalDateTime ldt = LocalDateTime.of(2018, 1, 10, 12, 12);
+        Set<Role> roles = new HashSet<>();
+        roles.add(new Role("role1"));
+        User user1 = new User(1000L, details, ldt, roles, security);
+        User user2 = new User(user1);
+        Assert.assertEquals(user1, user2);
+        user2.getDetails().setName("nameNew");
+        Assert.assertNotEquals(user1, user2);
+        for(Role role : user2.getRoles()) role.setName("SomeName");
+        Assert.assertNotEquals(user1, user2);
+        user2.getSecurity().setLogin("new Login");
+        Assert.assertNotEquals(user1, user2);
+    }
+
+    @Test
+    public void checkConstructions() {
+        User user = new User();
+        Assert.assertNotNull(user);
+        user = new User(10L,new Details(),LocalDateTime.now(),new HashSet<>(),new Security());
+        Assert.assertNotNull(user);
+        user = new User(user);
+        Assert.assertNotNull(user);
+    }
 }

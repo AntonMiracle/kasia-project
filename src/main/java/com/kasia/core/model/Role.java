@@ -8,8 +8,8 @@ public class Role {
 
     }
 
-    public Role(Role role){
-        this(role.getId(),role.getName());
+    public Role(Role role) {
+        this(role.getId(), role.getName());
     }
 
     public Role(Long id, String name) {
@@ -18,7 +18,7 @@ public class Role {
     }
 
     public Role(String name) {
-        this(null,name);
+        this(null, name);
     }
 
     public String getName() {

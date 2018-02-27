@@ -22,6 +22,7 @@ public class DetailsTest {
         Details details2 = new Details(details);
         Assert.assertTrue(details.equals(details2));
     }
+
     @Test
     public void setAndGetNickName() {
         String nickName = "nickName";
