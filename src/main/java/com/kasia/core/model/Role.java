@@ -8,6 +8,10 @@ public class Role {
 
     }
 
+    public Role(Role role){
+        this(role.getId(),role.getName());
+    }
+
     public Role(Long id, String name) {
         this.id = id;
         this.name = name;

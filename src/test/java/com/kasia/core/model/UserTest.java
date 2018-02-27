@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UserTest {
     private User user;
@@ -26,7 +28,7 @@ public class UserTest {
     }
 
     @Test
-    public void setAndGetCreateOnLocalDateTime() {
+    public void setAndGetCreateOn() {
         LocalDateTime createOn = LocalDateTime.now();
         user.setCreateOn(createOn);
         Assert.assertEquals("set and get createOn using Timestamp.class", createOn, user.getCreateOn());
@@ -42,11 +44,11 @@ public class UserTest {
     @Test
     public void setAndGetDetails() {
         Details details = new Details();
-        Assert.assertNull("set and get User#details",user.getDetails());
+        Assert.assertNull("set and get User#details", user.getDetails());
         user.setDetails(details);
-        Assert.assertNotNull("set and get User#details",user.getDetails());
-
+        Assert.assertNotNull("set and get User#details", user.getDetails());
     }
+
     @Test
     public void addRole() {
         Role role1 = new Role(11L, "role1");
@@ -72,6 +74,47 @@ public class UserTest {
         Assert.assertTrue(user.isHas(role));
         Assert.assertTrue("try remove role", user.removeRole(role));
         Assert.assertFalse(user.isHas(role));
+    }
+
+    @Test
+    public void getRoles() {
+        Role role1 = new Role("role1");
+        Role role21 = new Role("role21");
+        Assert.assertNotNull(user.getRoles());
+        Assert.assertTrue(user.addRole(role1));
+        Assert.assertTrue(user.addRole(role21));
+        Assert.assertTrue(user.getRoles().size() == 2);
+    }
+
+    @Test
+    public void checkSetRolesForImutable() {
+        Set<Role> roles = new HashSet<>();
+        user.setRoles(roles);
+        Assert.assertTrue(user.getRoles().size() == 0);
+        roles.add(new Role("role"));
+        Assert.assertTrue(user.getRoles().size() == 0);
+    }
+
+    @Test
+    public void checkSetDetailsForImutable() {
+        Details details = new Details();
+        details.setName("name1");
+        user.setDetails(details);
+        Assert.assertEquals(details.getName(), user.getDetails().getName());
+        details.setName("name2");
+        Assert.assertNotEquals(details.getName(), user.getDetails().getName());
+    }
+
+    @Test
+    public void checkAddRoleForImutable() {
+        Role role = new Role(10L, "role");
+        user.addRole(role);
+        Assert.assertTrue(user.isHas(role));
+        role.setName("role2");
+        for (Role currentRole : user.getRoles()) {
+            Assert.assertFalse(currentRole.getName().equals(role.getName()));
+        }
+
     }
 
 }

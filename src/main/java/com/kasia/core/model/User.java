@@ -27,34 +27,48 @@ public class User {
         this.id = id;
     }
 
-    public boolean addRole(Role uRole) {
-        if (roles == null) {
-            roles = new HashSet<>();
-        }
-        return roles.add(uRole);
+    public boolean addRole(Role role) {
+        initRoles();
+        return roles.add(new Role(role));
     }
 
-    public boolean isHas(Role uRole) {
-        return roles != null ? roles.contains(uRole) : false;
+    public boolean isHas(Role role) {
+        return roles != null ? roles.contains(role) : false;
     }
 
-    public boolean removeRole(Role uRole) {
-        return roles != null ? roles.remove(uRole) : false;
+    public boolean removeRole(Role role) {
+        return roles != null ? roles.remove(role) : false;
     }
 
-    public void setSecurity(Security uLap) {
-        this.security = uLap;
+    public void setSecurity(Security security) {
+        this.security = security;
     }
 
     public Security getSecurity() {
         return this.security;
     }
 
-    public void setDetails(Details uInfo) {
-        this.details = uInfo;
+    public void setDetails(Details details) {
+        this.details = new Details(details);
     }
 
     public Details getDetails() {
         return this.details;
+    }
+
+    public Set<Role> getRoles() {
+        initRoles();
+        return this.roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        initRoles();
+        for (Role role : roles) this.roles.add(role);
+    }
+
+    private void initRoles() {
+        if (roles == null) {
+            roles = new HashSet<>();
+        }
     }
 }

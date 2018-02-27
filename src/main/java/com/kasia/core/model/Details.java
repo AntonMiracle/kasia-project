@@ -10,6 +10,10 @@ public class Details {
     public Details() {
     }
 
+    public Details(Details details){
+        this(details.getId(),details.getNickName(),details.getSecondName(),details.getEmail(),details.getName());
+    }
+
     public Details(Long id, String nickName, String secondName, String eMail, String name) {
         this.id = id;
         this.nickName = nickName;
@@ -63,13 +67,13 @@ public class Details {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Details uinfo = (Details) o;
+        Details details = (Details) o;
 
-        if (nickName != null ? !nickName.equals(uinfo.nickName) : uinfo.nickName != null) return false;
-        if (secondName != null ? !secondName.equals(uinfo.secondName) : uinfo.secondName != null) return false;
-        if (eMail != null ? !eMail.equals(uinfo.eMail) : uinfo.eMail != null) return false;
-        if (name != null ? !name.equals(uinfo.name) : uinfo.name != null) return false;
-        return id != null ? id.equals(uinfo.id) : uinfo.id == null;
+        if (nickName != null ? !nickName.equals(details.nickName) : details.nickName != null) return false;
+        if (secondName != null ? !secondName.equals(details.secondName) : details.secondName != null) return false;
+        if (eMail != null ? !eMail.equals(details.eMail) : details.eMail != null) return false;
+        if (name != null ? !name.equals(details.name) : details.name != null) return false;
+        return id != null ? id.equals(details.id) : details.id == null;
     }
 
     @Override

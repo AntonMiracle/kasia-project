@@ -5,18 +5,23 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Ulap {
+public class Security {
     private Long id;
     private String login;
     private String password;
     private MessageDigest md5;
     private boolean isCrypt;
 
-    public Ulap() {
+    public Security() {
 
     }
 
-    public Ulap(String login, String password) {
+    public Security(String login, String password) {
+        this(null,login,password);
+    }
+
+    public Security(Long id, String login, String password) {
+        this.id = id;
         this.login = login;
         this.password = password;
     }
@@ -86,7 +91,7 @@ public class Ulap {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Ulap ulap = (Ulap) o;
+        Security ulap = (Security) o;
 
         if (isCrypt != ulap.isCrypt) return false;
         if (login != null ? !login.equals(ulap.login) : ulap.login != null) return false;
