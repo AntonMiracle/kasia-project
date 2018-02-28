@@ -74,13 +74,13 @@ public class PriceTest {
         price = new Price(12, 17, Currency.getInstance("USD"));
         Price price2 = new Price(10, 20, Currency.getInstance("USD"));
         Price price3 = new Price(22, 37, Currency.getInstance("USD"));
-        price.add(price2);
+        price = price.add(price2);
         Assert.assertEquals(price3, price);
         price.setBanknotes(99);
         price.setPenny(99);
         price3.setBanknotes(110);
         price3.setPenny(19);
-        price.add(price2);
+        price = price.add(price2);
         Assert.assertEquals(price3, price);
     }
 

@@ -76,20 +76,18 @@ public class Price {
         return result;
     }
 
-    public boolean add(Price priceToAdd) {
+    public Price add(Price priceToAdd) {
         int banknotes = this.banknotes + priceToAdd.getBanknotes();
         int penny = this.penny + priceToAdd.getPenny();
         if (penny >= 100) {
             banknotes++;
             penny = penny % 100;
         }
-        setPenny(penny);
-        setBanknotes(banknotes);
-        return true;
+        return new Price(banknotes, penny, this.currency);
     }
 
     public Price getDiscount(double discount) {
-        if (discount < 0 || discount > 100) throw new IllegalArgumentException("discount must be positive");
+        if (discount < 0 || discount > 100) throw new IllegalArgumentException("discount must be 0-100");
         discount = 1 - discount / 100;
         double price = (this.banknotes * 100 + this.penny) / 100.0;
         price = price * discount;
