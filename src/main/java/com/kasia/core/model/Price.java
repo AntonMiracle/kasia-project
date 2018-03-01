@@ -77,6 +77,8 @@ public class Price {
     }
 
     public Price add(Price priceToAdd) {
+        if (!this.currency.equals(priceToAdd.getCurrency()))
+            throw new IllegalArgumentException("Need to add same currency type");
         int banknotes = this.banknotes + priceToAdd.getBanknotes();
         int penny = this.penny + priceToAdd.getPenny();
         if (penny >= 100) {

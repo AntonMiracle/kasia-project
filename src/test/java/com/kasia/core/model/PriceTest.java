@@ -85,19 +85,29 @@ public class PriceTest {
     }
 
     @Test
-    public void whenSetNegativeBanknotesThenRuntimeException() {
+    public void addPriceDoNotChengeOriginPrice() {
+        int banknotes = 12;
+        int penny = 30;
+        price = new Price(banknotes, penny, Currency.getInstance("USD"));
+        price.add(price);
+        Assert.assertEquals(penny, price.getPenny());
+        Assert.assertEquals(banknotes, price.getBanknotes());
+    }
+
+    @Test
+    public void whenSetNegativeBanknotesThenIllegalArgumentException() {
         exception.expect(IllegalArgumentException.class);
         price.setBanknotes(-1);
     }
 
     @Test
-    public void whenSetNegativePennyThenRuntimeException() {
+    public void whenSetNegativePennyThenIllegalArgumentException() {
         exception.expect(IllegalArgumentException.class);
         price.setPenny(-1);
     }
 
     @Test
-    public void whenSet100OrMorePennyThenRuntimeException() {
+    public void whenSet100OrMorePennyIllegalArgumentException() {
         exception.expect(IllegalArgumentException.class);
         price.setPenny(100);
     }
@@ -129,14 +139,22 @@ public class PriceTest {
     }
 
     @Test
-    public void whenDiscountNegativeThenRuntimeException() {
+    public void whenDiscountNegativeThenIllegalArgumentException() {
         exception.expect(IllegalArgumentException.class);
         price.getDiscount(-1);
     }
 
     @Test
-    public void whenDiscountMoreThen100ThenRuntimeException() {
+    public void whenDiscountMoreThen100ThenIllegalArgumentException() {
         exception.expect(IllegalArgumentException.class);
         price.getDiscount(101);
+    }
+
+    @Test
+    public void whenAddAnotherCurrencyThenIllegalArgumentException() {
+        Price price2 = new Price(100, 95, Currency.getInstance("UAH"));
+        price = new Price(1020, 45, Currency.getInstance("USD"));
+        exception.expect(IllegalArgumentException.class);
+        price.add(price2);
     }
 }

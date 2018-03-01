@@ -13,20 +13,21 @@ public class Role {
     }
 
     public Role(Long id, String name) {
-        this.id = id;
-        this.name = name;
+        setId(id);
+        setName(name);
     }
 
     public Role(String name) {
-        this(null, name);
+        setName(name);
     }
 
     public String getName() {
-        return this.name;
+        return this.name == null ? "" : this.name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name == null) throw new NullPointerException();
+        this.name = name.trim();
     }
 
     public Long getId() {
@@ -53,5 +54,10 @@ public class Role {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

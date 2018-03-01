@@ -15,43 +15,47 @@ public class Details {
     }
 
     public Details(Long id, String nickName, String secondName, String email, String name) {
-        this.id = id;
-        this.nickName = nickName;
-        this.secondName = secondName;
-        this.email = email;
-        this.name = name;
+        setId(id);
+        setNickName(nickName);
+        setSecondName(secondName);
+        setEmail(email);
+        setName(name);
     }
 
     public void setNickName(String nickName) {
-        this.nickName = nickName;
+        if (nickName == null) throw new NullPointerException("nickName cant be null");
+        this.nickName = nickName.trim();
     }
 
     public String getNickName() {
-        return this.nickName;
+        return this.nickName == null ? "" : this.nickName;
     }
 
     public void setSecondName(String secondName) {
-        this.secondName = secondName;
+        if (secondName == null) throw new NullPointerException("secondName cant be null");
+        this.secondName = secondName.trim();
     }
 
     public String getSecondName() {
-        return this.secondName;
+        return this.secondName == null ? "" : this.secondName;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if (email == null) throw new NullPointerException("email cant be null");
+        this.email = email.trim();
     }
 
     public String getEmail() {
-        return this.email;
+        return this.email == null ? "" : this.email;
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name == null) throw new NullPointerException("name cant be null");
+        this.name = name.trim();
     }
 
     public String getName() {
-        return this.name;
+        return this.name == null ? "" : this.name;
     }
 
     public void setId(Long id) {
@@ -85,5 +89,10 @@ public class Details {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return nickName + " " + name + " " + secondName + " " + email;
     }
 }
