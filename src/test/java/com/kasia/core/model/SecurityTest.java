@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SecurityTest {
+public class SecurityTest extends Security{
     private Security security;
 
     @Before
@@ -19,7 +19,7 @@ public class SecurityTest {
         Assert.assertFalse(security.isCrypt());
         security = new Security("login", "password");
         Assert.assertNotNull(security);
-        Assert.assertFalse(security.isCrypt());
+        Assert.assertTrue(security.isCrypt());
     }
 
     @Test

@@ -23,42 +23,42 @@ public class Details {
     }
 
     public void setNickName(String nickName) {
-        if (nickName == null) throw new NullPointerException("nickName cant be null");
+        Util.ifNullThrowNPEWithMsg(nickName, "nickName cant be null");
         this.nickName = nickName.trim();
     }
 
     public String getNickName() {
-        return this.nickName == null ? "" : this.nickName;
+        return Util.ifNullReturnEmptyString(this.nickName);
     }
 
     public void setSecondName(String secondName) {
-        if (secondName == null) throw new NullPointerException("secondName cant be null");
+        Util.ifNullThrowNPEWithMsg(secondName, "secondName cant be null");
         this.secondName = secondName.trim();
     }
 
     public String getSecondName() {
-        return this.secondName == null ? "" : this.secondName;
+        return Util.ifNullReturnEmptyString(this.secondName);
     }
 
     public void setEmail(String email) {
-        if (email == null) throw new NullPointerException("email cant be null");
+        Util.ifNullThrowNPEWithMsg(email, "email cant be null");
         this.email = email.trim();
     }
 
     public String getEmail() {
-        return this.email == null ? "" : this.email;
+        return Util.ifNullReturnEmptyString(this.email);
     }
 
     public void setName(String name) {
-        if (name == null) throw new NullPointerException("name cant be null");
+        Util.ifNullThrowNPEWithMsg(name, "name cant be null");
         this.name = name.trim();
     }
 
     public String getName() {
-        return this.name == null ? "" : this.name;
+        return Util.ifNullReturnEmptyString(this.name);
     }
 
-    public void setId(Long id) {
+    protected void setId(Long id) {
         this.id = id;
     }
 

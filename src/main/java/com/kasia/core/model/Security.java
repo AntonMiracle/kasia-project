@@ -12,22 +12,24 @@ public class Security {
     private MessageDigest md5;
     private boolean isCrypt;
 
-    public Security() {
+    protected Security() {
 
     }
 
     public Security(String login, String password) {
-        this(null, login, password);
+        setLogin(login);
+        setPassword(password);
+        crypt();
     }
 
-    public Security(Long id, String login, String password) {
-        this.id = id;
-        this.login = login;
-        this.password = password;
+    protected Security(Long id, String login, String password) {
+        setId(id);
+        setLogin(login);
+        setPassword(password);
     }
 
     public Security(Security security) {
-        this(security.getId(),security.getLogin(),security.getPassword());
+        this(security.getId(), security.getLogin(), security.getPassword());
     }
 
     protected void setCrypt(boolean crypt) {
@@ -38,11 +40,11 @@ public class Security {
         return this.isCrypt;
     }
 
-    public String getPassword() {
+    protected String getPassword() {
         return this.password;
     }
 
-    public void setLogin(String login) {
+    protected void setLogin(String login) {
         this.login = login;
     }
 
@@ -50,11 +52,11 @@ public class Security {
         return this.login;
     }
 
-    public void setPassword(String password) {
+    protected void setPassword(String password) {
         this.password = password;
     }
 
-    public void setId(Long id) {
+    protected void setId(Long id) {
         this.id = id;
     }
 

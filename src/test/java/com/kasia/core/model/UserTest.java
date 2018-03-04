@@ -23,7 +23,7 @@ public class UserTest {
         Security uLap = new Security(login, password);
         user.setSecurity(uLap);
         Assert.assertNotNull("set and get Security", user.getSecurity());
-        Assert.assertEquals("check Security#password", password, user.getSecurity().getPassword());
+        Assert.assertTrue("check Security#password", user.getSecurity().isPasswordEquals(password));
         Assert.assertEquals("check Security#login", login, user.getSecurity().getLogin());
     }
 
@@ -56,10 +56,10 @@ public class UserTest {
         Role role3 = new Role(211L, "role21");
         Role role4 = new Role(null, "role21");
         Assert.assertFalse(user.isHas(role1));
-        Assert.assertTrue("try add role1", user.addRole(role1));
+        Assert.assertTrue("try plus role1", user.addRole(role1));
         Assert.assertTrue(user.isHas(role1));
         Assert.assertFalse(user.isHas(role2));
-        Assert.assertTrue("try add role2", user.addRole(role2));
+        Assert.assertTrue("try plus role2", user.addRole(role2));
         Assert.assertTrue(user.isHas(role2));
         Assert.assertTrue(user.isHas(role3));
         Assert.assertFalse(user.isHas(role4));
