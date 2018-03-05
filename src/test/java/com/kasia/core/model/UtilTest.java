@@ -33,6 +33,6 @@ public class UtilTest extends Util {
 
     @Test(expected = IllegalArgumentException.class)
     public void whenTrueReturnIllegalArgumentExceptionWithMsg() {
-        Util.isThrowIAEWithMsg(true, "msg");
+        Util.throwIAE(true, "msg");
     }
 }

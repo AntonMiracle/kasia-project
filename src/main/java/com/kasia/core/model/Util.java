@@ -11,7 +11,7 @@ public class Util {
         return text == null ? "" : text;
     }
 
-    public static void isThrowIAEWithMsg(boolean isThrow, String msg) {
-        if(isThrow) throw new IllegalArgumentException(msg);
+    public static void throwIAE(boolean whenTrue, String withMSG) {
+        if(whenTrue) throw new IllegalArgumentException(withMSG);
     }
 }

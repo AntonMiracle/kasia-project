@@ -3,54 +3,95 @@ package com.kasia.core.model;
 
 import java.util.Currency;
 import java.util.StringTokenizer;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class Money {
-    private long banknotes;
-    private int penny;
+import static com.kasia.core.model.Util.throwIAE;
+
+public class Money {
+    private long amount;
     private Type type;
 
-    private Money(long banknotes, int penny, Type type) {
-        setBanknotes(banknotes);
-        setPenny(penny);
+    private Money(Type type) {
         setType(type);
     }
 
-    private Money(Money money) {
-        setBanknotes(money.getBanknotes());
-        setPenny(money.getPenny());
-        setType(money.getType());
+    private Money(long banknotes, int penny, Type type) {
+        setAmount(banknotes, penny);
+        setType(type);
     }
 
-    private void setBanknotes(long banknotes) {
-        this.banknotes = banknotes;
+    private Money(long amount, Type type) {
+        setAmount(amount);
+        setType(type);
     }
 
-    private void setPenny(int penny) {
-        Util.isThrowIAEWithMsg(penny < 0 || penny > 99, "Penny must be 0-99");
-        this.penny = penny;
+    private void setAmount(long amount) {
+        this.amount = amount;
+    }
+
+    private void setAmount(long banknotes, int penny) {
+        throwIAE((penny < 0 && banknotes != 0) || penny > 99, "Penny must be IF(banknotes==0) [-99,99] ELSE [0,99]");
+        this.amount = Math.abs(banknotes) * 100 + Math.abs(penny);
+        if (banknotes < 0 || penny < 0) {
+            this.amount *= -1;
+        }
     }
 
     private void setType(Type type) {
+        throwIAE(type == null, "Type ain`t be NULL");
         this.type = type;
+    }
+
+    public static Money of(Type type) {
+        return new Money(type);
     }
 
     public Type getType() {
         return this.type;
+
     }
 
     public long getBanknotes() {
-        return this.banknotes;
+        return this.amount / 100;
     }
 
     public int getPenny() {
-        return this.penny;
+        return (int) (this.amount - getBanknotes() * 100);
+    }
+
+    public static Money of(long banknotes, int penny, Type type) {
+        return new Money(banknotes, penny, type);
     }
 
     @Override
     public String toString() {
-        return String.format("%d,%02d %s", getBanknotes(), getPenny(), getType());
+        StringBuilder format = new StringBuilder();
+        format.append("%").append(amount != 0 ? "+" : "").append(".2f %s");
+        return String.format(format.toString(), getAmount() / 100.0, getType());
+    }
+
+    private long getAmount() {
+        return this.amount;
+    }
+
+    public static Money of(Money money) {
+        throwIAE(money == null, "Money ain`t NULL");
+        return new Money(money.getBanknotes(), money.getPenny(), money.getType());
+    }
+
+    public static Money of(String money) {
+        throwIAE(money == null, "Money ain`t NULL");
+        money = money.replaceAll(",", ".");
+        throwIAE(!getPattern().matcher(money).find(), "\nArgument: " + money + "\nMoney REGEX: " + getPattern());
+        StringTokenizer tokens = new StringTokenizer(money);
+        double amount = Double.valueOf(tokens.nextToken()).doubleValue() * 100;
+        Type type = Type.of(tokens.nextToken());
+        return new Money((long) amount, type);
+    }
+
+    private static Pattern getPattern() {
+        String regex = "^[-+]?\\d+ " + Type.getPattern().pattern() + "$";
+        return Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
     }
 
     @Override
@@ -60,62 +101,36 @@ public final class Money {
 
         Money money = (Money) o;
 
-        if (banknotes != money.banknotes) return false;
-        if (penny != money.penny) return false;
+        if (amount != money.amount) return false;
         return type == money.type;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (banknotes ^ (banknotes >>> 32));
-        result = 31 * result + penny;
+        int result = (int) (amount ^ (amount >>> 32));
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
 
-    public Money getDiscount(double discount) {
-        Util.isThrowIAEWithMsg(discount < 0 || discount > 100, "discount must be 0-100");
-        double money = getPenny() / 100.0 + getBanknotes();
+    public Money discount(double discount) {
+        throwIAE(discount < 0 || discount > 100, "discount must be 0-100");
         discount = (1 - discount / 100);
-        money = money * discount;
-        long banknotes = (long) money;
-        int penny = (int) Math.round((money % banknotes) * 100);
-        return valueOf(banknotes, penny, this.getType());
+        long amount = Math.round(getAmount() * discount);
+        return new Money(amount, this.getType());
     }
 
-    public Money plus(Money moneyToAdd) {
-        Util.isThrowIAEWithMsg(getType() != moneyToAdd.getType(), "Different type of currency");
-        long banknotes = this.getBanknotes() + moneyToAdd.getBanknotes();
-        int penny = this.getPenny() + moneyToAdd.getPenny();
-        if (penny >= 100) {
-            banknotes++;
-            penny = penny % 100;
-        }
-        return valueOf(banknotes, penny, this.getType());
+    public Money plus(Money money) {
+        throwIAE(money == null, "Can add NULL");
+        throwIAE(this.getType() != money.getType(), "Can add only the same Money.Type");
+        long amount = this.getAmount() + money.getAmount();
+        return new Money(amount, this.getType());
     }
 
-    public static Money valueOf(long banknotes, int penny, Type type) {
-        return new Money(banknotes, penny, type);
-    }
-
-    public static Money valueOf(Money money) {
-        return new Money(money);
-    }
-
-    public static Money valueOf(String money) {
-        money = money.trim().replaceAll(" {2,}", " ");
-        Util.isThrowIAEWithMsg(!getMatcher(money).find(), "Wrong string representation");
-        StringTokenizer tokens = new StringTokenizer(money);
-        String value = tokens.nextToken();
-        long banknotes = Long.valueOf(value.split(",")[0]);
-        int penny = Integer.valueOf(value.split(",")[1]);
-        Type type = Type.typeOf(tokens.nextToken());
-        return valueOf(banknotes, penny, type);
-    }
-
-    public static Matcher getMatcher(String text) {
-        String regex = "^[-+]?\\d+,\\d{1,2} " + Type.getRegex();
-        return Pattern.compile(regex).matcher(text);
+    public Money minus(Money money) {
+        throwIAE(money == null, "Can add NULL");
+        throwIAE(this.getType() != money.getType(), "Can add only the same Money.Type");
+        long amount = this.getAmount() - money.getAmount();
+        return new Money(amount, this.getType());
     }
 
     public enum Type {
@@ -126,8 +141,9 @@ public final class Money {
             setCurrency(currencyCode);
         }
 
-        private void setCurrency(String code) {
-            this.currency = Currency.getInstance(code);
+        private void setCurrency(String currencyCode) {
+            throwIAE(currencyCode == null, "Currency code ain`t NULL");
+            this.currency = Currency.getInstance(currencyCode);
         }
 
         @Override
@@ -135,23 +151,22 @@ public final class Money {
             return currency.getCurrencyCode();
         }
 
-
         public Currency getCurrency() {
             return this.currency;
         }
 
-        static protected String getRegex() {
+        public static Type of(String code) {
+            throwIAE(code == null, "Type code ain`t NULL");
+            code = code.trim().toUpperCase();
+            return Type.valueOf(code);
+        }
+
+        static protected Pattern getPattern() {
             StringBuilder regex = new StringBuilder();
             for (Type type : Type.values()) {
                 regex.append(regex.length() == 0 ? type : "|" + type);
             }
-            return regex.toString();
-        }
-
-        public static Type typeOf(String type) {
-            Util.isThrowIAEWithMsg(!type.matches(getRegex()), "Need to be : " + getRegex());
-            return Type.valueOf(type);
-
+            return Pattern.compile(regex.toString(), Pattern.CASE_INSENSITIVE);
         }
     }
 
