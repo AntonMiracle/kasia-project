@@ -92,8 +92,13 @@ public class MoneyTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenGetMoneyWith100OrGreaterPennyThenIAE() {
-        Money.of(10, 100, Money.Type.PLN);
+    public void whenGetMoneyWithMoreThenMaxPennyThenIAE() {
+        Money.of(10, Money.MAX_PENNY + 1, Money.Type.PLN);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenGetMoneyWithLessThenMinPennyThenIAE() {
+        Money.of(0, Money.MIN_PENNY - 1, Money.Type.PLN);
     }
 
     @Test
@@ -111,6 +116,16 @@ public class MoneyTest {
     @Test
     public void checkToStringWithNegativeBanknotesAndPositivePenny() {
         assertThat(Money.of(-10, 76, Money.Type.USD).toString()).isEqualTo("-10,76 USD");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetMaxBanknotesOrMoreThenIAE() {
+        Money.of(Money.MAX_BANKNOTES + 1, 0, Money.Type.EUR);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetMinBanknotesOrLessThenIAE() {
+        Money.of(Money.MIN_BANKNOTES - 1, 0, Money.Type.EUR);
     }
 
     @Test
@@ -134,7 +149,7 @@ public class MoneyTest {
     }
 
     @Test
-    public void moneyOfStringReturn10Banknotes11PennyEUR() {
+    public void moneyOfStringReturnTenBanknotes11PennyEUR() {
         String representation = "10,11 EUR";
         Money money = Money.of(representation);
         assertThat(money).isEqualTo(Money.of(10, 11, Money.Type.EUR));
@@ -153,22 +168,27 @@ public class MoneyTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void moneyOfStringWithExtraNumber() {
+        Money.of("10.11 EUR 10.21");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void moneyOfStringWithExtraComma() {
         Money.of("10,11, EUR");
     }
 
     @Test
-    public void firstMoneyOfString10BanknotesZeroPenny() {
+    public void firstMoneyOfStringTenBanknotesZeroPenny() {
         assertThat(Money.of("10 EUR")).isEqualTo(Money.of(10, 0, Money.Type.EUR));
     }
 
     @Test
-    public void moneyOfString10BanknotesAndZeroPenny() {
+    public void moneyOfStringTenBanknotesAndZeroPenny() {
         assertThat(Money.of("10,00 EUR")).isEqualTo(Money.of(10, 0, Money.Type.EUR));
     }
 
     @Test
-    public void moneyOfString10BanknotesAndZeroPennyWithLowCase() {
+    public void moneyOfStringTenBanknotesAndZeroPennyWithLowCase() {
         assertThat(Money.of("10,00 EuR")).isEqualTo(Money.of(10, 0, Money.Type.EUR));
     }
 

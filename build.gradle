@@ -2,6 +2,7 @@ group 'kasia-project'
 version '0.0.1'
 
 apply plugin: 'java'
+apply plugin: 'jacoco'
 
 sourceCompatibility = 1.8
 

@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
 import static com.kasia.core.model.Util.throwIAE;
 
 public class Money {
+    public static final long MAX_BANKNOTES = Long.MAX_VALUE / 100;
+    public static final long MIN_BANKNOTES = Long.MIN_VALUE / 100;
+    public static final int MAX_PENNY = 99;
+    public static final int MIN_PENNY = -99;
     private long amount;
     private Type type;
 
@@ -30,11 +34,19 @@ public class Money {
     }
 
     private void setAmount(long banknotes, int penny) {
-        throwIAE((penny < 0 && banknotes != 0) || penny > 99, "Penny must be IF(banknotes==0) [-99,99] ELSE [0,99]");
+        this.validation(banknotes, penny);
         this.amount = Math.abs(banknotes) * 100 + Math.abs(penny);
         if (banknotes < 0 || penny < 0) {
             this.amount *= -1;
         }
+    }
+
+    private void validation(long banknotes, int penny) {
+        throwIAE(banknotes < MIN_BANKNOTES, "\nBANKNOTES > " + MIN_BANKNOTES + "\nCURRENT: " + banknotes);
+        throwIAE(banknotes > MAX_BANKNOTES, "\nBANKNOTES < " + MAX_BANKNOTES + "\nCURRENT: " + banknotes);
+        throwIAE(penny < MIN_PENNY, "\nPENNY > " + MIN_PENNY + "\nCURRENT: " + penny);
+        throwIAE(penny > MAX_PENNY, "\nPENNY < " + MAX_PENNY + "\nCURRENT: " + penny);
+        throwIAE((penny < 0 && banknotes != 0), "PENNY ain`t be negative if BANKNOTES != 0");
     }
 
     private void setType(Type type) {
@@ -81,8 +93,8 @@ public class Money {
 
     public static Money of(String money) {
         throwIAE(money == null, "Money ain`t NULL");
-        money = money.replaceAll(",", ".");
-        throwIAE(!getPattern().matcher(money).find(), "\nArgument: " + money + "\nMoney REGEX: " + getPattern());
+        money = money.trim().replaceAll(" +", " ").replaceAll(",", ".");
+        throwIAE(!getPattern().matcher(money).matches(), "\nArgument: " + money + "\nMoney REGEX: " + getPattern());
         StringTokenizer tokens = new StringTokenizer(money);
         double amount = Double.valueOf(tokens.nextToken()).doubleValue() * 100;
         Type type = Type.of(tokens.nextToken());
@@ -90,7 +102,7 @@ public class Money {
     }
 
     private static Pattern getPattern() {
-        String regex = "^[-+]?\\d+ " + Type.getPattern().pattern() + "$";
+        String regex = "^[-+]?[0-9]+[.]?[0-9]{0,2} (" + Type.getPattern().pattern() + ")$";
         return Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
     }
 
@@ -138,11 +150,6 @@ public class Money {
         private Currency currency;
 
         Type(String currencyCode) {
-            setCurrency(currencyCode);
-        }
-
-        private void setCurrency(String currencyCode) {
-            throwIAE(currencyCode == null, "Currency code ain`t NULL");
             this.currency = Currency.getInstance(currencyCode);
         }
 
