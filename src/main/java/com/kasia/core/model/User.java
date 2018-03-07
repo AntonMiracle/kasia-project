@@ -16,7 +16,7 @@ public class User {
 
     public User(Long id, Details details, LocalDateTime createOn, Set<Role> roles, Security security) {
         this.id = id;
-        this.details = new Details(details);
+//        this.details = new Details(details);
         this.createOn = createOn;
         for (Role role : roles) addRole(role);
         this.security = new Security(security);
@@ -51,7 +51,7 @@ public class User {
     }
 
     public void setDetails(Details details) {
-        this.details = new Details(details);
+//        this.details = new Details(details);
     }
 
     public Details getDetails() {

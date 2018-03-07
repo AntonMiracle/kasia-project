@@ -34,11 +34,12 @@ public class Money {
     }
 
     private void setAmount(long banknotes, int penny) {
-        this.validation(banknotes, penny);
-        this.amount = Math.abs(banknotes) * 100 + Math.abs(penny);
+        validation(banknotes, penny);
+        long amount = Math.abs(banknotes) * 100 + Math.abs(penny);
         if (banknotes < 0 || penny < 0) {
-            this.amount *= -1;
+            amount *= -1;
         }
+        setAmount(amount);
     }
 
     private void validation(long banknotes, int penny) {
