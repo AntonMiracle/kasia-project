@@ -148,8 +148,180 @@ public class DetailsTest {
         details.setFirm("Firm");
         assertThat(details.getFirm()).isEqualTo("Firm");
     }
-    //==========POSITION======================
 
+    @Test
+    public void setFirmNameWithUpperCase() {
+        details.setFirm("FIRM");
+        assertThat(details.getFirm()).isEqualTo("FIRM");
+    }
+
+    @Test
+    public void setFirmNameWithLowerCase() {
+        details.setFirm("firm32");
+        assertThat(details.getFirm()).isEqualTo("firm32");
+    }
+
+    @Test
+    public void setFirmNameIgnoreExtraWhiteSymbols() {
+        details.setFirm("   Firm    firm   ");
+        assertThat(details.getFirm()).isEqualTo("Firm firm");
+    }
+
+    @Test
+    public void setCompositeFirmName() {
+        details.setFirm("Firm-firm");
+        assertThat(details.getFirm()).isEqualTo("Firm-firm");
+    }
+
+    @Test
+    public void setFirmNameWithWhiteSymbols() {
+        details.setFirm("    ");
+        assertThat(details.getFirm()).isEqualTo("");
+    }
+
+    @Test
+    public void setFirmNameWithEmptyString() {
+        details.setFirm("");
+        assertThat(details.getFirm()).isEqualTo("");
+    }
+
+    @Test
+    public void setFirmNameWithPlus() {
+        details.setFirm(" A+B Firm");
+        assertThat(details.getFirm()).isEqualTo("A+B Firm");
+    }
+
+    @Test
+    public void setFirmNameWithAmpersant() {
+        details.setFirm(" A&B Firm");
+        assertThat(details.getFirm()).isEqualTo("A&B Firm");
+    }
+
+    @Test
+    public void setFirmNameWithAtSign() {
+        details.setFirm(" A@B Firm");
+        assertThat(details.getFirm()).isEqualTo("A@B Firm");
+    }
+
+    @Test
+    public void setFirmNameWithPoint() {
+        details.setFirm(" A.B Firm");
+        assertThat(details.getFirm()).isEqualTo("A.B Firm");
+    }
+
+    @Test
+    public void setFirmNameWithApostrophe() {
+        details.setFirm(" A'B Firm");
+        assertThat(details.getFirm()).isEqualTo("A'B Firm");
+    }
+
+    @Test
+    public void setFirmNameWithColon() {
+        details.setFirm(" A:B Firm");
+        assertThat(details.getFirm()).isEqualTo("A:B Firm");
+    }
+
+    @Test
+    public void setFirmNameWithBracket() {
+        details.setFirm("({A<>B} [Firm])");
+        assertThat(details.getFirm()).isEqualTo("({A<>B} [Firm])");
+    }
+
+    @Test
+    public void setFirmNameWithExclamationAndGuillemets() {
+        details.setFirm("«A!B» Firm");
+        assertThat(details.getFirm()).isEqualTo("«A!B» Firm");
+    }
+
+    @Test
+    public void setFirmNameWithInvertedComma() {
+        details.setFirm("“AB“ Firm");
+        assertThat(details.getFirm()).isEqualTo("“AB“ Firm");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetFirmWithNullThenIAE() {
+        details.setFirm(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetFirmArgumentHasSpecialSymbolsThenIAE() {
+        details.setFirm("firm\\/");
+    }
+
+    @Test
+    public void whenFirmNullGetterReturnEmptyString() {
+        assertThat(details.getFirm()).isEqualTo("");
+    }
+
+    //==========POSITION======================
+    @Test
+    public void setPosition() {
+        details.setPosition("Position");
+        assertThat(details.getPosition()).isEqualTo("POSITION");
+    }
+
+    @Test
+    public void setPositionWithUpperCase() {
+        details.setPosition("POSITION");
+        assertThat(details.getPosition()).isEqualTo("POSITION");
+    }
+
+    @Test
+    public void setPositionWithLowerCase() {
+        details.setPosition("position");
+        assertThat(details.getPosition()).isEqualTo("POSITION");
+    }
+
+    @Test
+    public void setPositionIgnoreExtraWhiteSymbols() {
+        details.setPosition("   Position    ");
+        assertThat(details.getPosition()).isEqualTo("POSITION");
+    }
+
+    @Test
+    public void setCompositePosition() {
+        details.setPosition("Position-position");
+        assertThat(details.getPosition()).isEqualTo("POSITION-POSITION");
+    }
+
+    @Test
+    public void setPositionWithWhiteSymbols() {
+        details.setPosition("    ");
+        assertThat(details.getPosition()).isEqualTo("");
+    }
+
+    @Test
+    public void setPositionWithEmptyString() {
+        details.setPosition("");
+        assertThat(details.getPosition()).isEqualTo("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetPositionWithNullThenIAE() {
+        details.setPosition(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetPositionArgumentHasTwoWordThenIAE() {
+        details.setPosition("Surna me");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetPositionArgumentHasNumberThenIAE() {
+        details.setPosition("Surname32");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetPositionArgumentHasNotOnlyAlphabetSymbolsThenIAE() {
+        details.setPosition("surname&@");
+    }
+
+    @Test
+    public void whenSPositionNullGetterReturnEmptySttring() {
+        assertThat(details.getPosition()).isEqualTo("");
+    }
+//==========================================
     @Test
     public void getDetailsOfNameSurnameFirmPosition() {
         Details details = new Details("NAME", "SURNAME", "FIRM NAME", "POSITION");

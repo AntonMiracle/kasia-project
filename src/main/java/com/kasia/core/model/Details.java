@@ -9,6 +9,7 @@ public class Details {
     private Patterns NAME = Patterns.NAME;
     private Patterns SURNAME = Patterns.SURNAME;
     private Patterns FIRM = Patterns.FIRM;
+    private Patterns POSITION = Patterns.POSITION;
     private String name;
     private String surname;
     private String firm;
@@ -40,6 +41,8 @@ public class Details {
     }
 
     public void setFirm(String firm) {
+        throwIAE(firm == null, "Firm name ain`t NULL");
+        firm = firm.trim().replaceAll(" {2,}", " ");
         throwIAE(!FIRM.matches(firm), "PATTERN: " + FIRM.getRegEx() + "\nCURRENT " + firm);
         this.firm = firm;
     }
@@ -57,7 +60,7 @@ public class Details {
     }
 
     public String getFirm() {
-        return firm;
+        return this.firm != null ? this.firm : "";
     }
 
     public String getPosition() {
@@ -67,7 +70,8 @@ public class Details {
     public enum Patterns {
         NAME("^[A-Z]*$"),
         SURNAME("^[A-Z]*|([A-Z]+[-][A-Z]+)$"),
-        FIRM("^.*$");
+        FIRM("^[+&a-zA-Z0-9@.:\\-'\\(\\)\\[\\]\\{\\}<>!«»“ ]*$"),
+        POSITION("^[a-zA-Z0-9]*$");
 
         private Pattern pattern;
 
