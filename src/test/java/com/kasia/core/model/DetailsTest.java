@@ -1,5 +1,7 @@
 package com.kasia.core.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -74,7 +76,6 @@ public class DetailsTest {
         assertThat(details.getName()).isEqualTo("");
     }
 
-    //====================================SURNAME==============
     @Test
     public void setSurname() {
         details.setSurname("Surname");
@@ -142,11 +143,10 @@ public class DetailsTest {
         assertThat(details.getSurname()).isEqualTo("");
     }
 
-    //==========FIRM======================
     @Test
     public void setFirm() {
         details.setFirm("Firm");
-        assertThat(details.getFirm()).isEqualTo("Firm");
+        assertThat(details.getFirm()).isEqualTo("FIRM");
     }
 
     @Test
@@ -158,19 +158,19 @@ public class DetailsTest {
     @Test
     public void setFirmNameWithLowerCase() {
         details.setFirm("firm32");
-        assertThat(details.getFirm()).isEqualTo("firm32");
+        assertThat(details.getFirm()).isEqualTo("FIRM32");
     }
 
     @Test
     public void setFirmNameIgnoreExtraWhiteSymbols() {
         details.setFirm("   Firm    firm   ");
-        assertThat(details.getFirm()).isEqualTo("Firm firm");
+        assertThat(details.getFirm()).isEqualTo("FIRM FIRM");
     }
 
     @Test
     public void setCompositeFirmName() {
         details.setFirm("Firm-firm");
-        assertThat(details.getFirm()).isEqualTo("Firm-firm");
+        assertThat(details.getFirm()).isEqualTo("FIRM-FIRM");
     }
 
     @Test
@@ -188,55 +188,25 @@ public class DetailsTest {
     @Test
     public void setFirmNameWithPlus() {
         details.setFirm(" A+B Firm");
-        assertThat(details.getFirm()).isEqualTo("A+B Firm");
+        assertThat(details.getFirm()).isEqualTo("A+B FIRM");
     }
 
     @Test
     public void setFirmNameWithAmpersant() {
         details.setFirm(" A&B Firm");
-        assertThat(details.getFirm()).isEqualTo("A&B Firm");
+        assertThat(details.getFirm()).isEqualTo("A&B FIRM");
     }
 
     @Test
     public void setFirmNameWithAtSign() {
         details.setFirm(" A@B Firm");
-        assertThat(details.getFirm()).isEqualTo("A@B Firm");
+        assertThat(details.getFirm()).isEqualTo("A@B FIRM");
     }
 
     @Test
     public void setFirmNameWithPoint() {
         details.setFirm(" A.B Firm");
-        assertThat(details.getFirm()).isEqualTo("A.B Firm");
-    }
-
-    @Test
-    public void setFirmNameWithApostrophe() {
-        details.setFirm(" A'B Firm");
-        assertThat(details.getFirm()).isEqualTo("A'B Firm");
-    }
-
-    @Test
-    public void setFirmNameWithColon() {
-        details.setFirm(" A:B Firm");
-        assertThat(details.getFirm()).isEqualTo("A:B Firm");
-    }
-
-    @Test
-    public void setFirmNameWithBracket() {
-        details.setFirm("({A<>B} [Firm])");
-        assertThat(details.getFirm()).isEqualTo("({A<>B} [Firm])");
-    }
-
-    @Test
-    public void setFirmNameWithExclamationAndGuillemets() {
-        details.setFirm("«A!B» Firm");
-        assertThat(details.getFirm()).isEqualTo("«A!B» Firm");
-    }
-
-    @Test
-    public void setFirmNameWithInvertedComma() {
-        details.setFirm("“AB“ Firm");
-        assertThat(details.getFirm()).isEqualTo("“AB“ Firm");
+        assertThat(details.getFirm()).isEqualTo("A.B FIRM");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -254,7 +224,6 @@ public class DetailsTest {
         assertThat(details.getFirm()).isEqualTo("");
     }
 
-    //==========POSITION======================
     @Test
     public void setPosition() {
         details.setPosition("Position");
@@ -269,20 +238,26 @@ public class DetailsTest {
 
     @Test
     public void setPositionWithLowerCase() {
-        details.setPosition("position");
-        assertThat(details.getPosition()).isEqualTo("POSITION");
+        details.setPosition("position32");
+        assertThat(details.getPosition()).isEqualTo("POSITION32");
     }
 
     @Test
     public void setPositionIgnoreExtraWhiteSymbols() {
-        details.setPosition("   Position    ");
-        assertThat(details.getPosition()).isEqualTo("POSITION");
+        details.setPosition("   Position&    ");
+        assertThat(details.getPosition()).isEqualTo("POSITION&");
     }
 
     @Test
-    public void setCompositePosition() {
+    public void setCompositePositionWithDesh() {
         details.setPosition("Position-position");
         assertThat(details.getPosition()).isEqualTo("POSITION-POSITION");
+    }
+
+    @Test
+    public void setCompositePositionWithWhiteSymbol() {
+        details.setPosition("Position position");
+        assertThat(details.getPosition()).isEqualTo("POSITION POSITION");
     }
 
     @Test
@@ -303,25 +278,21 @@ public class DetailsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenSetPositionArgumentHasTwoWordThenIAE() {
-        details.setPosition("Surna me");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenSetPositionArgumentHasNumberThenIAE() {
-        details.setPosition("Surname32");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenSetPositionArgumentHasNotOnlyAlphabetSymbolsThenIAE() {
-        details.setPosition("surname&@");
+    public void whenSetPositionArgumentHasSpecialSymbolsThenIAE() {
+        details.setPosition("Position@");
     }
 
     @Test
-    public void whenSPositionNullGetterReturnEmptySttring() {
+    public void whenSPositionNullGetterReturnEmptyString() {
         assertThat(details.getPosition()).isEqualTo("");
     }
-//==========================================
+
+    @Test
+    public void setId() {
+        details.setId(100);
+        assertThat(details.getId()).isEqualTo(100);
+    }
+
     @Test
     public void getDetailsOfNameSurnameFirmPosition() {
         Details details = new Details("NAME", "SURNAME", "FIRM NAME", "POSITION");
@@ -331,160 +302,17 @@ public class DetailsTest {
         assertThat(details.getPosition()).isEqualTo("POSITION");
     }
 
-//    @Rule
-//    public ExpectedException exception = ExpectedException.none();
-//    private Details details;
-//
-//    @Before
-//    public void before() {
-//        details = new Details();
-//    }
-//
-//    @Test
-//    public void checkConstructions() {
-//        details.setNickName("NickName");
-//        details.setId(10L);
-//        details.setName("nick");
-//        details.setEmail("mail");
-//        details.setSecondName("second");
-//        Details details2 = new Details(details);
-//        Assert.assertTrue(details.equals(details2));
-//    }
-//
-//    @Test
-//    public void setAndGetNickName() {
-//        String nickName = "nickName";
-//        details.setNickName(nickName);
-//        Assert.assertEquals("set and get nickName", nickName, details.getNickName());
-//    }
-//
-//    @Test
-//    public void setAndGetSecondName() {
-//        String secondName = "secondName";
-//        details.setSecondName(secondName);
-//        Assert.assertEquals("set and get secondName", secondName, details.getSecondName());
-//    }
-//
-//    @Test
-//    public void setAndGetName() {
-//        String name = "name";
-//        details.setName(name);
-//        Assert.assertEquals("set and get name", name, details.getName());
-//    }
-//
-//    @Test
-//    public void setAndGetEMail() {
-//        String eMail = "email";
-//        details.setEmail(eMail);
-//        Assert.assertEquals("set and get eMail", eMail, details.getEmail());
-//    }
-//
-//    @Test
-//    public void setAndGetId() {
-//        Long id = 100L;
-//        details.setId(id);
-//        Assert.assertEquals("set and get id", id, details.getId());
-//    }
-//
-//    @Test
-//    public void checkEqualsAndHashCode() {
-//        Details details1 = new Details(100L, "nickName", "secondName", "mail", "name");
-//        Details details2 = new Details(100L, "nickName", "secondName", "mail", "name");
-//        Assert.assertEquals("details1.equals(details2)", details1, details2);
-//        Assert.assertEquals("details1.equals(details2)", details1.hashCode(), details2.hashCode());
-//        details2.setName("testName");
-//        Assert.assertNotEquals("details1.equals(details2)", details1, details2);
-//        Assert.assertNotEquals("details1.equals(details2)", details1.hashCode(), details2.hashCode());
-//    }
-//
-//    @Test
-//    public void checkToString() {
-//        String toString = "nickName name secondName mail";
-//        details = new Details(100L, "nickName", "secondName", "mail", "name");
-//        Assert.assertEquals(toString, details.toString());
-//    }
-//
-//    @Test
-//    public void whenSetNameArgumentNullThenNullPointerException() {
-//        exception.expect(NullPointerException.class);
-//        details.setName(null);
-//    }
-//
-//    @Test
-//    public void whenSetSecondNameArgumentNullThenNullPointerException() {
-//        exception.expect(NullPointerException.class);
-//        details.setSecondName(null);
-//    }
-//
-//    @Test
-//    public void whenSetNickNameArgumentNullThenNullPointerException() {
-//        exception.expect(NullPointerException.class);
-//        details.setNickName(null);
-//    }
-//
-//    @Test
-//    public void whenSetEmailArgumentNullThenNullPointerException() {
-//        exception.expect(NullPointerException.class);
-//        details.setEmail(null);
-//    }
-//
-//    @Test
-//    public void getNickNameNotNull() {
-//        details = new Details();
-//        Assert.assertNotNull(details.getNickName());
-//    }
-//
-//    @Test
-//    public void getSecondNameNotNull() {
-//        details = new Details();
-//        Assert.assertNotNull(details.getSecondName());
-//    }
-//
-//    @Test
-//    public void getEmailNotNull() {
-//        details = new Details();
-//        Assert.assertNotNull(details.getEmail());
-//    }
-//
-//    @Test
-//    public void getNameNotNull() {
-//        details = new Details();
-//        Assert.assertNotNull(details.getName());
-//    }
-//
-//    @Test
-//    public void setNickNameTrimWhiteSymbols() {
-//        String nameSpaces = "   name   ";
-//        String name = "name";
-//        details = new Details();
-//        details.setNickName(nameSpaces);
-//        Assert.assertEquals(name, details.getNickName());
-//    }
-//
-//    @Test
-//    public void setNameTrimWhiteSymbols() {
-//        String nameSpaces = "   name   ";
-//        String name = "name";
-//        details = new Details();
-//        details.setName(nameSpaces);
-//        Assert.assertEquals(name, details.getName());
-//    }
-//
-//    @Test
-//    public void setSecondNameTrimWhiteSymbols() {
-//        String nameSpaces = "   name   ";
-//        String name = "name";
-//        details = new Details();
-//        details.setSecondName(nameSpaces);
-//        Assert.assertEquals(name, details.getSecondName());
-//    }
-//
-//    @Test
-//    public void setEmailTrimWhiteSymbols() {
-//        String nameSpaces = "   name   ";
-//        String name = "name";
-//        details = new Details();
-//        details.setEmail(nameSpaces);
-//        Assert.assertEquals(name, details.getEmail());
-//    }
+    @Test
+    public void checkEqualsAndHashCode() {
+        EqualsVerifier.forClass(Details.class)
+                .withIgnoredFields("NAME", "SURNAME", "FIRM", "POSITION")
+                .usingGetClass().suppress(Warning.NONFINAL_FIELDS).verify();
+    }
+
+    @Test
+    public void checkToString() {
+        Details details = new Details("NAME", "SURNAME", "FIRM NAME", "POSITION");
+        details.setId(10);
+        assertThat(details.toString()).isEqualTo("10 NAME SURNAME FIRM NAME POSITION");
+    }
 }
