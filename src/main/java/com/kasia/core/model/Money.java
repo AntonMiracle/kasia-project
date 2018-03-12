@@ -133,14 +133,14 @@ public class Money {
     }
 
     public Money plus(Money money) {
-        throwIAE(money == null, "Can add NULL");
+        throwIAE(money == null, "Can`t add NULL");
         throwIAE(this.getType() != money.getType(), "Can add only the same Money.Type");
         long amount = this.getAmount() + money.getAmount();
         return new Money(amount, this.getType());
     }
 
     public Money minus(Money money) {
-        throwIAE(money == null, "Can add NULL");
+        throwIAE(money == null, "Can`t add NULL");
         throwIAE(this.getType() != money.getType(), "Can add only the same Money.Type");
         long amount = this.getAmount() - money.getAmount();
         return new Money(amount, this.getType());

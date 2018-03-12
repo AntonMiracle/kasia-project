@@ -313,6 +313,20 @@ public class DetailsTest {
     public void checkToString() {
         Details details = new Details("NAME", "SURNAME", "FIRM NAME", "POSITION");
         details.setId(10);
-        assertThat(details.toString()).isEqualTo("10 NAME SURNAME FIRM NAME POSITION");
+        assertThat(details.toString()).isEqualTo("10:NAME:SURNAME:FIRM NAME:POSITION");
+    }
+
+    @Test
+    public void checkToStringWithEmptyString() {
+        Details details = new Details();
+        assertThat(details.toString()).isEqualTo("0::::");
+    }
+
+    @Test
+    public void checkValueOf() {
+        assertThat(Details.Patterns.valueOf("NAME").toString()).isEqualTo(Details.Patterns.NAME.toString());
+        assertThat(Details.Patterns.valueOf("SURNAME").toString()).isEqualTo(Details.Patterns.SURNAME.toString());
+        assertThat(Details.Patterns.valueOf("FIRM").toString()).isEqualTo(Details.Patterns.FIRM.toString());
+        assertThat(Details.Patterns.valueOf("POSITION").toString()).isEqualTo(Details.Patterns.POSITION.toString());
     }
 }

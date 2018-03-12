@@ -79,6 +79,35 @@ public class Details {
         return id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Details details = (Details) o;
+
+        if (id != details.id) return false;
+        if (name != null ? !name.equals(details.name) : details.name != null) return false;
+        if (surname != null ? !surname.equals(details.surname) : details.surname != null) return false;
+        if (firm != null ? !firm.equals(details.firm) : details.firm != null) return false;
+        return position != null ? position.equals(details.position) : details.position == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (firm != null ? firm.hashCode() : 0);
+        result = 31 * result + (position != null ? position.hashCode() : 0);
+        result = 31 * result + (int) (id ^ (id >>> 32));
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + ":" + getName() + ":" + getSurname() + ":" + getFirm() + ":" + getPosition();
+    }
+
     public enum Patterns {
         NAME("^[A-Z]*$"),
         SURNAME("^[A-Z]*|([A-Z]+[-][A-Z]+)$"),
@@ -106,34 +135,12 @@ public class Details {
         public String getRegEx() {
             return getPattern().pattern();
         }
+
+        @Override
+        public String toString() {
+            return getRegEx();
+
+        }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Details details = (Details) o;
-
-        if (id != details.id) return false;
-        if (name != null ? !name.equals(details.name) : details.name != null) return false;
-        if (surname != null ? !surname.equals(details.surname) : details.surname != null) return false;
-        if (firm != null ? !firm.equals(details.firm) : details.firm != null) return false;
-        return position != null ? position.equals(details.position) : details.position == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (firm != null ? firm.hashCode() : 0);
-        result = 31 * result + (position != null ? position.hashCode() : 0);
-        result = 31 * result + (int) (id ^ (id >>> 32));
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return getId() + " " + getName() + " " + getSurname() + " " + getFirm() + " " + getPosition();
-    }
 }
