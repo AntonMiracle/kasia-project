@@ -12,7 +12,7 @@ public class RoleTest {
 
     @Before
     public void before() {
-        role = new Role("n-32");
+        role = new Role("n-322");
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -78,10 +78,26 @@ public class RoleTest {
         role.setName("name23");
         assertThat(role.toString()).isEqualTo("NAME23");
     }
+
     @Test
     public void checkEqualsAndHashCode() {
         EqualsVerifier.forClass(Role.class)
                 .withIgnoredFields("NAME")
                 .usingGetClass().suppress(Warning.NONFINAL_FIELDS).verify();
+    }
+
+    @Test
+    public void getRoleNamePatternByValueOf() {
+        assertThat(Role.Patterns.valueOf("NAME")).isSameAs(Role.Patterns.NAME);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void whenValueOfNullThenNPE() {
+        Role.Patterns.valueOf(null);
+    }
+
+    @Test
+    public void checkToString() {
+        assertThat(Role.Patterns.NAME.toString()).isEqualTo(Role.Patterns.NAME.getPattern().pattern());
     }
 }

@@ -1,6 +1,5 @@
 package com.kasia.core.model;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.kasia.core.model.Util.throwIAE;
@@ -11,7 +10,6 @@ public class Role {
     private long id;
 
     protected Role() {
-
     }
 
     public Role(String name) {
@@ -19,9 +17,11 @@ public class Role {
     }
 
     public void setName(String name) {
-        throwIAE(name == null, "Name ain`t NULL");
+        throwIAE(name == null, "Name is NULL");
         name = name.toUpperCase().trim();
-        throwIAE(!NAME.matches(name), "PATTERN: " + NAME.getRegEx() + "\nCURRENT " + name);
+        throwIAE(!NAME.matches(name), "PATTERN: " + NAME.toString()
+                + " LENGTH: [" + NAME.MIN_LENGTH + "," + NAME.MAX_LENGTH + "]"
+                + "\nCURRENT " + name);
         this.name = name;
     }
 
@@ -29,7 +29,7 @@ public class Role {
         return name != null ? name : "";
     }
 
-    public void setId(long id) {
+    protected void setId(long id) {
         this.id = id;
     }
 
@@ -72,29 +72,19 @@ public class Role {
             this.pattern = Pattern.compile(pattern);
         }
 
-        public Matcher getMatcher(String text) {
-            return getPattern().matcher(text);
-        }
-
         public boolean matches(String text) {
             if (text.length() < MIN_LENGTH) return false;
             if (text.length() > MAX_LENGTH) return false;
-            return getMatcher(text).matches();
+            return getPattern().matcher(text).matches();
         }
 
         public Pattern getPattern() {
             return pattern;
         }
 
-        public String getRegEx() {
-            return getPattern().pattern();
-        }
-
         @Override
         public String toString() {
-            return getRegEx();
-
+            return getPattern().pattern();
         }
     }
-
 }
