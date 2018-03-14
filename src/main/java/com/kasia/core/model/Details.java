@@ -1,6 +1,5 @@
 package com.kasia.core.model;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.kasia.core.model.Util.throwIAE;
@@ -28,31 +27,38 @@ public class Details {
     }
 
     public void setName(String name) {
-        throwIAE(name == null, "Name ain`t NULL");
+        throwIAE(name == null, "Name is NULL");
         name = name.trim().toUpperCase();
-        throwIAE(!NAME.matches(name), "PATTERN: " + NAME.getRegEx() + "\nCURRENT " + name);
+        throwIAE(!NAME.matches(name), errorMsgWithPatterns(NAME, name));
         this.name = name;
     }
 
     public void setSurname(String surname) {
-        throwIAE(surname == null, "Surname ain`t NULL");
+        throwIAE(surname == null, "Surname is NULL");
         surname = surname.toUpperCase().trim();
-        throwIAE(!SURNAME.matches(surname), "PATTERN: " + SURNAME.getRegEx() + "\nCURRENT " + surname);
+        throwIAE(!SURNAME.matches(surname), errorMsgWithPatterns(SURNAME, surname));
         this.surname = surname;
     }
 
     public void setFirm(String firm) {
-        throwIAE(firm == null, "Firm name ain`t NULL");
+        throwIAE(firm == null, "Firm is NULL");
         firm = firm.trim().toUpperCase().replaceAll(" {2,}", " ");
-        throwIAE(!FIRM.matches(firm), "PATTERN: " + FIRM.getRegEx() + "\nCURRENT " + firm);
+        throwIAE(!FIRM.matches(firm), errorMsgWithPatterns(FIRM, firm));
         this.firm = firm;
     }
 
     public void setPosition(String position) {
-        throwIAE(position == null, "Position name ain`t NULL");
+        throwIAE(position == null, "Position is NULL");
         position = position.toUpperCase().trim();
-        throwIAE(!POSITION.matches(position), "PATTERN: " + POSITION.getRegEx() + "\nCURRENT " + position);
+        throwIAE(!POSITION.matches(position), errorMsgWithPatterns(POSITION, position));
         this.position = position;
+    }
+
+    protected String errorMsgWithPatterns(Patterns patterns, String text) {
+        throwIAE(patterns == null || text == null, "Pattern or Text is NULL");
+        return "PATTERN: " + patterns.toString()
+                + " LENGTH: [0," + patterns.MAX_LENGTH + "]"
+                + "%nCURRENT: " + text;
     }
 
     public String getName() {
@@ -109,38 +115,31 @@ public class Details {
     }
 
     public enum Patterns {
-        NAME("^[A-Z]*$"),
-        SURNAME("^[A-Z]*|([A-Z]+[-][A-Z]+)$"),
-        FIRM("^[+&A-Z0-9@.\\-\\(\\) ]*$"),
-        POSITION("^[A-Z0-9 \\-&]*$");
+        NAME("^[A-Z]*$", 32),
+        SURNAME("^[A-Z]*|([A-Z]+[-][A-Z]+)$", 32),
+        FIRM("^[+&A-Z0-9@.\\-\\(\\) ]*$", 32),
+        POSITION("^[A-Z0-9 \\-&]*$", 32);
 
+        private final int MAX_LENGTH;
         private Pattern pattern;
 
-        Patterns(String regEx) {
+        Patterns(String regEx, int max) {
+            MAX_LENGTH = max;
             this.pattern = Pattern.compile(regEx);
         }
 
-        public Matcher getMatcher(String text) {
-            return getPattern().matcher(text);
-        }
-
         public boolean matches(String text) {
-            return getMatcher(text).matches();
+            if (text.length() > MAX_LENGTH) return false;
+            return getPattern().matcher(text).matches();
         }
 
         public Pattern getPattern() {
             return pattern;
         }
 
-        public String getRegEx() {
-            return getPattern().pattern();
-        }
-
         @Override
         public String toString() {
-            return getRegEx();
-
+            return getPattern().pattern();
         }
     }
-
 }

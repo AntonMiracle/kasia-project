@@ -329,4 +329,34 @@ public class DetailsTest {
         assertThat(Details.Patterns.valueOf("FIRM").toString()).isEqualTo(Details.Patterns.FIRM.toString());
         assertThat(Details.Patterns.valueOf("POSITION").toString()).isEqualTo(Details.Patterns.POSITION.toString());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenNameGreaterMaxLengthThenIAE() {
+        details.setName("AntonAntonAntonAntonAntonAntonAAA");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSurnameGreaterMaxLengthThenIAE() {
+        details.setSurname("AntonAntonAntonAntonAntonAntonAAA");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenFirmGreaterMaxLengthThenIAE() {
+        details.setFirm("AntonAntonAntonAntonAntonAntonAAA");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenPositionGreaterMaxLengthThenIAE() {
+        details.setPosition("AntonAntonAntonAntonAntonAntonAAA");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenErrorMsgWithNullPatterns() {
+        details.errorMsgWithPatterns(null, "text");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenErrorMsgWithNullText() {
+        details.errorMsgWithPatterns(Details.Patterns.NAME, null);
+    }
 }
