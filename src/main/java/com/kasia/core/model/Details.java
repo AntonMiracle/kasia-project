@@ -26,6 +26,14 @@ public class Details {
         setPosition(position);
     }
 
+    protected Details(Details details) {
+        setId(details.getId());
+        setName(details.getName());
+        setSurname(details.getSurname());
+        setFirm(details.getFirm());
+        setPosition(details.getPosition());
+    }
+
     public void setName(String name) {
         throwIAE(name == null, "Name is NULL");
         name = name.trim().toUpperCase();

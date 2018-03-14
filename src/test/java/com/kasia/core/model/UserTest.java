@@ -1,12 +1,14 @@
 package com.kasia.core.model;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.Timestamp;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
+import java.util.Locale;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -24,7 +26,6 @@ public class UserTest {
         assertThat(user.getId()).isEqualTo(10);
     }
 
-    //NICKNAME
     @Test
     public void setNicknameWithAlphabetsOnly() {
         user.setNickname("NickName");
@@ -89,8 +90,6 @@ public class UserTest {
         assertThat(user.getNickname()).isNull();
     }
 
-//LOGIN
-
     @Test
     public void setLoginWithAlphabetsOnly() {
         user.setLogin("login2");
@@ -154,7 +153,6 @@ public class UserTest {
     public void whenLoginNullReturnNull() {
         assertThat(user.getLogin()).isNull();
     }
-//PASSWORD
 
     @Test
     public void setPasswordWithAlphabetsOnly() {
@@ -210,8 +208,6 @@ public class UserTest {
         user.setPassword(origin);
         assertThat(crypt).isEqualTo(user.getPassword());
     }
-
-    //MAIL
 
     @Test
     public void setAndGetMail() {
@@ -275,7 +271,6 @@ public class UserTest {
         assertThat(user.getMail()).isNull();
     }
 
-    //CRETE ON
     @Test
     public void setAndGetCreateOn() {
         Instant instant = Instant.now();
@@ -294,13 +289,135 @@ public class UserTest {
     }
 
     @Test
-    public void setCreateOnByTimestamp() {
-        Instant instant = Instant.now();
-        Timestamp ts = Timestamp.from(instant);
-        LocalDateTime ldt = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
-        System.out.println(instant);
-        System.out.println(ts);
-        System.out.println(ts.toInstant());
-        System.out.println(ldt);
+    public void setAndGetZoneId() {
+        ZoneId zoneId = ZoneId.systemDefault();
+        user.setZoneId(zoneId);
+        assertThat(user.getZoneId()).isEqualTo(zoneId);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetZoneIdWithNullTheIAE() {
+        user.setZoneId(null);
+    }
+
+    @Test
+    public void whenZoneIdIsNullThenReturnNull() {
+        assertThat(user.getZoneId()).isNull();
+    }
+
+    @Test
+    public void setAndGetLocale() {
+        Locale locale = Locale.US;
+        user.setLocale(locale);
+        assertThat(user.getLocale()).isEqualTo(locale);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetLocaleWithNullTheIAE() {
+        user.setLocale(null);
+    }
+
+    @Test
+    public void whenLocaleIsNullThenReturnNull() {
+        assertThat(user.getLocale()).isNull();
+    }
+
+    @Test
+    public void setAndGetDetails() {
+        Details details = new Details("NAME", "SURNAME", "FIRM NAME", "POSITION");
+        user.setDetails(details);
+        assertThat(user.getDetails()).isEqualTo(details);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetDetailsWithNullTheIAE() {
+        user.setDetails(null);
+    }
+
+    @Test
+    public void whenDetailsIsNullThenReturnEmptyDetails() {
+        assertThat(user.getDetails()).isEqualTo(new Details());
+    }
+
+    @Test
+    public void checkEqualsAndHashCode() throws NoSuchAlgorithmException {
+        EqualsVerifier.forClass(User.class)
+                .withIgnoredFields("NICKNAME", "LOGIN", "PASSWORD", "MAIL")
+                .usingGetClass()
+                .suppress(Warning.NONFINAL_FIELDS)
+                .verify();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void whenUserPatternsValueOfNullThenNPE() {
+        User.Patterns.valueOf(null);
+    }
+
+    @Test
+    public void getUserPatternsFromValueOf() {
+        User.Patterns patterns = User.Patterns.valueOf("NICKNAME");
+        assertThat(patterns).isSameAs(User.Patterns.NICKNAME);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenErrorMsgWithNullPatterns() {
+        user.errorMsgWithPatterns(null, "text");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenErrorMsgWithNullText() {
+        user.errorMsgWithPatterns(User.Patterns.NICKNAME, null);
+    }
+
+    @Test
+    public void getMessageDigesterOfMD5() {
+        assertThat(user.getMessageDigester("MD5")).isNotNull();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenGetMessageDigesterOfNullThenIAE() {
+        user.getMessageDigester(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenGetMessageDigesterWithUnknownThenIAE() {
+        user.getMessageDigester("SuperMd5");
+    }
+
+    @Test
+    public void whenChangeDetailsWichSetDoNotChangeUserDetails() {
+        Details details = new Details("NAME", "SURNAME", "FIRM NAME", "POSITION");
+        user.setDetails(details);
+        details.setName("SUPERNAME");
+        assertThat(user.getDetails()).isNotEqualTo(details);
+    }
+
+    @Test
+    public void createUserWithLoginPasswordNickName() {
+        String nickname = "NICKNAME";
+        String password = "PASSWORD";
+        String login = "LOGIN6";
+        String mail = "mail@mail.com";
+        ZoneId zoneId = ZoneId.of("Europe/London");
+        Locale locale = Locale.UK;
+        User user = new User(login, password, nickname, mail, locale, zoneId);
+        assertThat(user.getLogin()).isEqualTo(login);
+        assertThat(user.getPassword()).isNotEqualTo(password);
+        assertThat(user.getNickname()).isEqualTo(nickname);
+        assertThat(user.getMail()).isEqualTo(mail);
+        assertThat(user.getLocale()).isEqualTo(locale);
+        assertThat(user.getZoneId()).isEqualTo(zoneId);
+    }
+
+    @Test
+    public void compareUserPasswordWithAnotherPassword() {
+        String password = "PASSWORD";
+        user.setPassword(password);
+        assertThat(user.comparePassword(password)).isTrue();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenCompareUserPasswordWithNullThenIAE() {
+        user.comparePassword(null);
     }
 }

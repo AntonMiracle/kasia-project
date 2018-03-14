@@ -4,12 +4,13 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static com.kasia.core.model.Util.throwIAE;
 
 public class User {
-    private MessageDigest md5;
     private User.Patterns NICKNAME = Patterns.NICKNAME;
     private User.Patterns LOGIN = Patterns.LOGIN;
     private User.Patterns PASSWORD = Patterns.PASSWORD;
@@ -20,17 +21,24 @@ public class User {
     private String password;
     private String mail;
     private Instant createOn;
+    private ZoneId zoneId;
+    private Locale locale;
+    private Details details;
 
     protected User() {
+    }
 
+    public User(String login, String password, String nickname, String mail, Locale locale, ZoneId zoneId) {
+        setLogin(login);
+        setPassword(password);
+        setNickname(nickname);
+        setMail(mail);
+        setLocale(locale);
+        setZoneId(zoneId);
     }
 
     protected void setId(long id) {
         this.id = id;
-    }
-
-    public long getId() {
-        return id;
     }
 
     protected void setNickname(String nickname) {
@@ -40,26 +48,11 @@ public class User {
         this.nickname = nickname;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    protected String errorMsgWithPatterns(Patterns patterns, String text) {
-        throwIAE(patterns == null || text == null, "Pattern or Text is NULL");
-        return "PATTERN: " + patterns.toString()
-                + " LENGTH: [" + patterns.MIN_LENGTH + "," + patterns.MAX_LENGTH + "]"
-                + "%nCURRENT: " + text;
-    }
-
-    public void setLogin(String login) {
+    protected void setLogin(String login) {
         throwIAE(login == null, "login is NULL");
         login = login.trim();
         throwIAE(!LOGIN.matches(login), errorMsgWithPatterns(LOGIN, login));
         this.login = login;
-    }
-
-    public String getLogin() {
-        return login;
     }
 
     public void setPassword(String password) {
@@ -69,25 +62,6 @@ public class User {
         this.password = crypt(password);
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    private void getMD5() {
-        try {
-            if (md5 == null) md5 = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error when create MD5");
-        }
-    }
-
-    private String crypt(String password) {
-        getMD5();
-        md5.update(password.getBytes(), 0, password.length());
-        return new BigInteger(1, md5.digest()).toString(PASSWORD.MAX_LENGTH);
-    }
-
     public void setMail(String mail) {
         throwIAE(mail == null, "Mail is NULL");
         mail = mail.trim();
@@ -95,17 +69,121 @@ public class User {
         this.mail = mail;
     }
 
-    public String getMail() {
-        return mail;
-    }
-
-    public void setCreateOn(Instant createOn) {
+    protected void setCreateOn(Instant createOn) {
         throwIAE(createOn == null, "CreateOn is null");
         this.createOn = createOn;
     }
 
+    public void setZoneId(ZoneId zoneId) {
+        throwIAE(zoneId == null, "ZnoId is NULL");
+        this.zoneId = zoneId;
+    }
+
+    public void setLocale(Locale locale) {
+        throwIAE(locale == null, "Locale is NULL");
+        this.locale = locale;
+    }
+
+    public void setDetails(Details details) {
+        throwIAE(details == null, "Details is NULL");
+        this.details = new Details(details);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
     public Instant getCreateOn() {
         return createOn;
+    }
+
+    public ZoneId getZoneId() {
+        return zoneId;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public Details getDetails() {
+        return details != null ? details : new Details();
+    }
+
+    protected MessageDigest getMessageDigester(String algorithmName) {
+        throwIAE(algorithmName == null, "Algorithm name is NULL");
+        try {
+            return MessageDigest.getInstance(algorithmName);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException("Unknown algorithm name : " + algorithmName
+                    + "%nExceptionStackTrace : " + e);
+        }
+    }
+
+    private String crypt(String password) {
+        MessageDigest md5 = getMessageDigester("MD5");
+        md5.update(password.getBytes(), 0, password.length());
+        return new BigInteger(1, md5.digest()).toString(PASSWORD.MAX_LENGTH);
+    }
+
+    protected String errorMsgWithPatterns(Patterns patterns, String text) {
+        throwIAE(patterns == null || text == null, "Pattern or Text is NULL");
+        return "PATTERN: " + patterns.toString()
+                + " LENGTH: [" + patterns.MIN_LENGTH + "," + patterns.MAX_LENGTH + "]"
+                + "%nCURRENT: " + text;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (id != user.id) return false;
+        if (nickname != null ? !nickname.equals(user.nickname) : user.nickname != null) return false;
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (mail != null ? !mail.equals(user.mail) : user.mail != null) return false;
+        if (createOn != null ? !createOn.equals(user.createOn) : user.createOn != null) return false;
+        if (zoneId != null ? !zoneId.equals(user.zoneId) : user.zoneId != null) return false;
+        if (locale != null ? !locale.equals(user.locale) : user.locale != null) return false;
+        return details != null ? details.equals(user.details) : user.details == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (mail != null ? mail.hashCode() : 0);
+        result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
+        result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
+        result = 31 * result + (locale != null ? locale.hashCode() : 0);
+        result = 31 * result + (details != null ? details.hashCode() : 0);
+        return result;
+    }
+
+    public boolean comparePassword(String password) {
+        throwIAE(password == null, "Password is NULL");
+        String cryptPassword = crypt(password);
+        return getPassword().equals(cryptPassword);
     }
 
     public enum Patterns {
@@ -139,113 +217,4 @@ public class User {
             return getPattern().pattern();
         }
     }
-//    private Long id;
-//    private Details details;
-//    private LocalDateTime createOn;
-//    private Set<Role> roles;
-//    private Security security;
-//
-//    public User() {
-//    }
-//
-//    public User(Long id, Details details, LocalDateTime createOn, Set<Role> roles, Security security) {
-//        this.id = id;
-////        this.details = new Details(details);
-//        this.createOn = createOn;
-//        for (Role role : roles) addRole(role);
-//        this.security = new Security(security);
-//    }
-//
-//    public User(User user) {
-//        this(user.getId(), user.getDetails(), user.getCreateOn(), user.getRoles(), user.getSecurity());
-//    }
-//
-//    public void setCreateOn(LocalDateTime createOn) {
-//        this.createOn = createOn;
-//    }
-//
-//    public LocalDateTime getCreateOn() {
-//        return this.createOn;
-//    }
-//
-//    public Long getId() {
-//        return this.id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public void setSecurity(Security security) {
-//        this.security = security;
-//    }
-//
-//    public Security getSecurity() {
-//        return this.security;
-//    }
-//
-//    public void setDetails(Details details) {
-////        this.details = new Details(details);
-//    }
-//
-//    public Details getDetails() {
-//        return this.details;
-//    }
-//
-//    public Set<Role> getRoles() {
-//        initRoles();
-//        return this.roles;
-//    }
-//
-//    public void setRoles(Set<Role> roles) {
-//        initRoles();
-//        for (Role role : roles) this.roles.add(role);
-//    }
-//
-//    public boolean addRole(Role role) {
-//        initRoles();
-//        return roles.add(new Role(role));
-//    }
-//
-//    public boolean isHas(Role role) {
-//        return roles != null ? roles.contains(role) : false;
-//    }
-//
-//    public boolean removeRole(Role role) {
-//        return roles != null ? roles.remove(role) : false;
-//    }
-//
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//
-//        User user = (User) o;
-//
-//        if (id != null ? !id.equals(user.id) : user.id != null) return false;
-//        if (details != null ? !details.equals(user.details) : user.details != null) return false;
-//        if (createOn != null ? !createOn.equals(user.createOn) : user.createOn != null) return false;
-//        if(roles !=null && user.getRoles() != null){
-//            for(Role role : user.getRoles()) if(!isHas(role)) return false;
-//        }else{
-//            return false;
-//        }
-//        return security != null ? security.equals(user.security) : user.security == null;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        int result = id != null ? id.hashCode() : 0;
-//        result = 31 * result + (details != null ? details.hashCode() : 0);
-//        result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
-//        result = 31 * result + (roles != null ? roles.hashCode() : 0);
-//        result = 31 * result + (security != null ? security.hashCode() : 0);
-//        return result;
-//    }
-//
-//    private void initRoles() {
-//        if (roles == null) {
-//            roles = new HashSet<>();
-//        }
-//    }
 }

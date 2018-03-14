@@ -92,7 +92,7 @@ public class RoleTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void whenValueOfNullThenNPE() {
+    public void whenRolePatternsValueOfNullThenNPE() {
         Role.Patterns.valueOf(null);
     }
 

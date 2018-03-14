@@ -295,7 +295,7 @@ public class DetailsTest {
 
     @Test
     public void getDetailsOfNameSurnameFirmPosition() {
-        Details details = new Details("NAME", "SURNAME", "FIRM NAME", "POSITION");
+        details = new Details("NAME", "SURNAME", "FIRM NAME", "POSITION");
         assertThat(details.getName()).isEqualTo("NAME");
         assertThat(details.getSurname()).isEqualTo("SURNAME");
         assertThat(details.getFirm()).isEqualTo("FIRM NAME");
@@ -358,5 +358,11 @@ public class DetailsTest {
     @Test(expected = IllegalArgumentException.class)
     public void whenErrorMsgWithNullText() {
         details.errorMsgWithPatterns(Details.Patterns.NAME, null);
+    }
+
+    @Test
+    public void getDetailsFromAnotherDetails() {
+        details = new Details("NAME", "SURNAME", "FIRM NAME", "POSITION");
+        assertThat(details).isEqualTo(new Details(details));
     }
 }
