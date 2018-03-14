@@ -180,60 +180,60 @@ public class MoneyTest {
 
     @Test
     public void getDiscountPositivePrice() {
-        money = Money.of(100, 95, Money.Type.USD);
-        assertThat(money.discount(1)).isEqualTo(Money.of(99, 94, Money.Type.USD));
-        assertThat(money.discount(1.47)).isEqualTo(Money.of(99, 47, Money.Type.USD));
-        assertThat(money.discount(33)).isEqualTo(Money.of(67, 64, Money.Type.USD));
-        assertThat(money.discount(99)).isEqualTo(Money.of(1, 1, Money.Type.USD));
-        money = Money.of(537, 36, Money.Type.USD);
-        assertThat(money.discount(53.67)).isEqualTo(Money.of(248, 96, Money.Type.USD));
+        money = Money.of(100, 95, type.USD);
+        assertThat(money.discount(1)).isEqualTo(Money.of(99, 94, type.USD));
+        assertThat(money.discount(1.47)).isEqualTo(Money.of(99, 47, type.USD));
+        assertThat(money.discount(33)).isEqualTo(Money.of(67, 64, type.USD));
+        assertThat(money.discount(99)).isEqualTo(Money.of(1, 1, type.USD));
+        money = Money.of(537, 36, type.USD);
+        assertThat(money.discount(53.67)).isEqualTo(Money.of(248, 96, type.USD));
     }
 
     @Test
     public void getDiscountNegativePrice() {
-        money = Money.of(-100, 95, Money.Type.USD);
-        assertThat(money.discount(1)).isEqualTo(Money.of(-99, 94, Money.Type.USD));
-        money = Money.of(0, -95, Money.Type.USD);
-        assertThat(money.discount(1.47)).isEqualTo(Money.of(0, -94, Money.Type.USD));
+        money = Money.of(-100, 95, type.USD);
+        assertThat(money.discount(1)).isEqualTo(Money.of(-99, 94, type.USD));
+        money = Money.of(0, -95, type.USD);
+        assertThat(money.discount(1.47)).isEqualTo(Money.of(0, -94, type.USD));
 //        System.out.println(0.1+0.2-0.3);
     }
 
     @Test
     public void discountDoNotChangeOriginalMoney() {
-        money = Money.of(12, 30, Money.Type.USD);
+        money = Money.of(12, 30, type.USD);
         Money money2 = money.discount(1);
         assertThat(money).isNotSameAs(money2);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenDiscount100OrGreaterThenIAE() {
-        Money.of(100, 95, Money.Type.USD).discount(100.001);
+        Money.of(100, 95, type.USD).discount(100.001);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenDiscountNegativeThenIAE() {
-        Money.of(100, 95, Money.Type.USD).discount(-0.0001);
+        Money.of(100, 95, type.USD).discount(-0.0001);
     }
 
     @Test
     public void moneyPlusMoney() {
-        money = Money.of(12, 17, Money.Type.USD);
-        Money money2 = Money.of(10, 20, Money.Type.USD);
-        assertThat(money.plus(money2)).isEqualTo(Money.of(22, 37, Money.Type.USD));
-        money = Money.of(99, 99, Money.Type.USD);
-        assertThat(money.plus(money2)).isEqualTo(Money.of(110, 19, Money.Type.USD));
+        money = Money.of(12, 17, type.USD);
+        Money money2 = Money.of(10, 20, type.USD);
+        assertThat(money.plus(money2)).isEqualTo(Money.of(22, 37, type.USD));
+        money = Money.of(99, 99, type.USD);
+        assertThat(money.plus(money2)).isEqualTo(Money.of(110, 19, type.USD));
     }
 
     @Test
     public void plusDoNotChangeOriginalMoney() {
-        money = Money.of(12, 30, Money.Type.USD);
+        money = Money.of(12, 30, type.USD);
         Money money2 = money.plus(money);
         assertThat(money).isNotSameAs(money2);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenPlusDifferentCurrencyThenIAE() {
-        Money.of(Money.Type.USD).plus(Money.of(Money.Type.EUR));
+        Money.of(Money.Type.USD).plus(Money.of(type.EUR));
     }
 
 
@@ -245,21 +245,29 @@ public class MoneyTest {
 
     @Test
     public void moneyMinusMoney() {
-        money = Money.of(12, 17, Money.Type.USD);
-        Money money2 = Money.of(2, 20, Money.Type.USD);
-        assertThat(money.minus(money2)).isEqualTo(Money.of(9, 97, Money.Type.USD));
+        money = Money.of(12, 17, type.USD);
+        Money money2 = Money.of(2, 20, type.USD);
+        assertThat(money.minus(money2)).isEqualTo(Money.of(9, 97, type.USD));
+    }
+
+    @Test
+    public void plusMinusMoneyWithLowBanknotes() {
+        money = Money.of(0, 10, type.USD);
+        money = money.plus(Money.of(0, 20, type.USD));
+        money = money.minus(Money.of(0, 30, type.USD));
+        assertThat(money).isEqualTo(Money.of(type.USD));
     }
 
     @Test
     public void minusDoNotChangeOriginalMoney() {
-        Money money = Money.of(12, 30, Money.Type.USD);
+        Money money = Money.of(12, 30, type.USD);
         Money money2 = money.minus(money);
         assertThat(money).isNotSameAs(money2);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenMinusAnotherCurrencyThenIAE() {
-        Money.of(Money.Type.USD).minus(Money.of(Money.Type.EUR));
+        Money.of(Money.Type.USD).minus(Money.of(type.EUR));
     }
 
     @Test(expected = IllegalArgumentException.class)
