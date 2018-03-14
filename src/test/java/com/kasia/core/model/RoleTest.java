@@ -1,84 +1,87 @@
 package com.kasia.core.model;
 
-import org.junit.Assert;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class RoleTest {
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
     private Role role;
 
     @Before
     public void before() {
-        role = new Role();
+        role = new Role("n-32");
     }
 
-    @Test
-    public void setAndGetName() {
-        String name = "name";
-        role.setName(name);
-        Assert.assertEquals("set and get name", name, role.getName());
-    }
-
-    @Test
-    public void setAndGetId() {
-        Long id = 10L;
-        role.setId(id);
-        Assert.assertEquals("set and get id", id, role.getId());
-    }
-
-    @Test
-    public void checkEqualsAndHashCodeMethod() {
-        role = new Role(10L, "role1");
-        Role role2 = new Role(10L, "role1");
-        Assert.assertTrue(role.equals(role2));
-        Assert.assertTrue(role.hashCode() == role2.hashCode());
-        role2.setId(11L);
-        Assert.assertFalse(role.equals(role2));
-        Assert.assertFalse(role.hashCode() == role2.hashCode());
-    }
-
-    @Test
-    public void checkConstructions() {
-        Assert.assertNotNull("check no arg", new Role());
-        String roleName = "role";
-        Role role = new Role(roleName);
-        Assert.assertNotNull("check with role name", role);
-        Assert.assertEquals(roleName, role.getName());
-        Role role2 = new Role(role);
-        Assert.assertTrue("check with role", role.equals(role2));
-    }
-
-    @Test
-    public void getNameNotNull() {
-        role = new Role();
-        Assert.assertNotNull(role.getName());
-
-    }
-
-    @Test
-    public void whenSetNameArgumentNullThenNullPointerException() {
-        exception.expect(NullPointerException.class);
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetNameWithNullThenIAE() {
         role.setName(null);
     }
 
-    @Test
-    public void checkToString() {
-        String name = "name";
-        role.setName(name);
-        Assert.assertEquals(name, role.toString());
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetNameArgumentSmallerThenMinNameLengthThenIAE() {
+        role.setName("nam");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetNameArgumentBiggerThenMaxNameLengthThenIAE() {
+        role.setName("namenamenamenamee");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetNameArgumentHasDashInTheEndThenIAE() {
+        role.setName("name-");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetNameArgumentHasDashFromStartThenIAE() {
+        role.setName("-name");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetNameArgumentHasExtraDashesThenIAE() {
+        role.setName("name-2-name-2n");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenSetNameArgumentHasIllegalSymbolFromStartThenIAE() {
+        role.setName("&name");
     }
 
     @Test
-    public void setNameTrimWhiteSymbols() {
-        String nameWithSpaces = "    name   ";
-        String name = "name";
-        role.setName(nameWithSpaces);
-        Assert.assertNotEquals(nameWithSpaces, role.getName());
-        Assert.assertEquals(name, role.getName());
+    public void setNameIgnoreExtraWhiteSymbolsFromStartAndEnd() {
+        role.setName(" name-2 ");
+        assertThat(role.getName()).isEqualTo("NAME-2");
     }
 
+    @Test
+    public void setNameWithAlphabetAndNumbersOnly() {
+        role.setName("name2");
+        assertThat(role.getName()).isEqualTo("NAME2");
+    }
+
+    @Test
+    public void setIdAndGetId() {
+        role.setId(10);
+        assertThat(role.getId()).isEqualTo(10);
+    }
+
+    @Test
+    public void getNameReturnEmptyStringIfNameIsNull() {
+        assertThat(new Role().getName()).isEqualTo("");
+    }
+
+    @Test
+    public void toStringReturnRoleName() {
+        role.setName("name23");
+        assertThat(role.toString()).isEqualTo("NAME23");
+    }
+    @Test
+    public void checkEqualsAndHashCode() {
+        EqualsVerifier.forClass(Role.class)
+                .withIgnoredFields("NAME")
+                .usingGetClass().suppress(Warning.NONFINAL_FIELDS).verify();
+    }
 }

@@ -2,244 +2,185 @@ package com.kasia.core.model;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Locale;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class MoneyTest {
+    private Money money;
+    private Money.Type type;
 
-    @Test
-    public void getEURMoney() {
-        assertThat(Money.of(Money.Type.EUR).getType()).isEqualTo(Money.Type.EUR);
+    @Before
+    public void before() {
+        money = new Money();
     }
 
     @Test
-    public void getUSDMoney() {
-        assertThat(Money.of(Money.Type.USD).getType()).isEqualTo(Money.Type.USD);
+    public void moneyOfUSD() {
+        assertThat(Money.of(type.USD).getType()).isEqualTo(type.USD);
     }
 
     @Test
-    public void getRUBMoney() {
-        assertThat(Money.of(Money.Type.RUB).getType()).isEqualTo(Money.Type.RUB);
+    public void moneyOfEUR() {
+        assertThat(Money.of(type.EUR).getType()).isEqualTo(type.EUR);
     }
 
     @Test
-    public void getUAHMoney() {
-        assertThat(Money.of(Money.Type.UAH).getType()).isEqualTo(Money.Type.UAH);
+    public void moneyOfPLN() {
+        assertThat(Money.of(type.PLN).getType()).isEqualTo(type.PLN);
     }
 
     @Test
-    public void getPLNMoney() {
-        assertThat(Money.of(Money.Type.PLN).getType()).isEqualTo(Money.Type.PLN);
+    public void moneyOfUAH() {
+        assertThat(Money.of(type.UAH).getType()).isEqualTo(type.UAH);
     }
 
     @Test
-    public void getMoneyByTypeHasZeroBanknotes() {
-        assertThat(Money.of(Money.Type.PLN).getBanknotes()).isEqualTo(0);
+    public void moneyOfRUB() {
+        assertThat(Money.of(type.RUB).getType()).isEqualTo(type.RUB);
     }
 
     @Test
-    public void getMoneyByTypeHasZeroPenny() {
-        assertThat(Money.of(Money.Type.PLN).getPenny()).isEqualTo(0);
+    public void moneyOfHasZeroBanknotes() {
+        assertThat(Money.of(type.PLN).getBanknotes()).isEqualTo(0);
+    }
+
+    @Test
+    public void moneyOfTypeHasZeroPenny() {
+        assertThat(Money.of(type.PLN).getPenny()).isEqualTo(0);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenGetMoneyOfNullThenIAE() {
-        Money.of((Money) null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenGetMoneyTypeOfNullThenIAE() {
+    public void whenMoneyOfTypeWithNullThenIAE() {
         Money.of((Money.Type) null);
     }
 
-    @Test
-    public void getMoneyWithBanknotesAndPenny() {
-        long banknotes = 120L;
-        int penny = 87;
-        Money money = Money.of(banknotes, penny, Money.Type.PLN);
-        assertThat(money.getBanknotes()).isEqualTo(banknotes);
-        assertThat(money.getPenny()).isEqualTo(penny);
-        assertThat(money.getType()).isEqualTo(Money.Type.PLN);
+    @Test(expected = IllegalArgumentException.class)
+    public void whenGetTypeIsNullThenIAE() {
+        money.getType();
     }
 
     @Test
-    public void getMoneyWithZeroBanknotesAndNegativePenny() {
-        long banknotes = 0;
-        int penny = -25;
-        Money money = Money.of(banknotes, penny, Money.Type.PLN);
-        assertThat(money.getBanknotes()).isEqualTo(banknotes);
-        assertThat(money.getPenny()).isEqualTo(penny);
-        assertThat(money.getType()).isEqualTo(Money.Type.PLN);
-    }
-
-    @Test
-    public void getMoneyWithNegativeBanknotes() {
-        long banknotes = -10L;
-        int penny = 87;
-        Money money = Money.of(banknotes, penny, Money.Type.PLN);
-        assertThat(money.getBanknotes()).isLessThan(0);
+    public void moneyOfBanknotesAndPennyInUSD() {
+        money = Money.of(10, 1, type.USD);
+        assertThat(money.getBanknotes()).isEqualTo(10);
+        assertThat(money.getPenny()).isEqualTo(1);
+        assertThat(money.getType()).isEqualTo(type.USD);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenGetMoneyWithPositiveBanknotesAndNegativePennyThenIAE() {
-        Money.of(10, -1, Money.Type.PLN);
+    public void whenMoneyHasMoreThenMaxPennyThenIAE() {
+        Money.of(10, Money.MAX_PENNY + 1, type.PLN);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenGetMoneyWithNegativeBanknotesAndNegativePennyThenIAE() {
-        Money.of(-10, -1, Money.Type.PLN);
+    public void whenMoneyHasLessThenMinPennyThenIAE() {
+        Money.of(0, Money.MIN_PENNY - 1, type.PLN);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenGetMoneyWithMoreThenMaxPennyThenIAE() {
-        Money.of(10, Money.MAX_PENNY + 1, Money.Type.PLN);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenGetMoneyWithLessThenMinPennyThenIAE() {
-        Money.of(0, Money.MIN_PENNY - 1, Money.Type.PLN);
-    }
-
-    @Test
-    public void getMoneyFromAnotherMoney() {
-        long banknotes = 10L;
-        int penny = 99;
-        Money.Type type = Money.Type.PLN;
-        Money money = Money.of(Money.of(banknotes, penny, type));
-        assertThat(money.getBanknotes()).isEqualTo(banknotes);
-        assertThat(money.getPenny()).isEqualTo(penny);
-        assertThat(money.getType()).isEqualTo(type);
-
-    }
-
-    @Test
-    public void checkToStringWithNegativeBanknotesAndPositivePenny() {
-        assertThat(Money.of(-10, 76, Money.Type.USD).toString()).isEqualTo("-10,76 USD");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenSetMaxBanknotesOrMoreThenIAE() {
+    public void whenMoneyHasMoreThenMaxBanknotesThenIAE() {
         Money.of(Money.MAX_BANKNOTES + 1, 0, Money.Type.EUR);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenSetMinBanknotesOrLessThenIAE() {
+    public void whenMoneyHasLessThenMinBanknotesThenIAE() {
         Money.of(Money.MIN_BANKNOTES - 1, 0, Money.Type.EUR);
     }
 
     @Test
-    public void checkToStringWithZeroBanknotesAndNegativePenny() {
-        assertThat(Money.of(0, -1, Money.Type.USD).toString()).isEqualTo("-0,01 USD");
+    public void banknotesCanBeNegative() {
+        money = Money.of(-10, 87, type.PLN);
+        assertThat(money.getBanknotes()).isEqualTo(-10);
     }
 
     @Test
-    public void checkToStringPositiveBanknotesAndZeroPenny() {
-        assertThat(Money.of(10, 0, Money.Type.USD).toString()).isEqualTo("+10,00 USD");
-    }
-
-    @Test
-    public void checkToStringZeroBanknotesAndZeroPenny() {
-        assertThat(Money.of(0, 0, Money.Type.USD).toString()).isEqualTo("0,00 USD");
-    }
-
-    @Test
-    public void checkToStringZeroBanknotesAndPositivePenny() {
-        assertThat(Money.of(0, 3, Money.Type.USD).toString()).isEqualTo("+0,03 USD");
-    }
-
-    @Test
-    public void moneyOfStringReturnTenBanknotes11PennyEUR() {
-        String representation = "10,11 EUR";
-        Money money = Money.of(representation);
-        assertThat(money).isEqualTo(Money.of(10, 11, Money.Type.EUR));
-    }
-
-    @Test
-    public void moneyOfStringIgnoreExtraWhiteSymbol() {
-        String representation = "     10,11        EUR         ";
-        Money money = Money.of(representation);
-        assertThat(money).isEqualTo(Money.of(10, 11, Money.Type.EUR));
+    public void pennyCanBeNegativeWhenZeroBanknotes() {
+        money = Money.of(0, -25, type.PLN);
+        assertThat(money.getBanknotes()).isEqualTo(0);
+        assertThat(money.getPenny()).isEqualTo(-25);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void moneyOfStringWithExtraPoint() {
-        Money.of("10.11, EUR");
+    public void whenPennyNegativeAndBanknotesNotZeroThenIAE() {
+        Money.of(10, -1, type.PLN);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void moneyOfStringWithExtraNumber() {
-        Money.of("10.11 EUR 10.21");
+    public void whenPennyAndBanknotesAreNegativeThenIAE() {
+        Money.of(-10, -1, type.PLN);
+    }
+
+    @Test
+    public void moneyFromAnotherMoney() {
+        money = Money.of(Money.of(190, 10, type.PLN));
+        assertThat(money.getBanknotes()).isEqualTo(190);
+        assertThat(money.getPenny()).isEqualTo(10);
+        assertThat(money.getType()).isEqualTo(type.PLN);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void moneyOfStringWithExtraComma() {
-        Money.of("10,11, EUR");
+    public void whenMoneyOfMoneyWithNullThenIAE() {
+        Money.of((Money) null);
     }
 
     @Test
-    public void firstMoneyOfStringTenBanknotesZeroPenny() {
-        assertThat(Money.of("10 EUR")).isEqualTo(Money.of(10, 0, Money.Type.EUR));
+    public void checkToStringWithPositiveMoney() {
+        assertThat(Money.of(190, 10, type.USD).toString()).isEqualTo("+190,10 USD");
     }
 
     @Test
-    public void moneyOfStringTenBanknotesAndZeroPenny() {
-        assertThat(Money.of("10,00 EUR")).isEqualTo(Money.of(10, 0, Money.Type.EUR));
+    public void checkToStringWithNegativeMoney() {
+        assertThat(Money.of(-190, 10, type.USD).toString()).isEqualTo("-190,10 USD");
+
     }
 
     @Test
-    public void moneyOfStringTenBanknotesAndZeroPennyWithLowCase() {
-        assertThat(Money.of("10,00 EuR")).isEqualTo(Money.of(10, 0, Money.Type.EUR));
+    public void toStringForNegativeMoneyWithLocale() {
+        String value = Money.of(-12, 9, type.EUR).toString(Locale.US);
+        assertThat(value).isEqualTo("EUR-12.09");
     }
 
     @Test
-    public void moneyOfStringZeroBanknotesAndOnePenny() {
-        assertThat(Money.of("0,01 EUR")).isEqualTo(Money.of(0, 1, Money.Type.EUR));
+    public void toStringForPositiveMoneyWithLocaleGerman() {
+        String value = Money.of(1200020, 9, type.EUR).toString(Locale.GERMAN);
+        assertThat(value).isEqualTo("EUR +1.200.020,09");
     }
 
     @Test
-    public void moneyOfStringZeroBanknotesAndTenPenny() {
-        assertThat(Money.of("0,1 EUR")).isEqualTo(Money.of(0, 10, Money.Type.EUR));
+    public void toStringForPositiveMoneyWithLocaleFrance() {
+        String value = Money.of(12, 9, type.USD).toString(Locale.FRANCE);
+        assertThat(value).isEqualTo("+12,09 USD");
     }
 
     @Test
-    public void positiveMoneyOfStringZeroBanknotesAndOnePenny() {
-        assertThat(Money.of("+0,01 EUR")).isEqualTo(Money.of(0, 1, Money.Type.EUR));
+    public void toStringForPositiveMoneyWithLocaleUK() {
+        String value = Money.of(1200020, 9, type.USD).toString(Locale.UK);
+        assertThat(value).isEqualTo("USD+1,200,020.09");
     }
 
     @Test
-    public void positiveMoneyOfStringZeroBanknotesAndTenPenny() {
-        assertThat(Money.of("+0,1 EUR")).isEqualTo(Money.of(0, 10, Money.Type.EUR));
-    }
-
-    @Test
-    public void negativeMoneyOfStringZeroBanknotesAndOnePenny() {
-        assertThat(Money.of("-0,01 EUR")).isEqualTo(Money.of(0, -1, Money.Type.EUR));
-    }
-
-    @Test
-    public void negativeMoneyOfStringTenBanknotesAndTenPenny() {
-        assertThat(Money.of("-10,1 EUR")).isEqualTo(Money.of(-10, 10, Money.Type.EUR));
+    public void toStringForZeroMoneyWithLocale() {
+        String value = Money.of(type.EUR).toString(Locale.US);
+        assertThat(value).isEqualTo("EUR+0.00");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void moneyOfStringWithNull() {
-        Money.of((String) null);
+    public void whenToStringWithNullThenIAE() {
+        money.toString(null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void firstMoneyOfStringWithWrongFormattedArgument() {
-        Money.of(" - 10.2 USD");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void secondMoneyOfStringWithWrongFormattedArgument() {
-        Money.of("  1ff0.2 USD");
+    @Test
+    public void checkEqualsAndHashCode() {
+        EqualsVerifier.forClass(Money.class).usingGetClass().suppress(Warning.NONFINAL_FIELDS).verify();
     }
 
     @Test
     public void getDiscountPositivePrice() {
-        Money money = Money.of(100, 95, Money.Type.USD);
+        money = Money.of(100, 95, Money.Type.USD);
         assertThat(money.discount(1)).isEqualTo(Money.of(99, 94, Money.Type.USD));
         assertThat(money.discount(1.47)).isEqualTo(Money.of(99, 47, Money.Type.USD));
         assertThat(money.discount(33)).isEqualTo(Money.of(67, 64, Money.Type.USD));
@@ -250,32 +191,33 @@ public class MoneyTest {
 
     @Test
     public void getDiscountNegativePrice() {
-        Money money = Money.of(-100, 95, Money.Type.USD);
+        money = Money.of(-100, 95, Money.Type.USD);
         assertThat(money.discount(1)).isEqualTo(Money.of(-99, 94, Money.Type.USD));
         money = Money.of(0, -95, Money.Type.USD);
         assertThat(money.discount(1.47)).isEqualTo(Money.of(0, -94, Money.Type.USD));
+//        System.out.println(0.1+0.2-0.3);
     }
 
     @Test
-    public void whenDiscountOriginalMoneyWithoutChanges() {
-        Money money = Money.of(12, 30, Money.Type.USD);
+    public void discountDoNotChangeOriginalMoney() {
+        money = Money.of(12, 30, Money.Type.USD);
         Money money2 = money.discount(1);
         assertThat(money).isNotSameAs(money2);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenDiscountGreater100ThenIllegalArgumentException() {
+    public void whenDiscount100OrGreaterThenIAE() {
         Money.of(100, 95, Money.Type.USD).discount(100.001);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenDiscountNegativeThenIllegalArgumentException() {
+    public void whenDiscountNegativeThenIAE() {
         Money.of(100, 95, Money.Type.USD).discount(-0.0001);
     }
 
     @Test
     public void moneyPlusMoney() {
-        Money money = Money.of(12, 17, Money.Type.USD);
+        money = Money.of(12, 17, Money.Type.USD);
         Money money2 = Money.of(10, 20, Money.Type.USD);
         assertThat(money.plus(money2)).isEqualTo(Money.of(22, 37, Money.Type.USD));
         money = Money.of(99, 99, Money.Type.USD);
@@ -283,49 +225,46 @@ public class MoneyTest {
     }
 
     @Test
-    public void whenPlusOriginalMoneyWithoutChanges() {
-        Money money = Money.of(12, 30, Money.Type.USD);
+    public void plusDoNotChangeOriginalMoney() {
+        money = Money.of(12, 30, Money.Type.USD);
         Money money2 = money.plus(money);
         assertThat(money).isNotSameAs(money2);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenPlusAnotherCurrencyThenIllegalArgumentException() {
+    public void whenPlusDifferentCurrencyThenIAE() {
         Money.of(Money.Type.USD).plus(Money.of(Money.Type.EUR));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenPlusNullThenIllegalArgumentException() {
+    public void whenPlusNullThenIAE() {
         Money.of(Money.Type.USD).plus(null);
     }
 
-    @Test
-    public void checkEqualsAndHashCode() {
-        EqualsVerifier.forClass(Money.class).usingGetClass().suppress(Warning.NONFINAL_FIELDS).verify();
-    }
 
     @Test
     public void moneyMinusMoney() {
-        Money money = Money.of(12, 17, Money.Type.USD);
+        money = Money.of(12, 17, Money.Type.USD);
         Money money2 = Money.of(2, 20, Money.Type.USD);
         assertThat(money.minus(money2)).isEqualTo(Money.of(9, 97, Money.Type.USD));
     }
 
     @Test
-    public void whenMinusOriginalMoneyWithoutChanges() {
+    public void minusDoNotChangeOriginalMoney() {
         Money money = Money.of(12, 30, Money.Type.USD);
         Money money2 = money.minus(money);
         assertThat(money).isNotSameAs(money2);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMinusAnotherCurrencyThenIllegalArgumentException() {
+    public void whenMinusAnotherCurrencyThenIAE() {
         Money.of(Money.Type.USD).minus(Money.of(Money.Type.EUR));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMinusNullThenIllegalArgumentException() {
+    public void whenMinusNullThenIAE() {
         Money.of(Money.Type.USD).minus(null);
     }
+
 }
