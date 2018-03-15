@@ -283,7 +283,7 @@ public class DetailsTest {
     }
 
     @Test
-    public void whenSPositionNullGetterReturnEmptyString() {
+    public void whenPositionNullGetterReturnEmptyString() {
         assertThat(details.getPosition()).isEqualTo("");
     }
 

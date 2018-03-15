@@ -76,7 +76,7 @@ public class UserTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenNickNameNullThenIAE() {
+    public void whenSetNickNameNullThenIAE() {
         user.setNickname(null);
     }
 
@@ -86,7 +86,7 @@ public class UserTest {
     }
 
     @Test
-    public void whenNickNameNullReturnNull() {
+    public void whenNickNameNullGetterReturnNull() {
         assertThat(user.getNickname()).isNull();
     }
 
@@ -103,7 +103,7 @@ public class UserTest {
     }
 
     @Test
-    public void setloginWithAlphabetsDownDashInMiddleAndNumbers() {
+    public void setLoginWithAlphabetsDownDashInMiddleAndNumbers() {
         user.setLogin("1Lo_gin2");
         assertThat(user.getLogin()).isEqualTo("1Lo_gin2");
     }
@@ -140,7 +140,7 @@ public class UserTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenLoginNullThenIAE() {
+    public void whenSetLoginNullThenIAE() {
         user.setLogin(null);
     }
 
@@ -150,7 +150,7 @@ public class UserTest {
     }
 
     @Test
-    public void whenLoginNullReturnNull() {
+    public void whenLoginNullGetterReturnNull() {
         assertThat(user.getLogin()).isNull();
     }
 
@@ -185,7 +185,7 @@ public class UserTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenPasswordNullThenIAE() {
+    public void whenSetPasswordNullThenIAE() {
         user.setPassword(null);
     }
 
@@ -195,7 +195,7 @@ public class UserTest {
     }
 
     @Test
-    public void whenPasswordNullReturnNull() {
+    public void whenPasswordNullGetterThenReturnNull() {
         assertThat(user.getPassword()).isNull();
     }
 
@@ -222,52 +222,52 @@ public class UserTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMailWithoutSpecialSymbolThenIAE() {
+    public void whenSetMailWithoutSpecialSymbolThenIAE() {
         user.setMail("mail.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMailWithPointAfterSpecialSymbolThenIAE() {
+    public void whenSetMailWithPointAfterSpecialSymbolThenIAE() {
         user.setMail("ma@.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMailWithoutPointAfterSpecialSymbolThenIAE() {
+    public void whenSetMailWithoutPointAfterSpecialSymbolThenIAE() {
         user.setMail("ma@ilcom");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMailWithSpecialSymbolInStartThenIAE() {
+    public void whenSetMailWithSpecialSymbolInStartThenIAE() {
         user.setMail("@il.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMailWithTwoSpecialSymbolInStartThenIAE() {
+    public void whenSetMailWithTwoSpecialSymbolInStartThenIAE() {
         user.setMail("ma@i@l.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMailGreaterMaxLengthThenIAE() {
+    public void whenSetMailGreaterMaxLengthThenIAE() {
         user.setMail("ma@il.commAAAAABBBBBAAAAABBBBBAAAAABBBBBd");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenLMailLowerMinLengthThenIAE() {
+    public void whenSetMailLowerMinLengthThenIAE() {
         user.setMail("m@l.m");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMailNullThenIAE() {
+    public void whenSetMailNullThenIAE() {
         user.setMail(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void whenMailIsCompositeThenIAE() {
+    public void whenSetMailIsCompositeThenIAE() {
         user.setMail("Lo gin");
     }
 
     @Test
-    public void whenMailNullReturnNull() {
+    public void whenMailNullGetterReturnNull() {
         assertThat(user.getMail()).isNull();
     }
 
@@ -284,7 +284,7 @@ public class UserTest {
     }
 
     @Test
-    public void whenCreateOnIsNullThenReturnNull() {
+    public void whenCreateOnNullGetterReturnNull() {
         assertThat(user.getCreateOn()).isNull();
     }
 
@@ -301,7 +301,7 @@ public class UserTest {
     }
 
     @Test
-    public void whenZoneIdIsNullThenReturnNull() {
+    public void whenZoneIdNullGetterReturnNull() {
         assertThat(user.getZoneId()).isNull();
     }
 
@@ -318,7 +318,7 @@ public class UserTest {
     }
 
     @Test
-    public void whenLocaleIsNullThenReturnNull() {
+    public void whenLocaleNullGetterReturnNull() {
         assertThat(user.getLocale()).isNull();
     }
 
@@ -335,7 +335,7 @@ public class UserTest {
     }
 
     @Test
-    public void whenDetailsIsNullThenReturnEmptyDetails() {
+    public void whenDetailsNullGetterReturnEmptyDetails() {
         assertThat(user.getDetails()).isEqualTo(new Details());
     }
 
