@@ -1,13 +1,7 @@
 package com.kasia.core.model;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 public class RoleTest {
+    /**
     private Role role;
 
     @Before
@@ -100,4 +94,5 @@ public class RoleTest {
     public void checkToString() {
         assertThat(Role.Patterns.NAME.toString()).isEqualTo(Role.Patterns.NAME.getPattern().pattern());
     }
+    */
 }

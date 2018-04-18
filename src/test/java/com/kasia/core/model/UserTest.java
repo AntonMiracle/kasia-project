@@ -1,18 +1,7 @@
 package com.kasia.core.model;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Locale;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 public class UserTest {
+    /**
     private User user;
 
     @Before
@@ -420,4 +409,5 @@ public class UserTest {
     public void whenCompareUserPasswordWithNullThenIAE() {
         user.comparePassword(null);
     }
+    */
 }

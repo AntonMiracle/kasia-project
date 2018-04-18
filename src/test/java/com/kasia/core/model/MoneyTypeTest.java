@@ -1,12 +1,7 @@
 package com.kasia.core.model;
 
-import org.junit.Test;
-
-import java.util.Currency;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class MoneyTypeTest {
+    /**
     @Test
     public void EURtoStringReturnCurrencyCode() {
         assertThat(Money.Type.EUR.toString()).isEqualTo(Currency.getInstance("EUR").getCurrencyCode());
@@ -110,5 +105,5 @@ public class MoneyTypeTest {
     public void whenMoneyTypeOfStringArgumentNullThenIAE() {
         Money.Type.of(null);
     }
-
+*/
 }

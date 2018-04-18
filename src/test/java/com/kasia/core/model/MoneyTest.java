@@ -1,16 +1,7 @@
 package com.kasia.core.model;
 
-import nl.jqno.equalsverifier.EqualsVerifier;
-import nl.jqno.equalsverifier.Warning;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Locale;
-
-import static com.kasia.core.model.Money.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
 public class MoneyTest {
+    /**
     private Money money;
 
     @Before
@@ -251,7 +242,7 @@ public class MoneyTest {
     }
 
     @Test
-    public void plusMinusMoneyWithLowBanknotes() {
+    public void plusMinusMoneyWithLowPenny() {
         money = of(0, 10, Type.USD);
         money = money.plus(of(0, 20, Type.USD));
         money = money.minus(of(0, 30, Type.USD));
@@ -274,5 +265,5 @@ public class MoneyTest {
     public void whenMinusNullThenIAE() {
         of(Type.USD).minus(null);
     }
-
+*/
 }

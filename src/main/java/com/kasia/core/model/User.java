@@ -1,16 +1,7 @@
 package com.kasia.core.model;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Locale;
-import java.util.regex.Pattern;
-
-import static com.kasia.core.model.Util.throwIAE;
-
 public class User {
+    /**
     private User.Patterns NICKNAME = Patterns.NICKNAME;
     private User.Patterns LOGIN = Patterns.LOGIN;
     private User.Patterns PASSWORD = Patterns.PASSWORD;
@@ -142,7 +133,7 @@ public class User {
     }
 
     protected String errorMsgWithPatterns(Patterns patterns, String text) {
-        throwIAE(patterns == null || text == null, "Pattern or Text is NULL");
+        throwIAE(patterns == null || text == null, "Patterns or Text is NULL");
         return "PATTERN: " + patterns.toString()
                 + " LENGTH: [" + patterns.MIN_LENGTH + "," + patterns.MAX_LENGTH + "]"
                 + "%nCURRENT: " + text;
@@ -194,12 +185,12 @@ public class User {
 
         private final int MAX_LENGTH;
         private final int MIN_LENGTH;
-        private Pattern pattern;
+        private Patterns pattern;
 
         Patterns(String regEx, int min, int max) {
             MAX_LENGTH = max;
             MIN_LENGTH = min;
-            this.pattern = Pattern.compile(regEx);
+            this.pattern = Patterns.compile(regEx);
         }
 
         public boolean matches(String text) {
@@ -208,7 +199,7 @@ public class User {
             return getPattern().matcher(text).matches();
         }
 
-        public Pattern getPattern() {
+        public Patterns getPattern() {
             return pattern;
         }
 
@@ -217,4 +208,5 @@ public class User {
             return getPattern().pattern();
         }
     }
+        */
 }
