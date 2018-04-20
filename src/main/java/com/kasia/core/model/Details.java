@@ -1,22 +1,18 @@
 package com.kasia.core.model;
 
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 public class Details implements Serializable {
-    @Min(1)
     private Long id;
     @NotNull
-    @Pattern(regexp = "^[A-Za-z][A-Za-z0-9_\\-]+$")
-    @Size(max = 15)
+    @Pattern(regexp = "^[A-Za-z]{0,15}$")
     private String name;
     @NotNull
-    @Pattern(regexp = "^[A-Za-z][A-Za-z0-9_\\-]+$")
-    @Size(max = 25)
+    @Pattern(regexp = "^[A-Za-z0-9 _\\-]{0,30}$")
     private String surname;
     @NotNull
     @Pattern(regexp = "^[A-Za-z0-9_\\-]+$")
