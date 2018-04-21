@@ -12,19 +12,17 @@ public class Details implements Serializable {
     @Pattern(regexp = "^[A-Za-z]{0,15}$")
     private String name;
     @NotNull
-    @Pattern(regexp = "^[A-Za-z0-9 _\\-]{0,30}$")
+    @Pattern(regexp = "^[A-Za-z]{0,25}|([A-Za-z0-9]{1,25}[ \\-][A-Za-z0-9]{1,25})$")
     private String surname;
     @NotNull
-    @Pattern(regexp = "^[A-Za-z0-9_\\-]+$")
-    @Size(min = 5, max = 64)
+    @Pattern(regexp = "^[A-Za-z]{0,30}|([A-Za-z0-9]{1,25}[ \\-][A-Za-z0-9]{1,25})$")
     private String position;
     @NotNull
-    @Pattern(regexp = "^[^kasia][A-Za-z0-9_\\-]+$")
-    @Size(max = 15)
+    @Pattern(regexp = "^[A-Za-z0-9_\\-]{5,20}$")
     private String nick;
     @NotNull
-    @Size(min = 6, max = 64)
-    @Pattern(regexp = "^[\\\\w!#$%&’*+/=?`{|}~^-]+(?:\\\\.[\\\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\\\.)+[a-zA-Z]{2,6}$")
+    @Size(max = 64)
+    @Pattern(regexp = "^.+@.+\\..+$")
     private String email;
 
     public Details() {
