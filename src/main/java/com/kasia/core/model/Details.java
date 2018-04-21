@@ -29,6 +29,14 @@ public class Details implements Serializable {
 
     }
 
+    public Details(Details details) {
+        setName(details.getName());
+        setSurname(details.getSurname());
+        setPosition(details.getPosition());
+        setNick(details.getNick());
+        setEmail(details.getEmail());
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -84,7 +92,7 @@ public class Details implements Serializable {
 
         Details details = (Details) o;
 
-        if (id != details.id) return false;
+        if (id != null ? !id.equals(details.id) : details.id != null) return false;
         if (name != null ? !name.equals(details.name) : details.name != null) return false;
         if (surname != null ? !surname.equals(details.surname) : details.surname != null) return false;
         if (position != null ? !position.equals(details.position) : details.position != null) return false;
@@ -94,7 +102,7 @@ public class Details implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (position != null ? position.hashCode() : 0);
@@ -102,7 +110,8 @@ public class Details implements Serializable {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
     }
-/**
+
+    /**
  private Patterns NAME = Patterns.NAME;
  private Patterns SURNAME = Patterns.SURNAME;
  private Patterns FIRM = Patterns.FIRM;
