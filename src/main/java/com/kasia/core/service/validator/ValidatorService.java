@@ -26,4 +26,6 @@ public interface ValidatorService<T> {
         Field[] fields = object.getClass().getDeclaredFields();
         return Arrays.stream(fields).filter(field -> field.getName().matches("[A-Za-z]+[A-Za-z0-9_$]")).count();
     }
+
+    void trimFields(T object);
 }

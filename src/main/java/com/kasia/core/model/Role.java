@@ -1,8 +1,12 @@
 package com.kasia.core.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 public class Role implements Serializable {
+    @NotNull
+    @Pattern(regexp = "^[A-Za-z]{4,16}$")
     private String name;
     private Long id;
 
