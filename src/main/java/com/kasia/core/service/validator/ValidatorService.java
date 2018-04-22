@@ -20,7 +20,6 @@ public interface ValidatorService<T> {
     }
 
     default boolean isValid(T object) {
-        trimFields(object);
         return validate(object).size() == 0;
     }
 
