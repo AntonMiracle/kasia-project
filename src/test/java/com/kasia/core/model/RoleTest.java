@@ -33,7 +33,7 @@ public class RoleTest {
 
     @Test
     public void checkEqualsAndHashCode() {
-        EqualsVerifier.forClass(Details.class)
+        EqualsVerifier.forClass(Role.class)
                 .usingGetClass()
                 .suppress(Warning.NONFINAL_FIELDS)
                 .verify();
