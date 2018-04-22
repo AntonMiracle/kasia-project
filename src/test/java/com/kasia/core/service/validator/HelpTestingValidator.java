@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public interface HelpTestingValidator<T> {
 
-    default long countConstraintViolation(ValidatorService<T> validatorService,T object, String fieldName) {
+    default long countConstraintViolation(ValidatorService<T> validatorService, T object, String fieldName) {
         return validatorService.validate(object).stream()
                 .filter(error -> error.getPropertyPath().toString().equals(fieldName))
                 .count();

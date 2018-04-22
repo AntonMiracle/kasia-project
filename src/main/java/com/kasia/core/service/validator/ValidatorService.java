@@ -21,6 +21,5 @@ public interface ValidatorService<T> {
         return validate(object).size() == 0;
     }
 
-
     void trimFields(T object);
 }

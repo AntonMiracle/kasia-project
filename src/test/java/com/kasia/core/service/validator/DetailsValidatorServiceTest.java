@@ -356,7 +356,7 @@ public class DetailsValidatorServiceTest implements HelpTestingValidator<Details
 
     @Test
     public void detailsHas6Fields() {
-        assertThat(validatorService.countFields(details)).isEqualTo(6);
+        assertThat(countFields(details)).isEqualTo(6);
     }
 
 }

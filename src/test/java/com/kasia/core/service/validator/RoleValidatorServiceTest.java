@@ -71,6 +71,6 @@ public class RoleValidatorServiceTest implements HelpTestingValidator<Role> {
 
     @Test
     public void roleHas2Fields() {
-        Java6Assertions.assertThat(validatorService.countFields(role)).isEqualTo(2);
+        Java6Assertions.assertThat(countFields(role)).isEqualTo(2);
     }
 }

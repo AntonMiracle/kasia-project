@@ -27,7 +27,7 @@ public class UserValidatorServiceTest implements HelpTestingValidator {
 
     @Test
     public void detailsHas6Fields() {
-        assertThat(validatorService.countFields(user)).isEqualTo(7);
+        assertThat(countFields(user)).isEqualTo(7);
     }
 
 }
