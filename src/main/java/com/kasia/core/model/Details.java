@@ -112,30 +112,11 @@ public class Details implements Serializable {
     }
 
     /**
- private Patterns NAME = Patterns.NAME;
- private Patterns SURNAME = Patterns.SURNAME;
- private Patterns FIRM = Patterns.FIRM;
- private Patterns POSITION = Patterns.POSITION;
- private String name;
- private String surname;
- private String firm;
- private String position;
- private long id;
 
- public Details() {
 
- }
 
- public Details(String name, String surname, String firm, String position) {
- setName(name);
- setSurname(surname);
- setFirm(firm);
- setPosition(position);
- }
 
- protected Details(Details details) {
- setId(details.getId());
- setName(details.getName());
+
  setSurname(details.getSurname());
  setFirm(details.getFirm());
  setPosition(details.getPosition());
@@ -163,7 +144,7 @@ public class Details implements Serializable {
  }
 
  public void setPosition(String position) {
- throwIAE(position == null, "Position is NULL");
+
  position = position.toUpperCase().trim();
  throwIAE(!POSITION.matches(position), errorMsgWithPatterns(POSITION, position));
  this.position = position;
@@ -226,32 +207,5 @@ public class Details implements Serializable {
  return getId() + ":" + getName() + ":" + getSurname() + ":" + getFirm() + ":" + getPosition();
  }
 
- public enum Patterns {
- NAME("^[A-Z]*$", 32),
- SURNAME("^[A-Z]*|([A-Z]+[-][A-Z]+)$", 32),
- FIRM("^[+&A-Z0-9@.\\-\\(\\) ]*$", 32),
- POSITION("^[A-Z0-9 \\-&]*$", 32);
-
- private final int MAX_LENGTH;
- private Patterns pattern;
-
- Patterns(String regEx, int max) {
- MAX_LENGTH = max;
- this.pattern = Patterns.compile(regEx);
- }
-
- public boolean matches(String text) {
- if (text.length() > MAX_LENGTH) return false;
- return getPattern().matcher(text).matches();
- }
-
- public Patterns getPattern() {
- return pattern;
- }
-
- @Override public String toString() {
- return getPattern().pattern();
- }
- }
  */
 }
