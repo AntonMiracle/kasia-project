@@ -61,28 +61,4 @@ public class Role implements Serializable {
                 '}';
     }
 
-    /**
-
-
-     public void setName(String name) {
-     throwIAE(name == null, "Name is NULL");
-     name = name.toUpperCase().trim();
-     throwIAE(!NAME.matches(name), "PATTERN: " + NAME.toString()
-     + " LENGTH: [" + NAME.MIN_LENGTH + "," + NAME.MAX_LENGTH + "]"
-     + "\nCURRENT " + name);
-     this.name = name;
-     }
-
-
-
-     public enum Patterns {
-     NAME("^([A-Z0-9]+\\-[A-Z0-9]+)|([A-Z0-9]+)$", 4, 16);
-     private Pattern pattern;
-     private final int MIN_LENGTH;
-     private final int MAX_LENGTH;
-
-
-
-
-     */
 }

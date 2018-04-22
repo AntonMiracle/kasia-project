@@ -2,6 +2,7 @@ package com.kasia.core.service.validator;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
+import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -13,12 +14,13 @@ public interface ValidatorService<T> {
         return getValidator().validate(object);
     }
 
-    default javax.validation.Validator getValidator() {
+    default Validator getValidator() {
         ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
         return vf.getValidator();
     }
 
     default boolean isValid(T object) {
+        trimFields(object);
         return validate(object).size() == 0;
     }
 
