@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class RoleValidatorServiceTestValidator implements HelpTestingValidator<Role> {
+public class RoleValidatorServiceTest implements HelpTestingValidator<Role> {
     private Role role;
     private RoleValidatorService validatorService;
 
