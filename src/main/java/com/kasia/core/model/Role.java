@@ -1,45 +1,34 @@
 package com.kasia.core.model;
 
-import java.util.regex.Pattern;
+import java.io.Serializable;
 
-import static com.kasia.core.model.Util.throwIAE;
-
-public class Role {
+public class Role implements Serializable {
     private String name;
-    private Patterns NAME = Patterns.NAME;
-    private long id;
+    private Long id;
 
-    protected Role() {
+    public Role() {
+
     }
 
-    public Role(String name) {
-        setName(name);
+    public Role(Role role) {
+        setId(role.getId());
+        setName(role.getName());
     }
 
     public void setName(String name) {
-        throwIAE(name == null, "Name is NULL");
-        name = name.toUpperCase().trim();
-        throwIAE(!NAME.matches(name), "PATTERN: " + NAME.toString()
-                + " LENGTH: [" + NAME.MIN_LENGTH + "," + NAME.MAX_LENGTH + "]"
-                + "\nCURRENT " + name);
         this.name = name;
     }
 
     public String getName() {
-        return name != null ? name : "";
+        return name;
     }
 
-    protected void setId(long id) {
+    protected void setId(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
-    }
-
-    @Override
-    public String toString() {
-        return getName();
     }
 
     @Override
@@ -49,42 +38,47 @@ public class Role {
 
         Role role = (Role) o;
 
-        if (id != role.id) return false;
-        return name != null ? name.equals(role.name) : role.name == null;
+        if (name != null ? !name.equals(role.name) : role.name != null) return false;
+        return id != null ? id.equals(role.id) : role.id == null;
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (int) (id ^ (id >>> 32));
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
     }
 
-    public enum Patterns {
-        NAME("^([A-Z0-9]+\\-[A-Z0-9]+)|([A-Z0-9]+)$", 4, 16);
-        private Pattern pattern;
-        private final int MIN_LENGTH;
-        private final int MAX_LENGTH;
-
-        Patterns(String pattern, int min, int max) {
-            MIN_LENGTH = min;
-            MAX_LENGTH = max;
-            this.pattern = Pattern.compile(pattern);
-        }
-
-        public boolean matches(String text) {
-            if (text.length() < MIN_LENGTH) return false;
-            if (text.length() > MAX_LENGTH) return false;
-            return getPattern().matcher(text).matches();
-        }
-
-        public Pattern getPattern() {
-            return pattern;
-        }
-
-        @Override
-        public String toString() {
-            return getPattern().pattern();
-        }
+    @Override
+    public String toString() {
+        return "Role{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
+
+    /**
+
+
+     public void setName(String name) {
+     throwIAE(name == null, "Name is NULL");
+     name = name.toUpperCase().trim();
+     throwIAE(!NAME.matches(name), "PATTERN: " + NAME.toString()
+     + " LENGTH: [" + NAME.MIN_LENGTH + "," + NAME.MAX_LENGTH + "]"
+     + "\nCURRENT " + name);
+     this.name = name;
+     }
+
+
+
+     public enum Patterns {
+     NAME("^([A-Z0-9]+\\-[A-Z0-9]+)|([A-Z0-9]+)$", 4, 16);
+     private Pattern pattern;
+     private final int MIN_LENGTH;
+     private final int MAX_LENGTH;
+
+
+
+
+     */
 }
