@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-public class DetailsValidatorServiceTest implements TestHelper<Details> {
+public class DetailsValidatorServiceTestValidator implements HelpTestingValidator<Details> {
 
     private DetailsValidatorService validatorService;
     private Details details;

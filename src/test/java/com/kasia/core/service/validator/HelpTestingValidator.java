@@ -1,6 +1,6 @@
 package com.kasia.core.service.validator;
 
-public interface TestHelper<T> {
+public interface HelpTestingValidator<T> {
 
     default long countConstraintViolation(ValidatorService<T> validatorService,T object, String fieldName) {
         return validatorService.validate(object).stream()
