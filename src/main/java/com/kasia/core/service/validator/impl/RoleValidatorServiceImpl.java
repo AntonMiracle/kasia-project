@@ -7,7 +7,8 @@ public class RoleValidatorServiceImpl implements RoleValidatorService {
 
 
     @Override
-    public void trimFields(Role object) {
-        if (object.getName() != null) object.setName(object.getName().trim());
+    public void trimFields(Role role) {
+        if(role == null) return;
+        if (role.getName() != null) role.setName(role.getName().trim());
     }
 }

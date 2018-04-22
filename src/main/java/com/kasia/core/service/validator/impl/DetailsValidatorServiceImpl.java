@@ -7,6 +7,7 @@ public class DetailsValidatorServiceImpl implements DetailsValidatorService {
 
     @Override
     public void trimFields(Details details) {
+        if (details == null) return;
         if (details.getPosition() != null) details.setPosition(details.getPosition().trim());
         if (details.getSurname() != null) details.setSurname(details.getSurname().trim());
         if (details.getName() != null) details.setName(details.getName().trim());
