@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -83,4 +85,9 @@ public class DetailsTest {
         assertThat(serializable).isNotNull();
     }
 
+    @Test
+    public void setIdHasProtectedModifierAccess() throws NoSuchMethodException {
+        Method setId = Details.class.getDeclaredMethod("setId", Long.class);
+        assertThat(Modifier.isProtected(setId.getModifiers())).isTrue();
+    }
 }
