@@ -4,8 +4,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Set;
 
 public interface ValidatorService<T> {
@@ -23,10 +21,6 @@ public interface ValidatorService<T> {
         return validate(object).size() == 0;
     }
 
-    default long countFields(T object) {
-        Field[] fields = object.getClass().getDeclaredFields();
-        return Arrays.stream(fields).filter(field -> field.getName().matches("[A-Za-z]+[A-Za-z0-9_$]")).count();
-    }
 
     void trimFields(T object);
 }

@@ -1,5 +1,8 @@
 package com.kasia.core.service.validator;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+
 public interface HelpTestingValidator<T> {
 
     default long countConstraintViolation(ValidatorService<T> validatorService,T object, String fieldName) {
@@ -14,5 +17,10 @@ public interface HelpTestingValidator<T> {
         } catch (NoSuchFieldException e) {
             throw new RuntimeException("Wrong field name", e);
         }
+    }
+
+    default long countFields(T object) {
+        Field[] fields = object.getClass().getDeclaredFields();
+        return Arrays.stream(fields).filter(field -> field.getName().matches("[A-Za-z]+[A-Za-z_]*")).count();
     }
 }
