@@ -343,6 +343,9 @@ public class DetailsValidatorServiceTest implements HelpTestingValidator<Details
         assertThat(validatorService.isValid(details)).isTrue();
     }
 
+    /**
+     * ??????????????????????????????????
+     */
     @Test
     public void validatorTrimDetailsFields() {
         details.setEmail(" hej@gmail.com ");
