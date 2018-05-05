@@ -25,10 +25,10 @@ public class GroupTypeRepositoryTest implements TestHelper<GroupType> {
 
     @Before
     public void before() {
+        assert repository != null;
         groupType = new GroupType();
         name1 = getGroupTypeNameForTesting1();
         name2 = getGroupTypeNameForTesting2();
-        assert repository != null;
     }
 
     @Test

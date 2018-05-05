@@ -57,4 +57,9 @@ public class GroupTypeRepositoryImpl implements GroupTypeRepository {
         Query query = session.createQuery("from GroupType as groupType where groupType.name = '" + name + "'");
         return (GroupType) query.uniqueResult();
     }
+
+    @Override
+    public Boolean isNameExist(String name) {
+        return get(name) != null;
+    }
 }
