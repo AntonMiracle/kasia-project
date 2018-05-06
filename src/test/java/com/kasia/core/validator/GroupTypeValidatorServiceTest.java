@@ -26,7 +26,6 @@ public class GroupTypeValidatorServiceTest implements TestHelper<GroupType> {
         assert validator != null;
         groupType = new GroupType();
         groupType.setName("Name");
-        assert validator != null;
     }
 
     //name ----------------------------------------------------------

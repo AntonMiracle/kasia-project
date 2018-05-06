@@ -1,12 +1,13 @@
 package com.kasia.core.service;
 
 import com.kasia.core.model.CoreModel;
-import com.kasia.core.model.GroupType;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 
 public interface ValidatorService<T extends CoreModel> {
@@ -18,11 +19,11 @@ public interface ValidatorService<T extends CoreModel> {
         return getValidator().validate(model).size() == 0;
     }
 
-    default Map<String, String> mappingFieldMsg(GroupType model) {
+    default Map<String, String> mappingFieldMsg(T model) {
         Map<String, String> result = new HashMap<>();
-        Set<ConstraintViolation<GroupType>> errors = getValidator().validate(model);
+        Set<ConstraintViolation<T>> errors = getValidator().validate(model);
 
-        for (ConstraintViolation<GroupType> error : errors) {
+        for (ConstraintViolation<T> error : errors) {
             result.put(error.getPropertyPath().toString(), error.getMessage());
         }
         return result;

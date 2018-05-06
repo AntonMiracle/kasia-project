@@ -32,7 +32,7 @@ public class GroupTypeServiceImpl implements GroupTypeService {
 
         setDefaultValuesIfNull(model);
 
-        if (isNameExist(model.getName())) {
+        if (repository.isNameExist(model.getName())) {
             throw new IllegalArgumentException();
         }
 
@@ -40,7 +40,7 @@ public class GroupTypeServiceImpl implements GroupTypeService {
     }
 
     @Override
-    public GroupType get(Long id) throws NullPointerException {
+    public GroupType get(Long id) throws NullPointerException, IllegalArgumentException {
         if (id == null) {
             throw new NullPointerException();
         }
@@ -55,10 +55,7 @@ public class GroupTypeServiceImpl implements GroupTypeService {
     }
 
     @Override
-    public Boolean delete(Long id) throws NullPointerException {
-        if (id == null) {
-            throw new NullPointerException();
-        }
+    public Boolean delete(Long id) throws NullPointerException, IllegalArgumentException {
         return repository.delete(id);
     }
 
@@ -74,7 +71,11 @@ public class GroupTypeServiceImpl implements GroupTypeService {
             throw new NullPointerException();
         }
 
-        GroupType groupType = get(name);
+        GroupType groupType = repository.get(name);
+
+        if (groupType == null) {
+            throw new IllegalArgumentException();
+        }
 
         return delete(groupType.getId());
     }

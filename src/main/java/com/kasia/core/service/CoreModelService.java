@@ -25,8 +25,9 @@ public interface CoreModelService<T> {
      * @param id
      * @return true if and only if delete success
      * @throws NullPointerException if {@param id} is null
+     * @throws IllegalArgumentException if {@param id} is not exist
      */
-    Boolean delete(Long id) throws NullPointerException;
+    Boolean delete(Long id) throws NullPointerException, IllegalArgumentException;
 
     /**
      * @return all models

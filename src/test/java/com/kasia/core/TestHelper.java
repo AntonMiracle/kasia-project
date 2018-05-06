@@ -26,4 +26,12 @@ public interface TestHelper<T extends CoreModel> {
         return "ns";
     }
 
+    default String getRoleNameForTesting1() {
+        return "ro";
+    }
+
+    default String getRoleNameForTesting2() {
+        return "rs";
+    }
+
 }

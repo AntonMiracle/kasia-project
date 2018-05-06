@@ -21,13 +21,13 @@ public class GroupTypeTest {
 
     // Serializable && CoreModel -----------------------------------------
     @Test
-    public void roleImplementsSerializable() {
+    public void groupTypeImplementsSerializable() {
         Serializable model = new GroupType();
         assertThat(model).isNotNull();
     }
 
     @Test
-    public void roleImplementsCoreModel() {
+    public void groupTypeImplementsCoreModel() {
         CoreModel core = new GroupType();
         assertThat(core).isNotNull();
     }
