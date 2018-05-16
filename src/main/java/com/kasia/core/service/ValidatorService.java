@@ -31,8 +31,12 @@ public interface ValidatorService<T extends CoreModel> {
 
     void setDefaultValuesIfNull(T model);
 
-    default void validation(T model) {
-        int errors = getValidator().validate(model).size();
-        model.setValid(errors == 0);
-    }
+    /**
+     * If and only if {@param model} is valid then {@link T#isValid()} return true
+     * If {@param model} is null then {@link T#isNull()} return true
+     *
+     * @param model to validate
+     * @return model after validation
+     */
+    T validation(T model);
 }
