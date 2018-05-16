@@ -47,7 +47,7 @@ public class GroupTypeRepositoryTest implements TestHelper<GroupType> {
     @Transactional
     public void saveGroupType() {
         groupType.setName(name1);
-        Long id = groupType.getId();
+        long id = groupType.getId();
 
         groupType = repository.saveOrUpdate(groupType);
 

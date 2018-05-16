@@ -46,10 +46,10 @@ public class RoleRepositoryTest implements TestHelper<Role> {
     @Transactional
     public void saveRole() {
         role.setName(name1);
-        assertThat(role.getId()).isNull();
+        long id = role.getId();
 
         role = repository.saveOrUpdate(role);
-        assertThat(role.getId()).isNotNull();
+        assertThat(role.getId()).isNotEqualTo(id);
     }
 
     @Test
