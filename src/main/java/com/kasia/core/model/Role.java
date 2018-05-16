@@ -18,6 +18,7 @@ public class Role implements Serializable, CoreModel {
     @Column(name = "NAME", nullable = false, unique = true, length = 32)
     private String name;
     private boolean isNull;
+    private boolean isValid;
 
     protected void setId(long id) {
         this.id = id;
@@ -38,6 +39,16 @@ public class Role implements Serializable, CoreModel {
         this.isNull = isNull;
     }
 
+    @Override
+    public boolean isValid() {
+        return isValid;
+    }
+
+    @Override
+    public void setValid(boolean isValid) {
+        this.isValid = isValid;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -55,6 +66,7 @@ public class Role implements Serializable, CoreModel {
 
         if (id != role.id) return false;
         if (isNull != role.isNull) return false;
+        if (isValid != role.isValid) return false;
         return name != null ? name.equals(role.name) : role.name == null;
     }
 
@@ -63,6 +75,7 @@ public class Role implements Serializable, CoreModel {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (isNull ? 1 : 0);
+        result = 31 * result + (isValid ? 1 : 0);
         return result;
     }
 

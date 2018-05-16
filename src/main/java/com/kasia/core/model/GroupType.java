@@ -18,6 +18,7 @@ public class GroupType implements Serializable, CoreModel {
     @Column(name = "NAME", nullable = false, unique = true, length = 32)
     private String name;
     private boolean isNull;
+    private boolean isValid;
 
     @Override
     public long getId() {
@@ -32,6 +33,16 @@ public class GroupType implements Serializable, CoreModel {
     @Override
     public void setNull(boolean isNull) {
         this.isNull = isNull;
+    }
+
+    @Override
+    public boolean isValid() {
+        return isValid;
+    }
+
+    @Override
+    public void setValid(boolean isValid) {
+        this.isValid = isValid;
     }
 
     protected void setId(long id) {
@@ -55,6 +66,7 @@ public class GroupType implements Serializable, CoreModel {
 
         if (id != groupType.id) return false;
         if (isNull != groupType.isNull) return false;
+        if (isValid != groupType.isValid) return false;
         return name != null ? name.equals(groupType.name) : groupType.name == null;
     }
 
@@ -63,6 +75,7 @@ public class GroupType implements Serializable, CoreModel {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (isNull ? 1 : 0);
+        result = 31 * result + (isValid ? 1 : 0);
         return result;
     }
 

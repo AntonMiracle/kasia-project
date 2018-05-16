@@ -59,5 +59,17 @@ public class UserTest {
         assertThat(user.isNull()).isFalse();
     }
 
+    // valid -----------------------------------------
+    @Test
+    public void setAndIsValid() {
+        user.setValid(true);
+        assertThat(user.isValid()).isTrue();
+    }
+
+    @Test
+    public void defaultIsValidReturnFalse() {
+        user = new User();
+        assertThat(user.isValid()).isFalse();
+    }
 
 }

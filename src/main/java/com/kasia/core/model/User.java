@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class User implements Serializable, CoreModel {
     private long id;
     private boolean isNull;
+    private boolean isValid;
 
     @Override
     public long getId() {
@@ -19,6 +20,16 @@ public class User implements Serializable, CoreModel {
     @Override
     public void setNull(boolean isNull) {
         this.isNull = isNull;
+    }
+
+    @Override
+    public boolean isValid() {
+        return isValid;
+    }
+
+    @Override
+    public void setValid(boolean isValid) {
+        this.isValid = isValid;
     }
 
     protected void setId(long id) {

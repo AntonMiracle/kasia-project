@@ -71,6 +71,19 @@ public class GroupTypeTest {
         assertThat(groupType.isNull()).isFalse();
     }
 
+    // valid -----------------------------------------
+    @Test
+    public void setAndIsValid() {
+        groupType.setValid(true);
+        assertThat(groupType.isValid()).isTrue();
+    }
+
+    @Test
+    public void defaultIsValidReturnFalse() {
+        groupType = new GroupType();
+        assertThat(groupType.isValid()).isFalse();
+    }
+
     // hashCode && equals -----------------------------------------
     @Test
     public void checkEqualsAndHashCode() {

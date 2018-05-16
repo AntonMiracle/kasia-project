@@ -12,4 +12,14 @@ public interface CoreModel {
     boolean isNull();
 
     void setNull(boolean isNull);
+
+    /**
+     * Is model in valid state.
+     * Default return false.
+     *
+     * @return true if and only if model has valid state
+     */
+    boolean isValid();
+
+    void setValid(boolean isValid);
 }

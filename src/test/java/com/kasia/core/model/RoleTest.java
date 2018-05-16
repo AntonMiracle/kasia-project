@@ -62,6 +62,19 @@ public class RoleTest {
         assertThat(role.isNull()).isFalse();
     }
 
+    // valid -----------------------------------------
+    @Test
+    public void setAndIsValid() {
+        role.setValid(true);
+        assertThat(role.isValid()).isTrue();
+    }
+
+    @Test
+    public void defaultIsValidReturnFalse() {
+        role = new Role();
+        assertThat(role.isValid()).isFalse();
+    }
+
     //name --------------------------------------
     @Test
     public void setAndGetName() {
