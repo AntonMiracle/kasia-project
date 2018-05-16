@@ -1,17 +1,30 @@
 package com.kasia.core.service;
 
-import javax.validation.ConstraintViolationException;
+import com.kasia.core.model.CoreModel;
+
 import java.util.Set;
 
-public interface CoreModelService<T> {
+public interface CoreModelService<T extends CoreModel> {
     /**
-     * @param model
-     * @return saved or updated model
-     * @throws ConstraintViolationException if validation false
-     * @throws NullPointerException         if {@param model} is null
-     * @throws IllegalArgumentException     if at least one {@param model} field illegal
+     * Save model if and only if model is unique,
+     * otherwise return unique model
+     *
+     * @param model to save
+     * @return {@link T}
+     * @see ValidatorService#validation(CoreModel)
      */
-    T saveOrUpdate(T model) throws ConstraintViolationException, NullPointerException, IllegalArgumentException;
+    T save(T model);
+
+    /**
+     * Update model if and only if model is not unique,
+     * otherwise save
+     *
+     * @param model to save
+     * @return {@link T}
+     * @see CoreModelService#save(T)
+     * @see ValidatorService#validation(CoreModel)
+     */
+    T update(T model);
 
     /**
      * @param id
@@ -24,13 +37,23 @@ public interface CoreModelService<T> {
     /**
      * @param id
      * @return true if and only if delete success
-     * @throws NullPointerException if {@param id} is null
+     * @throws NullPointerException     if {@param id} is null
      * @throws IllegalArgumentException if {@param id} is not exist
      */
     Boolean delete(Long id) throws NullPointerException, IllegalArgumentException;
 
     /**
-     * @return all models
+     * If and only if no models, return empty Set
+     *
+     * @return Set
      */
     Set<T> get();
+
+    /**
+     * Create new {@link T} where {@link T#isNull()} return true
+     *
+     * @return new {@link T} where {@link T#isNull()} return true
+     */
+    T nullModel();
+
 }
