@@ -1,5 +1,15 @@
 package com.kasia.core.model;
 
 public interface CoreModel {
-    Long getId();
+    long getId();
+
+    /**
+     * Is model representation nothing.
+     * Default return false.
+     *
+     * @return true if and only if model representation nothing
+     */
+    boolean isNull();
+
+    void setNull(boolean isNull);
 }

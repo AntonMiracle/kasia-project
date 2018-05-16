@@ -11,20 +11,31 @@ public class Role implements Serializable, CoreModel {
     @Id
     @Column(name = "ROLE_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @NotNull
     @Size(min = 1, max = 32)
     @Column(name = "NAME", nullable = false, unique = true, length = 32)
     private String name;
+    private boolean isNull;
 
-    protected void setId(Long id) {
+    protected void setId(long id) {
         this.id = id;
     }
 
     @Override
-    public Long getId() {
+    public long getId() {
         return id;
+    }
+
+    @Override
+    public boolean isNull() {
+        return isNull;
+    }
+
+    @Override
+    public void setNull(boolean isNull) {
+        this.isNull = isNull;
     }
 
     public void setName(String name) {
@@ -42,14 +53,16 @@ public class Role implements Serializable, CoreModel {
 
         Role role = (Role) o;
 
-        if (id != null ? !id.equals(role.id) : role.id != null) return false;
+        if (id != role.id) return false;
+        if (isNull != role.isNull) return false;
         return name != null ? name.equals(role.name) : role.name == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (isNull ? 1 : 0);
         return result;
     }
 

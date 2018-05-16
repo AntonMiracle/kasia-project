@@ -3,14 +3,25 @@ package com.kasia.core.model;
 import java.io.Serializable;
 
 public class User implements Serializable, CoreModel {
-    private Long id;
+    private long id;
+    private boolean isNull;
 
     @Override
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    protected void setId(Long id) {
+    @Override
+    public boolean isNull() {
+        return isNull;
+    }
+
+    @Override
+    public void setNull(boolean isNull) {
+        this.isNull = isNull;
+    }
+
+    protected void setId(long id) {
         this.id = id;
     }
 }

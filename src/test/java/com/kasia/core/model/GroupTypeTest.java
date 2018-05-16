@@ -41,8 +41,14 @@ public class GroupTypeTest {
 
     @Test
     public void setIdHasProtectedModifierAccess() throws NoSuchMethodException {
-        Method setId = GroupType.class.getDeclaredMethod("setId", Long.class);
+        Method setId = GroupType.class.getDeclaredMethod("setId", long.class);
         assertThat(Modifier.isProtected(setId.getModifiers())).isTrue();
+    }
+
+    @Test
+    public void defaultGetIdReturnZero() {
+        groupType = new GroupType();
+        assertThat(groupType.getId()).isEqualTo(0l);
     }
 
     // name -----------------------------------------
@@ -50,6 +56,19 @@ public class GroupTypeTest {
     public void setAndGetName() {
         groupType.setName("name");
         assertThat(groupType.getName()).isEqualTo("name");
+    }
+
+    // null -----------------------------------------
+    @Test
+    public void setAndIsNull() {
+        groupType.setNull(true);
+        assertThat(groupType.isNull()).isTrue();
+    }
+
+    @Test
+    public void defaultIsNullReturnFalse() {
+        groupType = new GroupType();
+        assertThat(groupType.isNull()).isFalse();
     }
 
     // hashCode && equals -----------------------------------------
@@ -60,6 +79,5 @@ public class GroupTypeTest {
                 .suppress(Warning.NONFINAL_FIELDS)
                 .verify();
     }
-
 
 }

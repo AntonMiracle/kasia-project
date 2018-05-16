@@ -36,8 +36,27 @@ public class UserTest {
 
     @Test
     public void setIdHasProtectedModifierAccess() throws NoSuchMethodException {
-        Method setId = User.class.getDeclaredMethod("setId", Long.class);
+        Method setId = User.class.getDeclaredMethod("setId", long.class);
         assertThat(Modifier.isProtected(setId.getModifiers())).isTrue();
+    }
+
+    @Test
+    public void defaultGetIdReturnZero() {
+        user = new User();
+        assertThat(user.getId()).isEqualTo(0l);
+    }
+
+    // null -----------------------------------------
+    @Test
+    public void setAndIsNull() {
+        user.setNull(true);
+        assertThat(user.isNull()).isTrue();
+    }
+
+    @Test
+    public void defaultIsNullReturnFalse() {
+        user = new User();
+        assertThat(user.isNull()).isFalse();
     }
 
 

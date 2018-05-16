@@ -39,8 +39,27 @@ public class RoleTest {
 
     @Test
     public void setIdHasProtectedModifierAccess() throws NoSuchMethodException {
-        Method setId = Role.class.getDeclaredMethod("setId", Long.class);
+        Method setId = Role.class.getDeclaredMethod("setId", long.class);
         assertThat(Modifier.isProtected(setId.getModifiers())).isTrue();
+    }
+
+    @Test
+    public void defaultGetIdReturnZero() {
+        role = new Role();
+        assertThat(role.getId()).isEqualTo(0l);
+    }
+
+    // null -----------------------------------------
+    @Test
+    public void setAndIsNull() {
+        role.setNull(true);
+        assertThat(role.isNull()).isTrue();
+    }
+
+    @Test
+    public void defaultIsNullReturnFalse() {
+        role = new Role();
+        assertThat(role.isNull()).isFalse();
     }
 
     //name --------------------------------------
