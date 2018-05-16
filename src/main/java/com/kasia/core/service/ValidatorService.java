@@ -27,6 +27,7 @@ public interface ValidatorService<T extends CoreModel> {
 
     /**
      * Mapping validation errors where key is field name and value error msg
+     * If errors is null return empty Map
      *
      * @param errors Set of errors
      * @return mapped errors, where key is field name and value error msg
@@ -43,7 +44,7 @@ public interface ValidatorService<T extends CoreModel> {
     }
 
     /**
-     * If and only if {@link T} is null then return new {@link T} where {@link T#isNull()} return true
+     * If and only if {@link T} is null then return from method
      * Otherwise set model fields, where acceptable to switch null on default value
      *
      * @param model
