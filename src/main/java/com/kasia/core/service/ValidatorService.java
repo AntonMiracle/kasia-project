@@ -31,4 +31,8 @@ public interface ValidatorService<T extends CoreModel> {
 
     void setDefaultValuesIfNull(T model);
 
+    default void validation(T model) {
+        int errors = getValidator().validate(model).size();
+        model.setValid(errors == 0);
+    }
 }
