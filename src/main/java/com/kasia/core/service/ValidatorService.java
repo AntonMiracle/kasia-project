@@ -1,6 +1,7 @@
 package com.kasia.core.service;
 
-import com.kasia.core.model.CoreModel;
+import com.kasia.core.model.Model;
+import com.kasia.core.model.Result;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -10,53 +11,25 @@ import java.util.Map;
 import java.util.Set;
 
 
-public interface ValidatorService<T extends CoreModel> {
-    /**
-     * Get validator
-     *
-     * @return validator
-     */
+public interface ValidatorService<T extends Model> {
+
     default Validator getValidator() {
         return Validation.buildDefaultValidatorFactory().getValidator();
     }
 
-    default boolean isValid(T model) {
-        return getValidator().validate(model).size() == 0;
-    }
 
+    default Result<Map<String, String>> mapFieldMsg(Set<ConstraintViolation<T>> errors) throws NullPointerException {
+        if (errors == null) throw new NullPointerException();
 
-    /**
-     * Mapping validation errors where key is field name and value error msg
-     * If errors is null return empty Map
-     *
-     * @param errors Set of errors
-     * @return mapped errors, where key is field name and value error msg
-     */
-    default Map<String, String> mappingFieldMsg(Set<ConstraintViolation<T>> errors) {
         Map<String, String> result = new HashMap<>();
-
-        if (errors == null) return result;
 
         for (ConstraintViolation<T> error : errors) {
             result.put(error.getPropertyPath().toString(), error.getMessage());
         }
-        return result;
+        return new Result<>(result);
     }
 
-    /**
-     * If and only if {@link T} is null then return from method
-     * Otherwise set model fields, where acceptable to switch null on default value
-     *
-     * @param model
-     */
-    void setAcceptDefaultValue(T model);
+    Result<T> eliminateNull(T model) throws NullPointerException;
 
-    /**
-     * If and only if {@link T} is valid then {@link T#isValid()} return true
-     * If and only if {@link T} is null then {@link T#isNull()} return true
-     *
-     * @param model to validate
-     * @return model after validation
-     */
-    T validation(T model);
+    Result<T> validation(T model) throws NullPointerException;
 }
