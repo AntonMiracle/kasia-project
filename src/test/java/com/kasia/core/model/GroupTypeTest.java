@@ -17,19 +17,8 @@ public class GroupTypeTest {
     @Before
     public void before() {
         groupType = new GroupType();
-    }
-
-    // Serializable && CoreModel -----------------------------------------
-    @Test
-    public void groupTypeImplementsSerializable() {
-        Serializable model = new GroupType();
-        assertThat(model).isNotNull();
-    }
-
-    @Test
-    public void groupTypeImplementsCoreModel() {
-        CoreModel core = new GroupType();
-        assertThat(core).isNotNull();
+        assert groupType instanceof Serializable;
+        assert groupType instanceof Model;
     }
 
     // id -----------------------------------------
@@ -56,32 +45,6 @@ public class GroupTypeTest {
     public void setAndGetName() {
         groupType.setName("name");
         assertThat(groupType.getName()).isEqualTo("name");
-    }
-
-    // null -----------------------------------------
-    @Test
-    public void setAndIsNull() {
-        groupType.setNull(true);
-        assertThat(groupType.isNull()).isTrue();
-    }
-
-    @Test
-    public void defaultIsNullReturnFalse() {
-        groupType = new GroupType();
-        assertThat(groupType.isNull()).isFalse();
-    }
-
-    // valid -----------------------------------------
-    @Test
-    public void setAndIsValid() {
-        groupType.setValid(true);
-        assertThat(groupType.isValid()).isTrue();
-    }
-
-    @Test
-    public void defaultIsValidReturnFalse() {
-        groupType = new GroupType();
-        assertThat(groupType.isValid()).isFalse();
     }
 
     // hashCode && equals -----------------------------------------

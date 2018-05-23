@@ -18,16 +18,8 @@ public class RoleTest {
     @Before
     public void before() {
         role = new Role();
-    }
-
-    // Serializable && CoreModel ----------------------
-    @Test
-    public void roleImplementsSerializable() {
-        Serializable ser = new Role();
-        assertThat(ser).isNotNull();
-
-        CoreModel model = new Role();
-        assertThat(model).isNotNull();
+        assert role instanceof Serializable;
+        assert role instanceof Model;
     }
 
     // id -----------------------------------------------
@@ -47,32 +39,6 @@ public class RoleTest {
     public void defaultGetIdReturnZero() {
         role = new Role();
         assertThat(role.getId()).isEqualTo(0l);
-    }
-
-    // null -----------------------------------------
-    @Test
-    public void setAndIsNull() {
-        role.setNull(true);
-        assertThat(role.isNull()).isTrue();
-    }
-
-    @Test
-    public void defaultIsNullReturnFalse() {
-        role = new Role();
-        assertThat(role.isNull()).isFalse();
-    }
-
-    // valid -----------------------------------------
-    @Test
-    public void setAndIsValid() {
-        role.setValid(true);
-        assertThat(role.isValid()).isTrue();
-    }
-
-    @Test
-    public void defaultIsValidReturnFalse() {
-        role = new Role();
-        assertThat(role.isValid()).isFalse();
     }
 
     //name --------------------------------------

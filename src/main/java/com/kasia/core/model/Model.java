@@ -1,5 +1,5 @@
 package com.kasia.core.model;
 
-public interface Model extends Action {
+public interface Model {
     long getId();
 }
