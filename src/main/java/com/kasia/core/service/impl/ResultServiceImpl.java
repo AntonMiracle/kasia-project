@@ -12,19 +12,19 @@ public class ResultServiceImpl<T> implements ResultService<T> {
     private ExceptionService exception;
 
     @Override
-    public Result<T> failed() throws NullPointerException {
+    public Result<T> calculationFailed() throws NullPointerException {
         Result<T> result = new Result<>();
-        result.setFailed(true);
+        result.setCalculationFailed(true);
         result.setResult(null);
         return result;
     }
 
     @Override
-    public Result<T> success(T resultObject) throws NullPointerException {
+    public Result<T> calculationSuccess(T resultObject) throws NullPointerException {
         exception.NPE(resultObject);
 
         Result<T> result = new Result<>();
-        result.setFailed(false);
+        result.setCalculationFailed(false);
         result.setResult(resultObject);
         return result;
     }

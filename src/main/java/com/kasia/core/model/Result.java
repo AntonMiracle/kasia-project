@@ -3,7 +3,7 @@ package com.kasia.core.model;
 import java.io.Serializable;
 
 public class Result<T> implements Serializable {
-    private boolean failed;
+    private boolean calculationFailed;
     private T result;
 
     public Result() {
@@ -14,12 +14,12 @@ public class Result<T> implements Serializable {
         setResult(result);
     }
 
-    public boolean isFailed() {
-        return failed;
+    public boolean isCalculationFailed() {
+        return calculationFailed;
     }
 
-    public void setFailed(boolean failed) {
-        this.failed = failed;
+    public void setCalculationFailed(boolean calculationFailed) {
+        this.calculationFailed = calculationFailed;
     }
 
     public void setResult(T result) {

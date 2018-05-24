@@ -4,7 +4,7 @@ import com.kasia.core.model.Result;
 
 public interface ResultService<T> {
 
-    Result<T> failed();
+    Result<T> calculationFailed();
 
-    Result<T> success(T resultObject) throws NullPointerException;
+    Result<T> calculationSuccess(T resultObject) throws NullPointerException;
 }
