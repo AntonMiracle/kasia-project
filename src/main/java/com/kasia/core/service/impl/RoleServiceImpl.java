@@ -42,13 +42,12 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Result<Role> validation(Role model) throws NullPointerException {
+    public Result<Boolean> validation(Role model) throws NullPointerException {
         exception.NPE(model);
 
         int errors = validator.getValidator().validate(model).size();
-        if (errors != 0) return resultRole.calculationFailed();
 
-        return resultRole.calculationSuccess(model);
+        return resultBoolean.calculationSuccess(errors == 0);
     }
 
     //ROLE SERVICE ======================================================================

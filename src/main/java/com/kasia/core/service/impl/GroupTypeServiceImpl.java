@@ -42,13 +42,12 @@ public class GroupTypeServiceImpl implements GroupTypeService {
     }
 
     @Override
-    public Result<GroupType> validation(GroupType model) throws NullPointerException {
+    public Result<Boolean> validation(GroupType model) throws NullPointerException {
         exception.NPE(model);
 
         int errors = validator.getValidator().validate(model).size();
-        if (errors != 0) return resultGroupType.calculationFailed();
 
-        return resultGroupType.calculationSuccess(model);
+        return resultBoolean.calculationSuccess(errors == 0);
     }
 
     //GROUP TYPE SERVICE ======================================================================

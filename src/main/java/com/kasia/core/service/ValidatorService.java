@@ -31,5 +31,5 @@ public interface ValidatorService<T extends Model> {
 
     Result<T> eliminateNull(T model) throws NullPointerException;
 
-    Result<T> validation(T model) throws NullPointerException;
+    Result<Boolean> validation(T model) throws NullPointerException;
 }
