@@ -61,7 +61,7 @@ public class GroupType implements Serializable, Model {
         return "GroupType{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", success=" + actionSuccess +
+                ", calculationSuccess=" + actionSuccess +
                 '}';
     }
 

@@ -61,7 +61,7 @@ public class Role implements Serializable, Model {
         return "Role{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", success=" + actionSuccess +
+                ", calculationSuccess=" + actionSuccess +
                 '}';
     }
 }
