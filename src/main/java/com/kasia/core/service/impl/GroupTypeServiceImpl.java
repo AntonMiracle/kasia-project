@@ -1,105 +1,140 @@
 package com.kasia.core.service.impl;
 
 import com.kasia.core.model.GroupType;
+import com.kasia.core.model.Result;
 import com.kasia.core.repository.GroupTypeRepository;
+import com.kasia.core.service.ExceptionService;
 import com.kasia.core.service.GroupTypeService;
+import com.kasia.core.service.ResultService;
+import com.kasia.core.service.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolationException;
-import java.util.HashSet;
 import java.util.Set;
 
 @Component
 @Transactional
 public class GroupTypeServiceImpl implements GroupTypeService {
     @Autowired
-    private GroupTypeRepository repository;
+    private GroupTypeRepository groupTypeRepository;
+    @Autowired
+    private ValidatorService<GroupType> validator;
+    @Autowired
+    private GroupTypeService service;
+    @Autowired
+    private ResultService<GroupType> resultGroupType;
+    @Autowired
+    private ResultService<Boolean> resultBoolean;
+    @Autowired
+    private ResultService<Set<GroupType>> resultSetGroupType;
+    @Autowired
+    private ExceptionService exception;
 
+    //VALIDATOR SERVICE =========================================================================
     @Override
-    public void setDefaultValuesIfNull(GroupType model) {
-        if (model.getName() == null) {
-            model.setName("");
-        }
+    public Result<GroupType> eliminateNull(GroupType model) throws NullPointerException {
+        exception.NPE(model);
+
+        if (model.getName() == null) model.setName("");
+
+        return resultGroupType.calculationSuccess(model);
     }
 
     @Override
-    public GroupType saveOrUpdate(GroupType model) throws ConstraintViolationException, NullPointerException, IllegalArgumentException {
-        if (model == null) {
-            throw new NullPointerException();
-        }
+    public Result<GroupType> validation(GroupType model) throws NullPointerException {
+        exception.NPE(model);
 
-        setDefaultValuesIfNull(model);
+        int errors = validator.getValidator().validate(model).size();
+        if (errors != 0) return resultGroupType.calculationFailed();
 
-        if (repository.isNameExist(model.getName())) {
-            throw new IllegalArgumentException();
-        }
+        return resultGroupType.calculationSuccess(model);
+    }
 
-        return repository.saveOrUpdate(model);
+    //GROUP TYPE SERVICE ======================================================================
+    @Override
+    public Result<GroupType> save(GroupType model) throws NullPointerException {
+        exception.NPE(model);
+
+        Result<Boolean> result = service.isNameExist(model.getName());
+        if (result.isCalculationFailed() || result.getResult()) return resultGroupType.calculationFailed();
+
+        model = groupTypeRepository.saveOrUpdate(model);
+        if (model == null) return resultGroupType.calculationFailed();
+
+        return resultGroupType.calculationSuccess(model);
     }
 
     @Override
-    public GroupType get(Long id) throws NullPointerException, IllegalArgumentException {
-        if (id == null) {
-            throw new NullPointerException();
-        }
+    public Result<GroupType> update(GroupType model) throws NullPointerException {
+        exception.NPE(model);
 
-        GroupType groupType = repository.get(id);
+        Result<Boolean> result = service.isNameExist(model.getName());
+        if (result.isCalculationFailed() || !result.getResult()) return resultGroupType.calculationFailed();
 
-        if (groupType == null) {
-            throw new IllegalArgumentException();
-        }
+        model = groupTypeRepository.saveOrUpdate(model);
+        if (model == null) resultGroupType.calculationFailed();
 
-        return groupType;
+        return resultGroupType.calculationSuccess(model);
     }
 
     @Override
-    public Boolean delete(Long id) throws NullPointerException, IllegalArgumentException {
-        return repository.delete(id);
+    public Result<GroupType> get(Long id) throws NullPointerException {
+        exception.NPE(id);
+
+        GroupType model = groupTypeRepository.get(id);
+        if (model == null) return resultGroupType.calculationFailed();
+
+        return resultGroupType.calculationSuccess(model);
     }
 
     @Override
-    public Set<GroupType> get() {
-        Set<GroupType> all = repository.get();
-        return all != null ? all : new HashSet<>();
+    public Result<Boolean> delete(Long id) throws NullPointerException {
+        exception.NPE(id);
+
+        if (service.get(id).isCalculationFailed()) return resultBoolean.calculationFailed();
+
+        if (!groupTypeRepository.delete(id)) return resultBoolean.calculationFailed();
+
+        return resultBoolean.calculationSuccess(Boolean.TRUE);
     }
 
     @Override
-    public Boolean delete(String name) throws NullPointerException, IllegalArgumentException {
-        if (name == null) {
-            throw new NullPointerException();
-        }
+    public Result<Boolean> delete(String name) throws NullPointerException {
+        exception.NPE(name);
 
-        GroupType groupType = repository.get(name);
+        Result<GroupType> result = service.get(name);
+        if (result.isCalculationFailed()) return resultBoolean.calculationFailed();
 
-        if (groupType == null) {
-            throw new IllegalArgumentException();
-        }
-
-        return delete(groupType.getId());
+        return service.delete(result.getResult().getId());
     }
 
     @Override
-    public Boolean isNameExist(String name) throws NullPointerException {
-        if (name == null) {
-            throw new NullPointerException();
-        }
-        return repository.isNameExist(name);
+    public Result<Set<GroupType>> get() {
+        Set<GroupType> all = groupTypeRepository.get();
+
+        if (all == null) return resultSetGroupType.calculationFailed();
+
+        return resultSetGroupType.calculationSuccess(all);
     }
 
     @Override
-    public GroupType get(String name) throws NullPointerException, IllegalArgumentException {
-        if (name == null) {
-            throw new NullPointerException();
-        }
+    public Result<Boolean> isNameExist(String name) throws NullPointerException {
+        exception.NPE(name);
 
-        GroupType groupType = repository.get(name);
+        if (!groupTypeRepository.isNameExist(name)) return resultBoolean.calculationFailed();
 
-        if (groupType == null) {
-            throw new IllegalArgumentException();
-        }
-
-        return groupType;
+        return resultBoolean.calculationSuccess(Boolean.TRUE);
     }
+
+    @Override
+    public Result<GroupType> get(String name) throws NullPointerException {
+        exception.NPE(name);
+
+        GroupType model = groupTypeRepository.get(name);
+        if (model == null) return resultGroupType.calculationFailed();
+
+        return resultGroupType.calculationSuccess(model);
+    }
+
 }

@@ -1,105 +1,140 @@
 package com.kasia.core.service.impl;
 
+import com.kasia.core.model.Result;
 import com.kasia.core.model.Role;
 import com.kasia.core.repository.RoleRepository;
+import com.kasia.core.service.ExceptionService;
+import com.kasia.core.service.ResultService;
 import com.kasia.core.service.RoleService;
+import com.kasia.core.service.ValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ConstraintViolationException;
-import java.util.HashSet;
 import java.util.Set;
 
 @Component
 @Transactional
 public class RoleServiceImpl implements RoleService {
     @Autowired
-    private RoleRepository repository;
+    private RoleRepository roleRepository;
+    @Autowired
+    private ValidatorService<Role> validator;
+    @Autowired
+    private RoleService service;
+    @Autowired
+    private ResultService<Role> resultRole;
+    @Autowired
+    private ResultService<Boolean> resultBoolean;
+    @Autowired
+    private ResultService<Set<Role>> resultSetRole;
+    @Autowired
+    private ExceptionService exception;
 
+    //VALIDATOR SERVICE =========================================================================
     @Override
-    public Boolean delete(String name) throws NullPointerException, IllegalArgumentException {
-        if (name == null) {
-            throw new NullPointerException();
-        }
+    public Result<Role> eliminateNull(Role model) {
+        exception.NPE(model);
 
-        Role role = repository.get(name);
+        if (model.getName() == null) model.setName("");
 
-        if (role == null) {
-            throw new IllegalArgumentException();
-        }
-
-        return repository.delete(role.getId());
+        return resultRole.calculationSuccess(model);
     }
 
     @Override
-    public Boolean isNameExist(String name) throws NullPointerException {
-        if (name == null) {
-            throw new NullPointerException();
-        }
-        return repository.isNameExist(name);
+    public Result<Role> validation(Role model) throws NullPointerException {
+        exception.NPE(model);
+
+        int errors = validator.getValidator().validate(model).size();
+        if (errors != 0) return resultRole.calculationFailed();
+
+        return resultRole.calculationSuccess(model);
+    }
+
+    //ROLE SERVICE ======================================================================
+    @Override
+    public Result<Boolean> delete(String name) throws NullPointerException {
+        exception.NPE(name);
+
+        Result<Role> result = service.get(name);
+        if (result.isCalculationFailed()) return resultBoolean.calculationFailed();
+
+        return service.delete(result.getResult().getId());
     }
 
     @Override
-    public Role get(String name) throws NullPointerException, IllegalArgumentException {
-        if (name == null) {
-            throw new NullPointerException();
-        }
+    public Result<Boolean> isNameExist(String name) throws NullPointerException {
+        exception.NPE(name);
 
-        Role role = repository.get(name);
+        if (!roleRepository.isNameExist(name)) return resultBoolean.calculationFailed();
 
-        if (role == null) {
-            throw new IllegalArgumentException();
-        }
-
-        return role;
+        return resultBoolean.calculationSuccess(Boolean.TRUE);
     }
 
     @Override
-    public Role saveOrUpdate(Role model) throws ConstraintViolationException, NullPointerException, IllegalArgumentException {
-        if (model == null) {
-            throw new NullPointerException();
-        }
+    public Result<Role> get(String name) throws NullPointerException {
+        exception.NPE(name);
 
-        setDefaultValuesIfNull(model);
+        Role model = roleRepository.get(name);
+        if (model == null) return resultRole.calculationFailed();
 
-        if (repository.isNameExist(model.getName())) {
-            throw new IllegalArgumentException();
-        }
-
-        return repository.saveOrUpdate(model);
+        return resultRole.calculationSuccess(model);
     }
 
     @Override
-    public Role get(Long id) throws NullPointerException, IllegalArgumentException {
-        if (id == null) {
-            throw new NullPointerException();
-        }
+    public Result<Role> save(Role model) throws NullPointerException {
+        exception.NPE(model);
 
-        Role role = repository.get(id);
+        Result<Boolean> result = service.isNameExist(model.getName());
+        if (result.isCalculationFailed() || result.getResult()) return resultRole.calculationFailed();
 
-        if (role == null) {
-            throw new IllegalArgumentException();
-        }
+        model = roleRepository.saveOrUpdate(model);
+        if (model == null) return resultRole.calculationFailed();
 
-        return role;
+        return resultRole.calculationSuccess(model);
     }
 
     @Override
-    public Boolean delete(Long id) throws NullPointerException, IllegalArgumentException {
-        return repository.delete(id);
+    public Result<Role> update(Role model) throws NullPointerException {
+        exception.NPE(model);
+
+        Result<Boolean> result = service.isNameExist(model.getName());
+        if (result.isCalculationFailed() || !result.getResult()) return resultRole.calculationFailed();
+
+        model = roleRepository.saveOrUpdate(model);
+        if (model == null) resultRole.calculationFailed();
+
+        return resultRole.calculationSuccess(model);
     }
 
     @Override
-    public Set<Role> get() {
-        Set<Role> all = repository.get();
-        return all != null ? all : new HashSet<>();
+    public Result<Role> get(Long id) throws NullPointerException {
+        exception.NPE(id);
+
+        Role model = roleRepository.get(id);
+        if (model == null) return resultRole.calculationFailed();
+
+        return resultRole.calculationSuccess(model);
     }
 
     @Override
-    public void setDefaultValuesIfNull(Role model) {
-        if (model.getName() == null) {
-            model.setName("");
-        }
+    public Result<Boolean> delete(Long id) throws NullPointerException {
+        exception.NPE(id);
+
+        if (service.get(id).isCalculationFailed()) return resultBoolean.calculationFailed();
+
+        if (!roleRepository.delete(id)) return resultBoolean.calculationFailed();
+
+        return resultBoolean.calculationSuccess(Boolean.TRUE);
     }
+
+    @Override
+    public Result<Set<Role>> get() {
+        Set<Role> all = roleRepository.get();
+
+        if (all == null) return resultSetRole.calculationFailed();
+
+        return resultSetRole.calculationSuccess(all);
+    }
+
 }
