@@ -34,7 +34,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    public Boolean delete(Long id) {
+    public boolean delete(Long id) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(get(id));
         session.flush();
@@ -60,7 +60,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    public Boolean isNameExist(String name) {
+    public boolean isNameExist(String name) {
         return get(name) != null;
     }
 }

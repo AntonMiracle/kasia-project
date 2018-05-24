@@ -15,11 +15,13 @@ import java.util.stream.Collectors;
 @Repository
 public class GroupTypeRepositoryImpl implements GroupTypeRepository {
     @Autowired
-    private SessionFactory sessionFactory;
+    private SessionFactory session;
+    @Autowired
+    private GroupTypeRepository repository;
 
     @Override
     public GroupType saveOrUpdate(GroupType model) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = this.session.getCurrentSession();
         session.saveOrUpdate(model);
         session.flush();
         return model;
@@ -27,14 +29,14 @@ public class GroupTypeRepositoryImpl implements GroupTypeRepository {
 
     @Override
     public GroupType get(Long id) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = this.session.getCurrentSession();
         Query query = session.createQuery("from GroupType as groupType where groupType.id = '" + id.toString() + "'");
         return (GroupType) query.uniqueResult();
     }
 
     @Override
-    public Boolean delete(Long id) {
-        Session session = sessionFactory.getCurrentSession();
+    public boolean delete(Long id) {
+        Session session = this.session.getCurrentSession();
         session.delete(get(id));
         session.flush();
         return true;
@@ -43,7 +45,7 @@ public class GroupTypeRepositoryImpl implements GroupTypeRepository {
     @Override
     @SuppressWarnings("unchecked")
     public Set<GroupType> get() {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = this.session.getCurrentSession();
         Set<GroupType> groupTypes = (Set<GroupType>) session
                 .createQuery("from GroupType")
                 .getResultStream()
@@ -53,13 +55,13 @@ public class GroupTypeRepositoryImpl implements GroupTypeRepository {
 
     @Override
     public GroupType get(String name) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = this.session.getCurrentSession();
         Query query = session.createQuery("from GroupType as groupType where groupType.name = '" + name + "'");
         return (GroupType) query.uniqueResult();
     }
 
     @Override
-    public Boolean isNameExist(String name) {
-        return get(name) != null;
+    public boolean isNameExist(String name) throws NullPointerException {
+        return repository.get(name) != null;
     }
 }

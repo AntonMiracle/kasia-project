@@ -1,15 +1,15 @@
 package com.kasia.core.repository;
 
-import com.kasia.core.model.CoreModel;
+import com.kasia.core.model.Model;
 
 import java.util.Set;
 
-public interface CoreModelRepository<T extends CoreModel> {
+public interface ModelRepository<T extends Model> {
     T saveOrUpdate(T model);
 
     T get(Long id);
 
-    Boolean delete(Long id);
+    boolean delete(Long id);
 
     Set<T> get();
 
