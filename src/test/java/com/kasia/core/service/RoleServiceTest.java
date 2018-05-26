@@ -149,21 +149,31 @@ public class RoleServiceTest implements TestHelper<Role> {
 
     // DELETE by ID --------------------------------------------------------
     @Test
-    public void deleteById() {
-        role.setName(getRoleNameForTesting1());
-        Long id = service.save(role).getId();
+    public void deleteByExistIdSuccess() {
+        role = new Role();
+        role.setName(name1);
+        Result<Role> result = service.save(role);
+        assertThat(result.isCalculationFailed()).isFalse();
 
-        assertThat(service.delete(id)).isTrue();
+        long id = result.getResult().getId();
+
+        Result<Boolean> resultBoolean = service.delete(id);
+        assertThat(resultBoolean.isCalculationFailed()).isFalse();
+
+        assertThat(resultBoolean.getResult()).isTrue();
+    }
+
+    @Test
+    public void deleteByNotExistIdFailed() {
+        Result<Boolean> resultBoolean = service.delete(-1L);
+        assertThat(resultBoolean.isCalculationFailed()).isFalse();
+
+        assertThat(resultBoolean.getResult()).isTrue();
     }
 
     @Test(expected = NullPointerException.class)
-    public void whenDeleteByIdWithNullThenNPE() {
+    public void whenDeleteByIdNullThenNPE() {
         service.delete((Long) null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenDeleteByIdWithNotExistIdThenIAE() {
-        service.delete(-10L);
     }
 
     // GET ALL --------------------------------------------------------
