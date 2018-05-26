@@ -81,64 +81,70 @@ public class RoleServiceTest implements TestHelper<Role> {
 
     // UPDATE ============================================================================
     @Test
-    public void updat() {
-        role.setName(getRoleNameForTesting1());
-        assertThat(role.getId()).isNull();
-
-        role = service.save(role);
-        assertThat(role.getId()).isNotNull();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenSaveOrUpdateWithNotUniqueNameThenIAE() {
-        role.setName(getRoleNameForTesting1());
-        service.save(role);
-
+    public void updateExistRoleSuccess() {
         role = new Role();
-        role.setName(getRoleNameForTesting1());
-        service.save(role);
+        role.setName(name1);
+
+        Result<Role> result = service.save(role);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        role = result.getResult();
+        role.setName(name2);
+
+        result = service.update(role);
+
+        assertThat(result.isCalculationFailed()).isFalse();
+        assertThat(result.getResult().getId()).isEqualTo(role.getId());
     }
 
-    @Test(expected = ConstraintViolationException.class)
-    public void whenSaveOrUpdateWithInValidNameThenCVE() {
-        role.setName("");
-        assertThat(role.getId()).isNull();
+    @Test
+    public void updateNotExistRoleFailed() {
+        role = new Role();
+        role.setName(name1);
 
-        role = service.save(role);
-    }
+        Result<Role> result = service.update(role);
 
-    @Test(expected = ConstraintViolationException.class)
-    public void whenSaveOrUpdateWithNullNameThenCVE() {
-        role.setName(null);
-        assertThat(role.getId()).isNull();
-
-        role = service.save(role);
+        assertThat(result.isCalculationFailed()).isTrue();
+        assertThat(result.getResult()).isNull();
     }
 
     @Test(expected = NullPointerException.class)
-    public void whenSaveOrUpdateWithNullThenNPE() {
-        service.save(null);
+    public void whenUpdateNullThenNPE() {
+        service.update(null);
     }
 
     // GET by ID --------------------------------------------------------
     @Test
-    public void getById() {
-        role.setName(getRoleNameForTesting1());
-        Long id = service.save(role).getId();
+    public void getByExistIdSuccess() {
+        role = new Role();
+        role.setName(name1);
 
-        role = service.get(id);
+        Result<Role> result = service.save(role);
+        assertThat(result.isCalculationFailed()).isFalse();
 
-        assertThat(role.getId()).isEqualTo(id);
+        long id = result.getResult().getId();
+
+        result = service.get(id);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        assertThat(result.getResult().getId()).isEqualTo(id);
+    }
+
+    @Test
+    public void getByNotExistIdFailed() {
+        Result<Role> result = service.get(-1L);
+        assertThat(result.isCalculationFailed()).isTrue();
+        assertThat(result.getResult()).isNull();
+
+        result = service.get(0L);
+        assertThat(result.isCalculationFailed()).isTrue();
+        assertThat(result.getResult()).isNull();
+
     }
 
     @Test(expected = NullPointerException.class)
-    public void whenGetByIdWithNullThenNPE() {
+    public void whenGetByIdNullThenNPE() {
         service.get((Long) null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenGetByIdWithNotExistIdThenIAE() {
-        service.get(10L);
     }
 
     // DELETE by ID --------------------------------------------------------
