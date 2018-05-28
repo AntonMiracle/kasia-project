@@ -63,14 +63,14 @@ public class GroupTypeServiceTest implements TestHelper<GroupType> {
 
         Result<GroupType> result = service.save(groupType);
         assertThat(result.isCalculationFailed()).isFalse();
-        assertThat(result.getResult()).isNull();
+        assertThat(result.getResult()).isNotNull();
 
         groupType = new GroupType();
         groupType.setName(name1);
 
         result = service.save(groupType);
         assertThat(result.isCalculationFailed()).isTrue();
-        assertThat(result.getResult()).isNotNull();
+        assertThat(result.getResult()).isNull();
     }
 
 
@@ -165,11 +165,11 @@ public class GroupTypeServiceTest implements TestHelper<GroupType> {
     }
 
     @Test
-    public void deleteByNotExistIdFailed() {
+    public void deleteByNotExistIdFalse() {
         Result<Boolean> resultBoolean = service.delete(-1L);
         assertThat(resultBoolean.isCalculationFailed()).isFalse();
 
-        assertThat(resultBoolean.getResult()).isTrue();
+        assertThat(resultBoolean.getResult()).isFalse();
     }
 
     @Test(expected = NullPointerException.class)
@@ -203,7 +203,7 @@ public class GroupTypeServiceTest implements TestHelper<GroupType> {
         assertThat(resultAll).isNotNull();
         assertThat(resultAll.isCalculationFailed()).isFalse();
 
-        assertThat(resultAll.getResult()).isEqualTo(0);
+        assertThat(resultAll.getResult().size()).isEqualTo(0);
     }
 
     // DELETE by NAME ==========================================================

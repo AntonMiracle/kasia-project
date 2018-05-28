@@ -68,8 +68,7 @@ public class GroupTypeServiceImpl implements GroupTypeService {
     public Result<GroupType> update(GroupType model) throws NullPointerException {
         exception.NPE(model);
 
-        Result<Boolean> result = service.isNameExist(model.getName());
-        if (result.isCalculationFailed() || !result.getResult()) return resultGroupType.calculationFailed();
+        if (model.getId() <= 0) return resultGroupType.calculationFailed();
 
         model = groupTypeRepository.saveOrUpdate(model);
         if (model == null) resultGroupType.calculationFailed();
@@ -91,11 +90,9 @@ public class GroupTypeServiceImpl implements GroupTypeService {
     public Result<Boolean> delete(Long id) throws NullPointerException {
         exception.NPE(id);
 
-        if (service.get(id).isCalculationFailed()) return resultBoolean.calculationFailed();
+        if (service.get(id).isCalculationFailed()) return resultBoolean.calculationSuccess(Boolean.FALSE);
 
-        if (!groupTypeRepository.delete(id)) return resultBoolean.calculationFailed();
-
-        return resultBoolean.calculationSuccess(Boolean.TRUE);
+        return resultBoolean.calculationSuccess(groupTypeRepository.delete(id));
     }
 
     @Override
@@ -121,9 +118,7 @@ public class GroupTypeServiceImpl implements GroupTypeService {
     public Result<Boolean> isNameExist(String name) throws NullPointerException {
         exception.NPE(name);
 
-        if (!groupTypeRepository.isNameExist(name)) return resultBoolean.calculationFailed();
-
-        return resultBoolean.calculationSuccess(Boolean.TRUE);
+        return resultBoolean.calculationSuccess(groupTypeRepository.isNameExist(name));
     }
 
     @Override
