@@ -36,12 +36,12 @@ public class GroupTypeServiceTest implements TestHelper<GroupType> {
     public void after() {
         Result<Boolean> result = service.isNameExist(name1);
         if (!result.isCalculationFailed() && result.getResult()) {
-            service.delete(getRoleNameForTesting1());
+            service.delete(name1);
         }
 
         result = service.isNameExist(name2);
         if (!result.isCalculationFailed() && result.getResult()) {
-            service.delete(getRoleNameForTesting2());
+            service.delete(name2);
         }
     }
 
