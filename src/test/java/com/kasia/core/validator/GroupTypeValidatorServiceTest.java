@@ -22,19 +22,20 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ContextConfiguration(classes = AppConfig.class)
 public class GroupTypeValidatorServiceTest implements TestHelper<GroupType> {
 
-    private GroupType groupType;
     @Autowired
     private ValidatorService<GroupType> validator;
+    private GroupType groupType;
+    private String name1 = getGroupTypeNameForTesting1();
 
     @Before
     public void before() {
         assert validator != null;
-        groupType = new GroupType();
     }
 
-    //validation ===================================================
+    // VALIDATION ==============================================
     @Test
     public void nameWithEmptyStringInvalid() {
+        groupType = new GroupType();
         groupType.setName("");
 
         Result<Boolean> result = validator.validation(groupType);
@@ -45,6 +46,7 @@ public class GroupTypeValidatorServiceTest implements TestHelper<GroupType> {
 
     @Test
     public void nameWithLengthMoreThan32Invalid() {
+        groupType = new GroupType();
         groupType.setName("ggggggggggggggggggggggggggggggggG");
 
         Result<Boolean> result = validator.validation(groupType);
@@ -55,6 +57,7 @@ public class GroupTypeValidatorServiceTest implements TestHelper<GroupType> {
 
     @Test
     public void nameWithNullInvalid() {
+        groupType = new GroupType();
         groupType.setName(null);
 
         Result<Boolean> result = validator.validation(groupType);
@@ -68,9 +71,10 @@ public class GroupTypeValidatorServiceTest implements TestHelper<GroupType> {
         validator.validation(null);
     }
 
-    //mapping error by field name and error msg =============================================
+    // MAPPING FIELDS MSG =====================================================
     @Test
     public void groupHasNameWithNullMapDieldMsgWithHasSize1() {
+        groupType = new GroupType();
         groupType.setName(null);
 
         Set<ConstraintViolation<GroupType>> errors = validator.getValidator().validate(groupType);
@@ -85,7 +89,7 @@ public class GroupTypeValidatorServiceTest implements TestHelper<GroupType> {
         validator.mapFieldMsg(null);
     }
 
-    // eliminate null value =====================================================================
+    // ELIMINATE NULL =====================================================================
     @Test
     public void setAcceptDefaultValueSetIsNullFalse() {
         groupType = new GroupType();
