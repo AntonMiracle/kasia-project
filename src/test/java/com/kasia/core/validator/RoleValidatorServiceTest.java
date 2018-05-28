@@ -31,7 +31,7 @@ public class RoleValidatorServiceTest implements TestHelper<Role> {
         assert validator != null;
     }
 
-    //NAME ==============================================
+    // VALIDATION ==============================================
     @Test
     public void nameWithEmptyStringInvalid() {
         role = new Role();
@@ -65,13 +65,12 @@ public class RoleValidatorServiceTest implements TestHelper<Role> {
         assertThat(result.getResult()).isFalse();
     }
 
-    // VALIDATION ==========================================================
     @Test(expected = NullPointerException.class)
     public void whenValidationNullThenNPE() {
         validator.validation(null);
     }
 
-    //MAPPING FIELDS MSG =====================================================
+    // MAPPING FIELDS MSG =====================================================
     @Test
     public void nameWithNullMapFieldMsgHasSizeOne() {
         role = new Role();
@@ -79,8 +78,8 @@ public class RoleValidatorServiceTest implements TestHelper<Role> {
 
         Set<ConstraintViolation<Role>> errors = validator.getValidator().validate(role);
         Result<Map<String, String>> result = validator.mapFieldMsg(errors);
-        assertThat(result.isCalculationFailed()).isFalse();
 
+        assertThat(result.isCalculationFailed()).isFalse();
         assertThat(result.getResult().size()).isEqualTo(1);
     }
 
@@ -96,10 +95,9 @@ public class RoleValidatorServiceTest implements TestHelper<Role> {
         assertThat(role.getName()).isNotNull();
 
         Result<Role> result = validator.eliminateNull(role);
-        assertThat(result.isCalculationFailed()).isFalse();
 
-        role = result.getResult();
-        assertThat(role.getName()).isNotNull();
+        assertThat(result.isCalculationFailed()).isFalse();
+        assertThat(result.getResult().getName()).isNotNull();
     }
 
     @Test(expected = NullPointerException.class)
