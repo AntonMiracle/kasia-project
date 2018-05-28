@@ -19,8 +19,8 @@ public class ResultTest {
 
     @Test
     public void setAndGetFailed() {
-        result.setFailed(true);
-        assertThat(result.isFailed()).isTrue();
+        result.setCalculationFailed(true);
+        assertThat(result.isCalculationFailed()).isTrue();
     }
 
     @Test

@@ -25,20 +25,20 @@ public class ResultServiceTest {
 
     @Test
     public void whenFailedResultIsFailedTrue() {
-        Result res = result.failed();
-        assertThat(res.isFailed()).isTrue();
+        Result res = result.calculationFailed();
+        assertThat(res.isCalculationFailed()).isTrue();
     }
 
     @Test
     public void whenSuccessResultIsFailedFalse() {
-        Result res = result.success(new ForTest());
-        assertThat(res.isFailed()).isTrue();
+        Result res = result.calculationSuccess(new ForTest());
+        assertThat(res.isCalculationFailed()).isTrue();
     }
 
     @Test
     public void whenFailedResultObjectNull() {
-        Result res = result.failed();
-        assertThat(res.isFailed()).isTrue();
+        Result res = result.calculationFailed();
+        assertThat(res.isCalculationFailed()).isTrue();
         assertThat(res.getResult()).isNull();
     }
 
@@ -46,8 +46,8 @@ public class ResultServiceTest {
     public void whenSuccessWithObjectResultObjectIsEquals() {
         objFroTest = new ForTest();
         objFroTest.setName("TestName");
-        Result res = result.success(objFroTest);
-        assertThat(res.isFailed()).isTrue();
+        Result res = result.calculationSuccess(objFroTest);
+        assertThat(res.isCalculationFailed()).isTrue();
         assertThat(res.getResult()).isEqualTo(objFroTest);
     }
 }
