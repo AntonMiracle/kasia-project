@@ -2,6 +2,7 @@ package com.kasia.core.validator;
 
 import com.kasia.config.AppConfig;
 import com.kasia.core.TestHelper;
+import com.kasia.core.model.Result;
 import com.kasia.core.model.Role;
 import com.kasia.core.service.ValidatorService;
 import org.junit.Before;
@@ -11,6 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.validation.ConstraintViolation;
+import java.util.Map;
+import java.util.Set;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -19,44 +24,87 @@ public class RoleValidatorServiceTest implements TestHelper<Role> {
     @Autowired
     private ValidatorService<Role> validator;
     private Role role;
+    private String name1 = getRoleNameForTesting1();
 
     @Before
     public void before() {
         assert validator != null;
-        role = new Role();
-        role.setName("Name");
     }
 
-    //name ---------------------------------------
+    //NAME ==============================================
     @Test
     public void nameWithEmptyStringInvalid() {
+        role = new Role();
         role.setName("");
-        assertThat(validator.isValid(role)).isFalse();
+
+        Result<Boolean> result = validator.validation(role);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        assertThat(result.getResult()).isFalse();
     }
 
     @Test
     public void nameWithLengthMoreThan32Invalid() {
+        role = new Role();
         role.setName("ggggggggggggggggggggggggggggggggG");
-        assertThat(validator.isValid(role)).isFalse();
+
+        Result<Boolean> result = validator.validation(role);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        assertThat(result.getResult()).isFalse();
     }
 
     @Test
     public void nameWithNullInvalid() {
+        role = new Role();
         role.setName(null);
-        assertThat(validator.isValid(role)).isFalse();
+
+        Result<Boolean> result = validator.validation(role);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        assertThat(result.getResult()).isFalse();
     }
 
-    //id ---------------------------------------------------
-    @Test
-    public void idWithNullValid() throws NoSuchFieldException, IllegalAccessException {
-        assertThat(role.getId()).isNull();
-        assertThat(validator.isValid(role)).isTrue();
+    // VALIDATION ==========================================================
+    @Test(expected = NullPointerException.class)
+    public void whenValidationNullThenNPE() {
+        validator.validation(null);
     }
 
-    //mapping error by field name and error msg -----------------------------------------
+    //MAPPING FIELDS MSG =====================================================
     @Test
-    public void groupHasNameWithNullMapWithErrorHasSize1() {
+    public void nameWithNullMapFieldMsgHasSizeOne() {
+        role = new Role();
         role.setName(null);
-        assertThat(validator.mappingFieldMsg(role).size()).isEqualTo(1);
+
+        Set<ConstraintViolation<Role>> errors = validator.getValidator().validate(role);
+        Result<Map<String, String>> result = validator.mapFieldMsg(errors);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        assertThat(result.getResult().size()).isEqualTo(1);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void whenMapFieldMsgWithNullThenNPE() {
+        validator.mapFieldMsg(null);
+    }
+
+    // ELIMINATE NULL =======================================================
+    @Test
+    public void eliminateNullSucess() {
+        role = new Role();
+        assertThat(role.getName()).isNotNull();
+
+        Result<Role> result = validator.eliminateNull(role);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        role = result.getResult();
+        assertThat(role.getName()).isNotNull();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void whenSetAcceptDefaultWithNullThenNPE() {
+        validator.eliminateNull(null);
+    }
+
 }
