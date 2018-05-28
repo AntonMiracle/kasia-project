@@ -16,7 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class ResultServiceTest {
     @Autowired
     private ResultService<ForTest> result;
-    private ForTest objFroTest;
+    private ForTest objForTest;
 
     @Before
     public void before() {
@@ -32,7 +32,7 @@ public class ResultServiceTest {
     @Test
     public void whenSuccessResultIsFailedFalse() {
         Result res = result.calculationSuccess(new ForTest());
-        assertThat(res.isCalculationFailed()).isTrue();
+        assertThat(res.isCalculationFailed()).isFalse();
     }
 
     @Test
@@ -44,11 +44,11 @@ public class ResultServiceTest {
 
     @Test
     public void whenSuccessWithObjectResultObjectIsEquals() {
-        objFroTest = new ForTest();
-        objFroTest.setName("TestName");
-        Result res = result.calculationSuccess(objFroTest);
-        assertThat(res.isCalculationFailed()).isTrue();
-        assertThat(res.getResult()).isEqualTo(objFroTest);
+        objForTest = new ForTest();
+        objForTest.setName("TestName");
+        Result res = result.calculationSuccess(objForTest);
+        assertThat(res.isCalculationFailed()).isFalse();
+        assertThat(res.getResult()).isEqualTo(objForTest);
     }
 }
 
