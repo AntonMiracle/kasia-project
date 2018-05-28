@@ -118,7 +118,8 @@ public class GroupTypeServiceImpl implements GroupTypeService {
     public Result<Boolean> isNameExist(String name) throws NullPointerException {
         exception.NPE(name);
 
-        return resultBoolean.calculationSuccess(groupTypeRepository.isNameExist(name));
+        boolean result = groupTypeRepository.isNameExist(name);
+        return resultBoolean.calculationSuccess(result);
     }
 
     @Override
