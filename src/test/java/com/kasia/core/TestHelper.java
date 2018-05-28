@@ -1,10 +1,10 @@
 package com.kasia.core;
 
-import com.kasia.core.model.CoreModel;
+import com.kasia.core.model.Model;
 
 import java.lang.reflect.Field;
 
-public interface TestHelper<T extends CoreModel> {
+public interface TestHelper<T extends Model> {
 
     default void setProtectedId(T where, Object value) {
         try {
