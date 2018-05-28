@@ -92,7 +92,7 @@ public class RoleValidatorServiceTest implements TestHelper<Role> {
     @Test
     public void eliminateNullSucess() {
         role = new Role();
-        assertThat(role.getName()).isNotNull();
+        assertThat(role.getName()).isNull();
 
         Result<Role> result = validator.eliminateNull(role);
 

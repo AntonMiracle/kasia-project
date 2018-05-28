@@ -64,14 +64,14 @@ public class RoleServiceTest implements TestHelper<Role> {
 
         Result<Role> result = service.save(role);
         assertThat(result.isCalculationFailed()).isFalse();
-        assertThat(result.getResult()).isNull();
+        assertThat(result.getResult()).isNotNull();
 
         role = new Role();
         role.setName(name1);
 
         result = service.save(role);
         assertThat(result.isCalculationFailed()).isTrue();
-        assertThat(result.getResult()).isNotNull();
+        assertThat(result.getResult()).isNull();
     }
 
     @Test(expected = NullPointerException.class)
@@ -164,11 +164,11 @@ public class RoleServiceTest implements TestHelper<Role> {
     }
 
     @Test
-    public void deleteByNotExistIdFailed() {
+    public void deleteByNotExistIdFalse() {
         Result<Boolean> resultBoolean = service.delete(-1L);
         assertThat(resultBoolean.isCalculationFailed()).isFalse();
 
-        assertThat(resultBoolean.getResult()).isTrue();
+        assertThat(resultBoolean.getResult()).isFalse();
     }
 
     @Test(expected = NullPointerException.class)
@@ -202,7 +202,7 @@ public class RoleServiceTest implements TestHelper<Role> {
         assertThat(resultAll).isNotNull();
         assertThat(resultAll.isCalculationFailed()).isFalse();
 
-        assertThat(resultAll.getResult()).isEqualTo(0);
+        assertThat(resultAll.getResult().size()).isEqualTo(0);
     }
 
     // DELETE by NAME =======================================

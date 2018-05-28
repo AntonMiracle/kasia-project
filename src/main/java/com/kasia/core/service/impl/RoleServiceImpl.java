@@ -65,9 +65,8 @@ public class RoleServiceImpl implements RoleService {
     public Result<Boolean> isNameExist(String name) throws NullPointerException {
         exception.NPE(name);
 
-        if (!roleRepository.isNameExist(name)) return resultBoolean.calculationFailed();
-
-        return resultBoolean.calculationSuccess(Boolean.TRUE);
+        boolean result = roleRepository.isNameExist(name);
+        return resultBoolean.calculationSuccess(result);
     }
 
     @Override
@@ -97,8 +96,7 @@ public class RoleServiceImpl implements RoleService {
     public Result<Role> update(Role model) throws NullPointerException {
         exception.NPE(model);
 
-        Result<Boolean> result = service.isNameExist(model.getName());
-        if (result.isCalculationFailed() || !result.getResult()) return resultRole.calculationFailed();
+        if (model.getId() <= 0) return resultRole.calculationFailed();
 
         model = roleRepository.saveOrUpdate(model);
         if (model == null) resultRole.calculationFailed();
@@ -120,11 +118,9 @@ public class RoleServiceImpl implements RoleService {
     public Result<Boolean> delete(Long id) throws NullPointerException {
         exception.NPE(id);
 
-        if (service.get(id).isCalculationFailed()) return resultBoolean.calculationFailed();
+        if (service.get(id).isCalculationFailed()) return resultBoolean.calculationSuccess(Boolean.FALSE);
 
-        if (!roleRepository.delete(id)) return resultBoolean.calculationFailed();
-
-        return resultBoolean.calculationSuccess(Boolean.TRUE);
+        return resultBoolean.calculationSuccess(roleRepository.delete(id));
     }
 
     @Override
