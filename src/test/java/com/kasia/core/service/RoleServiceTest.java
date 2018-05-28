@@ -47,7 +47,7 @@ public class RoleServiceTest implements TestHelper<Role> {
 
     // SAVE ===========================================================
     @Test
-    public void saveUniqueRoleSuccess() {
+    public void saveUniqueSuccess() {
         role = new Role();
         role.setName(name1);
 
@@ -58,7 +58,7 @@ public class RoleServiceTest implements TestHelper<Role> {
     }
 
     @Test
-    public void saveNotUniqueRoleFailed() {
+    public void saveNotUniqueFailed() {
         role = new Role();
         role.setName(name1);
 
@@ -81,7 +81,7 @@ public class RoleServiceTest implements TestHelper<Role> {
 
     // UPDATE ============================================================================
     @Test
-    public void updateExistRoleSuccess() {
+    public void updateExistSuccess() {
         role = new Role();
         role.setName(name1);
 
@@ -98,7 +98,7 @@ public class RoleServiceTest implements TestHelper<Role> {
     }
 
     @Test
-    public void updateNotExistRoleFailed() {
+    public void updateNotExistFailed() {
         role = new Role();
         role.setName(name1);
 
@@ -113,7 +113,7 @@ public class RoleServiceTest implements TestHelper<Role> {
         service.update(null);
     }
 
-    // GET by ID --------------------------------------------------------
+    // GET by ID ======================================================
     @Test
     public void getByExistIdSuccess() {
         role = new Role();
@@ -147,7 +147,7 @@ public class RoleServiceTest implements TestHelper<Role> {
         service.get((Long) null);
     }
 
-    // DELETE by ID --------------------------------------------------------
+    // DELETE by ID ================================================
     @Test
     public void deleteByExistIdSuccess() {
         role = new Role();
@@ -176,7 +176,7 @@ public class RoleServiceTest implements TestHelper<Role> {
         service.delete((Long) null);
     }
 
-    // GET ALL --------------------------------------------------------
+    // GET ALL ======================================================
     @Test
     public void getAllSuccess() {
         Result<Set<Role>> resultAll = service.get();
@@ -196,24 +196,16 @@ public class RoleServiceTest implements TestHelper<Role> {
     }
 
     @Test
-    public void whenZeroRolesGetAllReturnEmptySet() {
+    public void whenZeroModelsGetAllReturnEmptySet() {
         Result<Set<Role>> resultAll = service.get();
+
+        assertThat(resultAll).isNotNull();
         assertThat(resultAll.isCalculationFailed()).isFalse();
-        long size = resultAll.getResult().size();
 
-        role = new Role();
-        role.setName(name1);
-        Result<Role> result = service.save(role);
-        assertThat(result.isCalculationFailed()).isFalse();
-
-        resultAll = service.get();
-        assertThat(resultAll.isCalculationFailed()).isFalse();
-        long newSize = resultAll.getResult().size();
-
-        assertThat(newSize).isEqualTo(size + 1);
+        assertThat(resultAll.getResult()).isEqualTo(0);
     }
 
-    // DELETE by NAME --------------------------------------------------------
+    // DELETE by NAME =======================================
     @Test
     public void deleteByExistNameSuccess() {
         role = new Role();
@@ -244,7 +236,7 @@ public class RoleServiceTest implements TestHelper<Role> {
         service.delete((String) null);
     }
 
-    // GET by NAME--------------------------------------------------------
+    // GET by NAME =================================================
     @Test
     public void getByExistNameSuccess() {
         role = new Role();
@@ -270,7 +262,7 @@ public class RoleServiceTest implements TestHelper<Role> {
     }
 
 
-    // IS NAME EXIST--------------------------------------------------------
+    // IS NAME EXIST ================================================
     @Test
     public void isNameExistReturnTrueWhenNameExist() {
         role = new Role();
