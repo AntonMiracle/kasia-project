@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.validation.ConstraintViolationException;
+import java.util.Set;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
@@ -178,67 +178,117 @@ public class RoleServiceTest implements TestHelper<Role> {
 
     // GET ALL --------------------------------------------------------
     @Test
-    public void getAll() {
-        int size = service.get().size();
+    public void getAllSuccess() {
+        Result<Set<Role>> resultAll = service.get();
+        assertThat(resultAll.isCalculationFailed()).isFalse();
+        long size = resultAll.getResult().size();
 
-        role.setName(getRoleNameForTesting1());
-        service.save(role).getName();
+        role = new Role();
+        role.setName(name1);
+        Result<Role> result = service.save(role);
+        assertThat(result.isCalculationFailed()).isFalse();
 
-        assertThat(service.get().size()).isEqualTo(size + 1);
+        resultAll = service.get();
+        assertThat(resultAll.isCalculationFailed()).isFalse();
+        long newSize = resultAll.getResult().size();
+
+        assertThat(newSize).isEqualTo(size + 1);
+    }
+
+    @Test
+    public void whenZeroRolesGetAllReturnEmptySet() {
+        Result<Set<Role>> resultAll = service.get();
+        assertThat(resultAll.isCalculationFailed()).isFalse();
+        long size = resultAll.getResult().size();
+
+        role = new Role();
+        role.setName(name1);
+        Result<Role> result = service.save(role);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        resultAll = service.get();
+        assertThat(resultAll.isCalculationFailed()).isFalse();
+        long newSize = resultAll.getResult().size();
+
+        assertThat(newSize).isEqualTo(size + 1);
     }
 
     // DELETE by NAME --------------------------------------------------------
     @Test
-    public void deleteByName() {
-        role.setName(getRoleNameForTesting1());
-        String name = service.save(role).getName();
+    public void deleteByExistNameSuccess() {
+        role = new Role();
+        role.setName(name1);
 
-        assertThat(service.delete(name)).isTrue();
+        Result<Role> result = service.save(role);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        String name = result.getResult().getName();
+        Result<Boolean> resultBoolean = service.delete(name);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        assertThat(resultBoolean.getResult()).isTrue();
+    }
+
+    @Test
+    public void deleteByNotExistNameFailed() {
+        assertThat(service.get(name1).isCalculationFailed()).isTrue();
+
+        Result<Boolean> resultBoolean = service.delete(name1);
+
+        assertThat(resultBoolean.isCalculationFailed()).isTrue();
+        assertThat(resultBoolean.getResult()).isNull();
     }
 
     @Test(expected = NullPointerException.class)
-    public void whenDeleteByNameWithNullThenNPE() {
+    public void whenDeleteByNameNullThenNPE() {
         service.delete((String) null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void whenDeleteByNameWithNotExistNameThenIAE() {
-        service.delete("-10L");
     }
 
     // GET by NAME--------------------------------------------------------
     @Test
-    public void getByName() {
-        role.setName(getRoleNameForTesting1());
-        String name = service.save(role).getName();
+    public void getByExistNameSuccess() {
+        role = new Role();
+        role.setName(name1);
+        Result<Role> result = service.save(role);
+        assertThat(result.isCalculationFailed()).isFalse();
 
-        role = service.get(name);
+        result = service.get(name1);
+        assertThat(result.isCalculationFailed()).isFalse();
 
-        assertThat(role.getName()).isEqualTo(name);
+        assertThat(result.getResult().getName()).isEqualTo(name1);
+    }
+
+    @Test
+    public void getByNotExistNameFalse() {
+        Result<Role> result = service.get(name1);
+        assertThat(result.isCalculationFailed()).isTrue();
     }
 
     @Test(expected = NullPointerException.class)
-    public void whenGetGroupTypeByNameWithNullThenNPE() {
+    public void whenGetByNameNullThenNPE() {
         service.get((String) null);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void whenGetGroupTypeByNameWithNotExistNameThenIAE() {
-        service.get("-10L");
-    }
 
     // IS NAME EXIST--------------------------------------------------------
     @Test
-    public void isNameExistWithExistingName() {
-        role.setName(getRoleNameForTesting1());
-        service.save(role).getName();
+    public void isNameExistReturnTrueWhenNameExist() {
+        role = new Role();
+        role.setName(name1);
+        assertThat(service.save(role).isCalculationFailed()).isFalse();
 
-        assertThat(service.isNameExist(getRoleNameForTesting1())).isTrue();
+        Result<Boolean> result = service.isNameExist(name1);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        assertThat(result.getResult()).isTrue();
     }
 
     @Test
-    public void isNameExistWithNonExistingName() {
-        assertThat(service.isNameExist(getRoleNameForTesting1())).isFalse();
+    public void isNameExistReturnFalseWhenNameNotExist() {
+        Result<Boolean> result = service.isNameExist(name1);
+        assertThat(result.isCalculationFailed()).isFalse();
+
+        assertThat(result.getResult()).isFalse();
     }
 
     @Test(expected = NullPointerException.class)
