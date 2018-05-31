@@ -36,7 +36,6 @@ public class User implements Serializable, Model {
     private String email;
 
     @NotNull
-    @Size(min = 1, max = 32)
     @Column(name = "CREATE_ON", nullable = false, length = 32)
     @Convert(converter = InstantAttributeConverter.class)
     private Instant createOn;
