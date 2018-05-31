@@ -45,7 +45,7 @@ public class GroupTypeRepositoryTest implements TestHelper<GroupType> {
 
     @Test
     @Transactional
-    public void saveGroupType() {
+    public void save() {
         groupType.setName(name1);
         long id = groupType.getId();
 
@@ -56,7 +56,7 @@ public class GroupTypeRepositoryTest implements TestHelper<GroupType> {
 
     @Test
     @Transactional
-    public void getGroupTypeById() {
+    public void getById() {
         groupType.setName(name1);
         groupType = repository.saveOrUpdate(groupType);
 
@@ -65,7 +65,7 @@ public class GroupTypeRepositoryTest implements TestHelper<GroupType> {
 
     @Test
     @Transactional
-    public void deleteGroupTypeById() {
+    public void deleteById() {
         groupType.setName(name1);
         Long id = repository.saveOrUpdate(groupType).getId();
 
@@ -76,7 +76,7 @@ public class GroupTypeRepositoryTest implements TestHelper<GroupType> {
 
     @Test
     @Transactional
-    public void getAllGroupType() {
+    public void getAll() {
         int initSize = repository.get().size();
         groupType.setName(name1);
         repository.saveOrUpdate(groupType);
@@ -86,7 +86,7 @@ public class GroupTypeRepositoryTest implements TestHelper<GroupType> {
 
     @Test
     @Transactional
-    public void getGroupTypeByName() {
+    public void getByName() {
         assertThat(repository.get(name1)).isNull();
 
         groupType.setName(name1);
