@@ -32,7 +32,7 @@ public class User implements Serializable, Model {
     private String password;
 
     @Size(min = 1, max = 32)
-    @Column(name = "EMAIL", nullable = false, length = 32)
+    @Column(name = "EMAIL", nullable = false, unique = true, length = 32)
     private String email;
 
     @NotNull
