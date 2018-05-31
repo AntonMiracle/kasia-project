@@ -6,11 +6,11 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "GROUPS")
+@Table(name = "GROUP_TYPES")
 public class GroupType implements Serializable, Model {
     @Id
-    @Column(name = "GROUP_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "GROUP_TYPES_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
     @NotNull
