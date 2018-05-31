@@ -17,7 +17,6 @@ public class GroupType implements Serializable, Model {
     @Size(min = 1, max = 32)
     @Column(name = "NAME", nullable = false, unique = true, length = 32)
     private String name;
-    private boolean actionSuccess;
 
     @Override
     public long getId() {
@@ -44,7 +43,6 @@ public class GroupType implements Serializable, Model {
         GroupType groupType = (GroupType) o;
 
         if (id != groupType.id) return false;
-        if (actionSuccess != groupType.actionSuccess) return false;
         return name != null ? name.equals(groupType.name) : groupType.name == null;
     }
 
@@ -52,7 +50,6 @@ public class GroupType implements Serializable, Model {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (actionSuccess ? 1 : 0);
         return result;
     }
 
@@ -61,8 +58,6 @@ public class GroupType implements Serializable, Model {
         return "GroupType{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", calculationSuccess=" + actionSuccess +
                 '}';
     }
-
 }
