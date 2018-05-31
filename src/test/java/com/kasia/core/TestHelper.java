@@ -19,26 +19,26 @@ public interface TestHelper<T extends Model> {
     }
 
     default String getGroupTypeNameForTesting1() {
-        return "no";
+        return "f";
     }
 
     default String getGroupTypeNameForTesting2() {
-        return "ns";
+        return "s";
     }
 
     default String getRoleNameForTesting1() {
-        return "ro";
+        return "f";
     }
 
     default String getRoleNameForTesting2() {
-        return "rs";
+        return "s";
     }
 
     default String getUsernameForTesting1() {
-        return "uo";
+        return "f";
     }
 
     default String getUsernameForTesting2() {
-        return "us";
+        return "s";
     }
 }
