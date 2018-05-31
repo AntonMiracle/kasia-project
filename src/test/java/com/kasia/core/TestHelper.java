@@ -34,4 +34,11 @@ public interface TestHelper<T extends Model> {
         return "rs";
     }
 
+    default String getUsernameForTesting1() {
+        return "uo";
+    }
+
+    default String getUsernameForTesting2() {
+        return "us";
+    }
 }
