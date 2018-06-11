@@ -1,5 +1,6 @@
 package com.kasia.model.user;
 
+import com.kasia.model.Model;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
@@ -16,6 +17,7 @@ public class UserTest {
     @Before
     public void before() {
         user = new User();
+        assert user instanceof Model;
     }
 
     @Test

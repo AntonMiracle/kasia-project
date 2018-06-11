@@ -1,8 +1,10 @@
 package com.kasia.model.user;
 
+import com.kasia.model.Model;
+
 import java.util.Set;
 
-public class User {
+public class User implements Model{
     private String username;
     private String password;
     private Set<String> groups;

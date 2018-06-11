@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 public class ResultServiceTest {
     private ResultService<TestObject> service;
     private TestObject testObject;
+
     private String name;
 
     private Result<TestObject> expectedSuccess;
@@ -63,5 +64,4 @@ public class ResultServiceTest {
         assertThat(actual.isValid()).isFalse();
         assertThat(actual.getResult()).isNull();
     }
-
 }
