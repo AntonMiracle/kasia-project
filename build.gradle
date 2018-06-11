@@ -9,6 +9,13 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
 }
+    //INTEGRATION TEST SET -------------------------------------------------------------------
+sourceSets {
+    integTest {
+        java.srcDir 'src/integTest/java'
+        resources.srcDir 'src/integTest/resources'
+    }
+}
 
 dependencies {
     //TESTING -------------------------------------------------------------------
@@ -16,11 +23,9 @@ dependencies {
     testCompile 'org.assertj:assertj-core:3.9.0'
     testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '2.4.3'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+
     //JAVA EE -------------------------------------------------------------------
     compile group: 'javax', name: 'javaee-api', version: '8.0'
-
-
-
 
 //    testCompile group: 'org.springframework', name: 'spring-test', version: '5.0.5.RELEASE'
 //
