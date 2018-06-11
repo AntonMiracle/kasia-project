@@ -15,21 +15,18 @@ public class UserServiceTest {
 
     private String email;
 
-    private Result<User> expectedResultUser;
-    private Result<Boolean> expectedResultBoolean;
-
     @Before
     public void before() {
         email = "email@email.com";
         user = new User();
         user.setEmail(email);
 
-        expectedResultUser = new Result<>();
+        Result<User> expectedResultUser = new Result<>();
         expectedResultUser.setResult(user);
         expectedResultUser.setValid(true);
         expectedResultUser.setExist(true);
 
-        expectedResultBoolean = new Result<>();
+        Result<Boolean> expectedResultBoolean = new Result<>();
         expectedResultBoolean.setValid(true);
         expectedResultBoolean.setExist(true);
         expectedResultBoolean.setResult(Boolean.TRUE);
