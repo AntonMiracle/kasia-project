@@ -6,6 +6,8 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,6 +52,20 @@ public class UserTest {
         assertThat(user.getEmail()).isEqualTo("email@email.com");
     }
 
+    // ID ================================================
+    @Test
+    public void setAndGetId() {
+        user.setId(2L);
+        assertThat(user.getId()).isEqualTo(2L);
+    }
+
+    @Test
+    public void setIdHasProtectedModifierAccess() throws NoSuchMethodException {
+        Method setId = User.class.getDeclaredMethod("setId", long.class);
+        assertThat(Modifier.isProtected(setId.getModifiers())).isTrue();
+    }
+
+    // HASHCODE and EQUALS ================================================
     @Test
     public void checkEqualsAndHashCode() {
         EqualsVerifier.forClass(User.class)
