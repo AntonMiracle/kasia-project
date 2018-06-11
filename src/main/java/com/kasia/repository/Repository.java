@@ -9,7 +9,7 @@ public interface Repository<T extends Model> {
 
     Result<T> add(T model);
 
-    Result<Boolean> remove(long id);
+    Result<Boolean> removeById(long id);
 
     Result<T> update(T model);
 
