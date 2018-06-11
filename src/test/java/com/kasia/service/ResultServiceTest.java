@@ -1,6 +1,6 @@
-package com.kasia.model.result;
+package com.kasia.service;
 
-import com.kasia.service.ResultService;
+import com.kasia.model.result.Result;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,30 +12,22 @@ public class ResultServiceTest {
     private ResultService<TestObject> service;
     private TestObject testObject;
 
-    private String name;
-
-    private Result<TestObject> expectedSuccess;
-    private Result<TestObject> expectedSuccessEmpty;
-    private Result<TestObject> expectedInvalid;
-
     @Before
     public void before() {
-        name = "name";
         testObject = new TestObject();
-        testObject.setName(name);
 
-        expectedSuccess = new Result<>();
+        Result<TestObject> expectedSuccess = new Result<>();
         expectedSuccess.setResult(testObject);
         expectedSuccess.setValid(true);
         expectedSuccess.setExist(true);
 
-        expectedSuccessEmpty = new Result<>();
+        Result<TestObject> expectedSuccessEmpty = new Result<>();
         expectedSuccessEmpty.setValid(true);
         expectedSuccessEmpty.setExist(false);
 
-        expectedInvalid = new Result<>();
+        Result<TestObject> expectedInvalid = new Result<>();
 
-        service = mock(ResultService.class);
+        service = (ResultService<TestObject>) mock(ResultService.class);
         when(service.success(testObject)).thenReturn(expectedSuccess);
         when(service.success()).thenReturn(expectedSuccessEmpty);
         when(service.failed()).thenReturn(expectedInvalid);
@@ -63,5 +55,35 @@ public class ResultServiceTest {
         assertThat(actual.isExist()).isFalse();
         assertThat(actual.isValid()).isFalse();
         assertThat(actual.getResult()).isNull();
+    }
+}
+
+class TestObject {
+    private String name;
+
+    TestObject() {
+    }
+
+    String getName() {
+        return name;
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TestObject that = (TestObject) o;
+
+        return name != null ? name.equals(that.name) : that.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 }
