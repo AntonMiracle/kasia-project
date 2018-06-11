@@ -39,15 +39,14 @@ public class ResultTest {
 class TestObject {
     private String name;
 
-    protected TestObject() {
-
+    TestObject() {
     }
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
