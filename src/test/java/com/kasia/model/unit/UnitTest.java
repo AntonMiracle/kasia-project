@@ -29,10 +29,11 @@ public class UnitTest {
         int actualSumClassFields = unit.getClass().getDeclaredFields().length;
 
         String name = "kg";
-        int expectedSumClassFields = 1;
+        int amount = 1;
+        int expectedSumClassFields = 2;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new Unit(name)).isNotNull();
+        assertThat(new Unit(name, amount)).isNotNull();
     }
 
     // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
@@ -65,5 +66,11 @@ public class UnitTest {
     public void setAndGetName() {
         unit.setName("name");
         assertThat(unit.getName()).isEqualTo("name");
+    }
+
+    @Test
+    public void setAndGetAmount() {
+        unit.setAmount(1);
+        assertThat(unit.getAmount()).isEqualTo(1);
     }
 }
