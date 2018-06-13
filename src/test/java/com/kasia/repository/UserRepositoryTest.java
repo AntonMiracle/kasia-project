@@ -86,7 +86,6 @@ public class UserRepositoryTest implements TestHelper<User> {
         assertThat(actual.isValid()).isTrue();
         assertThat(actual.isExist()).isTrue();
         assertThat(actual.getResult()).isNotNull();
-        assertThat(actual.getResult().getId()).isEqualTo(id);
     }
 
     @Test
