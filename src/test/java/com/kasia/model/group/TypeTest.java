@@ -25,4 +25,13 @@ public class TypeTest {
         assertThat(Type.valueOf("ITEM")).isEqualTo(Type.ITEM);
     }
 
+    @Test
+    public void consumptionTypeExist() {
+        assertThat(Type.valueOf("ARTICLE_CONSUMPTION")).isEqualTo(Type.ARTICLE_CONSUMPTION);
+    }
+    @Test
+    public void incomeTypeExist() {
+        assertThat(Type.valueOf("ARTICLE_INCOME")).isEqualTo(Type.ARTICLE_INCOME);
+    }
+
 }
