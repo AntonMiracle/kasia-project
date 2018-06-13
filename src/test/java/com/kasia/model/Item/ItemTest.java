@@ -34,6 +34,7 @@ public class ItemTest {
         User maker = new User();
         String group = "group";
         String description = "description";
+        String unit = "unit";
         int expectedSumClassFields = 4;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
