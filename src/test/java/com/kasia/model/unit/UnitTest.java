@@ -1,6 +1,7 @@
 package com.kasia.model.unit;
 
 import com.kasia.model.Model;
+import com.kasia.model.user.User;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
@@ -30,10 +31,11 @@ public class UnitTest {
 
         String name = "kg";
         int amount = 1;
-        int expectedSumClassFields = 2;
+        User maker = new User();
+        int expectedSumClassFields = 3;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new Unit(name, amount)).isNotNull();
+        assertThat(new Unit(name, amount, maker)).isNotNull();
     }
 
     // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
@@ -72,5 +74,12 @@ public class UnitTest {
     public void setAndGetAmount() {
         unit.setAmount(1);
         assertThat(unit.getAmount()).isEqualTo(1);
+    }
+
+    @Test
+    public void setAndGetMaker() {
+        User maker = new User();
+        unit.setMaker(maker);
+        assertThat(unit.getMaker()).isEqualTo(maker);
     }
 }
