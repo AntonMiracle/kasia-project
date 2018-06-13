@@ -31,7 +31,7 @@ public class UserTest {
 
     @Test
     public void constructorWithAllArgExist() {
-        int actualSumClassFields = new User().getClass().getDeclaredFields().length;
+        int actualSumClassFields = user.getClass().getDeclaredFields().length;
 
         String username = "username";
         String password = "password";

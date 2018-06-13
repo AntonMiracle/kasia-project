@@ -29,7 +29,7 @@ public class ResultTest {
 
     @Test
     public void constructorWithAllArgExist() {
-        int actualSumClassFields = new Result<TestObject>().getClass().getDeclaredFields().length;
+        int actualSumClassFields = result.getClass().getDeclaredFields().length;
 
         TestObject testObject = new TestObject();
         boolean exist = false;
