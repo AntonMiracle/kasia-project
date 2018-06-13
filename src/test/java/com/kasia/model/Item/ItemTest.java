@@ -2,7 +2,9 @@ package com.kasia.model.Item;
 
 import com.kasia.model.Model;
 import com.kasia.model.group.Group;
+import com.kasia.model.group.Type;
 import com.kasia.model.item.Item;
+import com.kasia.model.price.Price;
 import com.kasia.model.unit.Unit;
 import com.kasia.model.user.User;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -37,10 +39,11 @@ public class ItemTest {
         Group group = new Group();
         String description = "description";
         Unit unit = new Unit();
-        int expectedSumClassFields = 5;
+        Price price = new Price();
+        int expectedSumClassFields = 6;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new Item(name, unit, description, group, maker)).isNotNull();
+        assertThat(new Item(name, unit, price, description, group, maker)).isNotNull();
     }
 
     // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
@@ -58,6 +61,7 @@ public class ItemTest {
     public void checkEqualsAndHashCode() {
         EqualsVerifier.forClass(item.getClass())
                 .usingGetClass()
+                .withPrefabValues(Group.class, new Group(), new Group("name", new User(), Type.ITEM))
                 .suppress(Warning.NONFINAL_FIELDS)
                 .verify();
     }
@@ -93,6 +97,20 @@ public class ItemTest {
     public void setAndGetDescription() {
         item.setDescription("text");
         assertThat(item.getDescription()).isEqualTo("text");
+    }
+
+    @Test
+    public void setAndGetPrice() {
+        Price price = new Price();
+        item.setPrice(price);
+        assertThat(item.getPrice()).isEqualTo(price);
+    }
+
+    @Test
+    public void setAndGetUnit() {
+        Unit unit = new Unit();
+        item.setUnit(unit);
+        assertThat(item.getUnit()).isEqualTo(unit);
     }
 
 }
