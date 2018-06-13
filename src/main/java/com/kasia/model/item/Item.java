@@ -1,21 +1,25 @@
 package com.kasia.model.item;
 
 import com.kasia.model.Model;
+import com.kasia.model.group.Group;
+import com.kasia.model.unit.Unit;
 import com.kasia.model.user.User;
 
 import java.io.Serializable;
 
 public class Item extends Model implements Serializable {
-    private String group;
+    private Unit unit;
+    private Group group;
     private String name;
     private String description;
     private User maker;
 
-    public Item(String name, String description, String group, User maker) {
+    public Item(String name, Unit unit, String description, Group group, User maker) {
         this.name = name;
         this.description = description;
         this.maker = maker;
         this.group = group;
+        this.unit = unit;
     }
 
     public Item() {
@@ -38,11 +42,11 @@ public class Item extends Model implements Serializable {
         return maker;
     }
 
-    public void setGroup(String group) {
+    public void setGroup(Group group) {
         this.group = group;
     }
 
-    public String getGroup() {
+    public Group getGroup() {
         return group;
     }
 
@@ -62,6 +66,7 @@ public class Item extends Model implements Serializable {
 
         Item item = (Item) o;
 
+        if (unit != null ? !unit.equals(item.unit) : item.unit != null) return false;
         if (group != null ? !group.equals(item.group) : item.group != null) return false;
         if (name != null ? !name.equals(item.name) : item.name != null) return false;
         if (description != null ? !description.equals(item.description) : item.description != null) return false;
@@ -71,6 +76,7 @@ public class Item extends Model implements Serializable {
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + (unit != null ? unit.hashCode() : 0);
         result = 31 * result + (group != null ? group.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
@@ -81,7 +87,8 @@ public class Item extends Model implements Serializable {
     @Override
     public String toString() {
         return "Item{" +
-                "group='" + group + '\'' +
+                "unit=" + unit +
+                ", group=" + group +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", maker=" + maker +

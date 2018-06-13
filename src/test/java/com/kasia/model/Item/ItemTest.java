@@ -1,7 +1,9 @@
 package com.kasia.model.Item;
 
 import com.kasia.model.Model;
+import com.kasia.model.group.Group;
 import com.kasia.model.item.Item;
+import com.kasia.model.unit.Unit;
 import com.kasia.model.user.User;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
@@ -32,16 +34,16 @@ public class ItemTest {
 
         String name = "name";
         User maker = new User();
-        String group = "group";
+        Group group = new Group();
         String description = "description";
-        String unit = "unit";
-        int expectedSumClassFields = 4;
+        Unit unit = new Unit();
+        int expectedSumClassFields = 5;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new Item(name, description, group, maker)).isNotNull();
+        assertThat(new Item(name, unit, description, group, maker)).isNotNull();
     }
-    // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
 
+    // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
     @Test
     public void extendsModel() {
         assertThat(Model.class.isAssignableFrom(item.getClass())).isTrue();
@@ -75,15 +77,16 @@ public class ItemTest {
 
     @Test
     public void setAndGetMaker() {
-        User user = new User();
-        item.setMaker(user);
-        assertThat(item.getMaker()).isEqualTo(user);
+        User maker = new User();
+        item.setMaker(maker);
+        assertThat(item.getMaker()).isEqualTo(maker);
     }
 
     @Test
     public void setAndGetGroup() {
-        item.setGroup("group");
-        assertThat(item.getGroup()).isEqualTo("group");
+        Group group = new Group();
+        item.setGroup(group);
+        assertThat(item.getGroup()).isEqualTo(group);
     }
 
     @Test
