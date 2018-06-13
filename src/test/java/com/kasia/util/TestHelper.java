@@ -1,4 +1,4 @@
-package com.kasia;
+package com.kasia.util;
 
 import java.lang.reflect.Field;
 

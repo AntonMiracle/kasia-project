@@ -1,10 +1,12 @@
 package com.kasia.model.user;
 
 import com.kasia.model.Model;
+import com.kasia.validation.user.UsernameConstraint;
 
 import java.util.Set;
 
 public class User implements Model {
+    @UsernameConstraint
     private String username;
     private String password;
     private Set<String> groups;

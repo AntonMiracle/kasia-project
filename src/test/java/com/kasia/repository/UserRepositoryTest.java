@@ -1,6 +1,6 @@
 package com.kasia.repository;
 
-import com.kasia.TestHelper;
+import com.kasia.util.TestHelper;
 import com.kasia.model.result.Result;
 import com.kasia.model.user.User;
 import org.junit.Before;
@@ -105,5 +105,4 @@ public class UserRepositoryTest implements TestHelper<User> {
         assertThat(actual.isExist()).isTrue();
         assertThat(actual.getResult()).isNotNull();
     }
-
 }
