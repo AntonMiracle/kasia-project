@@ -1,6 +1,7 @@
 package com.kasia.model.user;
 
 import com.kasia.model.Model;
+import com.kasia.model.group.Group;
 import com.kasia.validation.user.UsernameConstraint;
 
 import java.io.Serializable;
@@ -15,7 +16,7 @@ public class User extends Model implements Serializable {
     @UsernameConstraint
     private String username;
     private String password;
-    private Set<String> groups;
+    private Set<Group> groups;
     private String email;
     private ZoneId zoneId;
 
@@ -23,7 +24,7 @@ public class User extends Model implements Serializable {
 
     }
 
-    public User(String username, String password, String email, Set<String> groups, Instant create, Locale locale, ZoneId zoneId) {
+    public User(String username, String password, String email, Set<Group> groups, Instant create, Locale locale, ZoneId zoneId) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -49,11 +50,11 @@ public class User extends Model implements Serializable {
         return password;
     }
 
-    public void setGroups(Set<String> groups) {
+    public void setGroups(Set<Group> groups) {
         this.groups = groups;
     }
 
-    public Set<String> getGroups() {
+    public Set<Group> getGroups() {
         return groups;
     }
 
@@ -90,6 +91,19 @@ public class User extends Model implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "User{" +
+                "create=" + create +
+                ", locale=" + locale +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", groups=" + groups +
+                ", email='" + email + '\'' +
+                ", zoneId=" + zoneId +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -117,18 +131,5 @@ public class User extends Model implements Serializable {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "create=" + create +
-                ", locale=" + locale +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", groups=" + groups +
-                ", email='" + email + '\'' +
-                ", zoneId=" + zoneId +
-                '}';
     }
 }

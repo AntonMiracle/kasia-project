@@ -1,6 +1,8 @@
 package com.kasia.model.user;
 
 import com.kasia.model.Model;
+import com.kasia.model.group.Group;
+import com.kasia.model.group.Type;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
@@ -36,17 +38,17 @@ public class UserTest {
         String username = "username";
         String password = "password";
         String email = "email@email.com";
-        Set<String> group = new HashSet<>();
+        Set<Group> groups = new HashSet<>();
         Instant create = Instant.now();
         Locale locale = Locale.getDefault();
         ZoneId zoneId = ZoneId.systemDefault();
         int expectedSumClassFields = 7;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new User(username, password, email, group, create, locale, zoneId)).isNotNull();
+        assertThat(new User(username, password, email, groups, create, locale, zoneId)).isNotNull();
     }
-    // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
 
+    // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
     @Test
     public void extendsModel() {
         assertThat(Model.class.isAssignableFrom(user.getClass())).isTrue();
@@ -62,6 +64,7 @@ public class UserTest {
         EqualsVerifier.forClass(user.getClass())
                 .usingGetClass()
                 .suppress(Warning.NONFINAL_FIELDS)
+                .withPrefabValues(Group.class, new Group(), new Group("name",new User(), Type.USER))
                 .verify();
     }
 
@@ -86,14 +89,15 @@ public class UserTest {
 
     @Test
     public void setAndGetGroups() {
-        Set<String> roles = new HashSet<>();
-        roles.add("admin");
-        roles.add("user");
-        user.setGroups(roles);
-        assertThat(user.getGroups()).isEqualTo(roles);
-        assertThat(user.getGroups().size()).isEqualTo(2);
-        assertThat(user.getGroups().contains("admin")).isTrue();
-        assertThat(user.getGroups().contains("user")).isTrue();
+        Group group = new Group();
+
+        Set<Group> groups = new HashSet<>();
+        groups.add(group);
+        user.setGroups(groups);
+
+        assertThat(user.getGroups()).isEqualTo(groups);
+        assertThat(user.getGroups().size()).isEqualTo(1);
+        assertThat(user.getGroups().contains(group)).isTrue();
     }
 
     @Test
