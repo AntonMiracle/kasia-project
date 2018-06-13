@@ -45,8 +45,8 @@ public class UserTest {
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
         assertThat(new User(username, password, email, group, create, locale, zoneId)).isNotNull();
     }
-
     // ================================================
+
     @Test
     public void extendsModel() {
         assertThat(Model.class.isAssignableFrom(user.getClass())).isTrue();
