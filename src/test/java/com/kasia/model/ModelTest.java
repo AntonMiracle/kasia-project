@@ -23,8 +23,8 @@ public class ModelTest {
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
         assertThat(new Model(id)).isNotNull();
     }
+    // ================================================
 
-    // ID ================================================
     @Test
     public void setAndGetId() {
         Model model = new Model();
@@ -32,7 +32,6 @@ public class ModelTest {
         assertThat(model.getId()).isEqualTo(10L);
     }
 
-    // HASHCODE and EQUALS ================================================
     @Test
     public void checkEqualsAndHashCode() {
         EqualsVerifier.forClass(Model.class)
@@ -41,9 +40,9 @@ public class ModelTest {
                 .verify();
     }
 
-    // TO_STRING ================================================
     @Test
     public void toStringIsOverride() {
         assertThat(new Model().toString().contains("{")).isTrue();
+        assertThat(new Model().toString().contains(new Model().getClass().getSimpleName())).isTrue();
     }
 }
