@@ -6,9 +6,11 @@ import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.io.Serializable;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -19,7 +21,40 @@ public class UserTest {
     @Before
     public void before() {
         user = new User();
-        assert user instanceof Model;
+    }
+
+    // CONSTRUCTORS ================================================
+    @Test
+    public void constructorWithNoArgExist() {
+        assertThat(new User()).isNotNull();
+    }
+
+    @Test
+    public void constructorWithAllArgExist() {
+        int actualSumClassFields = new User().getClass().getDeclaredFields().length;
+
+        String username = "username";
+        String password = "password";
+        String email = "email@email.com";
+        Set<String> group = new HashSet<>();
+        Instant create = Instant.now();
+        Locale locale = Locale.getDefault();
+        ZoneId zoneId = ZoneId.systemDefault();
+        int expectedSumClassFields = 7;
+
+        assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
+        assertThat(new User(username, password, email, group, create, locale, zoneId)).isNotNull();
+    }
+
+    // ================================================
+    @Test
+    public void extendsModel() {
+        assertThat(user instanceof Model).isTrue();
+    }
+
+    @Test
+    public void implementsSerializable() {
+        assertThat(user instanceof Serializable).isTrue();
     }
 
     @Test
@@ -52,25 +87,36 @@ public class UserTest {
         assertThat(user.getEmail()).isEqualTo("email@email.com");
     }
 
-    // ID ================================================
     @Test
-    public void setAndGetId() {
-        user.setId(2L);
-        assertThat(user.getId()).isEqualTo(2L);
+    public void setAndGetCreate() {
+        Instant create = Instant.now();
+        user.setCreate(create);
+        assertThat(user.getCreate()).isEqualTo(create);
     }
 
     @Test
-    public void setIdHasProtectedModifierAccess() throws NoSuchMethodException {
-        Method setId = User.class.getDeclaredMethod("setId", long.class);
-        assertThat(Modifier.isProtected(setId.getModifiers())).isTrue();
+    public void setAndGetLocale() {
+        user.setLocale(Locale.getDefault());
+        assertThat(user.getLocale()).isEqualTo(Locale.getDefault());
     }
 
-    // HASHCODE and EQUALS ================================================
+    @Test
+    public void setAndGetZoneId() {
+        user.setZoneId(ZoneId.systemDefault());
+        assertThat(user.getZoneId()).isEqualTo(ZoneId.systemDefault());
+    }
+
     @Test
     public void checkEqualsAndHashCode() {
-        EqualsVerifier.forClass(User.class)
+        EqualsVerifier.forClass(user.getClass())
                 .usingGetClass()
                 .suppress(Warning.NONFINAL_FIELDS)
                 .verify();
+    }
+
+    @Test
+    public void toStringIsOverride() {
+        assertThat(user.toString().contains("{")).isTrue();
+        assertThat(user.toString().contains(user.getClass().getSimpleName())).isTrue();
     }
 }
