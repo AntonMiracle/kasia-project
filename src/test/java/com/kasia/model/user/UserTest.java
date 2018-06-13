@@ -49,12 +49,12 @@ public class UserTest {
     // ================================================
     @Test
     public void extendsModel() {
-        assertThat(user instanceof Model).isTrue();
+        assertThat(Model.class.isAssignableFrom(user.getClass())).isTrue();
     }
 
     @Test
     public void implementsSerializable() {
-        assertThat(user instanceof Serializable).isTrue();
+        assertThat(Serializable.class.isAssignableFrom(user.getClass())).isTrue();
     }
 
     @Test
