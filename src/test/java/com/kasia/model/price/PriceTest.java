@@ -34,14 +34,8 @@ public class PriceTest {
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
         assertThat(new Price(amount)).isNotNull();
     }
-    // ================================================
 
-    @Test
-    public void setAndGetAmount() {
-        price.setAmount(10L);
-        assertThat(price.getAmount()).isEqualTo(10L);
-    }
-
+    // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
     @Test
     public void notExtendsModel() {
         assertThat(Model.class.isAssignableFrom(price.getClass())).isFalse();
@@ -51,7 +45,6 @@ public class PriceTest {
     public void implementsSerializable() {
         assertThat(Serializable.class.isAssignableFrom(price.getClass())).isTrue();
     }
-
 
     @Test
     public void checkEqualsAndHashCode() {
@@ -65,5 +58,12 @@ public class PriceTest {
     public void toStringIsOverride() {
         assertThat(price.toString().contains("{")).isTrue();
         assertThat(price.toString().contains(price.getClass().getSimpleName())).isTrue();
+    }
+
+    // GETTERS SETTERS ================================================
+    @Test
+    public void setAndGetAmount() {
+        price.setAmount(10L);
+        assertThat(price.getAmount()).isEqualTo(10L);
     }
 }

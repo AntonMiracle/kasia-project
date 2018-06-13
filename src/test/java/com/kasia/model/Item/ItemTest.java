@@ -39,7 +39,7 @@ public class ItemTest {
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
         assertThat(new Item(name, description, group, maker)).isNotNull();
     }
-    // ================================================
+    // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
 
     @Test
     public void extendsModel() {
@@ -51,6 +51,21 @@ public class ItemTest {
         assertThat(Serializable.class.isAssignableFrom(item.getClass())).isTrue();
     }
 
+    @Test
+    public void checkEqualsAndHashCode() {
+        EqualsVerifier.forClass(item.getClass())
+                .usingGetClass()
+                .suppress(Warning.NONFINAL_FIELDS)
+                .verify();
+    }
+
+    @Test
+    public void toStringIsOverride() {
+        assertThat(item.toString().contains("{")).isTrue();
+        assertThat(item.toString().contains(item.getClass().getSimpleName())).isTrue();
+    }
+
+    // GETTERS SETTERS ================================================
     @Test
     public void setAndGetName() {
         item.setName("name");
@@ -76,17 +91,4 @@ public class ItemTest {
         assertThat(item.getDescription()).isEqualTo("text");
     }
 
-    @Test
-    public void checkEqualsAndHashCode() {
-        EqualsVerifier.forClass(item.getClass())
-                .usingGetClass()
-                .suppress(Warning.NONFINAL_FIELDS)
-                .verify();
-    }
-
-    @Test
-    public void toStringIsOverride() {
-        assertThat(item.toString().contains("{")).isTrue();
-        assertThat(item.toString().contains(item.getClass().getSimpleName())).isTrue();
-    }
 }

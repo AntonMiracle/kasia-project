@@ -45,7 +45,7 @@ public class UserTest {
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
         assertThat(new User(username, password, email, group, create, locale, zoneId)).isNotNull();
     }
-    // ================================================
+    // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
 
     @Test
     public void extendsModel() {
@@ -57,6 +57,21 @@ public class UserTest {
         assertThat(Serializable.class.isAssignableFrom(user.getClass())).isTrue();
     }
 
+    @Test
+    public void checkEqualsAndHashCode() {
+        EqualsVerifier.forClass(user.getClass())
+                .usingGetClass()
+                .suppress(Warning.NONFINAL_FIELDS)
+                .verify();
+    }
+
+    @Test
+    public void toStringIsOverride() {
+        assertThat(user.toString().contains("{")).isTrue();
+        assertThat(user.toString().contains(user.getClass().getSimpleName())).isTrue();
+    }
+
+    // GETTERS SETTERS ================================================
     @Test
     public void setAndGetUsername() {
         user.setUsername("Username");
@@ -106,17 +121,4 @@ public class UserTest {
         assertThat(user.getZoneId()).isEqualTo(ZoneId.systemDefault());
     }
 
-    @Test
-    public void checkEqualsAndHashCode() {
-        EqualsVerifier.forClass(user.getClass())
-                .usingGetClass()
-                .suppress(Warning.NONFINAL_FIELDS)
-                .verify();
-    }
-
-    @Test
-    public void toStringIsOverride() {
-        assertThat(user.toString().contains("{")).isTrue();
-        assertThat(user.toString().contains(user.getClass().getSimpleName())).isTrue();
-    }
 }
