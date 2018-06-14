@@ -1,6 +1,7 @@
-package com.kasia.model.user;
+package com.kasia.service.imp;
 
 import com.kasia.model.result.Result;
+import com.kasia.model.user.User;
 import com.kasia.service.UserService;
 
 public class UserServiceImp implements UserService {
