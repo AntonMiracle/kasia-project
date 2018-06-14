@@ -1,4 +1,4 @@
-package com.kasia.service;
+package com.kasia.validation;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
