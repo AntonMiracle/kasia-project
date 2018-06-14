@@ -2,9 +2,11 @@ package com.kasia.model.user;
 
 import com.kasia.model.Model;
 import com.kasia.model.group.Group;
+import com.kasia.validation.user.EmailConstraint;
 import com.kasia.validation.user.PasswordConstraint;
 import com.kasia.validation.user.UsernameConstraint;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -12,14 +14,19 @@ import java.util.Locale;
 import java.util.Set;
 
 public class User extends Model implements Serializable {
+    @NotNull
     private Instant create;
+    @NotNull
     private Locale locale;
     @UsernameConstraint
     private String username;
     @PasswordConstraint
     private String password;
+    @NotNull
     private Set<Group> groups;
+    @EmailConstraint
     private String email;
+    @NotNull
     private ZoneId zoneId;
 
     public User() {

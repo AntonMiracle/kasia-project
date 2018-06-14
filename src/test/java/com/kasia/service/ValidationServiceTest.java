@@ -24,6 +24,7 @@ public class ValidationServiceTest {
     // USER ================================================
     @Test
     public void test() {
+        service = new ValidationServiceImp<User>();
         User user = new User();
         Set<ConstraintViolation<User>> errors = validator.validate(user);
         Map<String, String> map = service.mapErrorFieldsWithMsg(errors);
