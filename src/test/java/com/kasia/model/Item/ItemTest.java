@@ -35,15 +35,14 @@ public class ItemTest {
         int actualSumClassFields = item.getClass().getDeclaredFields().length;
 
         String name = "name";
-        User maker = new User();
         Group group = new Group();
         String description = "description";
         Unit unit = new Unit();
         Price price = new Price();
-        int expectedSumClassFields = 6;
+        int expectedSumClassFields = 5;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new Item(name, unit, price, description, group, maker)).isNotNull();
+        assertThat(new Item(name, unit, price, description, group)).isNotNull();
     }
 
     // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
@@ -77,13 +76,6 @@ public class ItemTest {
     public void setAndGetName() {
         item.setName("name");
         assertThat(item.getName()).isEqualTo("name");
-    }
-
-    @Test
-    public void setAndGetMaker() {
-        User maker = new User();
-        item.setMaker(maker);
-        assertThat(item.getMaker()).isEqualTo(maker);
     }
 
     @Test
