@@ -2,6 +2,7 @@ package com.kasia.model.user;
 
 import com.kasia.model.Model;
 import com.kasia.model.group.Group;
+import com.kasia.validation.user.PasswordConstraint;
 import com.kasia.validation.user.UsernameConstraint;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ public class User extends Model implements Serializable {
     private Locale locale;
     @UsernameConstraint
     private String username;
+    @PasswordConstraint
     private String password;
     private Set<Group> groups;
     private String email;
