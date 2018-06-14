@@ -1,7 +1,6 @@
 package com.kasia.model.article;
 
 import com.kasia.model.Model;
-import com.kasia.model.budget.Budget;
 import com.kasia.model.group.Group;
 import com.kasia.model.group.Type;
 import com.kasia.model.item.Item;
@@ -36,19 +35,15 @@ public class ArticleTest {
         int actualSumClassFields = article.getClass().getDeclaredFields().length;
 
         String description = "description";
-        User maker = new User();
         Instant create = Instant.now();
-        Budget budget = new Budget();
         Group group = new Group();
         Item item = new Item();
         int quantity = 0;
         Price price = new Price();
-
-
-        int expectedSumClassFields = 8;
+        int expectedSumClassFields = 6;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new Article(maker, description, create, budget, group, item, quantity, price)).isNotNull();
+        assertThat(new Article(description, create, group, item, quantity, price)).isNotNull();
     }
 
     // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
@@ -85,24 +80,10 @@ public class ArticleTest {
     }
 
     @Test
-    public void setAndGetMaker() {
-        User maker = new User();
-        article.setMaker(maker);
-        assertThat(article.getMaker()).isEqualTo(maker);
-    }
-
-    @Test
     public void setAndGetCreate() {
         Instant create = Instant.now();
         article.setCreate(create);
         assertThat(article.getCreate()).isEqualTo(create);
-    }
-
-    @Test
-    public void setAndGetBudget() {
-        Budget budget = new Budget();
-        article.setBudget(budget);
-        assertThat(article.getBudget()).isEqualTo(budget);
     }
 
     @Test
