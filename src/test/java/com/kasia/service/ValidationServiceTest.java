@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.Map;
 import java.util.Set;
 
 public class ValidationServiceTest {
@@ -24,9 +25,11 @@ public class ValidationServiceTest {
     @Test
     public void test() {
         User user = new User();
-        user.setUsername("Username");
         Set<ConstraintViolation<User>> errors = validator.validate(user);
-        errors.forEach(el -> System.out.println(el.getPropertyPath().toString() + "   " + el.getMessage()));
+        Map<String, String> map = service.mapErrorFieldsWithMsg(errors);
+        for (String key : map.keySet()){
+            System.out.println("FIELDS : " + key + " | MSG : " + map.get(key));
+        }
     }
 
 }
