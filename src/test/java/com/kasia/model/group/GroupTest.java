@@ -31,7 +31,7 @@ public class GroupTest {
 
         String name = "name";
         User maker = new User();
-        Type type = Type.ROLE;
+        Type type = Type.SYSTEM;
         int expectedSumClassFields = 3;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
