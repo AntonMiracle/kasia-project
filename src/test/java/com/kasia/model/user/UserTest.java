@@ -64,7 +64,7 @@ public class UserTest {
         EqualsVerifier.forClass(user.getClass())
                 .usingGetClass()
                 .suppress(Warning.NONFINAL_FIELDS)
-                .withPrefabValues(Group.class, new Group(), new Group("name",new User(), Type.SYSTEM))
+                .withPrefabValues(Group.class, new Group(), new Group("name", Type.SYSTEM))
                 .verify();
     }
 

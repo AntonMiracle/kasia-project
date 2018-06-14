@@ -33,7 +33,7 @@ public class UserRepositoryTest implements TestHelper<User> {
 
         user = new User();
         user.setUsername(username);
-        setProtectedId(user, Long.valueOf(id));
+        user.setId(id);
 
         users = new HashSet<>();
         users.add(user);

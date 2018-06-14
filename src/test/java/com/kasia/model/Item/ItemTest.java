@@ -6,7 +6,6 @@ import com.kasia.model.group.Type;
 import com.kasia.model.item.Item;
 import com.kasia.model.price.Price;
 import com.kasia.model.unit.Unit;
-import com.kasia.model.user.User;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
@@ -60,7 +59,7 @@ public class ItemTest {
     public void checkEqualsAndHashCode() {
         EqualsVerifier.forClass(item.getClass())
                 .usingGetClass()
-                .withPrefabValues(Group.class, new Group(), new Group("name", new User(), Type.ITEM))
+                .withPrefabValues(Group.class, new Group(), new Group("name", Type.ITEM))
                 .suppress(Warning.NONFINAL_FIELDS)
                 .verify();
     }

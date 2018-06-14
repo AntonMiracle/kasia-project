@@ -1,7 +1,6 @@
 package com.kasia.model.group;
 
 import com.kasia.model.Model;
-import com.kasia.model.user.User;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Before;
@@ -30,12 +29,11 @@ public class GroupTest {
         int actualSumClassFields = group.getClass().getDeclaredFields().length;
 
         String name = "name";
-        User maker = new User();
         Type type = Type.SYSTEM;
-        int expectedSumClassFields = 3;
+        int expectedSumClassFields = 2;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new Group(name, maker, type)).isNotNull();
+        assertThat(new Group(name, type)).isNotNull();
     }
 
     // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
@@ -64,13 +62,6 @@ public class GroupTest {
     }
 
     // GETTERS SETTERS ================================================
-    @Test
-    public void setAndGetMaker() {
-        User maker = new User();
-        group.setMaker(maker);
-        assertThat(group.getMaker()).isEqualTo(maker);
-    }
-
     @Test
     public void setAndGetName() {
         group.setName("name");
