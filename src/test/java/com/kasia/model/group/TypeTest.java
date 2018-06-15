@@ -16,18 +16,8 @@ public class TypeTest {
     }
 
     @Test
-    public void articleConsumptionTypeExist() {
-        assertThat(Type.valueOf("ARTICLE_CATEGORY")).isEqualTo(Type.ARTICLE_CATEGORY);
-    }
-
-    @Test
     public void budgetTypeExist() {
         assertThat(Type.valueOf("BUDGET")).isEqualTo(Type.BUDGET);
-    }
-
-    @Test
-    public void budgetAccessTypeExist() {
-        assertThat(Type.valueOf("BUDGET_ACCESS")).isEqualTo(Type.BUDGET_ACCESS);
     }
 
     @Test
@@ -38,12 +28,6 @@ public class TypeTest {
     @Test
     public void friendUserTypeExist() {
         assertThat(Type.valueOf("USER")).isEqualTo(Type.USER);
-    }
-
-
-    @Test
-    public void synchronizedUserTypeExist() {
-        assertThat(Type.valueOf("SYNCHRONIZED_USER")).isEqualTo(Type.SYNCHRONIZED_USER);
     }
 
 }
