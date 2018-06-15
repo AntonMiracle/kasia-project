@@ -3,9 +3,9 @@ package com.kasia.model.user;
 import com.kasia.model.Model;
 import com.kasia.model.budget.Budget;
 import com.kasia.model.group.Group;
-import com.kasia.validation.constraint.EmailConstraint;
-import com.kasia.validation.constraint.PasswordConstraint;
-import com.kasia.validation.constraint.UsernameConstraint;
+import com.kasia.model.user.constraint.EmailConstraint;
+import com.kasia.model.user.constraint.PasswordConstraint;
+import com.kasia.model.user.constraint.UsernameConstraint;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -29,6 +29,7 @@ public class User extends Model implements Serializable {
     private String email;
     @NotNull
     private ZoneId zoneId;
+    @NotNull
     private Set<Budget> budgets;
 
     public User() {
