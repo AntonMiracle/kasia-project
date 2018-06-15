@@ -63,7 +63,7 @@ public class ArticleTest {
         EqualsVerifier.forClass(article.getClass())
                 .usingGetClass()
                 .suppress(Warning.NONFINAL_FIELDS)
-                .withPrefabValues(Group.class, new Group(), new Group("name", Type.ARTICLE_INCOME))
+                .withPrefabValues(Group.class, new Group(), new Group("name", Type.ARTICLE))
                 .verify();
     }
 
