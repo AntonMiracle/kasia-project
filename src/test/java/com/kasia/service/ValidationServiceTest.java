@@ -1,8 +1,7 @@
 package com.kasia.service;
 
 import com.kasia.model.user.User;
-import com.kasia.validation.ValidationService;
-import com.kasia.validation.imp.ValidationServiceImp;
+import com.kasia.service.imp.ValidationServiceImp;
 import org.junit.Before;
 import org.junit.Test;
 

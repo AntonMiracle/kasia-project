@@ -1,4 +1,4 @@
-package com.kasia.validation.user;
+package com.kasia.model.user.constraint;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -10,24 +10,23 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @NotNull
-@Size(min = 6, max = 16)
+@Size(min = 3, max = 16)
 @Pattern(regexp = "[A-Za-z0-9]+")
 @Constraint(validatedBy = {})
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
 @Retention(RUNTIME)
 @ReportAsSingleViolation
-public @interface PasswordConstraint {
-    String message() default "{validation.user.PasswordConstraint.message}";
+public @interface UsernameConstraint {
+    String message() default "{validation.constraint.UsernameConstraint.message}";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    int min() default 6;
+    int min() default 3;
     int max() default 16;
     String regexp() default "A-Za-z0-9";
 }

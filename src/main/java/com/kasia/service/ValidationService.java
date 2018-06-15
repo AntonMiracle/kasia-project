@@ -1,4 +1,4 @@
-package com.kasia.validation;
+package com.kasia.service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
