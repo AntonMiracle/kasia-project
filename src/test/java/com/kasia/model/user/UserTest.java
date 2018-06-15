@@ -1,6 +1,7 @@
 package com.kasia.model.user;
 
 import com.kasia.model.Model;
+import com.kasia.model.budget.Budget;
 import com.kasia.model.group.Group;
 import com.kasia.model.group.Type;
 import nl.jqno.equalsverifier.EqualsVerifier;
@@ -39,13 +40,14 @@ public class UserTest {
         String password = "password";
         String email = "email@email.com";
         Set<Group> groups = new HashSet<>();
+        Set<Budget> budgets = new HashSet<>();
         Instant create = Instant.now();
         Locale locale = Locale.getDefault();
         ZoneId zoneId = ZoneId.systemDefault();
-        int expectedSumClassFields = 7;
+        int expectedSumClassFields = 8;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new User(username, password, email, groups, create, locale, zoneId)).isNotNull();
+        assertThat(new User(username, password, email, groups, budgets, create, locale, zoneId)).isNotNull();
     }
 
     // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
@@ -61,10 +63,14 @@ public class UserTest {
 
     @Test
     public void checkEqualsAndHashCode() {
+        User user = new User();
+        user.setUsername("Username");
+
         EqualsVerifier.forClass(user.getClass())
                 .usingGetClass()
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withPrefabValues(Group.class, new Group(), new Group("name", Type.SYSTEM))
+                .withPrefabValues(User.class, new User(), user)
                 .verify();
     }
 
@@ -85,6 +91,14 @@ public class UserTest {
     public void setAndGetPassword() {
         user.setPassword("password");
         assertThat(user.getPassword()).isEqualTo("password");
+    }
+
+    @Test
+    public void setAndGetBudgets() {
+        Set<Budget> budgets = new HashSet<>();
+        user.setBudgets(budgets);
+        assertThat(user.getBudgets()).isEqualTo(budgets);
+
     }
 
     @Test

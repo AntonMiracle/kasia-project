@@ -1,10 +1,11 @@
 package com.kasia.model.user;
 
 import com.kasia.model.Model;
+import com.kasia.model.budget.Budget;
 import com.kasia.model.group.Group;
-import com.kasia.validation.user.EmailConstraint;
-import com.kasia.validation.user.PasswordConstraint;
-import com.kasia.validation.user.UsernameConstraint;
+import com.kasia.validation.constraint.EmailConstraint;
+import com.kasia.validation.constraint.PasswordConstraint;
+import com.kasia.validation.constraint.UsernameConstraint;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -28,12 +29,13 @@ public class User extends Model implements Serializable {
     private String email;
     @NotNull
     private ZoneId zoneId;
+    private Set<Budget> budgets;
 
     public User() {
 
     }
 
-    public User(String username, String password, String email, Set<Group> groups, Instant create, Locale locale, ZoneId zoneId) {
+    public User(String username, String password, String email, Set<Group> groups, Set<Budget> budgets, Instant create, Locale locale, ZoneId zoneId) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -41,6 +43,7 @@ public class User extends Model implements Serializable {
         this.create = create;
         this.locale = locale;
         this.zoneId = zoneId;
+        this.budgets = budgets;
     }
 
     public void setUsername(String username) {
@@ -109,6 +112,7 @@ public class User extends Model implements Serializable {
                 ", groups=" + groups +
                 ", email='" + email + '\'' +
                 ", zoneId=" + zoneId +
+                ", budgets=" + budgets +
                 '}';
     }
 
@@ -126,7 +130,8 @@ public class User extends Model implements Serializable {
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (groups != null ? !groups.equals(user.groups) : user.groups != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        return zoneId != null ? zoneId.equals(user.zoneId) : user.zoneId == null;
+        if (zoneId != null ? !zoneId.equals(user.zoneId) : user.zoneId != null) return false;
+        return budgets != null ? budgets.equals(user.budgets) : user.budgets == null;
     }
 
     @Override
@@ -139,6 +144,15 @@ public class User extends Model implements Serializable {
         result = 31 * result + (groups != null ? groups.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
+        result = 31 * result + (budgets != null ? budgets.hashCode() : 0);
         return result;
+    }
+
+    public void setBudgets(Set<Budget> budgets) {
+        this.budgets = budgets;
+    }
+
+    public Set<Budget> getBudgets() {
+        return budgets;
     }
 }
