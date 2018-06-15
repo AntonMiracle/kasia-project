@@ -4,7 +4,6 @@ import com.kasia.model.Model;
 import com.kasia.model.article.Article;
 import com.kasia.model.group.Group;
 import com.kasia.model.price.Price;
-import com.kasia.model.user.User;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -12,7 +11,6 @@ import java.util.Set;
 
 public class Budget extends Model implements Serializable {
     private Instant create;
-    private User maker;
     private String name;
     private Set<Article> articles;
     private Set<Group> groups;
@@ -21,8 +19,7 @@ public class Budget extends Model implements Serializable {
     public Budget() {
     }
 
-    public Budget(User maker, String name, Set<Article> articles, Set<Group> groups, Price balance, Instant create) {
-        this.maker = maker;
+    public Budget(String name, Set<Article> articles, Set<Group> groups, Price balance, Instant create) {
         this.name = name;
         this.articles = articles;
         this.groups = groups;
@@ -36,14 +33,6 @@ public class Budget extends Model implements Serializable {
 
     public String getName() {
         return name;
-    }
-
-    public void setMaker(User maker) {
-        this.maker = maker;
-    }
-
-    public User getMaker() {
-        return maker;
     }
 
     public void setArticles(Set<Article> articles) {
@@ -82,7 +71,6 @@ public class Budget extends Model implements Serializable {
     public String toString() {
         return "Budget{" +
                 "create=" + create +
-                ", maker=" + maker +
                 ", name='" + name + '\'' +
                 ", articles=" + articles +
                 ", groups=" + groups +
@@ -99,7 +87,6 @@ public class Budget extends Model implements Serializable {
         Budget budget = (Budget) o;
 
         if (create != null ? !create.equals(budget.create) : budget.create != null) return false;
-        if (maker != null ? !maker.equals(budget.maker) : budget.maker != null) return false;
         if (name != null ? !name.equals(budget.name) : budget.name != null) return false;
         if (articles != null ? !articles.equals(budget.articles) : budget.articles != null) return false;
         if (groups != null ? !groups.equals(budget.groups) : budget.groups != null) return false;
@@ -110,7 +97,6 @@ public class Budget extends Model implements Serializable {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (create != null ? create.hashCode() : 0);
-        result = 31 * result + (maker != null ? maker.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (articles != null ? articles.hashCode() : 0);
         result = 31 * result + (groups != null ? groups.hashCode() : 0);
