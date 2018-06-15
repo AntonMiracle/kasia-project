@@ -15,12 +15,14 @@ public class Budget extends Model implements Serializable {
     private Set<Article> articles;
     private Set<Group> groups;
     private Price balance;
+    private String description;
 
     public Budget() {
     }
 
-    public Budget(String name, Set<Article> articles, Set<Group> groups, Price balance, Instant create) {
+    public Budget(String name, String description, Set<Article> articles, Set<Group> groups, Price balance, Instant create) {
         this.name = name;
+        this.description = description;
         this.articles = articles;
         this.groups = groups;
         this.balance = balance;
@@ -75,6 +77,7 @@ public class Budget extends Model implements Serializable {
                 ", articles=" + articles +
                 ", groups=" + groups +
                 ", balance=" + balance +
+                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -90,7 +93,8 @@ public class Budget extends Model implements Serializable {
         if (name != null ? !name.equals(budget.name) : budget.name != null) return false;
         if (articles != null ? !articles.equals(budget.articles) : budget.articles != null) return false;
         if (groups != null ? !groups.equals(budget.groups) : budget.groups != null) return false;
-        return balance != null ? balance.equals(budget.balance) : budget.balance == null;
+        if (balance != null ? !balance.equals(budget.balance) : budget.balance != null) return false;
+        return description != null ? description.equals(budget.description) : budget.description == null;
     }
 
     @Override
@@ -101,6 +105,15 @@ public class Budget extends Model implements Serializable {
         result = 31 * result + (articles != null ? articles.hashCode() : 0);
         result = 31 * result + (groups != null ? groups.hashCode() : 0);
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

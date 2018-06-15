@@ -35,14 +35,15 @@ public class BudgetTest {
         int actualSumClassFields = budget.getClass().getDeclaredFields().length;
 
         String name = "name";
+        String description = "description";
         Set<Article> articles = new HashSet<>();
         Set<Group> groups = new HashSet<>();
         Price balance = new Price();
         Instant create = Instant.now();
-        int expectedSumClassFields = 5;
+        int expectedSumClassFields = 6;
 
         assertThat(actualSumClassFields).isEqualTo(expectedSumClassFields);
-        assertThat(new Budget(name, articles, groups, balance, create)).isNotNull();
+        assertThat(new Budget(name, description, articles, groups, balance, create)).isNotNull();
     }
 
     // IMPLEMENTS EXTENDS HASHCODE EQUALS TO_STRING ================================================
@@ -82,6 +83,12 @@ public class BudgetTest {
     public void setAndGetUsername() {
         budget.setName("name");
         assertThat(budget.getName()).isEqualTo("name");
+    }
+
+    @Test
+    public void setAndGetDescription() {
+        budget.setDescription("description");
+        assertThat(budget.getDescription()).isEqualTo("description");
     }
 
     @Test
