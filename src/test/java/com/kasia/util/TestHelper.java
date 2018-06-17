@@ -1,12 +1,21 @@
 package com.kasia.util;
 
-import java.lang.reflect.Field;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
-public interface TestHelper<T> {
+public class TestHelper {
 
-    default void setProtectedId(T where, Object value) throws NoSuchFieldException, IllegalAccessException {
-        Field field = field = where.getClass().getDeclaredField("id");
-        field.setAccessible(true);
-        field.set(where, value);
+    /**
+     * Make copy ValidationMessages.properties from main/resources to test/resources
+     *
+     * @throws IOException
+     */
+    public void copyForTestValidationMessagesProperties() throws IOException {
+        Path originalValidationMessagesProperties = Paths.get("src", "main", "resources", "ValidationMessages.properties");
+        Path testValidationMessagesProperties = Paths.get("src", "test", "resources", "ValidationMessages.properties");
+        Files.copy(originalValidationMessagesProperties, testValidationMessagesProperties, StandardCopyOption.REPLACE_EXISTING);
     }
 }
