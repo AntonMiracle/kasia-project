@@ -10,6 +10,7 @@ public class TestHelper {
 
     /**
      * Make copy ValidationMessages.properties from main/resources to test/resources
+     * Replace if Exist
      *
      * @throws IOException
      */
