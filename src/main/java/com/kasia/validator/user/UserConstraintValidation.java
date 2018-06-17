@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.HashSet;
 
 public class UserConstraintValidation implements ConstraintValidator<UserConstraint, User> {
+    //как добавить в сообщение программно параметры например максимальная и минимальная длинна?
     private final int EMAIL_MIN_LENGTH = 5;
     private final int EMAIL_MAX_LENGTH = 32;
     private final String EMAIL_REGEXP = ".+[@].+[.].+";
