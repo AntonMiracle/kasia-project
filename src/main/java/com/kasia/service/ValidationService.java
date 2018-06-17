@@ -1,22 +1,14 @@
 package com.kasia.service;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
+import com.kasia.model.Model;
+
 import javax.validation.Validator;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
-public interface ValidationService<T> {
+public interface ValidationService<T extends Model> {
 
-    default Validator getValidator() {
-        return Validation.buildDefaultValidatorFactory().getValidator();
-    }
+    Validator getValidator();
 
-    default Map<String, String> mapErrorFieldsWithMsg(Set<ConstraintViolation<T>> errors) {
-        Map<String, String> mapa = new HashMap<>();
-        errors.forEach(el -> mapa.put(el.getPropertyPath().toString(), el.getMessage()));
-        return mapa;
-    }
+    Map<String, String> mapErrorFieldsWithMsg(T model);
 
 }
