@@ -20,6 +20,15 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
     private final int USERNAME_MAX_LENGTH = 16;
     private final String USERNAME_REGEXP = "[A-Za-z0-9]+";
 
+    public final String USERNAME = "username";
+    public final String PASSWORD = "password";
+    public final String GROUPS = "groups";
+    public final String EMAIL = "email";
+    public final String CREATE = "create";
+    public final String LOCALE = "locale";
+    public final String ZONE_ID = "zoneId";
+    public final String BUDGETS = "budgets";
+
     @Override
     public void initialize(UserConstraint constraintAnnotation) {
 
