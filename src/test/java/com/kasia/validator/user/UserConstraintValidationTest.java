@@ -13,6 +13,7 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Locale;
 
@@ -333,5 +334,25 @@ public class UserConstraintValidationTest extends TestHelper {
     public void localeValid() {
         user.setLocale(Locale.getDefault());
         assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.LOCALE)).isFalse();
+    }
+
+    // ZONE ID ================================================
+    @Test
+    public void zoneIdInvalidMsg() {
+        user.setZoneId(null);
+        String errorMsg = "null";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.ZONE_ID)).isEqualTo(errorMsg);
+    }
+
+    @Test
+    public void zoneIdInvalid() {
+        user.setZoneId(null);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.ZONE_ID)).isTrue();
+    }
+
+    @Test
+    public void zoneIdValid() {
+        user.setZoneId(ZoneId.systemDefault());
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.ZONE_ID)).isFalse();
     }
 }
