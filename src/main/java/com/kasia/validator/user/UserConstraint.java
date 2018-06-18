@@ -17,4 +17,23 @@ public @interface UserConstraint {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
+    int usernameMinLength() default 6;
+
+    int usernameMaxLength() default 32;
+
+    String usernameRegexp() default "[A-Za-z0-9_]+";
+
+    int passwordMinLength() default 6;
+
+    int passwordMaxLength() default 32;
+
+    String passwordRegexp() default "[A-Za-z0-9]+";
+
+    int emailMinLength() default 6;
+
+    int emailMaxLength() default 32;
+
+    String emailRegexp() default "[A-Za-z0-9]+";
+
 }

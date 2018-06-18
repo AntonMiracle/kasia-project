@@ -9,17 +9,17 @@ import java.util.HashSet;
 
 public class UserConstraintValidation implements ConstraintValidator<UserConstraint, User> {
     //как добавить в сообщение программно параметры например максимальная и минимальная длинна?
-    private final int EMAIL_MIN_LENGTH = 5;
-    private final int EMAIL_MAX_LENGTH = 32;
-    private final String EMAIL_REGEXP = ".+[@].+[.].+";
+    private int emailMinLength;
+    private int emailMaxLength;
+    private String emailRegexp;
 
-    private final int PASSWORD_MIN_LENGTH = 6;
-    private final int PASSWORD_MAX_LENGTH = 32;
-    private final String PASSWORD_REGEXP = "[A-Za-z0-9]+";
+    private int passwordMinLength;
+    private int passwordMaxLength;
+    private String passwordRegexp;
 
-    private final int USERNAME_MIN_LENGTH = 3;
-    private final int USERNAME_MAX_LENGTH = 16;
-    private final String USERNAME_REGEXP = "[A-Za-z0-9]+";
+    private int usernameMinLength;
+    private int usernameMaxLength;
+    private String usernameRegexp;
 
     public final String USERNAME = "username";
     public final String PASSWORD = "password";
@@ -32,7 +32,17 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
 
     @Override
     public void initialize(UserConstraint constraintAnnotation) {
+        emailMinLength = constraintAnnotation.emailMinLength();
+        emailMaxLength = constraintAnnotation.emailMaxLength();
+        emailRegexp = constraintAnnotation.emailRegexp();
 
+        passwordMinLength = constraintAnnotation.passwordMinLength();
+        passwordMaxLength = constraintAnnotation.passwordMaxLength();
+        passwordRegexp = constraintAnnotation.passwordRegexp();
+
+        usernameMinLength = constraintAnnotation.usernameMinLength();
+        usernameMaxLength = constraintAnnotation.usernameMaxLength();
+        usernameRegexp = constraintAnnotation.usernameRegexp();
     }
 
     @Override
@@ -40,6 +50,7 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
         int errorCount = 0;
         constraintValidatorContext.disableDefaultConstraintViolation();
 
+        trimStringFields(user);
         if (user == null) return true;
         if (user.getBudgets() == null) user.setBudgets(new HashSet<>());
         if (!isCreateValid(user, constraintValidatorContext)) ++errorCount;
@@ -49,11 +60,16 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
         if (!isZoneIdValid(user, constraintValidatorContext)) ++errorCount;
         if (!isPasswordValid(user, constraintValidatorContext)) ++errorCount;
         if (!isUsernameValid(user, constraintValidatorContext)) ++errorCount;
-
         return errorCount == 0;
     }
 
-    private void put(String fieldName, String errorMsg, ConstraintValidatorContext constraintValidatorContext) {
+    private void trimStringFields(User user) {
+        if (user.getUsername() != null) user.setUsername(user.getUsername().trim());
+        if (user.getPassword() != null) user.setPassword(user.getPassword().trim());
+        if (user.getEmail() != null) user.setEmail(user.getEmail().trim());
+    }
+
+    private void addConstraintViolation(String fieldName, String errorMsg, ConstraintValidatorContext constraintValidatorContext) {
         constraintValidatorContext.buildConstraintViolationWithTemplate(errorMsg)
                 .addPropertyNode(fieldName)
                 .addConstraintViolation();
@@ -61,16 +77,15 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
 
     private boolean isUsernameValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         String username = user.getUsername();
+        String msg;
         if (username == null) {
-            put(USERNAME, "Username is null.{validation.user.UserConstraint.message}", constraintValidatorContext);
+            msg = "{validation.user.UserConstraint.message.username.empty}";
+            addConstraintViolation(USERNAME, msg, constraintValidatorContext);
             return false;
         }
-        if (username.length() < USERNAME_MIN_LENGTH || username.length() > USERNAME_MAX_LENGTH) {
-            put(USERNAME, "Username length must be " + USERNAME_MIN_LENGTH + "-" + USERNAME_MAX_LENGTH, constraintValidatorContext);
-            return false;
-        }
-        if (!username.matches(USERNAME_REGEXP)) {
-            put(USERNAME, "Username must content A-Za-z0-9", constraintValidatorContext);
+        if (username.length() < usernameMinLength || username.length() > usernameMaxLength || !username.matches(usernameRegexp)) {
+            msg = "{validation.user.UserConstraint.message.username.invalid}";
+            addConstraintViolation(USERNAME, msg, constraintValidatorContext);
             return false;
         }
         return true;
@@ -79,15 +94,15 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
     private boolean isPasswordValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         String password = user.getPassword();
         if (password == null) {
-            put(PASSWORD, "Password is null", constraintValidatorContext);
+            addConstraintViolation(PASSWORD, "Password is null", constraintValidatorContext);
             return false;
         }
-        if (password.length() < PASSWORD_MIN_LENGTH || password.length() > PASSWORD_MAX_LENGTH) {
-            put(PASSWORD, "Password length must be " + PASSWORD_MIN_LENGTH + "-" + PASSWORD_MAX_LENGTH, constraintValidatorContext);
+        if (password.length() < passwordMinLength || password.length() > passwordMaxLength) {
+            addConstraintViolation(PASSWORD, "Password length must be " + passwordMinLength + "-" + passwordMaxLength, constraintValidatorContext);
             return false;
         }
-        if (!password.matches(PASSWORD_REGEXP)) {
-            put(PASSWORD, "Password must content A-Za-z0-9", constraintValidatorContext);
+        if (!password.matches(passwordRegexp)) {
+            addConstraintViolation(PASSWORD, "Password must content A-Za-z0-9", constraintValidatorContext);
             return false;
         }
         return true;
@@ -95,7 +110,7 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
 
     private boolean isZoneIdValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         if (user.getZoneId() == null) {
-            put(ZONE_ID, "ZoneId is null", constraintValidatorContext);
+            addConstraintViolation(ZONE_ID, "ZoneId is null", constraintValidatorContext);
             return false;
         }
         return true;
@@ -103,7 +118,7 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
 
     private boolean isLocaleValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         if (user.getLocale() == null) {
-            put(LOCALE, "Locale is null", constraintValidatorContext);
+            addConstraintViolation(LOCALE, "Locale is null", constraintValidatorContext);
             return false;
         }
         return true;
@@ -111,11 +126,11 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
 
     private boolean isCreateValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         if (user.getCreate() == null) {
-            put(CREATE, "Create date is null", constraintValidatorContext);
+            addConstraintViolation(CREATE, "Create date is null", constraintValidatorContext);
             return false;
         }
         if (!user.getCreate().isBefore(Instant.now())) {
-            put(CREATE, "Create date must be in past", constraintValidatorContext);
+            addConstraintViolation(CREATE, "Create date must be in past", constraintValidatorContext);
             return false;
         }
         return true;
@@ -125,15 +140,15 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
         String email = user.getEmail();
 
         if (email == null) {
-            put(EMAIL, "Email is null", constraintValidatorContext);
+            addConstraintViolation(EMAIL, "Email is null", constraintValidatorContext);
             return false;
         }
-        if (email.length() < EMAIL_MIN_LENGTH || email.length() > EMAIL_MAX_LENGTH) {
-            put(EMAIL, "Email must has " + EMAIL_MIN_LENGTH + "-" + EMAIL_MAX_LENGTH + " symbols", constraintValidatorContext);
+        if (email.length() < emailMinLength || email.length() > emailMaxLength) {
+            addConstraintViolation(EMAIL, "Email must has " + emailMinLength + "-" + emailMaxLength + " symbols", constraintValidatorContext);
             return false;
         }
-        if (!user.getEmail().matches(EMAIL_REGEXP)) {
-            put(EMAIL, "Email incorrect", constraintValidatorContext);
+        if (!user.getEmail().matches(emailRegexp)) {
+            addConstraintViolation(EMAIL, "Email incorrect", constraintValidatorContext);
             return false;
         }
         return true;
@@ -141,11 +156,11 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
 
     private boolean isGroupsValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         if (user.getGroups() == null) {
-            put(GROUPS, "Groups is null", constraintValidatorContext);
+            addConstraintViolation(GROUPS, "Groups is null", constraintValidatorContext);
             return false;
         }
         if (user.getGroups().size() == 0) {
-            put(GROUPS, "Groups must contain at least one system group", constraintValidatorContext);
+            addConstraintViolation(GROUPS, "Groups must contain at least one system group", constraintValidatorContext);
             return false;
         }
         return true;
