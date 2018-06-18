@@ -46,7 +46,7 @@ public class UserConstraintValidationTest extends TestHelper {
         constraintValidation = new UserConstraintValidation();
     }
 
-    // TEST FIELDS NAME ================================================
+    // FIELDS NAME ================================================
     @Test(expected = Test.None.class)
     public void fieldNameInUserConstraintValidationCorrect() throws NoSuchFieldException {
         user.getClass().getDeclaredField(constraintValidation.USERNAME);
@@ -139,7 +139,6 @@ public class UserConstraintValidationTest extends TestHelper {
         assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.USERNAME)).isTrue();
     }
 
-
     @Test
     public void usernameValid() {
         user.setUsername("Username23");
@@ -159,6 +158,91 @@ public class UserConstraintValidationTest extends TestHelper {
 
         user.setUsername("22_uSeRnAmE");
         assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.USERNAME)).isFalse();
+    }
+
+    // PASSWORD ================================================
+    @Test
+    public void passwordInvalidMsg() {
+        user.setPassword("");
+        String errorMsg = "length 6-32 with upper and lower case symbol and number";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.PASSWORD)).isEqualTo(errorMsg);
+
+        user.setPassword(null);
+        errorMsg = "null";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.PASSWORD)).isEqualTo(errorMsg);
+    }
+
+    @Test
+    public void passwordInvalid() {
+        user.setPassword(null);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        String password = "Pa2sw";
+        user.setPassword(password);//length min 6
+        assertThat(password.length()).isEqualTo(5);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "2passWord22passWord22passWord2223";
+        user.setPassword(password);//length max 32
+        assertThat(password.length()).isEqualTo(33);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "password";
+        user.setPassword(password);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "PASSWORD";
+        user.setPassword(password);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "99999999";
+        user.setPassword(password);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "AaaaaaA";
+        user.setPassword(password);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "aAAAAAa";
+        user.setPassword(password);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "9aaaaa9";
+        user.setPassword(password);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "a99aa99a";
+        user.setPassword(password);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "A99999A";
+        user.setPassword(password);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+
+        password = "9AAAAA9";
+        user.setPassword(password);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isTrue();
+    }
+
+    @Test
+    public void passwordValid() {
+        user.setPassword("Passsd2");
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isFalse();
+
+        user.setPassword("2assssP");
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isFalse();
+
+        user.setPassword("aPsss2s");
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isFalse();
+
+        user.setPassword("a2sssPs");
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isFalse();
+
+        user.setPassword("a22ssPPs");
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isFalse();
+
+        user.setPassword("aPPsss22s");
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isFalse();
     }
 
 }

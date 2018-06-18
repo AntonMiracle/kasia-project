@@ -52,7 +52,7 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
 
         trimStringFields(user);
         if (user == null) return true;
-        if (user.getBudgets() == null) user.setBudgets(new HashSet<>());
+        if (!isBudgetsValid(user, constraintValidatorContext)) ++errorCount;
         if (!isCreateValid(user, constraintValidatorContext)) ++errorCount;
         if (!isEmailValid(user, constraintValidatorContext)) ++errorCount;
         if (!isGroupsValid(user, constraintValidatorContext)) ++errorCount;
@@ -75,6 +75,13 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
                 .addConstraintViolation();
     }
 
+    private boolean isBudgetsValid(User user, ConstraintValidatorContext constraintValidatorContext) {
+        if (user.getBudgets() == null) {
+            user.setBudgets(new HashSet<>());
+        }
+        return true;
+    }
+
     private boolean isUsernameValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         String username = user.getUsername();
         String msg;
@@ -93,16 +100,15 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
 
     private boolean isPasswordValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         String password = user.getPassword();
+        String msg;
         if (password == null) {
-            addConstraintViolation(PASSWORD, "Password is null", constraintValidatorContext);
+            msg = "{validation.user.UserConstraint.message.password.empty}";
+            addConstraintViolation(PASSWORD, msg, constraintValidatorContext);
             return false;
         }
-        if (password.length() < passwordMinLength || password.length() > passwordMaxLength) {
-            addConstraintViolation(PASSWORD, "Password length must be " + passwordMinLength + "-" + passwordMaxLength, constraintValidatorContext);
-            return false;
-        }
-        if (!password.matches(passwordRegexp)) {
-            addConstraintViolation(PASSWORD, "Password must content A-Za-z0-9", constraintValidatorContext);
+        if (password.length() < passwordMinLength || password.length() > passwordMaxLength || !password.matches(passwordRegexp)) {
+            msg = "{validation.user.UserConstraint.message.password.invalid}";
+            addConstraintViolation(PASSWORD, msg, constraintValidatorContext);
             return false;
         }
         return true;
