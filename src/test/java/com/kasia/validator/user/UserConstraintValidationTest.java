@@ -16,9 +16,7 @@ import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Matchers.any;
@@ -50,6 +48,25 @@ public class UserConstraintValidationTest extends TestHelper {
     public void before() {
         user = new User();
         constraintValidation = new UserConstraintValidation();
+    }
+
+    // VALID ================================================
+    @Test(expected = Test.None.class)
+    public void validUser() {
+        user.setUsername("Username22");
+        user.setCreate(Instant.now());
+
+        Set<Group> groups = new HashSet<>();
+        groups.add(new Group());
+        user.setGroups(groups);
+
+        user.setZoneId(ZoneId.systemDefault());
+        user.setLocale(Locale.getDefault());
+        user.setBudgets(new HashSet<>());
+        user.setEmail("email@gmail.com");
+        user.setPassword("2Password");
+
+        assertThat(validator.validate(user).size()).isEqualTo(0);
     }
 
     // FIELDS NAME ================================================
