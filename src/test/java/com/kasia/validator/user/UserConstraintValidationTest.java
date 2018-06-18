@@ -13,6 +13,7 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
+import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Matchers.any;
@@ -293,4 +294,24 @@ public class UserConstraintValidationTest extends TestHelper {
         assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.EMAIL)).isFalse();
     }
 
+    // BUDGETS ================================================
+    @Test
+    public void budgetInvalidMsg() {
+        user.setBudgets(null);
+        String errorMsg = "null";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.BUDGETS)).isEqualTo(errorMsg);
+
+    }
+
+    @Test
+    public void budgetInvalid() {
+        user.setBudgets(null);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.BUDGETS)).isTrue();
+    }
+
+    @Test
+    public void budgetValid() {
+        user.setBudgets(new HashSet<>());
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.BUDGETS)).isFalse();
+    }
 }

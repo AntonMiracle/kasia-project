@@ -5,7 +5,6 @@ import com.kasia.model.user.User;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.Instant;
-import java.util.HashSet;
 
 public class UserConstraintValidation implements ConstraintValidator<UserConstraint, User> {
     //как добавить в сообщение программно параметры например максимальная и минимальная длинна?
@@ -76,8 +75,11 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
     }
 
     private boolean isBudgetsValid(User user, ConstraintValidatorContext constraintValidatorContext) {
+        String msg;
         if (user.getBudgets() == null) {
-            user.setBudgets(new HashSet<>());
+            msg = "{validation.user.UserConstraint.message.budgets.empty}";
+            addConstraintViolation(BUDGETS, msg, constraintValidatorContext);
+            return false;
         }
         return true;
     }
