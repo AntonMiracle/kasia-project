@@ -14,6 +14,7 @@ import javax.validation.ConstraintValidatorContext;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Locale;
@@ -357,6 +358,7 @@ public class UserConstraintValidationTest extends TestHelper {
         user.setZoneId(ZoneId.systemDefault());
         assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.ZONE_ID)).isFalse();
     }
+
     // GROUPS ================================================
     @Test
     public void groupsInvalidMsg() {
@@ -384,5 +386,32 @@ public class UserConstraintValidationTest extends TestHelper {
         groups.add(new Group());
         user.setGroups(groups);
         assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.GROUPS)).isFalse();
+    }
+
+    // CREATE ================================================
+    @Test
+    public void createInvalidMsg() {
+        user.setCreate(null);
+        String errorMsg = "null";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.CREATE)).isEqualTo(errorMsg);
+
+        user.setCreate(Instant.now().plusSeconds(1000));
+        errorMsg = "future";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.CREATE)).isEqualTo(errorMsg);
+    }
+
+    @Test
+    public void createInvalid() {
+        user.setCreate(null);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.CREATE)).isTrue();
+
+        user.setCreate(Instant.now().plusSeconds(1000));
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.CREATE)).isTrue();
+    }
+
+    @Test
+    public void createValid() {
+        user.setCreate(Instant.now().minusSeconds(100));
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.CREATE)).isFalse();
     }
 }

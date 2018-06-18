@@ -7,7 +7,6 @@ import javax.validation.ConstraintValidatorContext;
 import java.time.Instant;
 
 public class UserConstraintValidation implements ConstraintValidator<UserConstraint, User> {
-    //как добавить в сообщение программно параметры например максимальная и минимальная длинна?
     private int emailMinLength;
     private int emailMaxLength;
     private String emailRegexp;
@@ -153,17 +152,19 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
     }
 
     private boolean isCreateValid(User user, ConstraintValidatorContext constraintValidatorContext) {
+        String msg;
         if (user.getCreate() == null) {
-            addConstraintViolation(CREATE, "Create date is null", constraintValidatorContext);
+            msg = "{validation.user.UserConstraint.message.create.empty}";
+            addConstraintViolation(CREATE, msg, constraintValidatorContext);
             return false;
         }
         if (!user.getCreate().isBefore(Instant.now())) {
-            addConstraintViolation(CREATE, "Create date must be in past", constraintValidatorContext);
+            msg = "{validation.user.UserConstraint.message.create.invalid}";
+            addConstraintViolation(CREATE, msg, constraintValidatorContext);
             return false;
         }
         return true;
     }
-
 
     private boolean isGroupsValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         String msg;
@@ -179,6 +180,5 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
         }
         return true;
     }
-
 
 }
