@@ -1,6 +1,5 @@
 package com.kasia.repository;
 
-import com.kasia.util.TestHelper;
 import com.kasia.model.result.Result;
 import com.kasia.model.user.User;
 import org.junit.Before;
@@ -13,7 +12,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class UserRepositoryTest implements TestHelper<User> {
+public class UserRepositoryTest {
     private UserRepository repository;
 
     private User user;

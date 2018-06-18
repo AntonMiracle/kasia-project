@@ -3,33 +3,23 @@ package com.kasia.model.user;
 import com.kasia.model.Model;
 import com.kasia.model.budget.Budget;
 import com.kasia.model.group.Group;
-import com.kasia.model.user.constraint.EmailConstraint;
-import com.kasia.model.user.constraint.PasswordConstraint;
-import com.kasia.model.user.constraint.UsernameConstraint;
+import com.kasia.validator.user.UserConstraint;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Set;
 
+@UserConstraint
 public class User extends Model implements Serializable {
-    @NotNull
     private Instant create;
-    @NotNull
     private Locale locale;
-    @UsernameConstraint
     private String username;
-    @PasswordConstraint
     private String password;
-    @NotNull
     private Set<Group> groups;
-    @EmailConstraint
     private String email;
-    @NotNull
     private ZoneId zoneId;
-    @NotNull
     private Set<Budget> budgets;
 
     public User() {
