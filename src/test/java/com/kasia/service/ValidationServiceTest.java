@@ -2,12 +2,12 @@ package com.kasia.service;
 
 import com.kasia.model.Model;
 import com.kasia.service.imp.ValidationServiceImp;
+import com.kasia.util.TestHelper;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.constraints.Min;
@@ -25,12 +25,9 @@ public class ValidationServiceTest {
 
     @BeforeClass
     public static void beforeClass() throws IOException {
-        validatorFactory = Validation.buildDefaultValidatorFactory();
-        assert validatorFactory != null;
-
+        validatorFactory = new TestHelper().getValidatorFactory();
         service = new ValidationServiceImp<>(validatorFactory.getValidator());
         validator = service.getValidator();
-        assert validator != null;
     }
 
     @AfterClass
