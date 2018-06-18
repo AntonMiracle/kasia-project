@@ -54,7 +54,7 @@ public class UserConstraintValidationTest extends TestHelper {
     @Test(expected = Test.None.class)
     public void validUser() {
         user.setUsername("Username22");
-        user.setCreate(Instant.now());
+        user.setCreate(Instant.now().minusSeconds(100));
 
         Set<Group> groups = new HashSet<>();
         groups.add(new Group());
