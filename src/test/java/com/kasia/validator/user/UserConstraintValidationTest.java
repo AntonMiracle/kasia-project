@@ -14,6 +14,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Locale;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Matchers.any;
@@ -300,7 +301,6 @@ public class UserConstraintValidationTest extends TestHelper {
         user.setBudgets(null);
         String errorMsg = "null";
         assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.BUDGETS)).isEqualTo(errorMsg);
-
     }
 
     @Test
@@ -313,5 +313,25 @@ public class UserConstraintValidationTest extends TestHelper {
     public void budgetValid() {
         user.setBudgets(new HashSet<>());
         assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.BUDGETS)).isFalse();
+    }
+
+    // LOCALE ================================================
+    @Test
+    public void localeInvalidMsg() {
+        user.setLocale(null);
+        String errorMsg = "null";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.LOCALE)).isEqualTo(errorMsg);
+    }
+
+    @Test
+    public void localeInvalid() {
+        user.setLocale(null);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.LOCALE)).isTrue();
+    }
+
+    @Test
+    public void localeValid() {
+        user.setLocale(Locale.getDefault());
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.LOCALE)).isFalse();
     }
 }

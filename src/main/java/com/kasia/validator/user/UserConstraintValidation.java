@@ -134,16 +134,20 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
     }
 
     private boolean isZoneIdValid(User user, ConstraintValidatorContext constraintValidatorContext) {
+        String msg;
         if (user.getZoneId() == null) {
-            addConstraintViolation(ZONE_ID, "ZoneId is null", constraintValidatorContext);
+            msg = "{validation.user.UserConstraint.message.zoneId.empty}";
+            addConstraintViolation(ZONE_ID, msg, constraintValidatorContext);
             return false;
         }
         return true;
     }
 
     private boolean isLocaleValid(User user, ConstraintValidatorContext constraintValidatorContext) {
+        String msg;
         if (user.getLocale() == null) {
-            addConstraintViolation(LOCALE, "Locale is null", constraintValidatorContext);
+            msg = "{validation.user.UserConstraint.message.locale.empty}";
+            addConstraintViolation(LOCALE, msg, constraintValidatorContext);
             return false;
         }
         return true;
