@@ -114,6 +114,23 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
         return true;
     }
 
+    private boolean isEmailValid(User user, ConstraintValidatorContext constraintValidatorContext) {
+        String email = user.getEmail();
+        String msg;
+        if (email == null) {
+            msg = "{validation.user.UserConstraint.message.email.empty}";
+            addConstraintViolation(EMAIL, msg, constraintValidatorContext);
+            return false;
+        }
+        if (email.length() < emailMinLength || email.length() > emailMaxLength || !user.getEmail().matches(emailRegexp)) {
+            msg = "{validation.user.UserConstraint.message.email.invalid}";
+            addConstraintViolation(EMAIL, msg, constraintValidatorContext);
+            return false;
+        }
+
+        return true;
+    }
+
     private boolean isZoneIdValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         if (user.getZoneId() == null) {
             addConstraintViolation(ZONE_ID, "ZoneId is null", constraintValidatorContext);
@@ -142,23 +159,6 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
         return true;
     }
 
-    private boolean isEmailValid(User user, ConstraintValidatorContext constraintValidatorContext) {
-        String email = user.getEmail();
-
-        if (email == null) {
-            addConstraintViolation(EMAIL, "Email is null", constraintValidatorContext);
-            return false;
-        }
-        if (email.length() < emailMinLength || email.length() > emailMaxLength) {
-            addConstraintViolation(EMAIL, "Email must has " + emailMinLength + "-" + emailMaxLength + " symbols", constraintValidatorContext);
-            return false;
-        }
-        if (!user.getEmail().matches(emailRegexp)) {
-            addConstraintViolation(EMAIL, "Email incorrect", constraintValidatorContext);
-            return false;
-        }
-        return true;
-    }
 
     private boolean isGroupsValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         if (user.getGroups() == null) {

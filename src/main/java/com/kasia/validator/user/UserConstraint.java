@@ -22,7 +22,7 @@ public @interface UserConstraint {
 
     int usernameMaxLength() default 32;
 
-    String usernameRegexp() default "[A-Za-z0-9_]+";
+    String usernameRegexp() default "^[A-Za-z0-9_]+$";
 
     int passwordMinLength() default 6;
 
@@ -34,6 +34,6 @@ public @interface UserConstraint {
 
     int emailMaxLength() default 32;
 
-    String emailRegexp() default "[A-Za-z0-9]+";
+    String emailRegexp() default "^.+[@].+[.].+$";
 
 }

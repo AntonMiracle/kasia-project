@@ -115,7 +115,7 @@ public class UserConstraintValidationTest extends TestHelper {
     @Test
     public void usernameInvalidMsg() {
         user.setUsername("");
-        String errorMsg = "length 6-32 contain [A-Za-z0-9_]+";
+        String errorMsg = "length 6-32 only A-z,0-9,_";
         assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.USERNAME)).isEqualTo(errorMsg);
 
         user.setUsername(null);
@@ -243,6 +243,54 @@ public class UserConstraintValidationTest extends TestHelper {
 
         user.setPassword("aPPsss22s");
         assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.PASSWORD)).isFalse();
+    }
+
+    // EMAIL ================================================
+    @Test
+    public void emailInvalidMsg() {
+        user.setEmail("");
+        String errorMsg = "length 6-32 or mail incorrect";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.EMAIL)).isEqualTo(errorMsg);
+
+        user.setEmail(null);
+        errorMsg = "null";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.EMAIL)).isEqualTo(errorMsg);
+    }
+
+    @Test
+    public void emailInvalid() {
+        user.setEmail(null);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.EMAIL)).isTrue();
+
+        String email = "e@d.d";
+        user.setEmail(email);//length min 6
+        assertThat(email.length()).isEqualTo(5);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.EMAIL)).isTrue();
+
+        email = "longestmaileverseen@supermail.com";
+        user.setEmail(email);//length max 32
+        assertThat(email.length()).isEqualTo(33);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.EMAIL)).isTrue();
+
+        email = "email.com";
+        user.setEmail(email);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.EMAIL)).isTrue();
+
+        email = "email@com";
+        user.setEmail(email);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.EMAIL)).isTrue();
+    }
+
+    @Test
+    public void emailValid() {
+        user.setEmail("email@gmail.com");
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.EMAIL)).isFalse();
+
+        user.setEmail("e_ma_il@gmail.com");
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.EMAIL)).isFalse();
+
+        user.setEmail("e_m22a_il@gmail.com");
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.EMAIL)).isFalse();
     }
 
 }
