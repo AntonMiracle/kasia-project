@@ -2,7 +2,6 @@ package com.kasia.service;
 
 import com.kasia.model.Model;
 import com.kasia.service.imp.ValidationServiceImp;
-import com.kasia.util.TestHelper;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -26,8 +25,6 @@ public class ValidationServiceTest {
 
     @BeforeClass
     public static void beforeClass() throws IOException {
-        new TestHelper().copyForTestValidationMessagesProperties();
-
         validatorFactory = Validation.buildDefaultValidatorFactory();
         assert validatorFactory != null;
 
