@@ -129,7 +129,6 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
             addConstraintViolation(EMAIL, msg, constraintValidatorContext);
             return false;
         }
-
         return true;
     }
 
@@ -167,12 +166,15 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
 
 
     private boolean isGroupsValid(User user, ConstraintValidatorContext constraintValidatorContext) {
+        String msg;
         if (user.getGroups() == null) {
-            addConstraintViolation(GROUPS, "Groups is null", constraintValidatorContext);
+            msg = "{validation.user.UserConstraint.message.groups.empty}";
+            addConstraintViolation(GROUPS, msg, constraintValidatorContext);
             return false;
         }
         if (user.getGroups().size() == 0) {
-            addConstraintViolation(GROUPS, "Groups must contain at least one system group", constraintValidatorContext);
+            msg = "{validation.user.UserConstraint.message.groups.invalid}";
+            addConstraintViolation(GROUPS, msg, constraintValidatorContext);
             return false;
         }
         return true;

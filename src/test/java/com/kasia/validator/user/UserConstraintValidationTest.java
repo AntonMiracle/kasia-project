@@ -1,5 +1,6 @@
 package com.kasia.validator.user;
 
+import com.kasia.model.group.Group;
 import com.kasia.model.user.User;
 import com.kasia.service.ValidationService;
 import com.kasia.service.imp.ValidationServiceImp;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Matchers.any;
@@ -354,5 +356,33 @@ public class UserConstraintValidationTest extends TestHelper {
     public void zoneIdValid() {
         user.setZoneId(ZoneId.systemDefault());
         assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.ZONE_ID)).isFalse();
+    }
+    // GROUPS ================================================
+    @Test
+    public void groupsInvalidMsg() {
+        user.setGroups(null);
+        String errorMsg = "null";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.GROUPS)).isEqualTo(errorMsg);
+
+        user.setGroups(new HashSet<>());
+        errorMsg = "at least one system group";
+        assertThat(service.mapErrorFieldsWithMsg(user).get(constraintValidation.GROUPS)).isEqualTo(errorMsg);
+    }
+
+    @Test
+    public void groupsInvalid() {
+        user.setGroups(null);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.GROUPS)).isTrue();
+
+        user.setGroups(new HashSet<>());
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.GROUPS)).isTrue();
+    }
+
+    @Test
+    public void groupsValid() {
+        Set<Group> groups = new HashSet<>();
+        groups.add(new Group());
+        user.setGroups(groups);
+        assertThat(service.mapErrorFieldsWithMsg(user).containsKey(constraintValidation.GROUPS)).isFalse();
     }
 }
