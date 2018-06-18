@@ -60,10 +60,14 @@ public class ArticleTest {
 
     @Test
     public void checkEqualsAndHashCode() {
+        User user = new User();
+        user.setUsername("Username");
+
         EqualsVerifier.forClass(article.getClass())
                 .usingGetClass()
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withPrefabValues(Group.class, new Group(), new Group("name", Type.ARTICLE))
+                .withPrefabValues(User.class, new User(), user)
                 .verify();
     }
 
