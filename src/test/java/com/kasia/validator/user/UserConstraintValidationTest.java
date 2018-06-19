@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javax.validation.ConstraintValidatorContext;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
@@ -19,9 +18,6 @@ import java.util.Locale;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class UserConstraintValidationTest extends TestHelper<User> {
     private static ValidatorFactory validatorFactory;
@@ -68,7 +64,7 @@ public class UserConstraintValidationTest extends TestHelper<User> {
 
     // FIELDS NAME ================================================
     @Test(expected = Test.None.class)
-    public void fieldNameInUserConstraintValidationCorrect() throws NoSuchFieldException {
+    public void fieldNameIsCorrect() throws NoSuchFieldException {
         user.getClass().getDeclaredField(constraintValidation.USERNAME);
         user.getClass().getDeclaredField(constraintValidation.PASSWORD);
         user.getClass().getDeclaredField(constraintValidation.EMAIL);
@@ -82,16 +78,6 @@ public class UserConstraintValidationTest extends TestHelper<User> {
     }
 
     // TRIM STRING FIELDS ================================================
-    private ConstraintValidatorContext mockConstraintValidatorContext() {
-        ConstraintValidatorContext context = mock(ConstraintValidatorContext.class);
-        ConstraintValidatorContext.ConstraintViolationBuilder builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
-        ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext node = mock(ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
-        when(context.buildConstraintViolationWithTemplate(any(String.class))).thenReturn(builder);
-        when(builder.addPropertyNode(any(String.class))).thenReturn(node);
-        when(node.addConstraintViolation()).thenReturn(context);
-        return context;
-    }
-
     @Test
     public void isValidTrimStringFields() throws NoSuchFieldException {
         assertThat(countFields(user, String.class)).isEqualTo(3);

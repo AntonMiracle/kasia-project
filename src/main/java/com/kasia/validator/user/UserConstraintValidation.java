@@ -63,10 +63,10 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
     }
 
     @Override
-    public void trimStringFields(User user) {
-        if (user.getUsername() != null) user.setUsername(user.getUsername().trim());
-        if (user.getPassword() != null) user.setPassword(user.getPassword().trim());
-        if (user.getEmail() != null) user.setEmail(user.getEmail().trim());
+    public void trimStringFields(User model) {
+        if (model.getUsername() != null) model.setUsername(model.getUsername().trim());
+        if (model.getPassword() != null) model.setPassword(model.getPassword().trim());
+        if (model.getEmail() != null) model.setEmail(model.getEmail().trim());
     }
 
     private boolean isBudgetsValid(User user, ConstraintValidatorContext constraintValidatorContext) {

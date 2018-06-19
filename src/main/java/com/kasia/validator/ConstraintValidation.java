@@ -1,10 +1,8 @@
 package com.kasia.validator;
 
-import com.kasia.model.Model;
-
 import javax.validation.ConstraintValidatorContext;
 
-public interface ConstraintValidation<T extends Model> {
+public interface ConstraintValidation<T> {
 
     default void addConstraintViolation(String fieldName, String errorMsg, ConstraintValidatorContext constraintValidatorContext) {
         constraintValidatorContext.buildConstraintViolationWithTemplate(errorMsg)

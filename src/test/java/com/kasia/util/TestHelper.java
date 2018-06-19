@@ -1,5 +1,6 @@
 package com.kasia.util;
 
+import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
@@ -13,8 +14,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class TestHelper<T> {
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+public class TestHelper<T> {
+    public ConstraintValidatorContext mockConstraintValidatorContext() {
+        ConstraintValidatorContext context = mock(ConstraintValidatorContext.class);
+        ConstraintValidatorContext.ConstraintViolationBuilder builder = mock(ConstraintValidatorContext.ConstraintViolationBuilder.class);
+        ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext node = mock(ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext.class);
+        when(context.buildConstraintViolationWithTemplate(any(String.class))).thenReturn(builder);
+        when(builder.addPropertyNode(any(String.class))).thenReturn(node);
+        when(node.addConstraintViolation()).thenReturn(context);
+        return context;
+    }
     public void copyProductionValidationMessagesPropertiesForTesting() throws IOException {
         Path originalValidationMessagesProperties = Paths.get("src", "main", "resources", "ValidationMessages.properties");
         Path testValidationMessagesProperties = Paths.get("src", "test", "resources", "ValidationMessages.properties");

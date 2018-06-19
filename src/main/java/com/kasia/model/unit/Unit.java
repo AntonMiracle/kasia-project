@@ -1,9 +1,11 @@
 package com.kasia.model.unit;
 
 import com.kasia.model.Model;
+import com.kasia.validator.unit.UnitConstraint;
 
 import java.io.Serializable;
 
+@UnitConstraint
 public class Unit extends Model implements Serializable {
     private String name;
 
