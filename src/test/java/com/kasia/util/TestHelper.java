@@ -1,5 +1,6 @@
 package com.kasia.util;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
@@ -8,17 +9,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-public class TestHelper {
+public class TestHelper<T> {
 
     public void copyProductionValidationMessagesPropertiesForTesting() throws IOException {
         Path originalValidationMessagesProperties = Paths.get("src", "main", "resources", "ValidationMessages.properties");
         Path testValidationMessagesProperties = Paths.get("src", "test", "resources", "ValidationMessages.properties");
         Files.copy(originalValidationMessagesProperties, testValidationMessagesProperties, StandardCopyOption.REPLACE_EXISTING);
-    }
-
-    public ValidatorFactory getValidatorFactory() {
-        return Validation.buildDefaultValidatorFactory();
     }
 
     public int countFields(Object where, Class<?> typeOf) {
@@ -28,7 +28,18 @@ public class TestHelper {
         }
         return count;
     }
+
     public int countFields(Object where) {
         return where.getClass().getDeclaredFields().length;
+    }
+
+    public ValidatorFactory getValidatorFactory() {
+        return Validation.buildDefaultValidatorFactory();
+    }
+
+    public Map<String, String> mapErrorFieldsWithMsg(Set<ConstraintViolation<T>> errors) {
+        Map<String, String> mapa = new HashMap<>();
+        errors.forEach(el -> mapa.put(el.getPropertyPath().toString(), el.getMessage()));
+        return mapa;
     }
 }
