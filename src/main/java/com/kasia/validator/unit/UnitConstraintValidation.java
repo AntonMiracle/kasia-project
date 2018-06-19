@@ -41,12 +41,12 @@ public class UnitConstraintValidation implements ConstraintValidator<UnitConstra
         String name = unit.getName();
         String msg;
         if (name == null) {
-            msg = "{validation.user.UnitConstraint.message.name.empty}";
+            msg = "{validation.unit.UnitConstraint.message.name.empty}";
             addConstraintViolation(NAME, msg, constraintValidatorContext);
             return false;
         }
         if (name.length() < nameMinSize || name.length() > nameMaxSize || !name.matches(nameRegep)) {
-            msg = "{validation.user.UnitConstraint.message.name.invalid}";
+            msg = "{validation.unit.UnitConstraint.message.name.invalid}";
             addConstraintViolation(NAME, msg, constraintValidatorContext);
             return false;
         }

@@ -59,6 +59,7 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
         if (!isZoneIdValid(user, constraintValidatorContext)) ++errorCount;
         if (!isPasswordValid(user, constraintValidatorContext)) ++errorCount;
         if (!isUsernameValid(user, constraintValidatorContext)) ++errorCount;
+
         return errorCount == 0;
     }
 
