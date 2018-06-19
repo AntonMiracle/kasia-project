@@ -1,12 +1,13 @@
 package com.kasia.validator.user;
 
 import com.kasia.model.user.User;
+import com.kasia.validator.ConstraintValidation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.Instant;
 
-public class UserConstraintValidation implements ConstraintValidator<UserConstraint, User> {
+public class UserConstraintValidation implements ConstraintValidator<UserConstraint, User>, ConstraintValidation<User> {
     private int emailMinLength;
     private int emailMaxLength;
     private String emailRegexp;
@@ -61,16 +62,11 @@ public class UserConstraintValidation implements ConstraintValidator<UserConstra
         return errorCount == 0;
     }
 
-    private void trimStringFields(User user) {
+    @Override
+    public void trimStringFields(User user) {
         if (user.getUsername() != null) user.setUsername(user.getUsername().trim());
         if (user.getPassword() != null) user.setPassword(user.getPassword().trim());
         if (user.getEmail() != null) user.setEmail(user.getEmail().trim());
-    }
-
-    private void addConstraintViolation(String fieldName, String errorMsg, ConstraintValidatorContext constraintValidatorContext) {
-        constraintValidatorContext.buildConstraintViolationWithTemplate(errorMsg)
-                .addPropertyNode(fieldName)
-                .addConstraintViolation();
     }
 
     private boolean isBudgetsValid(User user, ConstraintValidatorContext constraintValidatorContext) {
