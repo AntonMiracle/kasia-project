@@ -10,5 +10,7 @@ public interface ConstraintValidation<T> {
                 .addConstraintViolation();
     }
 
-    void trimStringFields(T model);
+    default void trimStringFields(T model) {
+
+    }
 }
