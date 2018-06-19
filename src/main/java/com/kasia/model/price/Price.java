@@ -1,7 +1,10 @@
 package com.kasia.model.price;
 
+import com.kasia.validator.price.PriceConstraint;
+
 import java.io.Serializable;
 
+@PriceConstraint
 public class Price implements Serializable {
     private long amount;
 
