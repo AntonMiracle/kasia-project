@@ -4,7 +4,7 @@ import com.kasia.model.Article;
 
 import java.util.Set;
 
-public interface ArticleService extends Service {
+public interface ArticleService extends ValidationService<Article> {
     Article create(Article article);
 
     boolean delete(Article article);

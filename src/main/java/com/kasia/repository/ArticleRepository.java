@@ -4,7 +4,7 @@ import com.kasia.model.Article;
 
 import java.util.Set;
 
-public interface ArticleRepository extends Repository {
+public interface ArticleRepository {
     Article getById(long id);
 
     Set<Article> getAll();
@@ -12,4 +12,6 @@ public interface ArticleRepository extends Repository {
     boolean delete(Article article);
 
     boolean update(Article article);
+
+    Article save(Article article);
 }
