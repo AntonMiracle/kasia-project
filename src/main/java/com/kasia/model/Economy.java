@@ -2,7 +2,6 @@ package com.kasia.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Currency;
 import java.util.Set;
 
 public class Economy implements Model {
@@ -11,7 +10,6 @@ public class Economy implements Model {
     private Set<Budget> budgets;
     private LocalDateTime startOn;
     private BigDecimal balance;
-    private Currency currency;
 
     @Override
     public long getId() {
@@ -19,7 +17,7 @@ public class Economy implements Model {
     }
 
     @Override
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 }

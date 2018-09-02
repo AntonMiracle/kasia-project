@@ -20,12 +20,12 @@ public class ArticleValidation implements ConstraintValidator<ArticleConstraint,
         if (article == null) return true;
         StringBuilder msg = new StringBuilder();
         if (article.getType() == null) {
-            msg.append("Type is null");
+            msg.append("{validation.article.ArticleConstraint.message.type.null}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (article.getAmount() == null || article.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-            msg.append("Amount null or negative");
+            msg.append("{validation.article.ArticleConstraint.message.amount.negative}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }

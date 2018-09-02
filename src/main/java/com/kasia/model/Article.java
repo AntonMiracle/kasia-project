@@ -55,6 +55,30 @@ public class Article implements Model {
         this.createOn = createOn;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Article article = (Article) o;
+
+        if (id != article.id) return false;
+        if (description != null ? !description.equals(article.description) : article.description != null) return false;
+        if (type != article.type) return false;
+        if (amount != null ? !amount.equals(article.amount) : article.amount != null) return false;
+        return createOn != null ? createOn.equals(article.createOn) : article.createOn == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (amount != null ? amount.hashCode() : 0);
+        result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
+        return result;
+    }
+
     public enum Type {
         INCOME, CONSUMPTION;
 

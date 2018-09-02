@@ -5,6 +5,8 @@ import com.kasia.repository.ArticleRepository;
 import com.kasia.service.ArticleService;
 
 import javax.validation.ValidatorFactory;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ArticleServiceImp implements ArticleService {
@@ -12,41 +14,46 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     public Article create(Article article) {
-        if (!isValid(article)) return null;
-
+        if (article == null || !isValid(article)) return null;
+        article.setCreateOn(LocalDateTime.now());
         return repository.save(article);
     }
 
     @Override
     public boolean delete(Article article) {
-        return false;
+        if (article == null || !isValid(article) || article.getId() <= 0) return false;
+        return repository.delete(article);
     }
 
     @Override
     public boolean update(Article article) {
-        return false;
+        if (article == null || !isValid(article) || article.getId() <= 0) return false;
+        return repository.update(article);
     }
 
     @Override
     public Article getArticleById(long id) {
-        return null;
+        if (id <= 0) return null;
+        return repository.getById(id);
     }
 
     @Override
     public Set<Article> getArticlesByType(Set<Article> articles, Article.Type type) {
-        return null;
+        if (articles == null || type == null) return null;
+        Set<Article> result = new HashSet<>();
+        for (Article article : articles) {
+            if (article.getType().equals(type)) {
+                result.add(article);
+            }
+        }
+        return result;
     }
 
     @Override
     public boolean isValid(Article model) {
-        if (model == null || !(model instanceof Article)) return false;
-
-        boolean isValid = false;
-
+        if (model == null) return false;
         try (ValidatorFactory factory = getValidatorFactory()) {
-            isValid = factory.getValidator().validate(model).size() == 0;
+            return factory.getValidator().validate(model).size() == 0;
         }
-
-        return isValid;
     }
 }
