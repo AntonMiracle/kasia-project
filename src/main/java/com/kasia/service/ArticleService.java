@@ -2,17 +2,20 @@ package com.kasia.service;
 
 import com.kasia.model.Article;
 
+import javax.validation.ValidationException;
+import java.math.BigDecimal;
 import java.util.Set;
 
 public interface ArticleService extends ValidationService<Article> {
-    Article create(Article article);
 
-    boolean delete(Article article);
+    Article create(String description, Article.Type type, BigDecimal amount) throws ValidationException;
 
-    boolean update(Article article);
+    boolean delete(long id) throws IllegalArgumentException;
 
-    Article getArticleById(long id);
+    boolean update(Article article) throws ValidationException, IllegalArgumentException;
 
-    Set<Article> getArticlesByType(Set<Article> articles, Article.Type type);
+    Article getArticleById(long id) throws IllegalArgumentException;
+
+    Set<Article> getArticlesByType(Set<Article> articles, Article.Type type) throws NullPointerException;
 
 }

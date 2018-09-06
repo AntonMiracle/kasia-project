@@ -4,7 +4,9 @@ import com.kasia.model.Article;
 import com.kasia.repository.ArticleRepository;
 import com.kasia.service.ArticleService;
 
+import javax.validation.ValidationException;
 import javax.validation.ValidatorFactory;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,36 +15,45 @@ public class ArticleServiceImp implements ArticleService {
     private ArticleRepository repository;
 
     @Override
-    public Article create(Article article) {
-        if (article == null || !isValid(article)) return null;
+    public Article create(String description, Article.Type type, BigDecimal amount) throws ValidationException {
+        Article article = new Article();
+        article.setDescription(description);
         article.setCreateOn(LocalDateTime.now());
+        article.setType(type);
+        article.setAmount(amount);
+
+        if (!isValid(article)) throw new ValidationException();
+
         return repository.save(article);
     }
 
+
     @Override
-    public boolean delete(Article article) {
-        if (article == null || !isValid(article) || article.getId() <= 0) return false;
+    public boolean delete(long id) throws IllegalArgumentException {
+        Article article = getArticleById(id);
+        if (article == null) return true;
         return repository.delete(article);
     }
 
     @Override
-    public boolean update(Article article) {
-        if (article == null || !isValid(article) || article.getId() <= 0) return false;
+    public boolean update(Article article) throws ValidationException, IllegalArgumentException {
+        if (!isValid(article)) throw new ValidationException();
+        if (article.getId() <= 0) throw new IllegalArgumentException();
         return repository.update(article);
     }
 
     @Override
-    public Article getArticleById(long id) {
-        if (id <= 0) return null;
+    public Article getArticleById(long id) throws IllegalArgumentException {
+        if (id <= 0) throw new IllegalArgumentException();
         return repository.getById(id);
     }
 
     @Override
-    public Set<Article> getArticlesByType(Set<Article> articles, Article.Type type) {
-        if (articles == null || type == null) return null;
+    public Set<Article> getArticlesByType(Set<Article> articles, Article.Type type) throws NullPointerException {
+        if (articles == null || type == null) throw new NullPointerException();
         Set<Article> result = new HashSet<>();
         for (Article article : articles) {
-            if (article.getType().equals(type)) {
+            if (article.getType() == type) {
                 result.add(article);
             }
         }
@@ -51,7 +62,7 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     public boolean isValid(Article model) {
-        if (model == null) return false;
+        if (model == null) throw new NullPointerException();
         try (ValidatorFactory factory = getValidatorFactory()) {
             return factory.getValidator().validate(model).size() == 0;
         }
