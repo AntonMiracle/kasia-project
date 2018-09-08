@@ -3,7 +3,7 @@ package com.kasia.service;
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
 
-import javax.xml.bind.ValidationException;
+import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.util.Currency;
 

@@ -51,7 +51,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean addArticle(Budget budget, Article article) throws NullPointerException, javax.xml.bind.ValidationException {
+    public boolean addArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
         if (budget == null || article == null) throw new NullPointerException();
         if (!isValid(budget)) throw new ValidationException();
         if (!budget.getArticles().add(article) || !addToBalance(budget, article)) return false;
@@ -59,7 +59,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean removeArticle(Budget budget, Article article) throws NullPointerException, javax.xml.bind.ValidationException {
+    public boolean removeArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
         if (budget == null || article == null) throw new NullPointerException();
         if (!isValid(budget)) throw new ValidationException();
         if (!budget.getArticles().remove(article) || !removeFromBalance(budget, article)) return false;
