@@ -11,11 +11,6 @@ public class ArticleValidation implements ConstraintValidator<ArticleConstraint,
     private ValidationHelper helper = new ValidationHelper();
 
     @Override
-    public void initialize(ArticleConstraint constraintAnnotation) {
-
-    }
-
-    @Override
     public boolean isValid(Article article, ConstraintValidatorContext constraintValidatorContext) {
         if (article == null) return true;
         StringBuilder msg = new StringBuilder();

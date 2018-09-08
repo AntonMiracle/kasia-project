@@ -10,11 +10,6 @@ public class BudgetValidation implements ConstraintValidator<BudgetConstraint, B
     private ValidationHelper helper = new ValidationHelper();
 
     @Override
-    public void initialize(BudgetConstraint constraintAnnotation) {
-
-    }
-
-    @Override
     public boolean isValid(Budget budget, ConstraintValidatorContext constraintValidatorContext) {
         if (budget == null) return true;
         StringBuilder msg = new StringBuilder();
