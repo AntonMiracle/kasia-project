@@ -14,7 +14,7 @@ public class EconomyValidation implements ConstraintValidator<EconomyConstraint,
         if (economy == null) return true;
         StringBuilder msg = new StringBuilder();
         if (economy.getName() == null) {
-            msg.append("{validation.budget.EconomyConstraint.message.type.null}");
+            msg.append("{validation.budget.EconomyConstraint.message.name}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }

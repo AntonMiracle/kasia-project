@@ -1,30 +1,30 @@
-package com.kasia.validation.budget;
+package com.kasia.validation.user;
 
-import com.kasia.model.Budget;
+import com.kasia.model.User;
 import com.kasia.validation.ValidationHelper;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class BudgetValidation implements ConstraintValidator<BudgetConstraint, Budget> {
+public class UserValidation implements ConstraintValidator<UserConstraint, User> {
     private ValidationHelper helper = new ValidationHelper();
 
     @Override
-    public boolean isValid(Budget budget, ConstraintValidatorContext constraintValidatorContext) {
-        if (budget == null) return true;
+    public boolean isValid(User user, ConstraintValidatorContext constraintValidatorContext) {
+        if (user == null) return true;
         StringBuilder msg = new StringBuilder();
-        if (budget.getName() == null) {
-            msg.append("{validation.budget.BudgetConstraint.message.type}");
+        if (user.getEmail() == null) {
+            msg.append("{validation.budget.UserConstraint.message.email}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
-        if (budget.getBalance() == null) {
-            msg.append("{validation.budget.BudgetConstraint.message.balance}");
+        if (user.getNick() == null) {
+            msg.append("{validation.budget.UserConstraint.message.nick}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
-        if (budget.getCurrency() == null) {
-            msg.append("{validation.budget.BudgetConstraint.message.currency}");
+        if (user.getPassword() == null) {
+            msg.append("{validation.budget.UserConstraint.message.password}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }

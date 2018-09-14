@@ -15,7 +15,7 @@ public class ArticleValidation implements ConstraintValidator<ArticleConstraint,
         if (article == null) return true;
         StringBuilder msg = new StringBuilder();
         if (article.getType() == null) {
-            msg.append("{validation.article.ArticleConstraint.message.type.null}");
+            msg.append("{validation.article.ArticleConstraint.message.type}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }

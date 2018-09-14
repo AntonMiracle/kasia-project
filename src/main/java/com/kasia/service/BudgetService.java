@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 public interface BudgetService extends ValidationService<Budget> {
-    Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException;
+    Budget create(String name, BigDecimal balance, Currency currency) throws NullPointerException, ValidationException;
 
     boolean delete(long id) throws IllegalArgumentException;
 

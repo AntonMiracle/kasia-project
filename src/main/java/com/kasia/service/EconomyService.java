@@ -14,16 +14,15 @@ public interface EconomyService extends ValidationService<Economy> {
 
     boolean delete(long id) throws IllegalArgumentException;
 
-    boolean update(Economy economy) throws ValidationException, IllegalArgumentException;
+    boolean update(Economy economy) throws ValidationException, NullPointerException, IllegalArgumentException;
 
     Economy getById(long id) throws IllegalArgumentException;
 
-    boolean addBudget(Budget budget) throws NullPointerException, IllegalArgumentException;
+    boolean addBudget(Economy economy, Budget budget) throws NullPointerException, ValidationException;
 
-    boolean removeBudget(Budget budget) throws NullPointerException, IllegalArgumentException;
+    boolean removeBudget(Economy economy, Budget budget) throws NullPointerException, ValidationException;
 
-    Map<Currency, BigDecimal> getBalance(Economy economy) throws NullPointerException;
-
+    Map<Currency, BigDecimal> getBalance(Economy economy) throws NullPointerException, ValidationException;
 
 
 }

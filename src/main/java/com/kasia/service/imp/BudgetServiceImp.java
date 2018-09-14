@@ -16,7 +16,7 @@ public class BudgetServiceImp implements BudgetService {
     private BudgetRepository repository;
 
     @Override
-    public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException {
+    public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException, NullPointerException {
         Budget budget = new Budget();
         budget.setName(name);
         budget.setBalance(balance);
@@ -53,7 +53,7 @@ public class BudgetServiceImp implements BudgetService {
     @Override
     public boolean addArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
         if (budget == null || article == null) throw new NullPointerException();
-        if (!isValid(budget)) throw new ValidationException();
+        if (!isValid(budget) || article.getId() <= 0) throw new ValidationException();
         if (!budget.getArticles().add(article) || !addToBalance(budget, article)) return false;
         return update(budget);
     }
@@ -61,7 +61,7 @@ public class BudgetServiceImp implements BudgetService {
     @Override
     public boolean removeArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
         if (budget == null || article == null) throw new NullPointerException();
-        if (!isValid(budget)) throw new ValidationException();
+        if (!isValid(budget) || article.getId() <= 0) throw new ValidationException();
         if (!budget.getArticles().remove(article) || !removeFromBalance(budget, article)) return false;
         return update(budget);
     }
