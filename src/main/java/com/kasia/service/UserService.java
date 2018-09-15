@@ -24,6 +24,4 @@ public interface UserService extends ValidationService<User> {
 
     String cryptPassword(String password) throws NullPointerException, ValidationException;
 
-    boolean isUserExist(String email, String nick) throws NullPointerException, ValidationException;
-
 }
