@@ -1,16 +1,27 @@
 package com.kasia.model;
 
+import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.validation.article.ArticleConstraint;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @ArticleConstraint
+@Entity
+@Table(name = "ARTICLES")
 public class Article implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+    @Column(name = "DESCRIPTION")
     private String description;
+    @Column(name = "TYPE", nullable = false)
     private Type type;
+    @Column(name = "AMOUNT", nullable = false)
     private BigDecimal amount;
+    @Column(name = "CREATE_ON", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
 
     @Override
