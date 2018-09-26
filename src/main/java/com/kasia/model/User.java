@@ -1,5 +1,7 @@
 package com.kasia.model;
 
+import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
+import com.kasia.repository.converter.ZoneIdAttributeConvarter;
 import com.kasia.validation.user.UserConstraint;
 
 import javax.persistence.*;
@@ -26,8 +28,10 @@ public class User implements Model {
             inverseJoinColumns = @JoinColumn(name = "ECONOMY_ID"))
     private Set<Economy> economies;
     @Column(name = "CREATEON", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
     @Column(name = "ZONEID", nullable = false)
+    @Convert(converter = ZoneIdAttributeConvarter.class)
     private ZoneId zoneId;
 
     public String getEmail() {

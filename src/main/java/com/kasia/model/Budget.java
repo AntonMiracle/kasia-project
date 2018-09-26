@@ -1,5 +1,6 @@
 package com.kasia.model;
 
+import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.validation.budget.BudgetConstraint;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Budget implements Model {
     @Column(name = "BALANCE", nullable = false)
     private BigDecimal balance;
     @Column(name = "CREATE_ON", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
     @Column(name = "CURRENCY", nullable = false)
     private Currency currency;
