@@ -1,15 +1,34 @@
 package com.kasia.model;
 
+import com.kasia.validation.user.UserConstraint;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Set;
 
+@UserConstraint
+@Entity
+@Table(name = "USERS")
 public class User implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+    @Column(name = "EMAIL", nullable = false)
     private String email;
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
+    @Column(name = "NICK", nullable = false)
     private String nick;
+    @OneToMany
+    @JoinTable(name = "USERS_ECONOMIES",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ECONOMY_ID"))
     private Set<Economy> economies;
+    @Column(name = "CREATEON", nullable = false)
     private LocalDateTime createOn;
+    @Column(name = "ZONEID", nullable = false)
+    private ZoneId zoneId;
 
     public String getEmail() {
         return email;
@@ -51,6 +70,14 @@ public class User implements Model {
         this.createOn = createOn;
     }
 
+    public ZoneId getZoneId() {
+        return zoneId;
+    }
+
+    public void setZoneId(ZoneId zoneId) {
+        this.zoneId = zoneId;
+    }
+
     @Override
     public long getId() {
         return id;
@@ -73,7 +100,8 @@ public class User implements Model {
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (nick != null ? !nick.equals(user.nick) : user.nick != null) return false;
         if (economies != null ? !economies.equals(user.economies) : user.economies != null) return false;
-        return createOn != null ? createOn.equals(user.createOn) : user.createOn == null;
+        if (createOn != null ? !createOn.equals(user.createOn) : user.createOn != null) return false;
+        return zoneId != null ? zoneId.equals(user.zoneId) : user.zoneId == null;
     }
 
     @Override
@@ -84,6 +112,20 @@ public class User implements Model {
         result = 31 * result + (nick != null ? nick.hashCode() : 0);
         result = 31 * result + (economies != null ? economies.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
+        result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", nick='" + nick + '\'' +
+                ", economies=" + economies +
+                ", createOn=" + createOn +
+                ", zoneId=" + zoneId +
+                '}';
     }
 }

@@ -29,6 +29,16 @@ public class UserValidation implements ConstraintValidator<UserConstraint, User>
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
+        if(user.getZoneId() == null){
+            msg.append("{validation.budget.UserConstraint.message.zoneid}");
+            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            return false;
+        }
+        if(user.getCreateOn() == null){
+            msg.append("{validation.budget.UserConstraint.message.date}");
+            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            return false;
+        }
         return true;
     }
 

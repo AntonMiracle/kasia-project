@@ -28,6 +28,11 @@ public class BudgetValidation implements ConstraintValidator<BudgetConstraint, B
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
+        if(budget.getCreateOn() == null){
+            msg.append("{validation.budget.BudgetConstraint.message.date}");
+            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            return false;
+        }
         return true;
     }
 }

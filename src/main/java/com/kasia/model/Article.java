@@ -90,6 +90,17 @@ public class Article implements Model {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", type=" + type +
+                ", amount=" + amount +
+                ", createOn=" + createOn +
+                '}';
+    }
+
     public enum Type {
         INCOME, CONSUMPTION;
 

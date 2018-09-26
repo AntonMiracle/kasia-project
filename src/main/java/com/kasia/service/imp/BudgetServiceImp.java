@@ -22,7 +22,7 @@ public class BudgetServiceImp implements BudgetService {
         budget.setBalance(balance);
         budget.setCurrency(currency);
         budget.setArticles(new HashSet<>());
-        budget.setStartOn(LocalDateTime.now());
+        budget.setCreateOn(LocalDateTime.now());
 
         if (!isValid(budget)) throw new ValidationException();
 

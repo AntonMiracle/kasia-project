@@ -1,13 +1,29 @@
 package com.kasia.model;
 
+import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
+import com.kasia.validation.economy.EconomyConstraint;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@EconomyConstraint
+@Entity
+@Table(name = "ECONOMIES")
 public class Economy implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+    @Column(name = "NAME", nullable = false)
     private String name;
+    @OneToMany
+    @JoinTable(name = "ECONOMIES_BUDGETS",
+            joinColumns = @JoinColumn(name = "ECONOMY_ID"),
+            inverseJoinColumns = @JoinColumn(name = "BUDGET_ID"))
     private Set<Budget> budgets;
-    private LocalDateTime startOn;
+    @Column(name = "CREATE_ON", nullable = false)
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
+    private LocalDateTime createOn;
 
     @Override
     public long getId() {
@@ -35,12 +51,12 @@ public class Economy implements Model {
         this.budgets = budgets;
     }
 
-    public LocalDateTime getStartOn() {
-        return startOn;
+    public LocalDateTime getCreateOn() {
+        return createOn;
     }
 
-    public void setStartOn(LocalDateTime startOn) {
-        this.startOn = startOn;
+    public void setCreateOn(LocalDateTime startOn) {
+        this.createOn = startOn;
     }
 
     @Override
@@ -53,7 +69,7 @@ public class Economy implements Model {
         if (id != economy.id) return false;
         if (name != null ? !name.equals(economy.name) : economy.name != null) return false;
         if (budgets != null ? !budgets.equals(economy.budgets) : economy.budgets != null) return false;
-        return startOn != null ? startOn.equals(economy.startOn) : economy.startOn == null;
+        return createOn != null ? createOn.equals(economy.createOn) : economy.createOn == null;
     }
 
     @Override
@@ -61,7 +77,17 @@ public class Economy implements Model {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (budgets != null ? budgets.hashCode() : 0);
-        result = 31 * result + (startOn != null ? startOn.hashCode() : 0);
+        result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Economy{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", budgets=" + budgets +
+                ", createOn=" + createOn +
+                '}';
     }
 }

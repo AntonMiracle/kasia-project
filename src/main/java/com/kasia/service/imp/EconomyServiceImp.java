@@ -31,7 +31,7 @@ public class EconomyServiceImp implements EconomyService {
         Economy economy = new Economy();
         economy.setName(name);
         economy.setBudgets(new HashSet<>());
-        economy.setStartOn(LocalDateTime.now());
+        economy.setCreateOn(LocalDateTime.now());
 
         if (!isValid(economy)) throw new ValidationException();
         return repository.save(economy);

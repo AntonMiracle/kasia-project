@@ -1,16 +1,32 @@
 package com.kasia.model;
 
+import com.kasia.validation.budget.BudgetConstraint;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Set;
 
+@BudgetConstraint
+@Entity
+@Table(name = "BUDGETS")
 public class Budget implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+    @Column(name = "NAME", nullable = false)
     private String name;
+    @OneToMany
+    @JoinTable(name = "BUDGETS_ARTICLES",
+            joinColumns = @JoinColumn(name = "BUDGET_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ARTICLE_ID"))
     private Set<Article> articles;
+    @Column(name = "BALANCE", nullable = false)
     private BigDecimal balance;
-    private LocalDateTime startOn;
+    @Column(name = "CREATE_ON", nullable = false)
+    private LocalDateTime createOn;
+    @Column(name = "CURRENCY", nullable = false)
     private Currency currency;
 
     @Override
@@ -47,12 +63,12 @@ public class Budget implements Model {
         this.balance = balance;
     }
 
-    public LocalDateTime getStartOn() {
-        return startOn;
+    public LocalDateTime getCreateOn() {
+        return createOn;
     }
 
-    public void setStartOn(LocalDateTime startOn) {
-        this.startOn = startOn;
+    public void setCreateOn(LocalDateTime startOn) {
+        this.createOn = startOn;
     }
 
     public Currency getCurrency() {
@@ -74,7 +90,7 @@ public class Budget implements Model {
         if (name != null ? !name.equals(budget.name) : budget.name != null) return false;
         if (articles != null ? !articles.equals(budget.articles) : budget.articles != null) return false;
         if (balance != null ? !balance.equals(budget.balance) : budget.balance != null) return false;
-        if (startOn != null ? !startOn.equals(budget.startOn) : budget.startOn != null) return false;
+        if (createOn != null ? !createOn.equals(budget.createOn) : budget.createOn != null) return false;
         return currency != null ? currency.equals(budget.currency) : budget.currency == null;
     }
 
@@ -84,9 +100,21 @@ public class Budget implements Model {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (articles != null ? articles.hashCode() : 0);
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
-        result = 31 * result + (startOn != null ? startOn.hashCode() : 0);
+        result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Budget{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", articles=" + articles +
+                ", balance=" + balance +
+                ", createOn=" + createOn +
+                ", currency=" + currency +
+                '}';
     }
 }
 

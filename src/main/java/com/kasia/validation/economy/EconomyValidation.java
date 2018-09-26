@@ -18,6 +18,11 @@ public class EconomyValidation implements ConstraintValidator<EconomyConstraint,
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
+        if(economy.getCreateOn() == null){
+            msg.append("{validation.budget.EconomyConstraint.message.date}");
+            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            return false;
+        }
         return true;
     }
 }
