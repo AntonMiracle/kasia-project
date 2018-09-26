@@ -20,7 +20,12 @@ public class ArticleValidation implements ConstraintValidator<ArticleConstraint,
             return false;
         }
         if (article.getAmount() == null || article.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-            msg.append("{validation.article.ArticleConstraint.message.amount.negative}");
+            msg.append("{validation.article.ArticleConstraint.message.amount}");
+            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            return false;
+        }
+        if(article.getCreateOn() == null){
+            msg.append("{validation.article.ArticleConstraint.message.date}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
