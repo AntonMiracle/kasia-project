@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "USERS")
 public class User implements Model {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private long id;
     @Column(name = "EMAIL", nullable = false)
     private String email;
@@ -22,7 +22,7 @@ public class User implements Model {
     private String password;
     @Column(name = "NICK", nullable = false)
     private String nick;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USERS_ECONOMIES",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ECONOMY_ID"))

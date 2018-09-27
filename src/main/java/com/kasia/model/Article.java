@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "ARTICLES")
 public class Article implements Model {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private long id;
     @Column(name = "DESCRIPTION")
     private String description;
@@ -102,7 +102,7 @@ public class Article implements Model {
     }
 
     public enum Type {
-        INCOME, CONSUMPTION;
+        INCOME, CONSUMPTION
 
     }
 }

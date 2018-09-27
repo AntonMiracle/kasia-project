@@ -12,11 +12,11 @@ import java.util.Set;
 @Table(name = "ECONOMIES")
 public class Economy implements Model {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     private long id;
     @Column(name = "NAME", nullable = false)
     private String name;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ECONOMIES_BUDGETS",
             joinColumns = @JoinColumn(name = "ECONOMY_ID"),
             inverseJoinColumns = @JoinColumn(name = "BUDGET_ID"))
