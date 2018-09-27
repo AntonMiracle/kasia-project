@@ -14,6 +14,13 @@ import java.util.Set;
 public class ArticleServiceImp implements ArticleService {
     private ArticleRepository repository;
 
+    public ArticleServiceImp(ArticleRepository repository) {
+        this.repository = repository;
+    }
+
+    public ArticleServiceImp() {
+    }
+
     @Override
     public Article create(String description, Article.Type type, BigDecimal amount) throws ValidationException {
         Article article = new Article();
