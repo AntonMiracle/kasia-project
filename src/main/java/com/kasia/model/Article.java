@@ -1,5 +1,6 @@
 package com.kasia.model;
 
+import com.kasia.repository.converter.BigDecimalAttributeConverter;
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.validation.article.ArticleConstraint;
 
@@ -19,6 +20,7 @@ public class Article implements Model {
     @Column(name = "TYPE", nullable = false)
     private Type type;
     @Column(name = "AMOUNT", nullable = false)
+    @Convert(converter = BigDecimalAttributeConverter.class)
     private BigDecimal amount;
     @Column(name = "CREATE_ON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)

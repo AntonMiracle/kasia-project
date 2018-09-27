@@ -1,5 +1,6 @@
 package com.kasia.model;
 
+import com.kasia.repository.converter.BigDecimalAttributeConverter;
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.validation.budget.BudgetConstraint;
 
@@ -24,6 +25,7 @@ public class Budget implements Model {
             inverseJoinColumns = @JoinColumn(name = "ARTICLE_ID"))
     private Set<Article> articles;
     @Column(name = "BALANCE", nullable = false)
+    @Convert(converter = BigDecimalAttributeConverter.class)
     private BigDecimal balance;
     @Column(name = "CREATE_ON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)
