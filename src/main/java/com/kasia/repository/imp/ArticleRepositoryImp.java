@@ -2,7 +2,9 @@ package com.kasia.repository.imp;
 
 import com.kasia.model.Article;
 import com.kasia.repository.ArticleRepository;
+import com.kasia.service.ArticleService;
 import com.kasia.service.RepositoryService;
+import com.kasia.service.imp.ArticleServiceImp;
 import com.kasia.service.imp.RepositoryServiceImp;
 
 import javax.persistence.EntityManager;
@@ -29,7 +31,8 @@ public class ArticleRepositoryImp implements ArticleRepository {
         EntityManager em = repository.getManager();
         try {
             em.getTransaction().begin();
-            em.remove(getById(article.getId()));
+            article = em.contains(article)? article : em.merge(article);
+            em.remove(article);
             em.getTransaction().commit();
         } catch (Exception ex) {
             em.getTransaction().rollback();
@@ -67,20 +70,18 @@ public class ArticleRepositoryImp implements ArticleRepository {
     }
 
     public static void main(String[] args) {
-//        RepositoryService repository = new RepositoryServiceImp();
-//        ArticleRepository articleRepository = new ArticleRepositoryImp(repository);
-//        assert repository != null;
-//
-//        ArticleService service = new ArticleServiceImp(articleRepository);
-//        Article article = service.create("description", Article.Type.INCOME, BigDecimal.TEN);
-//        System.out.println(article);
-//        for(int i =1; i<6; i++){
-//            System.out.println(service.getArticleById(i));
-//        }
-//
-//        repository.closeFactory();
-        BigDecimal num = new BigDecimal("10.01");
-        System.out.println(num.toString());
-        System.out.println(num.doubleValue());
+        RepositoryService repository = new RepositoryServiceImp();
+        ArticleRepository articleRepository = new ArticleRepositoryImp(repository);
+        assert repository != null;
+
+        ArticleService service = new ArticleServiceImp(articleRepository);
+        Article article = service.create("description", Article.Type.INCOME, BigDecimal.TEN);
+        System.out.println(article);
+        for (int i = 1; i < 3; i++) {
+            System.out.println(service.getArticleById(i));
+        }
+
+        repository.closeFactory();
+
     }
 }
