@@ -34,7 +34,6 @@ public class BudgetRepositoryTest extends RepositoryTestHelper {
         budgetRepository.save(budget);
 
         assertThat(budgetRepository.getById(budget.getId())).isEqualTo(budget);
-
     }
 
     @Test
