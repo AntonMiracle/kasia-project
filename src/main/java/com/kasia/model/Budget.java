@@ -3,6 +3,7 @@ package com.kasia.model;
 import com.kasia.repository.converter.BigDecimalAttributeConverter;
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.validation.budget.BudgetConstraint;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -19,7 +20,7 @@ public class Budget implements Model {
     private long id;
     @Column(name = "NAME", nullable = false)
     private String name;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "BUDGETS_ARTICLES",
             joinColumns = @JoinColumn(name = "BUDGET_ID"),
             inverseJoinColumns = @JoinColumn(name = "ARTICLE_ID"))

@@ -12,10 +12,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ArticleServiceImp implements ArticleService {
-    private ArticleRepository repository;
+    private ArticleRepository articleRepository;
 
-    public ArticleServiceImp(ArticleRepository repository) {
-        this.repository = repository;
+    public ArticleServiceImp(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 
     public ArticleServiceImp() {
@@ -31,7 +31,7 @@ public class ArticleServiceImp implements ArticleService {
 
         if (!isValid(article)) throw new ValidationException();
 
-        return repository.save(article);
+        return articleRepository.save(article);
     }
 
 
@@ -39,20 +39,20 @@ public class ArticleServiceImp implements ArticleService {
     public boolean delete(long id) throws IllegalArgumentException {
         Article article = getArticleById(id);
         if (article == null) return true;
-        return repository.delete(article);
+        return articleRepository.delete(article);
     }
 
     @Override
     public boolean update(Article article) throws ValidationException, IllegalArgumentException {
         if (!isValid(article)) throw new ValidationException();
         if (article.getId() <= 0) throw new IllegalArgumentException();
-        return repository.update(article);
+        return articleRepository.update(article);
     }
 
     @Override
     public Article getArticleById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
-        return repository.getById(id);
+        return articleRepository.getById(id);
     }
 
     @Override

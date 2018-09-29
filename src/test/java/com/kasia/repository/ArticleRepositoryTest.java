@@ -16,7 +16,7 @@ public class ArticleRepositoryTest extends RepositoryTestHelper {
 
     @Before
     public void before() {
-        articleRepository = new ArticleRepositoryImp(repositoryService);
+        articleRepository = new ArticleRepositoryImp(repositoryConnectionService.getEntityManager());
         article = new Article();
     }
 

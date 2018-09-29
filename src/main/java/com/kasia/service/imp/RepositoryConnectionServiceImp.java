@@ -1,18 +1,21 @@
 package com.kasia.service.imp;
 
-import com.kasia.service.RepositoryService;
+import com.kasia.service.RepositoryConnectionService;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 
-public class RepositoryServiceImp implements RepositoryService {
+public class RepositoryConnectionServiceImp implements RepositoryConnectionService {
     private final String UNIT_NAME;
     private static EntityManagerFactory factory;
 
-    public RepositoryServiceImp() {
+    public RepositoryConnectionServiceImp() {
         this.UNIT_NAME = "db-unit";
     }
 
-    public RepositoryServiceImp(String UNIT_NAME) {
+    public RepositoryConnectionServiceImp(String UNIT_NAME) {
         this.UNIT_NAME = UNIT_NAME;
     }
 
@@ -24,13 +27,13 @@ public class RepositoryServiceImp implements RepositoryService {
     }
 
     @Override
-    public EntityManager getManager() throws PersistenceException {
+    public EntityManager getEntityManager() throws PersistenceException {
         if (initializedFactory() == null) throw new PersistenceException();
         return factory.createEntityManager();
     }
 
     @Override
-    public void closeFactory() {
+    public void closeEntityManagerFactory() {
         if (factory != null && factory.isOpen()) factory.close();
     }
 

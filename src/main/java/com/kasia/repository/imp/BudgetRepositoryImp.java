@@ -1,31 +1,31 @@
 package com.kasia.repository.imp;
 
-import com.kasia.model.Article;
-import com.kasia.repository.ArticleRepository;
+import com.kasia.model.Budget;
+import com.kasia.repository.BudgetRepository;
 
 import javax.persistence.EntityManager;
 
-public class ArticleRepositoryImp implements ArticleRepository {
+public class BudgetRepositoryImp implements BudgetRepository {
     private EntityManager entityManager;
 
-    public ArticleRepositoryImp(EntityManager entityManager) {
+    public BudgetRepositoryImp(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    public ArticleRepositoryImp() {
+    public BudgetRepositoryImp() {
+
     }
 
     @Override
-    public Article getById(long id) {
-        return entityManager.find(Article.class, id);
+    public Budget getById(long id) {
+        return entityManager.find(Budget.class, id);
     }
 
     @Override
-    public boolean delete(Article article) {
+    public boolean delete(Budget budget) {
         try {
             entityManager.getTransaction().begin();
-            article = entityManager.contains(article) ? article : entityManager.merge(article);
-            entityManager.remove(article);
+            entityManager.remove(budget);
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
             entityManager.getTransaction().rollback();
@@ -35,10 +35,10 @@ public class ArticleRepositoryImp implements ArticleRepository {
     }
 
     @Override
-    public boolean update(Article article) {
+    public boolean update(Budget budget) {
         try {
             entityManager.getTransaction().begin();
-            entityManager.merge(article);
+            entityManager.merge(budget);
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
             entityManager.getTransaction().rollback();
@@ -48,15 +48,15 @@ public class ArticleRepositoryImp implements ArticleRepository {
     }
 
     @Override
-    public Article save(Article article) {
+    public Budget save(Budget budget) {
         try {
             entityManager.getTransaction().begin();
-            entityManager.persist(article);
+            entityManager.persist(budget);
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
             entityManager.getTransaction().rollback();
             throw new RuntimeException(ex);
         }
-        return article;
+        return budget;
     }
 }
