@@ -5,9 +5,9 @@ import com.kasia.model.Economy;
 public interface EconomyRepository {
     Economy getById(long id);
 
-    boolean delete(Economy article);
+    boolean delete(Economy economy);
 
-    boolean update(Economy article);
+    boolean update(Economy economy);
 
-    Economy save(Economy article);
+    Economy save(Economy economy);
 }

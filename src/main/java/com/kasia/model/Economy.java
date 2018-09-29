@@ -16,7 +16,7 @@ public class Economy implements Model {
     private long id;
     @Column(name = "NAME", nullable = false)
     private String name;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(name = "ECONOMIES_BUDGETS",
             joinColumns = @JoinColumn(name = "ECONOMY_ID"),
             inverseJoinColumns = @JoinColumn(name = "BUDGET_ID"))
