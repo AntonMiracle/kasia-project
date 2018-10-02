@@ -22,7 +22,7 @@ public class User implements Model {
     private String password;
     @Column(name = "NICK", nullable = false)
     private String nick;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_ECONOMIES",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ECONOMY_ID"))

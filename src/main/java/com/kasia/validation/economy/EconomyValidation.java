@@ -13,6 +13,11 @@ public class EconomyValidation implements ConstraintValidator<EconomyConstraint,
     public boolean isValid(Economy economy, ConstraintValidatorContext constraintValidatorContext) {
         if (economy == null) return true;
         StringBuilder msg = new StringBuilder();
+        if (economy.getId() < 0) {
+            msg.append("{validation.message.id}");
+            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            return false;
+        }
         if (economy.getName() == null) {
             msg.append("{validation.budget.EconomyConstraint.message.name}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);

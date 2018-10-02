@@ -21,6 +21,14 @@ public class ArticleServiceImp implements ArticleService {
     public ArticleServiceImp() {
     }
 
+    public ArticleRepository getArticleRepository() {
+        return articleRepository;
+    }
+
+    public void setArticleRepository(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
+
     @Override
     public Article create(String description, Article.Type type, BigDecimal amount) throws ValidationException {
         Article article = new Article();
@@ -45,7 +53,7 @@ public class ArticleServiceImp implements ArticleService {
     @Override
     public boolean update(Article article) throws ValidationException, IllegalArgumentException {
         if (!isValid(article)) throw new ValidationException();
-        if (article.getId() <= 0) throw new IllegalArgumentException();
+        if (article.getId() == 0) throw new IllegalArgumentException();
         return articleRepository.update(article);
     }
 

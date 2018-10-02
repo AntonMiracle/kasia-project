@@ -9,11 +9,15 @@ import javax.validation.ConstraintValidatorContext;
 public class UserValidation implements ConstraintValidator<UserConstraint, User> {
     private ValidationHelper helper = new ValidationHelper();
 
-    // validation email, validation nick, validation password
     @Override
     public boolean isValid(User user, ConstraintValidatorContext constraintValidatorContext) {
         if (user == null) return true;
         StringBuilder msg = new StringBuilder();
+        if (user.getId() < 0) {
+            msg.append("{validation.message.id}");
+            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            return false;
+        }
         if (user.getEmail() == null || !isEmailValid(user.getEmail())) {
             msg.append("{validation.budget.UserConstraint.message.email}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
@@ -29,12 +33,12 @@ public class UserValidation implements ConstraintValidator<UserConstraint, User>
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
-        if(user.getZoneId() == null){
+        if (user.getZoneId() == null) {
             msg.append("{validation.budget.UserConstraint.message.zoneid}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
-        if(user.getCreateOn() == null){
+        if (user.getCreateOn() == null) {
             msg.append("{validation.budget.UserConstraint.message.date}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;

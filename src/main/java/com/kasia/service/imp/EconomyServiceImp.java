@@ -9,10 +9,7 @@ import javax.validation.ValidationException;
 import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class EconomyServiceImp implements EconomyService {
     private EconomyRepository repository;
@@ -39,20 +36,20 @@ public class EconomyServiceImp implements EconomyService {
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
-        Economy economy = getById(id);
+        Economy economy = getEconomyById(id);
         if (economy == null) return true;
         return repository.delete(economy);
     }
 
     @Override
-    public boolean update(Economy economy) throws ValidationException, IllegalArgumentException , NullPointerException{
+    public boolean update(Economy economy) throws ValidationException, IllegalArgumentException, NullPointerException {
         if (!isValid(economy)) throw new ValidationException();
-        if (economy.getId() <= 0) throw new IllegalArgumentException();
+        if (economy.getId() == 0) throw new IllegalArgumentException();
         return repository.update(economy);
     }
 
     @Override
-    public Economy getById(long id) throws IllegalArgumentException {
+    public Economy getEconomyById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
         return repository.getById(id);
     }
@@ -60,16 +57,24 @@ public class EconomyServiceImp implements EconomyService {
     @Override
     public boolean addBudget(Economy economy, Budget budget) throws NullPointerException, ValidationException {
         if (economy == null || budget == null) throw new NullPointerException();
-        if (!isValid(economy) || budget.getId() <= 0) throw new ValidationException();
-        if (!economy.getBudgets().add(budget)) return false;
+        if (!isValid(economy)) throw new ValidationException();
+
+        Set<Budget> newBudgets = new HashSet<>(economy.getBudgets());
+        if (!newBudgets.add(budget)) return false;
+
+        economy.setBudgets(newBudgets);
         return update(economy);
     }
 
     @Override
     public boolean removeBudget(Economy economy, Budget budget) throws NullPointerException, ValidationException {
         if (economy == null || budget == null) throw new NullPointerException();
-        if (!isValid(economy) || budget.getId() <= 0) throw new ValidationException();
-        if (!economy.getBudgets().remove(budget)) return false;
+        if (!isValid(economy)) throw new ValidationException();
+
+        Set<Budget> newBudgets = new HashSet<>(economy.getBudgets());
+        if (!newBudgets.remove(budget)) return false;
+
+        economy.setBudgets(newBudgets);
         return update(economy);
     }
 
@@ -80,9 +85,9 @@ public class EconomyServiceImp implements EconomyService {
         Map<Currency, BigDecimal> balances = new HashMap<>();
         for (Budget budget : economy.getBudgets()) {
 
-            BigDecimal oldBalance = balances.get(budget.getCurrency());
-            BigDecimal currentBalance = budget.getBalance();
             Currency currency = budget.getCurrency();
+            BigDecimal oldBalance = balances.get(currency);
+            BigDecimal currentBalance = budget.getBalance();
 
             balances.put(currency, oldBalance == null ? currentBalance : oldBalance.add(currentBalance));
         }

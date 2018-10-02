@@ -16,7 +16,7 @@ public interface EconomyService extends ValidationService<Economy> {
 
     boolean update(Economy economy) throws ValidationException, NullPointerException, IllegalArgumentException;
 
-    Economy getById(long id) throws IllegalArgumentException;
+    Economy getEconomyById(long id) throws IllegalArgumentException;
 
     boolean addBudget(Economy economy, Budget budget) throws NullPointerException, ValidationException;
 

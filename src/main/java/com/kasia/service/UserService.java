@@ -12,7 +12,7 @@ public interface UserService extends ValidationService<User> {
 
     boolean delete(long id) throws IllegalArgumentException;
 
-    User getById(long id) throws IllegalArgumentException;
+    User getUserById(long id) throws IllegalArgumentException;
 
     User getByEmail(String email) throws NullPointerException, ValidationException;
 

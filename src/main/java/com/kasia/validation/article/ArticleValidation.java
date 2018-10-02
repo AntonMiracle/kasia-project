@@ -14,6 +14,11 @@ public class ArticleValidation implements ConstraintValidator<ArticleConstraint,
     public boolean isValid(Article article, ConstraintValidatorContext constraintValidatorContext) {
         if (article == null) return true;
         StringBuilder msg = new StringBuilder();
+        if (article.getId() < 0) {
+            msg.append("{validation.message.id}");
+            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            return false;
+        }
         if (article.getType() == null) {
             msg.append("{validation.article.ArticleConstraint.message.type}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);

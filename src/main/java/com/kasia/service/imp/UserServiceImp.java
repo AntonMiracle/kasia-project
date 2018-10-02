@@ -13,6 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Set;
 
 public class UserServiceImp implements UserService {
     private UserRepository repository;
@@ -32,19 +33,19 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean update(User user) throws ValidationException, NullPointerException, IllegalArgumentException {
         if (!isValid(user)) throw new ValidationException();
-        if (user.getId() <= 0) throw new IllegalArgumentException();
+        if (user.getId() == 0) throw new IllegalArgumentException();
         return repository.update(user);
     }
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
-        User user = getById(id);
+        User user = getUserById(id);
         if (user == null) return true;
         return repository.delete(user);
     }
 
     @Override
-    public User getById(long id) throws IllegalArgumentException {
+    public User getUserById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
         return repository.getById(id);
     }
@@ -68,7 +69,11 @@ public class UserServiceImp implements UserService {
         if (user == null || economy == null) throw new NullPointerException();
         if (economy.getId() <= 0) throw new IllegalArgumentException();
         if (!isValid(user)) throw new ValidationException();
-        if (!user.getEconomies().add(economy)) return false;
+
+        Set<Economy> newEconomies = user.getEconomies();
+        if (!newEconomies.add(economy)) return false;
+
+        user.setEconomies(newEconomies);
         return repository.update(user);
     }
 
@@ -77,7 +82,11 @@ public class UserServiceImp implements UserService {
         if (user == null || economy == null) throw new NullPointerException();
         if (economy.getId() <= 0) throw new IllegalArgumentException();
         if (!isValid(user)) throw new ValidationException();
-        if (!user.getEconomies().remove(economy)) return false;
+
+        Set<Economy> newEconomies = user.getEconomies();
+        if (!newEconomies.remove(economy)) return false;
+
+        user.setEconomies(newEconomies);
         return repository.update(user);
     }
 
