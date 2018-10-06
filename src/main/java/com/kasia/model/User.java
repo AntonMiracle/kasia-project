@@ -22,6 +22,8 @@ public class User implements Model {
     private String password;
     @Column(name = "NICK", nullable = false, unique = true)
     private String nick;
+    @Column(name = "ROLE", nullable = false)
+    private Role role;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_ECONOMIES",
             joinColumns = @JoinColumn(name = "USER_ID"),
@@ -92,6 +94,14 @@ public class User implements Model {
         this.id = id;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -103,6 +113,7 @@ public class User implements Model {
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (nick != null ? !nick.equals(user.nick) : user.nick != null) return false;
+        if (role != user.role) return false;
         if (economies != null ? !economies.equals(user.economies) : user.economies != null) return false;
         if (createOn != null ? !createOn.equals(user.createOn) : user.createOn != null) return false;
         return zoneId != null ? zoneId.equals(user.zoneId) : user.zoneId == null;
@@ -114,6 +125,7 @@ public class User implements Model {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (nick != null ? nick.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (economies != null ? economies.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
@@ -127,9 +139,15 @@ public class User implements Model {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", nick='" + nick + '\'' +
+                ", role=" + role +
                 ", economies=" + economies +
                 ", createOn=" + createOn +
                 ", zoneId=" + zoneId +
                 '}';
     }
+
+    public enum Role {
+        ADMINISTRATOR, USER
+    }
 }
+
