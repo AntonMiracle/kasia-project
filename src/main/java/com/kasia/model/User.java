@@ -20,7 +20,7 @@ public class User implements Model {
     private String email;
     @Column(name = "PASSWORD", nullable = false)
     private String password;
-    @Column(name = "NICK", nullable = false)
+    @Column(name = "NICK", nullable = false, unique = true)
     private String nick;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_ECONOMIES",

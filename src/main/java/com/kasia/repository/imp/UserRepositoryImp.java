@@ -4,8 +4,8 @@ import com.kasia.model.User;
 import com.kasia.repository.UserRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
-import java.sql.ResultSet;
 
 public class UserRepositoryImp implements UserRepository {
     private EntityManager entityManager;
@@ -32,13 +32,25 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public User getByEmail(String email) {
-        Query query = entityManager.createQuery("SELECT * FROM Users u WHERE u.email='" + email + "'");
-        return (User) query.getSingleResult();
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.email='" + email + "'");User user = null;
+        try {
+            user = (User) query.getSingleResult();
+        } catch (NoResultException ex) {
+
+        }
+        return user;
     }
 
     @Override
     public User getByNick(String nick) {
-        return null;
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.nick='" + nick + "'");
+        User user = null;
+        try {
+            user = (User) query.getSingleResult();
+        } catch (NoResultException ex) {
+
+        }
+        return user;
     }
 
     @Override
@@ -77,6 +89,6 @@ public class UserRepositoryImp implements UserRepository {
             entityManager.getTransaction().rollback();
             throw new RuntimeException(ex);
         }
-        return budget;
+        return user;
     }
 }

@@ -81,9 +81,6 @@ public class EconomyRepositoryTest extends RepositoryTestHelper {
 
         for (Budget b : economy.getBudgets()) {
             assertThat(b.getId() > 0).isTrue();
-            for (Article a : b.getArticles()) {
-                assertThat(a.getId() > 0).isTrue();
-            }
         }
         assertThat(economyRepository.getById(id).getName()).isEqualTo(newName);
     }
