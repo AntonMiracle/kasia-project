@@ -23,6 +23,7 @@ public class User implements Model {
     @Column(name = "NICK", nullable = false, unique = true)
     private String nick;
     @Column(name = "ROLE", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_ECONOMIES",
