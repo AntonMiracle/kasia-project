@@ -4,6 +4,9 @@ import com.kasia.model.Economy;
 import com.kasia.repository.EconomyRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.HashSet;
+import java.util.Set;
 
 public class EconomyRepositoryImp implements EconomyRepository {
     private EntityManager entityManager;
@@ -57,5 +60,11 @@ public class EconomyRepositoryImp implements EconomyRepository {
             throw new RuntimeException(ex);
         }
         return economy;
+    }
+
+    @Override
+    public Set<Economy> getAll() {
+        Query query = entityManager.createQuery("SELECT e FROM Economy e ");
+        return new HashSet<>(query.getResultList());
     }
 }

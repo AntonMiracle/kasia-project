@@ -26,6 +26,7 @@ public class UserServiceImp implements UserService {
         user.setEmail(email.trim());
         user.setNick(nick.trim());
         user.setPassword(cryptPassword(password.trim()));
+        user.setRole(User.Role.USER);
         if (!isValid(user)) throw new ValidationException();
         return repository.save(user);
     }

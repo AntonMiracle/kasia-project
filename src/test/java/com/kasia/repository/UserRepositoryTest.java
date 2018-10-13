@@ -52,6 +52,7 @@ public class UserRepositoryTest extends RepositoryTestHelper {
         user.setPassword(PASSWORD);
         user.setEmail(EMAIL);
         user.setZoneId(ZONE_ID);
+        user.setRole(User.Role.USER);
 
         long id = userRepository.save(user).getId();
 
@@ -65,6 +66,7 @@ public class UserRepositoryTest extends RepositoryTestHelper {
         user.setPassword(PASSWORD);
         user.setEmail(EMAIL);
         user.setZoneId(ZONE_ID);
+        user.setRole(User.Role.USER);
 
         long id = userRepository.save(user).getId();
 
@@ -78,6 +80,7 @@ public class UserRepositoryTest extends RepositoryTestHelper {
         user.setPassword(PASSWORD);
         user.setEmail(EMAIL);
         user.setZoneId(ZONE_ID);
+        user.setRole(User.Role.USER);
 
         long id = userRepository.save(user).getId();
 
@@ -91,6 +94,7 @@ public class UserRepositoryTest extends RepositoryTestHelper {
         user.setPassword(PASSWORD);
         user.setEmail(EMAIL);
         user.setZoneId(ZONE_ID);
+        user.setRole(User.Role.USER);
 
         long id = userRepository.save(user).getId();
         assertThat(id > 0).isTrue();
@@ -128,6 +132,7 @@ public class UserRepositoryTest extends RepositoryTestHelper {
         user.setEmail(EMAIL);
         user.setZoneId(ZONE_ID);
         user.setEconomies(new HashSet<>());
+        user.setRole(User.Role.USER);
 
         long id = userRepository.save(user).getId();
         assertThat(id > 0).isTrue();
@@ -147,9 +152,39 @@ public class UserRepositoryTest extends RepositoryTestHelper {
         user.setPassword(PASSWORD);
         user.setEmail(EMAIL);
         user.setZoneId(ZONE_ID);
+        user.setRole(User.Role.USER);
 
         userRepository.save(user);
         assertThat(user.getId() > 0).isTrue();
+
+        user = userRepository.getById(user.getId());
+        assertThat(user.getRole()).isEqualTo(User.Role.USER);
+        assertThat(user.getCreateOn()).isEqualTo(LOCAL_DATE_TIME);
+        assertThat(user.getZoneId()).isEqualTo(ZONE_ID);
+        assertThat(user.getNick()).isEqualTo(NICK);
+        assertThat(user.getPassword()).isEqualTo(PASSWORD);
     }
 
+    @Test
+    public void getAll() {
+        user.setCreateOn(LOCAL_DATE_TIME);
+        user.setNick(NICK);
+        user.setPassword(PASSWORD);
+        user.setEmail(EMAIL);
+        user.setZoneId(ZONE_ID);
+        user.setRole(User.Role.USER);
+
+        User user1 = new User();
+        user1.setCreateOn(LOCAL_DATE_TIME);
+        user1.setNick(NICK + "1");
+        user1.setPassword(PASSWORD);
+        user1.setEmail(EMAIL);
+        user1.setZoneId(ZONE_ID);
+        user1.setRole(User.Role.USER);
+
+        userRepository.save(user);
+        userRepository.save(user1);
+
+        assertThat(userRepository.getAll().size() == 2).isTrue();
+    }
 }

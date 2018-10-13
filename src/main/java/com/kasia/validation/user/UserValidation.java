@@ -18,6 +18,11 @@ public class UserValidation implements ConstraintValidator<UserConstraint, User>
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
+        if (user.getRole() == null) {
+            msg.append("{validation.budget.UserConstraint.message.norole}");
+            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            return false;
+        }
         if (user.getEmail() == null || !isEmailValid(user.getEmail())) {
             msg.append("{validation.budget.UserConstraint.message.email}");
             helper.addConstraintViolation(msg.toString(), constraintValidatorContext);

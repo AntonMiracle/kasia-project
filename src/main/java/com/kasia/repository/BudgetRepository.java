@@ -2,6 +2,8 @@ package com.kasia.repository;
 
 import com.kasia.model.Budget;
 
+import java.util.Set;
+
 public interface BudgetRepository {
     Budget getById(long id);
 
@@ -11,4 +13,5 @@ public interface BudgetRepository {
 
     Budget save(Budget budget);
 
+    Set<Budget> getAll();
 }

@@ -8,8 +8,6 @@ import javax.validation.ValidationException;
 import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ArticleServiceImp implements ArticleService {
     private ArticleRepository articleRepository;
@@ -61,18 +59,6 @@ public class ArticleServiceImp implements ArticleService {
     public Article getArticleById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
         return articleRepository.getById(id);
-    }
-
-    @Override
-    public Set<Article> getArticlesByType(Set<Article> articles, Article.Type type) throws NullPointerException {
-        if (articles == null || type == null) throw new NullPointerException();
-        Set<Article> result = new HashSet<>();
-        for (Article article : articles) {
-            if (article.getType() == type) {
-                result.add(article);
-            }
-        }
-        return result;
     }
 
     @Override

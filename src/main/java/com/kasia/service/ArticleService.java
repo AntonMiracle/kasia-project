@@ -16,6 +16,4 @@ public interface ArticleService extends ValidationService<Article> {
 
     Article getArticleById(long id) throws IllegalArgumentException;
 
-    Set<Article> getArticlesByType(Set<Article> articles, Article.Type type) throws NullPointerException;
-
 }

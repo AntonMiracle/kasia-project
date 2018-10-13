@@ -2,6 +2,8 @@ package com.kasia.repository;
 
 import com.kasia.model.User;
 
+import java.util.Set;
+
 public interface UserRepository {
 
     User getById(long id);
@@ -16,4 +18,5 @@ public interface UserRepository {
 
     User save(User user);
 
-    }
+    Set<User> getAll();
+}

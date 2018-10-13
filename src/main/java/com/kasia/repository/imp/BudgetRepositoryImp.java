@@ -4,6 +4,9 @@ import com.kasia.model.Budget;
 import com.kasia.repository.BudgetRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BudgetRepositoryImp implements BudgetRepository {
     private EntityManager entityManager;
@@ -58,5 +61,11 @@ public class BudgetRepositoryImp implements BudgetRepository {
             throw new RuntimeException(ex);
         }
         return budget;
+    }
+
+    @Override
+    public Set<Budget> getAll() {
+        Query query = entityManager.createQuery("SELECT b FROM Budget b ");
+        return new HashSet<>(query.getResultList());
     }
 }

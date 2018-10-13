@@ -4,6 +4,9 @@ import com.kasia.model.Article;
 import com.kasia.repository.ArticleRepository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ArticleRepositoryImp implements ArticleRepository {
     private EntityManager entityManager;
@@ -58,5 +61,11 @@ public class ArticleRepositoryImp implements ArticleRepository {
             throw new RuntimeException(ex);
         }
         return article;
+    }
+
+    @Override
+    public Set<Article> getAll() {
+        Query query = entityManager.createQuery("SELECT a FROM Article a ");
+        return new HashSet<>(query.getResultList());
     }
 }

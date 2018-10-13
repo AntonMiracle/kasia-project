@@ -6,6 +6,8 @@ import com.kasia.repository.UserRepository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import java.util.HashSet;
+import java.util.Set;
 
 public class UserRepositoryImp implements UserRepository {
     private EntityManager entityManager;
@@ -32,7 +34,8 @@ public class UserRepositoryImp implements UserRepository {
 
     @Override
     public User getByEmail(String email) {
-        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.email='" + email + "'");User user = null;
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.email='" + email + "'");
+        User user = null;
         try {
             user = (User) query.getSingleResult();
         } catch (NoResultException ex) {
@@ -90,5 +93,11 @@ public class UserRepositoryImp implements UserRepository {
             throw new RuntimeException(ex);
         }
         return user;
+    }
+
+    @Override
+    public Set<User> getAll() {
+        Query query = entityManager.createQuery("SELECT u FROM User u ");
+        return new HashSet<>(query.getResultList());
     }
 }

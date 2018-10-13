@@ -118,6 +118,17 @@ public class BudgetServiceImp implements BudgetService {
         }
         return null;
     }
+    @Override
+    public Set<Article> getArticlesByType(Budget budget, Article.Type type) throws NullPointerException {
+        if (budget == null || type == null) throw new NullPointerException();
+        Set<Article> result = new HashSet<>();
+        for (Article article : budget.getArticles()) {
+            if (article.getType() == type) {
+                result.add(article);
+            }
+        }
+        return result;
+    }
 
     @Override
     public boolean isValid(Budget model) throws NullPointerException {

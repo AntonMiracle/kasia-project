@@ -97,4 +97,24 @@ public class BudgetRepositoryTest extends RepositoryTestHelper {
         assertThat(budget.getId() > 0).isTrue();
     }
 
+    @Test
+    public void getAll() {
+        budget.setBalance(BigDecimal.TEN);
+        budget.setCurrency(Currency.getInstance("EUR"));
+        budget.setArticles(new HashSet<>());
+        budget.setName("budgetName");
+        budget.setCreateOn(LocalDateTime.now());
+
+        Budget budget1 = new Budget();
+        budget1.setBalance(BigDecimal.TEN);
+        budget1.setCurrency(Currency.getInstance("EUR"));
+        budget1.setArticles(new HashSet<>());
+        budget1.setName("budgetName");
+        budget1.setCreateOn(LocalDateTime.now());
+
+        budgetRepository.save(budget);
+        budgetRepository.save(budget1);
+
+        assertThat(budgetRepository.getAll().size() == 2).isTrue();
+    }
 }

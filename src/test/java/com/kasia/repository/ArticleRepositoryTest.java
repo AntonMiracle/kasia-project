@@ -87,4 +87,25 @@ public class ArticleRepositoryTest extends RepositoryTestHelper {
         assertThat(article.getId() > 0).isTrue();
     }
 
+    @Test
+    public void getAll() {
+        article.setAmount(BigDecimal.TEN);
+        article.setType(Article.Type.INCOME);
+        article.setDescription("text");
+        LocalDateTime date = LocalDateTime.now();
+        article.setCreateOn(date);
+
+        Article article1 = new Article();
+        article1.setAmount(BigDecimal.ZERO);
+        article1.setType(Article.Type.CONSUMPTION);
+        article1.setDescription("text");
+        LocalDateTime date1 = LocalDateTime.now();
+        article1.setCreateOn(date);
+
+
+        articleRepository.save(article);
+        articleRepository.save(article1);
+
+        assertThat(articleRepository.getAll().size() == 2).isTrue();
+    }
 }

@@ -95,4 +95,20 @@ public class EconomyRepositoryTest extends RepositoryTestHelper {
 
     }
 
+    @Test
+    public void getAll() {
+        economy.setBudgets(new HashSet<>());
+        economy.setName("Economy");
+        economy.setCreateOn(LocalDateTime.now());
+
+        Economy economy1 = new Economy();
+        economy1.setBudgets(new HashSet<>());
+        economy1.setName("Economy");
+        economy1.setCreateOn(LocalDateTime.now());
+
+        economyRepository.save(economy);
+        economyRepository.save(economy1);
+        assertThat(economyRepository.getAll().size() == 2).isTrue();
+    }
+
 }
