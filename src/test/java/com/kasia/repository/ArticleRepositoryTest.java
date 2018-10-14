@@ -2,6 +2,7 @@ package com.kasia.repository;
 
 import com.kasia.model.Article;
 import com.kasia.repository.imp.ArticleRepositoryImp;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +20,12 @@ public class ArticleRepositoryTest extends RepositoryTestHelper {
         articleRepository = new ArticleRepositoryImp(repositoryConnectionService.getEntityManager());
         article = new Article();
     }
+    @After
+    public void after(){
+        for(Article a : articleRepository.getAll()){
+            articleRepository.delete(a);
+        }
+    }
 
     @Test
     public void getById() throws Exception {
@@ -31,7 +38,6 @@ public class ArticleRepositoryTest extends RepositoryTestHelper {
         articleRepository.save(article);
 
         long id = article.getId();
-
         assertThat(articleRepository.getById(id)).isEqualTo(article);
     }
 
@@ -46,7 +52,6 @@ public class ArticleRepositoryTest extends RepositoryTestHelper {
         articleRepository.save(article);
 
         long id = article.getId();
-
         assertThat(articleRepository.getById(id)).isNotNull();
         assertThat(articleRepository.delete(article)).isTrue();
         assertThat(articleRepository.getById(id)).isNull();
@@ -108,4 +113,5 @@ public class ArticleRepositoryTest extends RepositoryTestHelper {
 
         assertThat(articleRepository.getAll().size() == 2).isTrue();
     }
+
 }

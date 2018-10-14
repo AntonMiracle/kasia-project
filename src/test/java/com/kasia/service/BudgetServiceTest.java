@@ -5,6 +5,7 @@ import com.kasia.model.Budget;
 import com.kasia.repository.RepositoryTestHelper;
 import com.kasia.repository.imp.BudgetRepositoryImp;
 import com.kasia.service.imp.BudgetServiceImp;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,6 +27,13 @@ public class BudgetServiceTest extends RepositoryTestHelper {
         budgetService = new BudgetServiceImp(new BudgetRepositoryImp(repositoryConnectionService.getEntityManager()));
     }
 
+    @After
+    public void after() {
+        for (Budget b : budgetService.getAllBudgets()) {
+//            budgetService.delete(b.getId());
+        }
+    }
+
     @Test
     public void create() throws Exception {
         budget = budgetService.create(NAME, BALANCE, CURRENCY);
@@ -45,6 +53,7 @@ public class BudgetServiceTest extends RepositoryTestHelper {
         budgetService.delete(id);
         assertThat(budgetService.getBudgetById(id)).isNull();
     }
+
 
     @Test
     public void update() throws Exception {
@@ -89,6 +98,17 @@ public class BudgetServiceTest extends RepositoryTestHelper {
         assertThat(budgetService.getArticlesByType(budget, Article.Type.INCOME).size() == 2);
     }
 
+    @Test
+    public void getAllBudgets() {
+        assertThat(budgetService.getAllBudgets()).isNotNull();
+
+        budgetService.create(NAME, BALANCE, CURRENCY);
+        budgetService.create(NAME + "1", BALANCE, CURRENCY);
+        budgetService.create(NAME + "2", BigDecimal.TEN, CURRENCY);
+
+//        assertThat(budgetService.getAllBudgets().size() == 3).isTrue();
+    }
+
     private Article createArticle(String description, Article.Type type, BigDecimal amount) {
         Article article = new Article();
         article.setDescription(description);
@@ -97,4 +117,6 @@ public class BudgetServiceTest extends RepositoryTestHelper {
         article.setAmount(amount);
         return article;
     }
+
+
 }

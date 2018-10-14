@@ -1,6 +1,8 @@
 package com.kasia.model;
 
-public interface Model {
+import java.io.Serializable;
+
+public interface Model extends Serializable {
     long getId();
 
     void setId(long id);

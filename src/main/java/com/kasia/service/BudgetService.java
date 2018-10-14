@@ -22,4 +22,6 @@ public interface BudgetService extends ValidationService<Budget> {
     boolean removeArticle(Budget budget, Article article) throws NullPointerException, ValidationException;
 
     Set<Article> getArticlesByType(Budget budget, Article.Type type) throws NullPointerException;
+
+    Set<Budget> getAllBudgets();
 }

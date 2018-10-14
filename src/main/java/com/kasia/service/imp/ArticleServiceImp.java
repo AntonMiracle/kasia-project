@@ -8,6 +8,7 @@ import javax.validation.ValidationException;
 import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 public class ArticleServiceImp implements ArticleService {
     private ArticleRepository articleRepository;
@@ -59,6 +60,11 @@ public class ArticleServiceImp implements ArticleService {
     public Article getArticleById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
         return articleRepository.getById(id);
+    }
+
+    @Override
+    public Set<Article> getAllArticles() {
+        return articleRepository.getAll();
     }
 
     @Override

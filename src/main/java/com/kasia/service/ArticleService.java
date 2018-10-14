@@ -16,4 +16,5 @@ public interface ArticleService extends ValidationService<Article> {
 
     Article getArticleById(long id) throws IllegalArgumentException;
 
+    Set<Article> getAllArticles();
 }

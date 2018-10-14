@@ -14,4 +14,5 @@ public interface ArticleRepository {
     Article save(Article article);
 
     Set<Article> getAll();
+
 }

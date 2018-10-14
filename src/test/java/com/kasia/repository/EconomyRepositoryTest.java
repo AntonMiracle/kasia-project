@@ -4,6 +4,7 @@ import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.model.Economy;
 import com.kasia.repository.imp.EconomyRepositoryImp;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +24,13 @@ public class EconomyRepositoryTest extends RepositoryTestHelper {
         economyRepository = new EconomyRepositoryImp(repositoryConnectionService.getEntityManager());
         economy = new Economy();
     }
+@After
+public void after(){
 
+    for(Economy e : economyRepository.getAll()){
+        economyRepository.delete(e);
+    }
+}
     @Test
     public void getById() throws Exception {
         economy.setBudgets(new HashSet<>());

@@ -3,6 +3,7 @@ package com.kasia.repository;
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.repository.imp.BudgetRepositoryImp;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +22,12 @@ public class BudgetRepositoryTest extends RepositoryTestHelper {
     public void before() {
         budgetRepository = new BudgetRepositoryImp(repositoryConnectionService.getEntityManager());
         budget = new Budget();
+    }
+    @After
+    public void after(){
+        for(Budget b : budgetRepository.getAll()){
+            budgetRepository.delete(b);
+        }
     }
 
     @Test

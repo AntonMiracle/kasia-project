@@ -4,6 +4,7 @@ import com.kasia.model.Article;
 import com.kasia.repository.RepositoryTestHelper;
 import com.kasia.repository.imp.ArticleRepositoryImp;
 import com.kasia.service.imp.ArticleServiceImp;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +23,15 @@ public class ArticleServiceTest extends RepositoryTestHelper {
     @Before
     public void before() {
         articleService = new ArticleServiceImp(new ArticleRepositoryImp(repositoryConnectionService.getEntityManager()));
+    }
+
+    @After
+    public void after() {
+        for (Article a : articleService.getAllArticles()) {
+            System.out.println(a.getId());
+            articleService.delete(a.getId());
+        }
+
     }
 
     @Test
@@ -59,4 +69,15 @@ public class ArticleServiceTest extends RepositoryTestHelper {
         assertThat(articleService.getArticleById(id).getDescription()).isEqualTo(DESCRIPTION);
     }
 
+    @Test
+    public void getAllArticles() {
+        assertThat(articleService.getAllArticles()).isNotNull();
+
+        articleService.create(DESCRIPTION, TYPE, AMOUNT);
+        articleService.create(DESCRIPTION + "1", TYPE, BigDecimal.ZERO);
+        articleService.create(DESCRIPTION + "2", TYPE, BigDecimal.valueOf(123));
+
+//        assertThat(articleService.getAllArticles().size() == 3).isTrue();
+
+    }
 }

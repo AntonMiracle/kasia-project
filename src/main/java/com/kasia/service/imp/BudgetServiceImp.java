@@ -14,21 +14,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BudgetServiceImp implements BudgetService {
-    private BudgetRepository repository;
+    private BudgetRepository budgetRepository;
 
-    public BudgetServiceImp(BudgetRepository repository) {
-        this.repository = repository;
+    public BudgetServiceImp(BudgetRepository budgetRepository) {
+        this.budgetRepository = budgetRepository;
     }
 
     public BudgetServiceImp() {
     }
 
-    public BudgetRepository getRepository() {
-        return repository;
+    public BudgetRepository getBudgetRepository() {
+        return budgetRepository;
     }
 
-    public void setRepository(BudgetRepository repository) {
-        this.repository = repository;
+    public void setBudgetRepository(BudgetRepository budgetRepository) {
+        this.budgetRepository = budgetRepository;
     }
 
     @Override
@@ -42,28 +42,28 @@ public class BudgetServiceImp implements BudgetService {
 
         if (!isValid(budget)) throw new ValidationException();
 
-        return repository.save(budget);
+        return budgetRepository.save(budget);
     }
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
         Budget budget = getBudgetById(id);
         if (budget == null) return true;
-        return repository.delete(budget);
+        return budgetRepository.delete(budget);
     }
 
     @Override
     public boolean update(Budget budget) throws IllegalArgumentException, ValidationException {
         if (!(isValid(budget))) throw new ValidationException();
         if (budget.getId() == 0) throw new IllegalArgumentException();
-        return repository.update(budget);
+        return budgetRepository.update(budget);
     }
 
 
     @Override
     public Budget getBudgetById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
-        return repository.getById(id);
+        return budgetRepository.getById(id);
     }
 
     @Override
@@ -118,6 +118,7 @@ public class BudgetServiceImp implements BudgetService {
         }
         return null;
     }
+
     @Override
     public Set<Article> getArticlesByType(Budget budget, Article.Type type) throws NullPointerException {
         if (budget == null || type == null) throw new NullPointerException();
@@ -131,10 +132,16 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
+    public Set<Budget> getAllBudgets() {
+        return budgetRepository.getAll();
+    }
+
+    @Override
     public boolean isValid(Budget model) throws NullPointerException {
         if (model == null) throw new NullPointerException();
         try (ValidatorFactory factory = getValidatorFactory()) {
             return factory.getValidator().validate(model).size() == 0;
         }
     }
+
 }

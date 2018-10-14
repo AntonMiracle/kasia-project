@@ -27,13 +27,13 @@ public class ArticleRepositoryImp implements ArticleRepository {
     public boolean delete(Article article) {
         try {
             entityManager.getTransaction().begin();
-            article = entityManager.contains(article) ? article : entityManager.merge(article);
             entityManager.remove(article);
             entityManager.getTransaction().commit();
         } catch (Exception ex) {
             entityManager.getTransaction().rollback();
             throw new RuntimeException(ex);
         }
+
         return true;
     }
 
@@ -68,4 +68,5 @@ public class ArticleRepositoryImp implements ArticleRepository {
         Query query = entityManager.createQuery("SELECT a FROM Article a ");
         return new HashSet<>(query.getResultList());
     }
+
 }

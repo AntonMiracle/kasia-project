@@ -35,13 +35,8 @@ public class UserRepositoryTest extends RepositoryTestHelper {
 
     @After
     public void after() {
-        if (userRepository != null && userRepository.getByNick(NICK) != null) {
-            user = userRepository.getByNick(NICK);
-            userRepository.delete(user);
-        }
-        if (userRepository != null && userRepository.getByEmail(EMAIL) != null) {
-            user = userRepository.getByEmail(EMAIL);
-            userRepository.delete(user);
+        for (User u : userRepository.getAll()) {
+            userRepository.delete(u);
         }
     }
 

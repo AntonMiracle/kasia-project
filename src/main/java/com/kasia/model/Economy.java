@@ -4,13 +4,14 @@ import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.validation.economy.EconomyConstraint;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @EconomyConstraint
 @Entity
 @Table(name = "ECONOMIES")
-public class Economy implements Model {
+public class Economy implements Model{
     @Id
     @GeneratedValue
     private long id;

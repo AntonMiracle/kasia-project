@@ -5,13 +5,14 @@ import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.validation.article.ArticleConstraint;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @ArticleConstraint
 @Entity
 @Table(name = "ARTICLES")
-public class Article implements Model {
+public class Article implements Model{
     @Id
     @GeneratedValue
     private long id;
