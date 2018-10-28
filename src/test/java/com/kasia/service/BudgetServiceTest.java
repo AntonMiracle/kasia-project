@@ -30,7 +30,7 @@ public class BudgetServiceTest extends RepositoryTestHelper {
     @After
     public void after() {
         for (Budget b : budgetService.getAllBudgets()) {
-//            budgetService.delete(b.getId());
+            budgetService.delete(b.getId());
         }
     }
 
@@ -106,7 +106,7 @@ public class BudgetServiceTest extends RepositoryTestHelper {
         budgetService.create(NAME + "1", BALANCE, CURRENCY);
         budgetService.create(NAME + "2", BigDecimal.TEN, CURRENCY);
 
-//        assertThat(budgetService.getAllBudgets().size() == 3).isTrue();
+        assertThat(budgetService.getAllBudgets().size() == 3).isTrue();
     }
 
     private Article createArticle(String description, Article.Type type, BigDecimal amount) {
@@ -117,6 +117,4 @@ public class BudgetServiceTest extends RepositoryTestHelper {
         article.setAmount(amount);
         return article;
     }
-
-
 }

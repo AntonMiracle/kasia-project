@@ -28,7 +28,6 @@ public class ArticleServiceTest extends RepositoryTestHelper {
     @After
     public void after() {
         for (Article a : articleService.getAllArticles()) {
-            System.out.println(a.getId());
             articleService.delete(a.getId());
         }
 
@@ -77,7 +76,7 @@ public class ArticleServiceTest extends RepositoryTestHelper {
         articleService.create(DESCRIPTION + "1", TYPE, BigDecimal.ZERO);
         articleService.create(DESCRIPTION + "2", TYPE, BigDecimal.valueOf(123));
 
-//        assertThat(articleService.getAllArticles().size() == 3).isTrue();
+        assertThat(articleService.getAllArticles().size() == 3).isTrue();
 
     }
 }

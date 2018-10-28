@@ -12,7 +12,14 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class EconomyServiceImp implements EconomyService {
-    private EconomyRepository repository;
+    private EconomyRepository economyRepository;
+
+    public EconomyServiceImp(EconomyRepository economyRepository) {
+        this.economyRepository = economyRepository;
+    }
+
+    public EconomyServiceImp() {
+    }
 
     @Override
     public boolean isValid(Economy economy) throws NullPointerException {
@@ -31,27 +38,27 @@ public class EconomyServiceImp implements EconomyService {
         economy.setCreateOn(LocalDateTime.now());
 
         if (!isValid(economy)) throw new ValidationException();
-        return repository.save(economy);
+        return economyRepository.save(economy);
     }
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
         Economy economy = getEconomyById(id);
         if (economy == null) return true;
-        return repository.delete(economy);
+        return economyRepository.delete(economy);
     }
 
     @Override
     public boolean update(Economy economy) throws ValidationException, IllegalArgumentException, NullPointerException {
         if (!isValid(economy)) throw new ValidationException();
         if (economy.getId() == 0) throw new IllegalArgumentException();
-        return repository.update(economy);
+        return economyRepository.update(economy);
     }
 
     @Override
     public Economy getEconomyById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
-        return repository.getById(id);
+        return economyRepository.getById(id);
     }
 
     @Override
@@ -92,5 +99,10 @@ public class EconomyServiceImp implements EconomyService {
             balances.put(currency, oldBalance == null ? currentBalance : oldBalance.add(currentBalance));
         }
         return balances;
+    }
+
+    @Override
+    public Set<Economy> getAll() {
+        return economyRepository.getAll();
     }
 }

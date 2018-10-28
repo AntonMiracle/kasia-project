@@ -12,5 +12,4 @@ public class RepositoryTestHelper {
     public static void beforeClass() {
         repositoryConnectionService = new RepositoryConnectionServiceImp(PERSISTENCE_TEST_UNIT_NAME);
     }
-
 }
