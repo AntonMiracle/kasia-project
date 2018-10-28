@@ -9,6 +9,10 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
 
         <!--TESTING-->
@@ -75,10 +79,23 @@
             <artifactId>h2</artifactId>
             <version>1.4.197</version>
         </dependency>
-
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.22.1</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -96,8 +113,10 @@
                         <phase>validate</phase>
                         <configuration>
                             <tasks>
-                                <copy file="src/main/resources/META-INF/persistence.xml" todir="src/test/resources/META-INF"/>
-                                <copy file="src/main/resources/ValidationMessages.properties" todir="src/test/resources"/>
+                                <copy file="src/main/resources/META-INF/persistence.xml"
+                                      todir="src/test/resources/META-INF"/>
+                                <copy file="src/main/resources/ValidationMessages.properties"
+                                      todir="src/test/resources"/>
                             </tasks>
                         </configuration>
                         <goals>
@@ -105,6 +124,22 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

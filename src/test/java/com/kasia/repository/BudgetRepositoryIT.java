@@ -14,7 +14,7 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BudgetRepositoryTest extends RepositoryTestHelper {
+public class BudgetRepositoryIT extends RepositoryITHelper {
     private BudgetRepository budgetRepository;
     private Budget budget;
 

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ArticleRepositoryTest extends RepositoryTestHelper {
+public class ArticleRepositoryIT extends RepositoryITHelper {
     private ArticleRepository articleRepository;
     private Article article;
 
