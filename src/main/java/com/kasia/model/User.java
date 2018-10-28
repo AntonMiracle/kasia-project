@@ -37,6 +37,18 @@ public class User implements Model {
     @Convert(converter = ZoneIdAttributeConvarter.class)
     private ZoneId zoneId;
 
+    public User(Role role, String email, String nick, String password, ZoneId zoneId, LocalDateTime createOn) {
+        this.role = role;
+        this.email = email;
+        this.nick = nick;
+        this.password = password;
+        this.zoneId = zoneId;
+        this.createOn = createOn;
+    }
+
+    public User() {
+    }
+
     public String getEmail() {
         return email;
     }

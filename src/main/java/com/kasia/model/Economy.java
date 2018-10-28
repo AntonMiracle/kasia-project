@@ -11,13 +11,13 @@ import java.util.Set;
 @EconomyConstraint
 @Entity
 @Table(name = "ECONOMIES")
-public class Economy implements Model{
+public class Economy implements Model {
     @Id
     @GeneratedValue
     private long id;
     @Column(name = "NAME", nullable = false)
     private String name;
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "ECONOMIES_BUDGETS",
             joinColumns = @JoinColumn(name = "ECONOMY_ID"),
             inverseJoinColumns = @JoinColumn(name = "BUDGET_ID"))
@@ -25,6 +25,14 @@ public class Economy implements Model{
     @Column(name = "CREATE_ON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
+
+    public Economy() {
+    }
+
+    public Economy(String name, LocalDateTime createOn) {
+        this.name = name;
+        this.createOn = createOn;
+    }
 
     @Override
     public long getId() {

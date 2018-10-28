@@ -2,7 +2,7 @@ package com.kasia.service;
 
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
-import com.kasia.repository.RepositoryTestHelper;
+import com.kasia.repository.RepositoryITHelper;
 import com.kasia.repository.imp.BudgetRepositoryImp;
 import com.kasia.service.imp.BudgetServiceImp;
 import org.junit.After;
@@ -15,7 +15,7 @@ import java.util.Currency;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BudgetServiceTest extends RepositoryTestHelper {
+public class BudgetServiceIT extends RepositoryITHelper {
     private BudgetService budgetService;
     private Budget budget;
     private final Currency CURRENCY = Currency.getInstance("EUR");

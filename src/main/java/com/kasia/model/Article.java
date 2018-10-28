@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @ArticleConstraint
 @Entity
 @Table(name = "ARTICLES")
-public class Article implements Model{
+public class Article implements Model {
     @Id
     @GeneratedValue
     private long id;
@@ -26,6 +26,15 @@ public class Article implements Model{
     @Column(name = "CREATE_ON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
+
+    public Article() {
+    }
+
+    public Article(Type type, BigDecimal amount, LocalDateTime createOn) {
+        this.type = type;
+        this.amount = amount;
+        this.createOn = createOn;
+    }
 
     @Override
     public long getId() {

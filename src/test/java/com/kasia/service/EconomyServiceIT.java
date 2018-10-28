@@ -2,7 +2,7 @@ package com.kasia.service;
 
 import com.kasia.model.Budget;
 import com.kasia.model.Economy;
-import com.kasia.repository.RepositoryTestHelper;
+import com.kasia.repository.RepositoryITHelper;
 import com.kasia.repository.imp.EconomyRepositoryImp;
 import com.kasia.service.imp.EconomyServiceImp;
 import org.junit.After;
@@ -17,7 +17,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class EconomyServiceTest extends RepositoryTestHelper {
+public class EconomyServiceIT extends RepositoryITHelper {
     private EconomyService economyService;
     private Economy economy;
     private final String NAME = "name";

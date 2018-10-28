@@ -20,24 +20,11 @@ public class ArticleServiceImp implements ArticleService {
     public ArticleServiceImp() {
     }
 
-    public ArticleRepository getArticleRepository() {
-        return articleRepository;
-    }
-
-    public void setArticleRepository(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
-
     @Override
     public Article create(String description, Article.Type type, BigDecimal amount) throws ValidationException {
-        Article article = new Article();
+        Article article = new Article(type,amount,LocalDateTime.now());
         article.setDescription(description);
-        article.setCreateOn(LocalDateTime.now());
-        article.setType(type);
-        article.setAmount(amount);
-
         if (!isValid(article)) throw new ValidationException();
-
         return articleRepository.save(article);
     }
 

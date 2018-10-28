@@ -12,21 +12,27 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
 public class UserServiceImp implements UserService {
     private UserRepository repository;
 
+    public UserServiceImp(UserRepository repository) {
+        this.repository = repository;
+    }
+
+    public UserServiceImp() {
+    }
+
     @Override
-    public User create(String email, String password, String nick) throws NullPointerException, ValidationException {
-        User user = new User();
-        user.setCreateOn(LocalDateTime.now());
+    public User create(String email, String password, String nick, ZoneId zoneId) throws NullPointerException, ValidationException {
+        email = email.trim();
+        nick = nick.trim();
+        password = cryptPassword(password.trim());
+        User user = new User(User.Role.USER,email,nick,password,zoneId,LocalDateTime.now());
         user.setEconomies(new HashSet<>());
-        user.setEmail(email.trim());
-        user.setNick(nick.trim());
-        user.setPassword(cryptPassword(password.trim()));
-        user.setRole(User.Role.USER);
         if (!isValid(user)) throw new ValidationException();
         return repository.save(user);
     }
@@ -68,7 +74,6 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean addEconomic(User user, Economy economy) throws NullPointerException, ValidationException, IllegalArgumentException {
         if (user == null || economy == null) throw new NullPointerException();
-        if (economy.getId() <= 0) throw new IllegalArgumentException();
         if (!isValid(user)) throw new ValidationException();
 
         Set<Economy> newEconomies = user.getEconomies();
@@ -107,6 +112,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public Set<User> getAll() {
+        return repository.getAll();
+    }
+
+    @Override
     public boolean isValid(User user) throws NullPointerException {
         if (user == null) throw new NullPointerException();
 
@@ -114,5 +124,4 @@ public class UserServiceImp implements UserService {
             return factory.getValidator().validate(user).size() == 0;
         }
     }
-
 }

@@ -23,25 +23,11 @@ public class BudgetServiceImp implements BudgetService {
     public BudgetServiceImp() {
     }
 
-    public BudgetRepository getBudgetRepository() {
-        return budgetRepository;
-    }
-
-    public void setBudgetRepository(BudgetRepository budgetRepository) {
-        this.budgetRepository = budgetRepository;
-    }
-
     @Override
     public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException, NullPointerException {
-        Budget budget = new Budget();
-        budget.setName(name);
-        budget.setBalance(balance);
-        budget.setCurrency(currency);
+        Budget budget = new Budget(name,balance,currency,LocalDateTime.now());
         budget.setArticles(new HashSet<>());
-        budget.setCreateOn(LocalDateTime.now());
-
         if (!isValid(budget)) throw new ValidationException();
-
         return budgetRepository.save(budget);
     }
 
@@ -143,5 +129,4 @@ public class BudgetServiceImp implements BudgetService {
             return factory.getValidator().validate(model).size() == 0;
         }
     }
-
 }

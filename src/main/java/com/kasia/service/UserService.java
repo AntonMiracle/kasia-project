@@ -4,9 +4,11 @@ import com.kasia.model.Economy;
 import com.kasia.model.User;
 
 import javax.xml.bind.ValidationException;
+import java.time.ZoneId;
+import java.util.Set;
 
 public interface UserService extends ValidationService<User> {
-    User create(String email, String password, String nick) throws NullPointerException, ValidationException;
+    User create(String email, String password, String nick, ZoneId zoneId) throws NullPointerException, ValidationException;
 
     boolean update(User user) throws ValidationException, NullPointerException, IllegalArgumentException;
 
@@ -24,4 +26,5 @@ public interface UserService extends ValidationService<User> {
 
     String cryptPassword(String password) throws NullPointerException, ValidationException;
 
+    Set<User> getAll();
 }

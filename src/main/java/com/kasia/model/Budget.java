@@ -35,6 +35,16 @@ public class Budget implements Model {
     @Column(name = "CURRENCY", nullable = false)
     private Currency currency;
 
+    public Budget() {
+    }
+
+    public Budget(String name, BigDecimal balance, Currency currency, LocalDateTime createOn) {
+        this.name = name;
+        this.balance = balance;
+        this.currency = currency;
+        this.createOn = createOn;
+    }
+
     @Override
     public long getId() {
         return id;

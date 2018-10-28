@@ -17,7 +17,7 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class UserRepositoryTest extends RepositoryTestHelper {
+public class UserRepositoryIT extends RepositoryITHelper {
     private UserRepository userRepository;
     private User user;
     private final String EMAIL = "email@gmail.com";

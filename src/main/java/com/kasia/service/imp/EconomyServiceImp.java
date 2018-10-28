@@ -32,11 +32,8 @@ public class EconomyServiceImp implements EconomyService {
 
     @Override
     public Economy create(String name) throws ValidationException, NullPointerException {
-        Economy economy = new Economy();
-        economy.setName(name);
+        Economy economy = new Economy(name,LocalDateTime.now());
         economy.setBudgets(new HashSet<>());
-        economy.setCreateOn(LocalDateTime.now());
-
         if (!isValid(economy)) throw new ValidationException();
         return economyRepository.save(economy);
     }

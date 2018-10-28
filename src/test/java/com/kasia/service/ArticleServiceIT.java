@@ -1,7 +1,7 @@
 package com.kasia.service;
 
 import com.kasia.model.Article;
-import com.kasia.repository.RepositoryTestHelper;
+import com.kasia.repository.RepositoryITHelper;
 import com.kasia.repository.imp.ArticleRepositoryImp;
 import com.kasia.service.imp.ArticleServiceImp;
 import org.junit.After;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ArticleServiceTest extends RepositoryTestHelper {
+public class ArticleServiceIT extends RepositoryITHelper {
     private ArticleService articleService;
     private Article article;
     private final String DESCRIPTION = "DESCRIPTION";
