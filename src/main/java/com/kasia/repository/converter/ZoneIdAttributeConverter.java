@@ -3,7 +3,7 @@ package com.kasia.repository.converter;
 import javax.persistence.AttributeConverter;
 import java.time.ZoneId;
 
-public class ZoneIdAttributeConvarter implements AttributeConverter<ZoneId, String> {
+public class ZoneIdAttributeConverter implements AttributeConverter<ZoneId, String> {
 
     @Override
     public String convertToDatabaseColumn(ZoneId zoneId) {

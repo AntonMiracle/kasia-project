@@ -1,7 +1,7 @@
 package com.kasia.model;
 
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
-import com.kasia.repository.converter.ZoneIdAttributeConvarter;
+import com.kasia.repository.converter.ZoneIdAttributeConverter;
 import com.kasia.validation.user.UserConstraint;
 
 import javax.persistence.*;
@@ -34,7 +34,7 @@ public class User implements Model {
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
     @Column(name = "ZONEID", nullable = false)
-    @Convert(converter = ZoneIdAttributeConvarter.class)
+    @Convert(converter = ZoneIdAttributeConverter.class)
     private ZoneId zoneId;
 
     public User(Role role, String email, String nick, String password, ZoneId zoneId, LocalDateTime createOn) {
