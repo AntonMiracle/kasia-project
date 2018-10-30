@@ -1,13 +1,12 @@
 package com.kasia.validation.user;
 
 import com.kasia.model.User;
-import com.kasia.validation.ValidationHelper;
+import com.kasia.validation.ConstraintViolationManager;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UserValidation implements ConstraintValidator<UserConstraint, User> {
-    private ValidationHelper helper = new ValidationHelper();
+public class UserValidation implements ConstraintValidator<UserConstraint, User>, ConstraintViolationManager {
 
     @Override
     public boolean isValid(User user, ConstraintValidatorContext constraintValidatorContext) {
@@ -15,37 +14,37 @@ public class UserValidation implements ConstraintValidator<UserConstraint, User>
         StringBuilder msg = new StringBuilder();
         if (user.getId() < 0) {
             msg.append("{validation.message.id}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getRole() == null) {
             msg.append("{validation.budget.UserConstraint.message.norole}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getEmail() == null || !isEmailValid(user.getEmail())) {
             msg.append("{validation.budget.UserConstraint.message.email}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getNick() == null || !isNickValid(user.getNick())) {
             msg.append("{validation.budget.UserConstraint.message.nick}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getPassword() == null) {
             msg.append("{validation.budget.UserConstraint.message.password}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getZoneId() == null) {
             msg.append("{validation.budget.UserConstraint.message.zoneid}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getCreateOn() == null) {
             msg.append("{validation.budget.UserConstraint.message.date}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         return true;

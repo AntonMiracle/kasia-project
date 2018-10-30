@@ -1,13 +1,12 @@
 package com.kasia.validation.economy;
 
 import com.kasia.model.Economy;
-import com.kasia.validation.ValidationHelper;
+import com.kasia.validation.ConstraintViolationManager;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class EconomyValidation implements ConstraintValidator<EconomyConstraint, Economy> {
-    private ValidationHelper helper = new ValidationHelper();
+public class EconomyValidation implements ConstraintValidator<EconomyConstraint, Economy>, ConstraintViolationManager {
 
     @Override
     public boolean isValid(Economy economy, ConstraintValidatorContext constraintValidatorContext) {
@@ -15,17 +14,17 @@ public class EconomyValidation implements ConstraintValidator<EconomyConstraint,
         StringBuilder msg = new StringBuilder();
         if (economy.getId() < 0) {
             msg.append("{validation.message.id}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (economy.getName() == null) {
             msg.append("{validation.budget.EconomyConstraint.message.name}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
-        if(economy.getCreateOn() == null){
+        if (economy.getCreateOn() == null) {
             msg.append("{validation.budget.EconomyConstraint.message.date}");
-            helper.addConstraintViolation(msg.toString(), constraintValidatorContext);
+            addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         return true;

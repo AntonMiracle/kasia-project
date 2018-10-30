@@ -2,9 +2,9 @@ package com.kasia.validation;
 
 import javax.validation.ConstraintValidatorContext;
 
-public class ValidationHelper {
+public interface ConstraintViolationManager {
 
-    public void addConstraintViolation(String errorMsg, ConstraintValidatorContext constraintValidatorContext) {
+    default void addConstraintViolation(String errorMsg, ConstraintValidatorContext constraintValidatorContext) {
         constraintValidatorContext
                 .buildConstraintViolationWithTemplate(errorMsg)
                 .addConstraintViolation();

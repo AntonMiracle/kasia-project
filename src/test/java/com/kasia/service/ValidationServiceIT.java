@@ -15,7 +15,7 @@ import java.util.Currency;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ValidationServiceTest extends ConfigurationEjbCdiContainerForIT {
+public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private ValidationService<User> userValidationService;
     @Inject
