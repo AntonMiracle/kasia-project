@@ -5,7 +5,7 @@ import com.kasia.service.imp.RepositoryConnectionServiceImp;
 import org.junit.BeforeClass;
 
 public class RepositoryITHelper {
-    private static final String PERSISTENCE_TEST_UNIT_NAME = "test-db-unit";
+    private static final String PERSISTENCE_TEST_UNIT_NAME = "test";
     protected static RepositoryConnectionService repositoryConnectionService;
 
     @BeforeClass

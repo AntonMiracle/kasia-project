@@ -22,7 +22,8 @@
 
 
     </persistence-unit>
-    <persistence-unit name="test-db-unit">
+
+    <persistence-unit name="test">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>com.kasia.model.User</class>
