@@ -3,7 +3,6 @@ package com.kasia.service;
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.repository.RepositoryITHelper;
-import com.kasia.repository.imp.BudgetRepositoryImp;
 import com.kasia.service.imp.BudgetServiceImp;
 import org.junit.After;
 import org.junit.Before;

@@ -2,16 +2,43 @@ package com.kasia.repository;
 
 import com.kasia.model.Budget;
 
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.HashSet;
 import java.util.Set;
 
-public interface BudgetRepository {
-    Budget getById(long id);
+@Stateless
+public class BudgetRepository implements Repository<Budget> {
+    @PersistenceContext(unitName = PERSISTENT_UNIT_NAME)
+    private EntityManager entityManager;
 
-    boolean delete(Budget budget);
+    @Override
+    public Budget getById(long id) {
+        return entityManager.find(Budget.class, id);
+    }
 
-    boolean update(Budget budget);
+    @Override
+    public Set<Budget> getAll() {
+        Query query = entityManager.createQuery("SELECT b FROM Budget b ");
+        return new HashSet<>(query.getResultList());
+    }
 
-    Budget save(Budget budget);
+    @Override
+    public boolean delete(Budget model) {
+        model = entityManager.contains(model) ? model : entityManager.merge(model);
+        entityManager.remove(model);
+        return true;
+    }
 
-    Set<Budget> getAll();
+    @Override
+    public Budget save(Budget model) {
+        if (model.getId() > 0) {
+            entityManager.merge(model);
+        } else {
+            entityManager.persist(model);
+        }
+        return model;
+    }
 }

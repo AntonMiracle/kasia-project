@@ -2,17 +2,44 @@ package com.kasia.repository;
 
 import com.kasia.model.Article;
 
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.HashSet;
 import java.util.Set;
 
-public interface ArticleRepository {
-    Article getById(long id);
+@Stateless
+public class ArticleRepository implements Repository<Article> {
 
-    boolean delete(Article article);
+    @PersistenceContext(unitName = PERSISTENT_UNIT_NAME)
+    private EntityManager entityManager;
 
-    boolean update(Article article);
+    @Override
+    public Article getById(long id) {
+        return entityManager.find(Article.class, id);
+    }
 
-    Article save(Article article);
+    @Override
+    public Set<Article> getAll() {
+        Query query = entityManager.createQuery("SELECT a FROM Article a ");
+        return new HashSet<>(query.getResultList());
+    }
 
-    Set<Article> getAll();
+    @Override
+    public boolean delete(Article model) {
+        model = entityManager.contains(model) ? model : entityManager.merge(model);
+        entityManager.remove(model);
+        return true;
+    }
 
+    @Override
+    public Article save(Article model) {
+        if (model.getId() > 0) {
+            entityManager.merge(model);
+        } else {
+            entityManager.persist(model);
+        }
+        return model;
+    }
 }

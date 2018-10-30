@@ -2,7 +2,6 @@ package com.kasia.service.imp;
 
 import com.kasia.model.Economy;
 import com.kasia.model.User;
-import com.kasia.repository.UserRepository;
 import com.kasia.service.UserService;
 import com.kasia.validation.user.UserValidation;
 

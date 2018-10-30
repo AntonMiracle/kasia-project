@@ -2,11 +2,14 @@ package com.kasia.repository;
 
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
-import com.kasia.repository.imp.BudgetRepositoryImp;
+import com.oneandone.ejbcdiunit.EjbUnitRunner;
+import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
+import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.ejb.EJB;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -14,114 +17,86 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BudgetRepositoryIT extends RepositoryITHelper {
+@RunWith(EjbUnitRunner.class)
+@AdditionalClasses({BudgetRepository.class, TestPersistenceFactory.class})
+public class BudgetRepositoryIT {
+    @EJB
     private BudgetRepository budgetRepository;
-    private Budget budget;
+    private final BigDecimal BALANCE = BigDecimal.TEN;
+    private final Currency CURRENCY_EUR = Currency.getInstance("EUR");
+    private final String NAME = "Name";
+    private final String NAME_2 = "Name2";
+    private final LocalDateTime CREATE_ON = LocalDateTime.of(2018, 10, 10, 10, 10, 10);
 
-    @Before
-    public void before() {
-        budgetRepository = new BudgetRepositoryImp(repositoryConnectionService.getEntityManager());
-        budget = new Budget();
-    }
     @After
-    public void after(){
-        for(Budget b : budgetRepository.getAll()){
+    public void after() {
+        for (Budget b : budgetRepository.getAll()) {
             budgetRepository.delete(b);
         }
     }
 
     @Test
     public void getById() throws Exception {
-        budget.setBalance(BigDecimal.TEN);
-        budget.setCurrency(Currency.getInstance("EUR"));
+        Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
         budget.setArticles(new HashSet<>());
-        budget.setName("budgetName");
-        budget.setCreateOn(LocalDateTime.now());
+        long id = budgetRepository.save(budget).getId();
 
-        budgetRepository.save(budget);
-
-        assertThat(budgetRepository.getById(budget.getId())).isEqualTo(budget);
+        assertThat(budgetRepository.getById(id)).isEqualTo(budget);
     }
 
     @Test
-    public void delete() throws Exception {
-        budget.setBalance(BigDecimal.TEN);
-        budget.setCurrency(Currency.getInstance("EUR"));
+    public void getAll() throws Exception {
+        Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
         budget.setArticles(new HashSet<>());
-        budget.setName("budgetName");
-        budget.setCreateOn(LocalDateTime.now());
-
-        budgetRepository.save(budget);
-        long id = budget.getId();
-
-        assertThat(budgetRepository.getById(id)).isNotNull();
-        assertThat(budgetRepository.delete(budget)).isTrue();
-        assertThat(budgetRepository.getById(id)).isNull();
-    }
-
-    @Test
-    public void update() throws Exception {
-        budget.setBalance(BigDecimal.TEN);
-        budget.setCurrency(Currency.getInstance("EUR"));
+        Budget budget1 = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
         budget.setArticles(new HashSet<>());
-        budget.setName("budgetName");
-        budget.setCreateOn(LocalDateTime.now());
-
-        budgetRepository.save(budget);
-        long id = budget.getId();
-
-        String newName = "newName";
-        budget.setName(newName);
-
-        Article article = new Article();
-        article.setAmount(BigDecimal.TEN);
-        article.setType(Article.Type.INCOME);
-        article.setCreateOn(LocalDateTime.now());
-        article.setDescription("descr");
-
-        assertThat(article.getId() == 0).isTrue();
-        budget.getArticles().add(article);
-        budgetRepository.update(budget);
-
-        budget = budgetRepository.getById(id);
-
-        for (Article art : budget.getArticles()) {
-            assertThat(art.getId() > 0).isTrue();
-        }
-        assertThat(budget.getName()).isEqualTo(newName);
-    }
-
-    @Test
-    public void save() throws Exception {
-        budget.setBalance(BigDecimal.TEN);
-        budget.setCurrency(Currency.getInstance("EUR"));
-        budget.setArticles(new HashSet<>());
-        budget.setName("budgetName");
-        budget.setCreateOn(LocalDateTime.now());
-
-        budgetRepository.save(budget);
-
-        assertThat(budget.getId() > 0).isTrue();
-    }
-
-    @Test
-    public void getAll() {
-        budget.setBalance(BigDecimal.TEN);
-        budget.setCurrency(Currency.getInstance("EUR"));
-        budget.setArticles(new HashSet<>());
-        budget.setName("budgetName");
-        budget.setCreateOn(LocalDateTime.now());
-
-        Budget budget1 = new Budget();
-        budget1.setBalance(BigDecimal.TEN);
-        budget1.setCurrency(Currency.getInstance("EUR"));
-        budget1.setArticles(new HashSet<>());
-        budget1.setName("budgetName");
-        budget1.setCreateOn(LocalDateTime.now());
-
         budgetRepository.save(budget);
         budgetRepository.save(budget1);
 
         assertThat(budgetRepository.getAll().size() == 2).isTrue();
+    }
+
+    @Test
+    public void delete() throws Exception {
+        Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
+        budget.setArticles(new HashSet<>());
+        long id = budgetRepository.save(budget).getId();
+
+        assertThat(budgetRepository.getById(id)).isNotNull();
+        assertThat(budgetRepository.delete(budgetRepository.getById(id))).isTrue();
+        assertThat(budgetRepository.getById(id)).isNull();
+    }
+
+    @Test
+    public void save() throws Exception {
+        Budget expected = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
+        expected.setArticles(new HashSet<>());
+
+        long id = budgetRepository.save(expected).getId();
+        Budget actual = budgetRepository.getById(id);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void update() throws Exception {
+        Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
+        budget.setArticles(new HashSet<>());
+        long id = budgetRepository.save(budget).getId();
+        budget = budgetRepository.getById(id);
+
+        assertThat(budget.getArticles().size() == 0).isTrue();
+        Article article = new Article(Article.Type.INCOME, BigDecimal.TEN, CREATE_ON);
+        article.setDescription("Description");
+        budget.getArticles().add(article);
+        budget.setName(NAME_2);
+        budgetRepository.save(budget);
+
+        budget = budgetRepository.getById(id);
+        for (Article art : budget.getArticles()) {
+            assertThat(art.getId() > 0).isTrue();
+        }
+        assertThat(budget.getName()).isEqualTo(NAME_2);
+        assertThat(budget.getArticles().size() == 1).isTrue();
     }
 }

@@ -1,116 +1,92 @@
 package com.kasia.repository;
 
 import com.kasia.model.Article;
-import com.kasia.repository.imp.ArticleRepositoryImp;
+import com.oneandone.ejbcdiunit.EjbUnitRunner;
+import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
+import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.ejb.EJB;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ArticleRepositoryIT extends RepositoryITHelper {
+@RunWith(EjbUnitRunner.class)
+@AdditionalClasses({ArticleRepository.class, TestPersistenceFactory.class})
+public class ArticleRepositoryIT {
+    @EJB
     private ArticleRepository articleRepository;
-    private Article article;
+    private final LocalDateTime CREATE_ON = LocalDateTime.of(2020, 10, 10, 10, 10, 10);
+    private final BigDecimal AMOUNT = BigDecimal.TEN;
+    private final Article.Type TYPE_CONSUMTION = Article.Type.CONSUMPTION;
+    private final String DESCRIPTION = "Some description";
+    private final String DESCRIPTION_2 = "Some description22";
 
-    @Before
-    public void before() {
-        articleRepository = new ArticleRepositoryImp(repositoryConnectionService.getEntityManager());
-        article = new Article();
-    }
     @After
-    public void after(){
-        for(Article a : articleRepository.getAll()){
+    public void after() {
+        for (Article a : articleRepository.getAll()) {
             articleRepository.delete(a);
         }
     }
 
     @Test
     public void getById() throws Exception {
-        article.setAmount(BigDecimal.TEN);
-        article.setType(Article.Type.INCOME);
-        article.setDescription("text");
-        LocalDateTime date = LocalDateTime.now();
-        article.setCreateOn(date);
+        Article article = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        article.setDescription(DESCRIPTION);
+        long id = articleRepository.save(article).getId();
 
-        articleRepository.save(article);
-
-        long id = article.getId();
         assertThat(articleRepository.getById(id)).isEqualTo(article);
     }
 
     @Test
+    public void save() throws Exception {
+        Article expected = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        expected.setDescription(DESCRIPTION);
+
+        long id = articleRepository.save(expected).getId();
+        Article actual = articleRepository.getById(id);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
     public void delete() throws Exception {
-        article.setAmount(BigDecimal.TEN);
-        article.setType(Article.Type.INCOME);
-        article.setDescription("text");
-        LocalDateTime date = LocalDateTime.now();
-        article.setCreateOn(date);
+        Article article = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        article.setDescription(DESCRIPTION);
+        long id = articleRepository.save(article).getId();
 
-        articleRepository.save(article);
-
-        long id = article.getId();
         assertThat(articleRepository.getById(id)).isNotNull();
-        assertThat(articleRepository.delete(article)).isTrue();
+        assertThat(articleRepository.delete(articleRepository.getById(id))).isTrue();
         assertThat(articleRepository.getById(id)).isNull();
     }
 
     @Test
     public void update() throws Exception {
-        article.setAmount(BigDecimal.TEN);
-        article.setType(Article.Type.INCOME);
-        article.setDescription("text");
-        LocalDateTime date = LocalDateTime.now();
-        article.setCreateOn(date);
+        Article article = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        article.setDescription(DESCRIPTION);
+        long id = articleRepository.save(article).getId();
+        article = articleRepository.getById(id);
 
+        article.setDescription(DESCRIPTION_2);
         articleRepository.save(article);
-
-        long id = article.getId();
-        String newText = "newtext";
-        article.setDescription(newText);
-
-        articleRepository.update(article);
 
         article = articleRepository.getById(id);
-        assertThat(article.getDescription()).isEqualTo(newText);
-    }
-
-    @Test
-    public void save() throws Exception {
-        article.setAmount(BigDecimal.TEN);
-        article.setType(Article.Type.INCOME);
-        article.setDescription("text");
-        LocalDateTime date = LocalDateTime.now();
-        article.setCreateOn(date);
-
-        assertThat(article.getId() == 0).isTrue();
-
-        articleRepository.save(article);
-
-        assertThat(article.getId() > 0).isTrue();
+        assertThat(article.getDescription()).isEqualTo(DESCRIPTION_2);
     }
 
     @Test
     public void getAll() {
-        article.setAmount(BigDecimal.TEN);
-        article.setType(Article.Type.INCOME);
-        article.setDescription("text");
-        LocalDateTime date = LocalDateTime.now();
-        article.setCreateOn(date);
-
-        Article article1 = new Article();
-        article1.setAmount(BigDecimal.ZERO);
-        article1.setType(Article.Type.CONSUMPTION);
-        article1.setDescription("text");
-        LocalDateTime date1 = LocalDateTime.now();
-        article1.setCreateOn(date);
-
-
+        Article article = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        article.setDescription(DESCRIPTION);
+        Article article1 = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        article.setDescription(DESCRIPTION);
         articleRepository.save(article);
         articleRepository.save(article1);
 
         assertThat(articleRepository.getAll().size() == 2).isTrue();
     }
+
 }

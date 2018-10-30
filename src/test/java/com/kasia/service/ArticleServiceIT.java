@@ -2,7 +2,6 @@ package com.kasia.service;
 
 import com.kasia.model.Article;
 import com.kasia.repository.RepositoryITHelper;
-import com.kasia.repository.imp.ArticleRepositoryImp;
 import com.kasia.service.imp.ArticleServiceImp;
 import org.junit.After;
 import org.junit.Before;

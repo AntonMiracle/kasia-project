@@ -2,7 +2,6 @@ package com.kasia.service.imp;
 
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
-import com.kasia.repository.BudgetRepository;
 import com.kasia.service.BudgetService;
 
 import javax.validation.ValidationException;

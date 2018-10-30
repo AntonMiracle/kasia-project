@@ -3,7 +3,6 @@ package com.kasia.service;
 import com.kasia.model.Economy;
 import com.kasia.model.User;
 import com.kasia.repository.RepositoryITHelper;
-import com.kasia.repository.imp.UserRepositoryImp;
 import com.kasia.service.imp.UserServiceImp;
 import org.junit.After;
 import org.junit.Before;

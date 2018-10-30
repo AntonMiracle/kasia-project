@@ -1,7 +1,6 @@
 package com.kasia.service.imp;
 
 import com.kasia.model.Article;
-import com.kasia.repository.ArticleRepository;
 import com.kasia.service.ArticleService;
 
 import javax.validation.ValidationException;

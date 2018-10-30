@@ -1,37 +1,34 @@
 package com.kasia.repository;
 
-import com.kasia.model.Article;
-import com.kasia.model.Budget;
 import com.kasia.model.Economy;
 import com.kasia.model.User;
-import com.kasia.repository.imp.UserRepositoryImp;
+import com.oneandone.ejbcdiunit.EjbUnitRunner;
+import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
+import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
-import java.math.BigDecimal;
+import javax.ejb.EJB;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Currency;
 import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class UserRepositoryIT extends RepositoryITHelper {
+@RunWith(EjbUnitRunner.class)
+@AdditionalClasses({UserRepository.class, TestPersistenceFactory.class})
+public class UserRepositoryIT {
+    @EJB
     private UserRepository userRepository;
-    private User user;
     private final String EMAIL = "email@gmail.com";
+    private final String EMAIL_2 = "email22@gmail.com";
     private final String NICK = "nick";
+    private final String NICK_2 = "nick2";
     private final String PASSWORD = "pass";
-    private final LocalDateTime LOCAL_DATE_TIME = LocalDateTime.now();
+    private final LocalDateTime CREATE_ON = LocalDateTime.of(2020, 10, 10, 10, 10, 10);
     private final ZoneId ZONE_ID = ZoneId.systemDefault();
-
-
-    @Before
-    public void before() {
-        userRepository = new UserRepositoryImp(repositoryConnectionService.getEntityManager());
-        user = new User();
-    }
+    private final User.Role ROLE = User.Role.USER;
 
     @After
     public void after() {
@@ -42,144 +39,88 @@ public class UserRepositoryIT extends RepositoryITHelper {
 
     @Test
     public void getById() throws Exception {
-        user.setCreateOn(LOCAL_DATE_TIME);
-        user.setNick(NICK);
-        user.setPassword(PASSWORD);
-        user.setEmail(EMAIL);
-        user.setZoneId(ZONE_ID);
-        user.setRole(User.Role.USER);
-
-        long id = userRepository.save(user).getId();
-
-        assertThat(userRepository.getById(id).getNick()).isEqualTo(NICK);
-    }
-
-    @Test
-    public void getByEmail() throws Exception {
-        user.setCreateOn(LOCAL_DATE_TIME);
-        user.setNick(NICK);
-        user.setPassword(PASSWORD);
-        user.setEmail(EMAIL);
-        user.setZoneId(ZONE_ID);
-        user.setRole(User.Role.USER);
-
-        long id = userRepository.save(user).getId();
-
-        assertThat(userRepository.getByEmail(EMAIL).getId()).isEqualTo(id);
-    }
-
-    @Test
-    public void getByNick() throws Exception {
-        user.setCreateOn(LOCAL_DATE_TIME);
-        user.setNick(NICK);
-        user.setPassword(PASSWORD);
-        user.setEmail(EMAIL);
-        user.setZoneId(ZONE_ID);
-        user.setRole(User.Role.USER);
-
-        long id = userRepository.save(user).getId();
-
-        assertThat(userRepository.getByNick(NICK).getId()).isEqualTo(id);
-    }
-
-    @Test
-    public void delete() throws Exception {
-        user.setCreateOn(LOCAL_DATE_TIME);
-        user.setNick(NICK);
-        user.setPassword(PASSWORD);
-        user.setEmail(EMAIL);
-        user.setZoneId(ZONE_ID);
-        user.setRole(User.Role.USER);
-
-        long id = userRepository.save(user).getId();
-        assertThat(id > 0).isTrue();
-
-        userRepository.delete(user);
-        assertThat(userRepository.getById(id)).isNull();
-    }
-
-    @Test
-    public void update() throws Exception {
-        Article article = new Article();
-        article.setAmount(BigDecimal.TEN);
-        article.setType(Article.Type.INCOME);
-        article.setDescription("text");
-        LocalDateTime date = LocalDateTime.now();
-        article.setCreateOn(date);
-
-        Budget budget = new Budget();
-        budget.setBalance(BigDecimal.TEN);
-        budget.setCurrency(Currency.getInstance("EUR"));
-        budget.setArticles(new HashSet<>());
-        budget.getArticles().add(article);
-        budget.setName("budgetName");
-        budget.setCreateOn(LocalDateTime.now());
-
-        Economy economy = new Economy();
-        economy.setBudgets(new HashSet<>());
-        economy.getBudgets().add(budget);
-        economy.setName("Economy");
-        economy.setCreateOn(LocalDateTime.now());
-
-        user.setCreateOn(LOCAL_DATE_TIME);
-        user.setNick(NICK);
-        user.setPassword(PASSWORD);
-        user.setEmail(EMAIL);
-        user.setZoneId(ZONE_ID);
+        User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         user.setEconomies(new HashSet<>());
-        user.setRole(User.Role.USER);
-
         long id = userRepository.save(user).getId();
-        assertThat(id > 0).isTrue();
 
-        user.getEconomies().add(economy);
-        userRepository.update(user);
-
-        for (Economy eco : user.getEconomies()) {
-            assertThat(eco.getId() > 0).isTrue();
-        }
+        assertThat(userRepository.getById(id)).isEqualTo(user);
     }
 
     @Test
-    public void save() throws Exception {
-        user.setCreateOn(LOCAL_DATE_TIME);
-        user.setNick(NICK);
-        user.setPassword(PASSWORD);
-        user.setEmail(EMAIL);
-        user.setZoneId(ZONE_ID);
-        user.setRole(User.Role.USER);
-
-        userRepository.save(user);
-        assertThat(user.getId() > 0).isTrue();
-
-        user = userRepository.getById(user.getId());
-        assertThat(user.getRole()).isEqualTo(User.Role.USER);
-        assertThat(user.getCreateOn()).isEqualTo(LOCAL_DATE_TIME);
-        assertThat(user.getZoneId()).isEqualTo(ZONE_ID);
-        assertThat(user.getNick()).isEqualTo(NICK);
-        assertThat(user.getPassword()).isEqualTo(PASSWORD);
-    }
-
-    @Test
-    public void getAll() {
-        user.setCreateOn(LOCAL_DATE_TIME);
-        user.setNick(NICK);
-        user.setPassword(PASSWORD);
-        user.setEmail(EMAIL);
-        user.setZoneId(ZONE_ID);
-        user.setRole(User.Role.USER);
-
-        User user1 = new User();
-        user1.setCreateOn(LOCAL_DATE_TIME);
-        user1.setNick(NICK + "1");
-        user1.setPassword(PASSWORD);
-        user1.setEmail(EMAIL);
-        user1.setZoneId(ZONE_ID);
-        user1.setRole(User.Role.USER);
-
+    public void getAll() throws Exception {
+        User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        user.setEconomies(new HashSet<>());
+        User user1 = new User(ROLE, EMAIL_2, NICK_2, PASSWORD, ZONE_ID, CREATE_ON);
+        user.setEconomies(new HashSet<>());
         userRepository.save(user);
         userRepository.save(user1);
 
         assertThat(userRepository.getAll().size() == 2).isTrue();
+    }
+
+    @Test
+    public void delete() throws Exception {
+        User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        user.setEconomies(new HashSet<>());
+        long id = userRepository.save(user).getId();
+
+        assertThat(userRepository.getById(id)).isNotNull();
+        assertThat(userRepository.delete(userRepository.getById(id))).isTrue();
+        assertThat(userRepository.getById(id)).isNull();
+    }
+
+    @Test
+    public void save() throws Exception {
+        User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        expected.setEconomies(new HashSet<>());
+
+        long id = userRepository.save(expected).getId();
+        User actual = userRepository.getById(id);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void getByEmail() throws Exception {
+        User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        expected.setEconomies(new HashSet<>());
+        String email = userRepository.save(expected).getEmail();
+
+        User actual = userRepository.getByEmail(email);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void getByNick() throws Exception {
+        User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        expected.setEconomies(new HashSet<>());
+        String nick = userRepository.save(expected).getNick();
+
+        User actual = userRepository.getByNick(nick);
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void update() throws Exception {
+        User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        user.setEconomies(new HashSet<>());
+        long id = userRepository.save(user).getId();
+        user = userRepository.getById(id);
+
+        assertThat(user.getEconomies().size() == 0).isTrue();
+        Economy economy = new Economy();
+        economy.setBudgets(new HashSet<>());
+        economy.setName("Economy");
+        economy.setCreateOn(CREATE_ON);
+        user.getEconomies().add(economy);
+        userRepository.save(user);
+
+        user = userRepository.getById(id);
+        for (Economy eco : user.getEconomies()) {
+            assertThat(eco.getId() > 0).isTrue();
+        }
+        assertThat(user.getEconomies().size() == 1).isTrue();
     }
 }
