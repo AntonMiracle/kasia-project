@@ -113,5 +113,4 @@ public class ArticleRepositoryIT extends RepositoryITHelper {
 
         assertThat(articleRepository.getAll().size() == 2).isTrue();
     }
-
 }
