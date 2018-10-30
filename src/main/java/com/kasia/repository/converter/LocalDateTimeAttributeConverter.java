@@ -5,14 +5,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeAttributeConverter implements AttributeConverter<LocalDateTime, String> {
-private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     @Override
     public String convertToDatabaseColumn(LocalDateTime localDateTime) {
-        return localDateTime.format(formatter);
+        return localDateTime.format(FORMATTER);
     }
 
     @Override
     public LocalDateTime convertToEntityAttribute(String s) {
-        return LocalDateTime.parse(s,formatter);
+        return LocalDateTime.parse(s, FORMATTER);
     }
 }

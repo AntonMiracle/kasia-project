@@ -2,31 +2,33 @@ package com.kasia.service;
 
 import com.kasia.model.Economy;
 import com.kasia.model.User;
-import com.kasia.repository.RepositoryITHelper;
+import com.kasia.repository.UserRepository;
 import com.kasia.service.imp.UserServiceImp;
+import com.oneandone.ejbcdiunit.EjbUnitRunner;
+import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
+import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class UserServiceIT extends RepositoryITHelper {
+@RunWith(EjbUnitRunner.class)
+@AdditionalClasses({UserServiceImp.class, UserRepository.class, TestPersistenceFactory.class})
+public class UserServiceIT {
+    @Inject
     private UserService userService;
-    private User user;
     private final String MAIL = "email@gmail.com";
+    private final String MAIL_2 = "email22@gmail.com";
     private final String NICK = "nick";
+    private final String NICK_2 = "nick22";
     private final String PASSWORD = "password";
     private final ZoneId ZONE_ID = ZoneId.systemDefault();
-
-    @Before
-    public void before() {
-        userService = new UserServiceImp(new UserRepositoryImp(repositoryConnectionService.getEntityManager()));
-        user = new User();
-    }
 
     @After
     public void after() {
@@ -37,79 +39,82 @@ public class UserServiceIT extends RepositoryITHelper {
 
     @Test
     public void create() throws Exception {
-        long id = userService.create(MAIL, PASSWORD, NICK, ZONE_ID).getId();
-        assertThat(id != 0).isTrue();
-        user = userService.getUserById(id);
-        assertThat(user.getPassword()).isEqualTo(userService.cryptPassword(PASSWORD));
+        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+        String cryptPassword = userService.cryptPassword(PASSWORD);
+
+        assertThat(user.getId() > 0).isTrue();
+        assertThat(user.getPassword()).isEqualTo(cryptPassword);
         assertThat(user.getEmail()).isEqualTo(MAIL);
         assertThat(user.getNick()).isEqualTo(NICK);
         assertThat(user.getZoneId()).isEqualTo(ZONE_ID);
+        assertThat(user.getCreateOn()).isBefore(LocalDateTime.now());
     }
 
     @Test
     public void update() throws Exception {
-        String newMail = "newMail@gmail.com";
-        user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
-        long id = user.getId();
-        user.setEmail(newMail);
-        userService.update(user);
-        assertThat(userService.getUserById(id)).isEqualTo(user);
+        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+
+        user.setEmail(MAIL_2);
+        user = userService.update(user);
+
+        assertThat(user.getEmail()).isEqualTo(MAIL_2);
     }
 
     @Test
     public void delete() throws Exception {
-        assertThat(userService.getAll().size() == 0).isTrue();
-        user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
-        long id = user.getId();
-        assertThat(userService.getAll().size() == 1).isTrue();
+        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
 
-        userService.delete(id);
-        assertThat(userService.getAll().size() == 0).isTrue();
+        assertThat(userService.getUserById(user.getId())).isNotNull();
+        userService.delete(user.getId());
+
+        assertThat(userService.getUserById(user.getId())).isNull();
     }
 
     @Test
     public void getUserById() throws Exception {
-        user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
-        long id = user.getId();
-        assertThat(id != 0).isTrue();
-        assertThat(userService.getUserById(id)).isEqualTo(user);
+        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+
+        assertThat(userService.getUserById(user.getId())).isEqualTo(user);
     }
 
     @Test
     public void getByEmail() throws Exception {
-        user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+
         assertThat(userService.getByEmail(MAIL)).isEqualTo(user);
     }
 
     @Test
     public void getByNick() throws Exception {
-        user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+
         assertThat(userService.getByNick(NICK)).isEqualTo(user);
     }
 
     @Test
     public void addEconomic() throws Exception {
-        user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+
         assertThat(user.getEconomies().size() == 0).isTrue();
+        user = userService.addEconomic(user, createEconomy());
 
-        userService.addEconomic(user, createEconomy());
         assertThat(user.getEconomies().size() == 1).isTrue();
-
-        for (Economy e : user.getEconomies()) {
-            assertThat(e.getId() > 0).isTrue();
-        }
+        assertThat(userService.getUserById(user.getId()).getEconomies().size() == 1).isTrue();
     }
+
 
     @Test
     public void removeEconomic() throws Exception {
-        user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
-        userService.addEconomic(user, createEconomy());
-        assertThat(user.getEconomies().size() == 1).isTrue();
+        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+        user = userService.addEconomic(user, createEconomy());
 
+        assertThat(user.getEconomies().size() == 1).isTrue();
         for (Economy e : user.getEconomies()) {
             userService.removeEconomic(user, e);
         }
+
         assertThat(user.getEconomies().size() == 0).isTrue();
+        assertThat(userService.getUserById(user.getId()).getEconomies().size() == 0).isTrue();
     }
 
     private Economy createEconomy() {

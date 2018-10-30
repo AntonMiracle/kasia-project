@@ -7,10 +7,10 @@ import javax.xml.bind.ValidationException;
 import java.time.ZoneId;
 import java.util.Set;
 
-public interface UserService extends ValidationService<User> {
+public interface UserService extends ValidationService<User>, Service {
     User create(String email, String password, String nick, ZoneId zoneId) throws NullPointerException, ValidationException;
 
-    boolean update(User user) throws ValidationException, NullPointerException, IllegalArgumentException;
+    User update(User user) throws ValidationException, NullPointerException, IllegalArgumentException;
 
     boolean delete(long id) throws IllegalArgumentException;
 
@@ -20,9 +20,9 @@ public interface UserService extends ValidationService<User> {
 
     User getByNick(String nick) throws NullPointerException, ValidationException;
 
-    boolean addEconomic(User user, Economy economy) throws NullPointerException, ValidationException, IllegalArgumentException;
+    User addEconomic(User user, Economy economy) throws NullPointerException, ValidationException, IllegalArgumentException;
 
-    boolean removeEconomic(User user, Economy economy) throws NullPointerException, ValidationException, IllegalArgumentException;
+    User removeEconomic(User user, Economy economy) throws NullPointerException, ValidationException, IllegalArgumentException;
 
     String cryptPassword(String password) throws NullPointerException, ValidationException;
 

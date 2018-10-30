@@ -8,18 +8,18 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Set;
 
-public interface BudgetService extends ValidationService<Budget> {
+public interface BudgetService extends ValidationService<Budget>, Service {
     Budget create(String name, BigDecimal balance, Currency currency) throws NullPointerException, ValidationException;
 
     boolean delete(long id) throws IllegalArgumentException;
 
-    boolean update(Budget budget) throws IllegalArgumentException, ValidationException;
+    Budget update(Budget budget) throws IllegalArgumentException, ValidationException;
 
     Budget getBudgetById(long id) throws IllegalArgumentException;
 
-    boolean addArticle(Budget budget, Article article) throws NullPointerException, ValidationException;
+    Budget addArticle(Budget budget, Article article) throws NullPointerException, ValidationException;
 
-    boolean removeArticle(Budget budget, Article article) throws NullPointerException, ValidationException;
+    Budget removeArticle(Budget budget, Article article) throws NullPointerException, ValidationException;
 
     Set<Article> getArticlesByType(Budget budget, Article.Type type) throws NullPointerException;
 

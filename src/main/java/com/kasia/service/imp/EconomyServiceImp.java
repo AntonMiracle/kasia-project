@@ -2,8 +2,10 @@ package com.kasia.service.imp;
 
 import com.kasia.model.Budget;
 import com.kasia.model.Economy;
+import com.kasia.repository.EconomyRepository;
 import com.kasia.service.EconomyService;
 
+import javax.ejb.EJB;
 import javax.validation.ValidationException;
 import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
@@ -11,14 +13,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class EconomyServiceImp implements EconomyService {
+    @EJB
     private EconomyRepository economyRepository;
-
-    public EconomyServiceImp(EconomyRepository economyRepository) {
-        this.economyRepository = economyRepository;
-    }
-
-    public EconomyServiceImp() {
-    }
 
     @Override
     public boolean isValid(Economy economy) throws NullPointerException {
@@ -31,24 +27,26 @@ public class EconomyServiceImp implements EconomyService {
 
     @Override
     public Economy create(String name) throws ValidationException, NullPointerException {
-        Economy economy = new Economy(name,LocalDateTime.now());
+        Economy economy = new Economy(name, LocalDateTime.now().withNano(0));
         economy.setBudgets(new HashSet<>());
         if (!isValid(economy)) throw new ValidationException();
-        return economyRepository.save(economy);
+        economyRepository.save(economy);
+        return economyRepository.getById(economy.getId());
     }
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
-        Economy economy = getEconomyById(id);
+        Economy economy = economyRepository.getById(id);
         if (economy == null) return true;
         return economyRepository.delete(economy);
     }
 
     @Override
-    public boolean update(Economy economy) throws ValidationException, IllegalArgumentException, NullPointerException {
+    public Economy update(Economy economy) throws ValidationException, IllegalArgumentException, NullPointerException {
         if (!isValid(economy)) throw new ValidationException();
         if (economy.getId() == 0) throw new IllegalArgumentException();
-        return economyRepository.update(economy);
+        economyRepository.save(economy);
+        return economyRepository.getById(economy.getId());
     }
 
     @Override
@@ -58,27 +56,30 @@ public class EconomyServiceImp implements EconomyService {
     }
 
     @Override
-    public boolean addBudget(Economy economy, Budget budget) throws NullPointerException, ValidationException {
+    public Economy addBudget(Economy economy, Budget budget) throws NullPointerException, ValidationException {
         if (economy == null || budget == null) throw new NullPointerException();
         if (!isValid(economy)) throw new ValidationException();
 
         Set<Budget> newBudgets = new HashSet<>(economy.getBudgets());
-        if (!newBudgets.add(budget)) return false;
+        if (!newBudgets.add(budget)) return null;
 
         economy.setBudgets(newBudgets);
-        return update(economy);
+        economyRepository.save(economy);
+        return economyRepository.getById(economy.getId());
     }
 
     @Override
-    public boolean removeBudget(Economy economy, Budget budget) throws NullPointerException, ValidationException {
+    public Economy removeBudget(Economy economy, Budget budget) throws NullPointerException, ValidationException {
         if (economy == null || budget == null) throw new NullPointerException();
         if (!isValid(economy)) throw new ValidationException();
 
         Set<Budget> newBudgets = new HashSet<>(economy.getBudgets());
-        if (!newBudgets.remove(budget)) return false;
+        if (!newBudgets.remove(budget)) return null;
 
         economy.setBudgets(newBudgets);
-        return update(economy);
+
+        economyRepository.save(economy);
+        return economyRepository.getById(economy.getId());
     }
 
     @Override

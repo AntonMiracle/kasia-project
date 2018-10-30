@@ -2,12 +2,16 @@ package com.kasia.service;
 
 import com.kasia.model.Budget;
 import com.kasia.model.Economy;
-import com.kasia.repository.RepositoryITHelper;
+import com.kasia.repository.EconomyRepository;
 import com.kasia.service.imp.EconomyServiceImp;
+import com.oneandone.ejbcdiunit.EjbUnitRunner;
+import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
+import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -16,17 +20,13 @@ import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class EconomyServiceIT extends RepositoryITHelper {
+@RunWith(EjbUnitRunner.class)
+@AdditionalClasses({EconomyServiceImp.class, EconomyRepository.class, TestPersistenceFactory.class})
+public class EconomyServiceIT {
+    @Inject
     private EconomyService economyService;
-    private Economy economy;
     private final String NAME = "name";
-    private final LocalDateTime NOW = LocalDateTime.now();
-
-    @Before
-    public void before() {
-        economyService = new EconomyServiceImp(new EconomyRepositoryImp(repositoryConnectionService.getEntityManager()));
-        economy = new Economy();
-    }
+    private final String NAME_2 = "name2";
 
     @After
     public void after() {
@@ -37,58 +37,62 @@ public class EconomyServiceIT extends RepositoryITHelper {
 
     @Test
     public void create() throws Exception {
-        economy = economyService.create(NAME);
-        long id = economy.getId();
-        assertThat(economyService.getEconomyById(id).getId()).isEqualTo(id);
+        Economy economy = economyService.create(NAME);
+
+        assertThat(economy.getId() > 0).isTrue();
+        assertThat(economy.getName()).isEqualTo(NAME);
+        assertThat(economy.getBudgets()).isNotNull();
+        assertThat(economy.getBudgets().size() == 0).isTrue();
     }
 
     @Test
     public void delete() throws Exception {
-        economy = economyService.create(NAME);
-        long id = economy.getId();
-        economyService.delete(id);
-        assertThat(economyService.getEconomyById(id)).isNull();
+        Economy economy = economyService.create(NAME);
 
+        assertThat(economyService.getEconomyById(economy.getId())).isNotNull();
+        economyService.delete(economy.getId());
+
+        assertThat(economyService.getEconomyById(economy.getId())).isNull();
     }
 
     @Test
     public void update() throws Exception {
-        String newName = "newName";
-        economy = economyService.create(NAME);
-        long id = economy.getId();
+        Economy economy = economyService.create(NAME);
 
-        economy.setName(newName);
-        economyService.update(economy);
-        assertThat(economyService.getEconomyById(id).getName()).isEqualTo(newName);
+        economy.setName(NAME_2);
+        economy = economyService.update(economy);
+
+        assertThat(economy.getName()).isEqualTo(NAME_2);
     }
 
     @Test
     public void getEconomyById() throws Exception {
-        economy = economyService.create(NAME);
-        long id = economy.getId();
-        assertThat(economyService.getEconomyById(id)).isEqualTo(economy);
+        Economy economy = economyService.create(NAME);
+
+        assertThat(economyService.getEconomyById(economy.getId())).isEqualTo(economy);
     }
 
     @Test
     public void addBudget() throws Exception {
-        economy = economyService.create(NAME);
-        long id = economy.getId();
+        Economy economy = economyService.create(NAME);
+        assertThat(economy.getBudgets().size() == 0).isTrue();
 
-        economyService.addBudget(economy, createBudget(BigDecimal.TEN, Currency.getInstance("EUR")));
+        economy = economyService.addBudget(economy, createBudget(BigDecimal.TEN, Currency.getInstance("EUR")));
+
         assertThat(economy.getBudgets().size() == 1).isTrue();
-        assertThat(economyService.getEconomyById(id).getBudgets().size() == 1).isTrue();
+        assertThat(economyService.getEconomyById(economy.getId()).getBudgets().size() == 1).isTrue();
     }
 
     @Test
     public void removeBudget() throws Exception {
-        economy = economyService.create(NAME);
-        long id = economy.getId();
+        Economy economy = economyService.create(NAME);
         economyService.addBudget(economy, createBudget(BigDecimal.TEN, Currency.getInstance("EUR")));
+        assertThat(economy.getBudgets().size() == 1).isTrue();
 
         for (Budget budget : economy.getBudgets()) {
             economyService.removeBudget(economy, budget);
         }
-        assertThat(economyService.getEconomyById(id).getBudgets().size() == 0).isTrue();
+        assertThat(economyService.getEconomyById(economy.getId()).getBudgets().size() == 0).isTrue();
     }
 
     @Test
@@ -96,7 +100,7 @@ public class EconomyServiceIT extends RepositoryITHelper {
         Currency eur = Currency.getInstance("EUR");
         Currency usd = Currency.getInstance("USD");
         Currency rub = Currency.getInstance("RUB");
-        economy = economyService.create(NAME);
+        Economy economy = economyService.create(NAME);
         economyService.addBudget(economy, createBudget(BigDecimal.TEN, eur));
         economyService.addBudget(economy, createBudget(BigDecimal.ONE, eur));
         economyService.addBudget(economy, createBudget(BigDecimal.ZERO, eur));
@@ -120,5 +124,4 @@ public class EconomyServiceIT extends RepositoryITHelper {
         budget.setCurrency(currency);
         return budget;
     }
-
 }

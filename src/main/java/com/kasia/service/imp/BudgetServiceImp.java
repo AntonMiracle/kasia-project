@@ -2,8 +2,10 @@ package com.kasia.service.imp;
 
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
+import com.kasia.repository.BudgetRepository;
 import com.kasia.service.BudgetService;
 
+import javax.ejb.EJB;
 import javax.validation.ValidationException;
 import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
@@ -13,35 +15,31 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BudgetServiceImp implements BudgetService {
+    @EJB
     private BudgetRepository budgetRepository;
-
-    public BudgetServiceImp(BudgetRepository budgetRepository) {
-        this.budgetRepository = budgetRepository;
-    }
-
-    public BudgetServiceImp() {
-    }
 
     @Override
     public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException, NullPointerException {
-        Budget budget = new Budget(name,balance,currency,LocalDateTime.now());
+        Budget budget = new Budget(name, balance, currency, LocalDateTime.now().withNano(0));
         budget.setArticles(new HashSet<>());
         if (!isValid(budget)) throw new ValidationException();
-        return budgetRepository.save(budget);
+        budgetRepository.save(budget);
+        return budgetRepository.getById(budget.getId());
     }
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
-        Budget budget = getBudgetById(id);
+        Budget budget = budgetRepository.getById(id);
         if (budget == null) return true;
         return budgetRepository.delete(budget);
     }
 
     @Override
-    public boolean update(Budget budget) throws IllegalArgumentException, ValidationException {
+    public Budget update(Budget budget) throws IllegalArgumentException, ValidationException {
         if (!(isValid(budget))) throw new ValidationException();
         if (budget.getId() == 0) throw new IllegalArgumentException();
-        return budgetRepository.update(budget);
+        budgetRepository.save(budget);
+        return budgetRepository.getById(budget.getId());
     }
 
 
@@ -52,32 +50,34 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean addArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
+    public Budget addArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
         if (budget == null || article == null) throw new NullPointerException();
         if (!isValid(budget)) throw new ValidationException();
 
         Set<Article> newArticles = new HashSet<>(budget.getArticles());
         BigDecimal newBalance = addToBalance(budget, article);
-        if (!newArticles.add(article) || !(newBalance != null)) return false;
+        if (!newArticles.add(article) || newBalance == null) return null;
 
         budget.setArticles(newArticles);
         budget.setBalance(newBalance);
-        return update(budget);
+        budgetRepository.save(budget);
+        return budgetRepository.getById(budget.getId());
     }
 
 
     @Override
-    public boolean removeArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
+    public Budget removeArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
         if (budget == null || article == null) throw new NullPointerException();
         if (!isValid(budget)) throw new ValidationException();
 
         Set<Article> newArticles = new HashSet<>(budget.getArticles());
         BigDecimal newBalance = removeFromBalance(budget, article);
-        if (!newArticles.remove(article) || !(newBalance != null)) return false;
+        if (!newArticles.remove(article) || newBalance == null) return null;
 
         budget.setArticles(newArticles);
         budget.setBalance(newBalance);
-        return update(budget);
+        budgetRepository.save(budget);
+        return budgetRepository.getById(budget.getId());
     }
 
     private BigDecimal addToBalance(Budget budget, Article article) throws NullPointerException {
