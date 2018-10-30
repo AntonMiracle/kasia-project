@@ -4,12 +4,10 @@ import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.model.Economy;
 import com.kasia.model.User;
-import com.kasia.service.imp.ArticleServiceImp;
-import com.kasia.service.imp.BudgetServiceImp;
-import com.kasia.service.imp.EconomyServiceImp;
-import com.kasia.service.imp.UserServiceImp;
+import com.kasia.ConfigurationEjbCdiContainerForIT;
 import org.junit.Test;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -17,11 +15,15 @@ import java.util.Currency;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ValidationServiceTest {
-    private ValidationService<User> userValidationService = new UserServiceImp();
-    private ValidationService<Article> articleValidationService = new ArticleServiceImp();
-    private ValidationService<Budget> budgetValidationService = new BudgetServiceImp();
-    private ValidationService<Economy> economyValidationService = new EconomyServiceImp();
+public class ValidationServiceTest extends ConfigurationEjbCdiContainerForIT {
+    @Inject
+    private ValidationService<User> userValidationService;
+    @Inject
+    private ValidationService<Article> articleValidationService;
+    @Inject
+    private ValidationService<Budget> budgetValidationService;
+    @Inject
+    private ValidationService<Economy> economyValidationService;
 
     @Test
     public void articleIsValidTrue() {

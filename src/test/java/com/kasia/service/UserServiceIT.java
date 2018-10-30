@@ -1,15 +1,10 @@
 package com.kasia.service;
 
+import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Economy;
 import com.kasia.model.User;
-import com.kasia.repository.UserRepository;
-import com.kasia.service.imp.UserServiceImp;
-import com.oneandone.ejbcdiunit.EjbUnitRunner;
-import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
-import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import java.time.LocalDateTime;
@@ -18,9 +13,7 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(EjbUnitRunner.class)
-@AdditionalClasses({UserServiceImp.class, UserRepository.class, TestPersistenceFactory.class})
-public class UserServiceIT {
+public class UserServiceIT extends ConfigurationEjbCdiContainerForIT{
     @Inject
     private UserService userService;
     private final String MAIL = "email@gmail.com";

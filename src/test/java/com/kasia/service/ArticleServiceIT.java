@@ -1,14 +1,9 @@
 package com.kasia.service;
 
 import com.kasia.model.Article;
-import com.kasia.repository.ArticleRepository;
-import com.kasia.service.imp.ArticleServiceImp;
-import com.oneandone.ejbcdiunit.EjbUnitRunner;
-import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
-import org.jglue.cdiunit.AdditionalClasses;
+import com.kasia.ConfigurationEjbCdiContainerForIT;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
@@ -16,9 +11,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(EjbUnitRunner.class)
-@AdditionalClasses({ArticleServiceImp.class, ArticleRepository.class, TestPersistenceFactory.class})
-public class ArticleServiceIT {
+public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private ArticleService articleService;
     private final String DESCRIPTION = "DESCRIPTION";

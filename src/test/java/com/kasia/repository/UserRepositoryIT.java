@@ -1,13 +1,10 @@
 package com.kasia.repository;
 
+import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Economy;
 import com.kasia.model.User;
-import com.oneandone.ejbcdiunit.EjbUnitRunner;
-import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
-import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 import java.time.LocalDateTime;
@@ -16,9 +13,7 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(EjbUnitRunner.class)
-@AdditionalClasses({UserRepository.class, TestPersistenceFactory.class})
-public class UserRepositoryIT {
+public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @EJB
     private UserRepository userRepository;
     private final String EMAIL = "email@gmail.com";

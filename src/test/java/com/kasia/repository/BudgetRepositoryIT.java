@@ -1,5 +1,6 @@
 package com.kasia.repository;
 
+import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.oneandone.ejbcdiunit.EjbUnitRunner;
@@ -17,9 +18,7 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(EjbUnitRunner.class)
-@AdditionalClasses({BudgetRepository.class, TestPersistenceFactory.class})
-public class BudgetRepositoryIT {
+public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @EJB
     private BudgetRepository budgetRepository;
     private final BigDecimal BALANCE = BigDecimal.TEN;

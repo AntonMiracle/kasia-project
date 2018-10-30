@@ -1,5 +1,6 @@
 package com.kasia.service;
 
+import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.repository.BudgetRepository;
@@ -18,9 +19,7 @@ import java.util.Currency;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(EjbUnitRunner.class)
-@AdditionalClasses({BudgetServiceImp.class, BudgetRepository.class, TestPersistenceFactory.class})
-public class BudgetServiceIT{
+public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private BudgetService budgetService;
     private final Currency CURRENCY = Currency.getInstance("EUR");

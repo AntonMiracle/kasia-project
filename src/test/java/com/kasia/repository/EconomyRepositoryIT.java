@@ -1,5 +1,6 @@
 package com.kasia.repository;
 
+import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Budget;
 import com.kasia.model.Economy;
 import com.oneandone.ejbcdiunit.EjbUnitRunner;
@@ -17,9 +18,7 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(EjbUnitRunner.class)
-@AdditionalClasses({EconomyRepository.class, TestPersistenceFactory.class})
-public class EconomyRepositoryIT {
+public class EconomyRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @EJB
     private EconomyRepository economyRepository;
     private final LocalDateTime CREATE_ON = LocalDateTime.of(2020, 10, 10, 10, 10, 10);

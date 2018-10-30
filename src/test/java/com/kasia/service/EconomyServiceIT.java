@@ -1,5 +1,6 @@
 package com.kasia.service;
 
+import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Budget;
 import com.kasia.model.Economy;
 import com.kasia.repository.EconomyRepository;
@@ -20,9 +21,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(EjbUnitRunner.class)
-@AdditionalClasses({EconomyServiceImp.class, EconomyRepository.class, TestPersistenceFactory.class})
-public class EconomyServiceIT {
+public class EconomyServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private EconomyService economyService;
     private final String NAME = "name";

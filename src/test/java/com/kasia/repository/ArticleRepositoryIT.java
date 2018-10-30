@@ -1,12 +1,9 @@
 package com.kasia.repository;
 
+import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Article;
-import com.oneandone.ejbcdiunit.EjbUnitRunner;
-import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
-import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 import java.math.BigDecimal;
@@ -14,9 +11,7 @@ import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@RunWith(EjbUnitRunner.class)
-@AdditionalClasses({ArticleRepository.class, TestPersistenceFactory.class})
-public class ArticleRepositoryIT {
+public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @EJB
     private ArticleRepository articleRepository;
     private final LocalDateTime CREATE_ON = LocalDateTime.of(2020, 10, 10, 10, 10, 10);
