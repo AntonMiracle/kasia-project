@@ -5,7 +5,6 @@ import com.kasia.validation.ConstraintViolationManager;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.math.BigDecimal;
 
 public class ArticleValidation implements ConstraintValidator<ArticleConstraint, Article>, ConstraintViolationManager {
 
@@ -23,13 +22,8 @@ public class ArticleValidation implements ConstraintValidator<ArticleConstraint,
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
-        if (article.getAmount() == null || article.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-            msg.append("{validation.article.ArticleConstraint.message.amount}");
-            addConstraintViolation(msg.toString(), constraintValidatorContext);
-            return false;
-        }
-        if(article.getCreateOn() == null){
-            msg.append("{validation.article.ArticleConstraint.message.date}");
+        if (article.getName() == null || article.getName().trim().length() <= 0) {
+            msg.append("{validation.article.ArticleConstraint.message.name}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }

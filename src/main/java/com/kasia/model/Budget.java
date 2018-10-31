@@ -26,6 +26,16 @@ public class Budget implements Model {
             joinColumns = @JoinColumn(name = "BUDGET_ID"),
             inverseJoinColumns = @JoinColumn(name = "ARTICLE_ID"))
     private Set<Article> articles;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "BUDGETS_OPERATIONS",
+            joinColumns = @JoinColumn(name = "BUDGET_ID"),
+            inverseJoinColumns = @JoinColumn(name = "OPERATION_ID"))
+    private Set<Operation> operations;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "BUDGETS_EMPLOYERS",
+            joinColumns = @JoinColumn(name = "BUDGET_ID"),
+            inverseJoinColumns = @JoinColumn(name = "EMPLOYER_ID"))
+    private Set<Employer> employers;
     @Column(name = "BALANCE", nullable = false)
     @Convert(converter = BigDecimalAttributeConverter.class)
     private BigDecimal balance;
@@ -95,6 +105,22 @@ public class Budget implements Model {
         this.currency = currency;
     }
 
+    public Set<Operation> getOperations() {
+        return operations;
+    }
+
+    public void setOperations(Set<Operation> operations) {
+        this.operations = operations;
+    }
+
+    public Set<Employer> getEmployers() {
+        return employers;
+    }
+
+    public void setEmployers(Set<Employer> employers) {
+        this.employers = employers;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,6 +131,8 @@ public class Budget implements Model {
         if (id != budget.id) return false;
         if (name != null ? !name.equals(budget.name) : budget.name != null) return false;
         if (articles != null ? !articles.equals(budget.articles) : budget.articles != null) return false;
+        if (operations != null ? !operations.equals(budget.operations) : budget.operations != null) return false;
+        if (employers != null ? !employers.equals(budget.employers) : budget.employers != null) return false;
         if (balance != null ? !balance.equals(budget.balance) : budget.balance != null) return false;
         if (createOn != null ? !createOn.equals(budget.createOn) : budget.createOn != null) return false;
         return currency != null ? currency.equals(budget.currency) : budget.currency == null;
@@ -115,6 +143,8 @@ public class Budget implements Model {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (articles != null ? articles.hashCode() : 0);
+        result = 31 * result + (operations != null ? operations.hashCode() : 0);
+        result = 31 * result + (employers != null ? employers.hashCode() : 0);
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
@@ -127,6 +157,8 @@ public class Budget implements Model {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", articles=" + articles +
+                ", operations=" + operations +
+                ", employers=" + employers +
                 ", balance=" + balance +
                 ", createOn=" + createOn +
                 ", currency=" + currency +

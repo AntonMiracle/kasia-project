@@ -1,13 +1,12 @@
 package com.kasia.service;
 
-import com.kasia.model.Article;
 import com.kasia.ConfigurationEjbCdiContainerForIT;
+import com.kasia.model.Article;
 import org.junit.After;
 import org.junit.Test;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -16,6 +15,8 @@ public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
     private ArticleService articleService;
     private final String DESCRIPTION = "DESCRIPTION";
     private final String DESCRIPTION_2 = "DESCRIPTION22";
+    private final String NAME = "NAMe";
+    private final String NAME_2 = "NAMe22";
     private final Article.Type TYPE = Article.Type.INCOME;
     private final BigDecimal AMOUNT = BigDecimal.TEN;
 
@@ -28,18 +29,16 @@ public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void create() throws Exception {
-        Article article = articleService.create(DESCRIPTION, TYPE, AMOUNT);
+        Article article = articleService.create(NAME, TYPE);
 
         assertThat(article.getId() > 0).isTrue();
-        assertThat(article.getDescription()).isEqualTo(DESCRIPTION);
+        assertThat(article.getDescription()).isNotNull();
         assertThat(article.getType()).isEqualTo(TYPE);
-        assertThat(article.getAmount()).isEqualTo(AMOUNT);
-        assertThat(article.getCreateOn()).isBefore(LocalDateTime.now());
     }
 
     @Test
     public void delete() throws Exception {
-        Article article = articleService.create(DESCRIPTION, TYPE, AMOUNT);
+        Article article = articleService.create(NAME, TYPE);
 
         assertThat(articleService.getArticleById(article.getId())).isNotNull();
         articleService.delete(article.getId());
@@ -49,7 +48,7 @@ public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void update() throws Exception {
-        Article article = articleService.create(DESCRIPTION, TYPE, AMOUNT);
+        Article article = articleService.create(NAME, TYPE);
 
         article.setDescription(DESCRIPTION_2);
         article = articleService.update(article);
@@ -59,7 +58,7 @@ public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getArticleById() throws Exception {
-        Article article = articleService.create(DESCRIPTION, TYPE, AMOUNT);
+        Article article = articleService.create(NAME, TYPE);
 
         assertThat(articleService.getArticleById(article.getId())).isEqualTo(article);
     }
@@ -69,9 +68,9 @@ public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
         assertThat(articleService.getAllArticles()).isNotNull();
         assertThat(articleService.getAllArticles().size() == 0).isTrue();
 
-        articleService.create(DESCRIPTION, TYPE, AMOUNT);
-        articleService.create(DESCRIPTION, TYPE, AMOUNT);
-        articleService.create(DESCRIPTION, TYPE, AMOUNT);
+        articleService.create(NAME, TYPE);
+        articleService.create(NAME, TYPE);
+        articleService.create(NAME, TYPE);
 
         assertThat(articleService.getAllArticles().size() == 3).isTrue();
     }

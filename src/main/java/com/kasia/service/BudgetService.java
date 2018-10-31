@@ -2,6 +2,7 @@ package com.kasia.service;
 
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
+import com.kasia.model.Operation;
 
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
@@ -17,11 +18,13 @@ public interface BudgetService extends ValidationService<Budget>, Service {
 
     Budget getBudgetById(long id) throws IllegalArgumentException;
 
-    Budget addArticle(Budget budget, Article article) throws NullPointerException, ValidationException;
+    Budget addOperation(Budget budget, Operation operation) throws NullPointerException, ValidationException;
 
-    Budget removeArticle(Budget budget, Article article) throws NullPointerException, ValidationException;
+    Budget removeOperation(Budget budget, Operation operation) throws NullPointerException, ValidationException;
 
     Set<Article> getArticlesByType(Budget budget, Article.Type type) throws NullPointerException;
+
+    Set<Operation> getOperationsByArticlesType(Budget budget, Article.Type type) throws NullPointerException;
 
     Set<Budget> getAllBudgets();
 }

@@ -6,19 +6,16 @@ import org.junit.After;
 import org.junit.Test;
 
 import javax.ejb.EJB;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @EJB
     private ArticleRepository articleRepository;
-    private final LocalDateTime CREATE_ON = LocalDateTime.of(2020, 10, 10, 10, 10, 10);
-    private final BigDecimal AMOUNT = BigDecimal.TEN;
     private final Article.Type TYPE_CONSUMTION = Article.Type.CONSUMPTION;
     private final String DESCRIPTION = "Some description";
     private final String DESCRIPTION_2 = "Some description22";
+    private final String NAME = "name";
 
     @After
     public void after() {
@@ -29,7 +26,7 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getById() throws Exception {
-        Article article = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        Article article = new Article(NAME,TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
         long id = articleRepository.save(article).getId();
 
@@ -38,7 +35,7 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void save() throws Exception {
-        Article expected = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        Article expected = new Article(NAME,TYPE_CONSUMTION);
         expected.setDescription(DESCRIPTION);
 
         long id = articleRepository.save(expected).getId();
@@ -49,7 +46,7 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void delete() throws Exception {
-        Article article = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        Article article = new Article(NAME,TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
         long id = articleRepository.save(article).getId();
 
@@ -60,7 +57,7 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void update() throws Exception {
-        Article article = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        Article article = new Article(NAME,TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
         long id = articleRepository.save(article).getId();
         article = articleRepository.getById(id);
@@ -74,9 +71,9 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getAll() {
-        Article article = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        Article article = new Article(NAME,TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
-        Article article1 = new Article(TYPE_CONSUMTION, AMOUNT, CREATE_ON);
+        Article article1 = new Article(NAME,TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
         articleRepository.save(article);
         articleRepository.save(article1);

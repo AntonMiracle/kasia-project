@@ -4,11 +4,13 @@ import com.kasia.repository.converter.BigDecimalAttributeConverter;
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.validation.article.ArticleConstraint;
 
+import javax.inject.Named;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Named
 @ArticleConstraint
 @Entity
 @Table(name = "ARTICLES")
@@ -16,24 +18,51 @@ public class Article implements Model {
     @Id
     @GeneratedValue
     private long id;
+    @Column(name = "NAME", nullable = false)
+    private String name;
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "TYPE", nullable = false)
     private Type type;
-    @Column(name = "AMOUNT", nullable = false)
-    @Convert(converter = BigDecimalAttributeConverter.class)
-    private BigDecimal amount;
-    @Column(name = "CREATE_ON", nullable = false)
-    @Convert(converter = LocalDateTimeAttributeConverter.class)
-    private LocalDateTime createOn;
 
     public Article() {
     }
 
-    public Article(Type type, BigDecimal amount, LocalDateTime createOn) {
+    public Article(String name, Type type) {
+        this.name = name;
         this.type = type;
-        this.amount = amount;
-        this.createOn = createOn;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", type=" + type +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Article article = (Article) o;
+
+        if (id != article.id) return false;
+        if (name != null ? !name.equals(article.name) : article.name != null) return false;
+        if (description != null ? !description.equals(article.description) : article.description != null) return false;
+        return type == article.type;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -44,6 +73,14 @@ public class Article implements Model {
     @Override
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -60,57 +97,6 @@ public class Article implements Model {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public LocalDateTime getCreateOn() {
-        return createOn;
-    }
-
-    public void setCreateOn(LocalDateTime createOn) {
-        this.createOn = createOn;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Article article = (Article) o;
-
-        if (id != article.id) return false;
-        if (description != null ? !description.equals(article.description) : article.description != null) return false;
-        if (type != article.type) return false;
-        if (amount != null ? !amount.equals(article.amount) : article.amount != null) return false;
-        return createOn != null ? createOn.equals(article.createOn) : article.createOn == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (amount != null ? amount.hashCode() : 0);
-        result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", type=" + type +
-                ", amount=" + amount +
-                ", createOn=" + createOn +
-                '}';
     }
 
     public enum Type {

@@ -3,12 +3,11 @@ package com.kasia.service;
 import com.kasia.model.Article;
 
 import javax.validation.ValidationException;
-import java.math.BigDecimal;
 import java.util.Set;
 
 public interface ArticleService extends ValidationService<Article>,Service {
 
-    Article create(String description, Article.Type type, BigDecimal amount) throws ValidationException;
+    Article create(String name, Article.Type type) throws ValidationException;
 
     boolean delete(long id) throws IllegalArgumentException;
 

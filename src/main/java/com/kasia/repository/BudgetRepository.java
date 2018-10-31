@@ -11,6 +11,7 @@ import java.util.Set;
 
 @Stateless
 public class BudgetRepository implements Repository<Budget> {
+
     @PersistenceContext(unitName = PERSISTENT_UNIT_NAME)
     private EntityManager entityManager;
 

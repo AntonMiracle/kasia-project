@@ -1,6 +1,5 @@
 package com.kasia.service.imp;
 
-import com.kasia.model.Economy;
 import com.kasia.model.User;
 import com.kasia.repository.UserRepository;
 import com.kasia.service.UserService;
@@ -8,7 +7,6 @@ import com.kasia.validation.user.UserValidation;
 
 import javax.ejb.EJB;
 import javax.validation.ValidationException;
-import javax.validation.ValidatorFactory;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +25,7 @@ public class UserServiceImp implements UserService {
         nick = nick.trim();
         password = cryptPassword(password.trim());
         User user = new User(User.Role.USER, email, nick, password, zoneId, LocalDateTime.now().withNano(0));
-        user.setEconomies(new HashSet<>());
+        user.setBudgets(new HashSet<>());
         if (!isValid(user)) throw new ValidationException();
         return userRepository.save(user);
     }
@@ -42,9 +40,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
+        if (id <= 0) throw new IllegalArgumentException();
         User user = userRepository.getById(id);
-        if (user == null) return true;
-        return userRepository.delete(user);
+        return user == null || userRepository.delete(user);
     }
 
     @Override
@@ -68,33 +66,6 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User addEconomic(User user, Economy economy) throws NullPointerException, ValidationException, IllegalArgumentException {
-        if (user == null || economy == null) throw new NullPointerException();
-        if (!isValid(user)) throw new ValidationException();
-
-        Set<Economy> newEconomies = user.getEconomies();
-        if (!newEconomies.add(economy)) return null;
-
-        user.setEconomies(newEconomies);
-        userRepository.save(user);
-        return userRepository.getById(user.getId());
-    }
-
-    @Override
-    public User removeEconomic(User user, Economy economy) throws NullPointerException, ValidationException, IllegalArgumentException {
-        if (user == null || economy == null) throw new NullPointerException();
-        if (economy.getId() <= 0) throw new IllegalArgumentException();
-        if (!isValid(user)) throw new ValidationException();
-
-        Set<Economy> newEconomies = user.getEconomies();
-        if (!newEconomies.remove(economy)) return null;
-
-        user.setEconomies(newEconomies);
-        userRepository.save(user);
-        return userRepository.getById(user.getId());
-    }
-
-    @Override
     public String cryptPassword(String password) throws NullPointerException, ValidationException {
         if (password == null) throw new NullPointerException();
         if (!new UserValidation().isNonCryptPasswordValid(password)) throw new ValidationException();
@@ -114,12 +85,4 @@ public class UserServiceImp implements UserService {
         return userRepository.getAll();
     }
 
-    @Override
-    public boolean isValid(User user) throws NullPointerException {
-        if (user == null) throw new NullPointerException();
-
-        try (ValidatorFactory factory = getValidatorFactory()) {
-            return factory.getValidator().validate(user).size() == 0;
-        }
-    }
 }

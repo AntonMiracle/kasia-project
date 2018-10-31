@@ -3,12 +3,8 @@ package com.kasia.repository;
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
-import com.oneandone.ejbcdiunit.EjbUnitRunner;
-import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
-import org.jglue.cdiunit.AdditionalClasses;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
 import java.math.BigDecimal;
@@ -38,6 +34,8 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void getById() throws Exception {
         Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
         budget.setArticles(new HashSet<>());
+        budget.setEmployers(new HashSet<>());
+        budget.setOperations(new HashSet<>());
         long id = budgetRepository.save(budget).getId();
 
         assertThat(budgetRepository.getById(id)).isEqualTo(budget);
@@ -70,6 +68,8 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void save() throws Exception {
         Budget expected = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
         expected.setArticles(new HashSet<>());
+        expected.setEmployers(new HashSet<>());
+        expected.setOperations(new HashSet<>());
 
         long id = budgetRepository.save(expected).getId();
         Budget actual = budgetRepository.getById(id);
@@ -85,7 +85,7 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         budget = budgetRepository.getById(id);
 
         assertThat(budget.getArticles().size() == 0).isTrue();
-        Article article = new Article(Article.Type.INCOME, BigDecimal.TEN, CREATE_ON);
+        Article article = new Article("Name",Article.Type.INCOME);
         article.setDescription("Description");
         budget.getArticles().add(article);
         budget.setName(NAME_2);

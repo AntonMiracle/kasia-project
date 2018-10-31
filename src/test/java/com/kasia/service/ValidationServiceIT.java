@@ -1,9 +1,6 @@
 package com.kasia.service;
 
-import com.kasia.model.Article;
-import com.kasia.model.Budget;
-import com.kasia.model.Economy;
-import com.kasia.model.User;
+import com.kasia.model.*;
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import org.junit.Test;
 
@@ -22,12 +19,14 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     private ValidationService<Article> articleValidationService;
     @Inject
     private ValidationService<Budget> budgetValidationService;
-    @Inject
-    private ValidationService<Economy> economyValidationService;
+//    @Inject
+//    private ValidationService<Employer> employerValidationService;
+//    @Inject
+//    private ValidationService<Operation> operationValidationService;
 
     @Test
     public void articleIsValidTrue() {
-        Article article = new Article(Article.Type.CONSUMPTION, BigDecimal.ONE, LocalDateTime.now());
+        Article article = new Article("Name", Article.Type.CONSUMPTION);
         assertThat(articleValidationService.isValid(article)).isTrue();
     }
 
@@ -38,14 +37,15 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     @Test
-    public void economyIsValidTrue() {
-        Economy economy = new Economy("name", LocalDateTime.now());
-        assertThat(economyValidationService.isValid(economy)).isTrue();
-    }
-
-    @Test
     public void userIsValidTrue() {
         User user = new User(User.Role.USER, "email", "nick", "password", ZoneId.systemDefault(), LocalDateTime.now());
         assertThat(userValidationService.isValid(user)).isTrue();
+    }
+
+    @Test
+    public void employerIsValidTrue() {
+    }
+    @Test
+    public void operationIsValidTrue() {
     }
 }

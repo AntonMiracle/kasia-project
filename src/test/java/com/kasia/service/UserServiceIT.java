@@ -1,7 +1,6 @@
 package com.kasia.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
-import com.kasia.model.Economy;
 import com.kasia.model.User;
 import org.junit.After;
 import org.junit.Test;
@@ -9,7 +8,6 @@ import org.junit.Test;
 import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -82,40 +80,6 @@ public class UserServiceIT extends ConfigurationEjbCdiContainerForIT{
         User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
 
         assertThat(userService.getByNick(NICK)).isEqualTo(user);
-    }
-
-    @Test
-    public void addEconomic() throws Exception {
-        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
-
-        assertThat(user.getEconomies().size() == 0).isTrue();
-        user = userService.addEconomic(user, createEconomy());
-
-        assertThat(user.getEconomies().size() == 1).isTrue();
-        assertThat(userService.getUserById(user.getId()).getEconomies().size() == 1).isTrue();
-    }
-
-
-    @Test
-    public void removeEconomic() throws Exception {
-        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
-        user = userService.addEconomic(user, createEconomy());
-
-        assertThat(user.getEconomies().size() == 1).isTrue();
-        for (Economy e : user.getEconomies()) {
-            userService.removeEconomic(user, e);
-        }
-
-        assertThat(user.getEconomies().size() == 0).isTrue();
-        assertThat(userService.getUserById(user.getId()).getEconomies().size() == 0).isTrue();
-    }
-
-    private Economy createEconomy() {
-        Economy economy = new Economy();
-        economy.setName("name");
-        economy.setCreateOn(LocalDateTime.now());
-        economy.setBudgets(new HashSet<>());
-        return economy;
     }
 
     @Test

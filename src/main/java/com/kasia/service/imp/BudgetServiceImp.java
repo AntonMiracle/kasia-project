@@ -2,12 +2,12 @@ package com.kasia.service.imp;
 
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
+import com.kasia.model.Operation;
 import com.kasia.repository.BudgetRepository;
 import com.kasia.service.BudgetService;
 
 import javax.ejb.EJB;
 import javax.validation.ValidationException;
-import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -22,6 +22,8 @@ public class BudgetServiceImp implements BudgetService {
     public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException, NullPointerException {
         Budget budget = new Budget(name, balance, currency, LocalDateTime.now().withNano(0));
         budget.setArticles(new HashSet<>());
+        budget.setEmployers(new HashSet<>());
+        budget.setOperations(new HashSet<>());
         if (!isValid(budget)) throw new ValidationException();
         budgetRepository.save(budget);
         return budgetRepository.getById(budget.getId());
@@ -29,9 +31,9 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
+        if (id <= 0) throw new IllegalArgumentException();
         Budget budget = budgetRepository.getById(id);
-        if (budget == null) return true;
-        return budgetRepository.delete(budget);
+        return budget == null || budgetRepository.delete(budget);
     }
 
     @Override
@@ -50,65 +52,10 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Budget addArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
-        if (budget == null || article == null) throw new NullPointerException();
-        if (!isValid(budget)) throw new ValidationException();
-
-        Set<Article> newArticles = new HashSet<>(budget.getArticles());
-        BigDecimal newBalance = addToBalance(budget, article);
-        if (!newArticles.add(article) || newBalance == null) return null;
-
-        budget.setArticles(newArticles);
-        budget.setBalance(newBalance);
-        budgetRepository.save(budget);
-        return budgetRepository.getById(budget.getId());
-    }
-
-
-    @Override
-    public Budget removeArticle(Budget budget, Article article) throws NullPointerException, ValidationException {
-        if (budget == null || article == null) throw new NullPointerException();
-        if (!isValid(budget)) throw new ValidationException();
-
-        Set<Article> newArticles = new HashSet<>(budget.getArticles());
-        BigDecimal newBalance = removeFromBalance(budget, article);
-        if (!newArticles.remove(article) || newBalance == null) return null;
-
-        budget.setArticles(newArticles);
-        budget.setBalance(newBalance);
-        budgetRepository.save(budget);
-        return budgetRepository.getById(budget.getId());
-    }
-
-    private BigDecimal addToBalance(Budget budget, Article article) throws NullPointerException {
-        if (article == null || budget == null) throw new NullPointerException();
-
-        if (article.getType() == Article.Type.INCOME) {
-            return budget.getBalance().add(article.getAmount());
-        }
-        if (article.getType() == Article.Type.CONSUMPTION) {
-            return budget.getBalance().subtract(article.getAmount());
-        }
-        return null;
-    }
-
-    private BigDecimal removeFromBalance(Budget budget, Article article) throws NullPointerException {
-        if (article == null || budget == null) throw new NullPointerException();
-
-        if (article.getType() == Article.Type.INCOME) {
-            return budget.getBalance().subtract(article.getAmount());
-        }
-        if (article.getType() == Article.Type.CONSUMPTION) {
-            return budget.getBalance().add(article.getAmount());
-        }
-        return null;
-    }
-
-    @Override
     public Set<Article> getArticlesByType(Budget budget, Article.Type type) throws NullPointerException {
         if (budget == null || type == null) throw new NullPointerException();
         Set<Article> result = new HashSet<>();
-        for (Article article : budget.getArticles()) {
+        for (Article article : budgetRepository.getById(budget.getId()).getArticles()) {
             if (article.getType() == type) {
                 result.add(article);
             }
@@ -122,10 +69,43 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean isValid(Budget model) throws NullPointerException {
-        if (model == null) throw new NullPointerException();
-        try (ValidatorFactory factory = getValidatorFactory()) {
-            return factory.getValidator().validate(model).size() == 0;
+    public Budget addOperation(Budget budget, Operation operation) throws NullPointerException, ValidationException {
+        return doOperation(true, budget, operation);
+    }
+
+    @Override
+    public Budget removeOperation(Budget budget, Operation operation) throws NullPointerException, ValidationException {
+        return doOperation(false, budget, operation);
+    }
+
+    private Budget doOperation(boolean isAddOperation, Budget budget, Operation operation) throws NullPointerException, ValidationException {
+        if (budget == null || operation == null) throw new NullPointerException();
+        if (!isValid(budget)) throw new ValidationException();
+
+        BigDecimal nBalance = BigDecimal.ONE;
+        BigDecimal cBalance = budget.getBalance();
+        BigDecimal oAmount = operation.getAmount();
+
+        if (operation.getArticle().getType() == Article.Type.INCOME) {
+            nBalance = isAddOperation ? cBalance.add(oAmount) : cBalance.subtract(oAmount);
         }
+        if (operation.getArticle().getType() == Article.Type.CONSUMPTION) {
+            nBalance = isAddOperation ? cBalance.subtract(oAmount) : cBalance.add(oAmount);
+        }
+
+        budget.setBalance(nBalance);
+        budgetRepository.save(budget);
+        return budgetRepository.getById(budget.getId());
+    }
+
+    @Override
+    public Set<Operation> getOperationsByArticlesType(Budget budget, Article.Type type) throws NullPointerException {
+        Set<Operation> result = new HashSet<>();
+        for (Operation operation : budgetRepository.getById(budget.getId()).getOperations()) {
+            if (operation.getArticle().getType() == type) {
+                result.add(operation);
+            }
+        }
+        return result;
     }
 }

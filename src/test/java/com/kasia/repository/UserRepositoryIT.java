@@ -1,14 +1,16 @@
 package com.kasia.repository;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
-import com.kasia.model.Economy;
+import com.kasia.model.Budget;
 import com.kasia.model.User;
 import org.junit.After;
 import org.junit.Test;
 
 import javax.ejb.EJB;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Currency;
 import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -35,7 +37,7 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void getById() throws Exception {
         User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
-        user.setEconomies(new HashSet<>());
+        user.setBudgets(new HashSet<>());
         long id = userRepository.save(user).getId();
 
         assertThat(userRepository.getById(id)).isEqualTo(user);
@@ -44,9 +46,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void getAll() throws Exception {
         User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
-        user.setEconomies(new HashSet<>());
+        user.setBudgets(new HashSet<>());
         User user1 = new User(ROLE, EMAIL_2, NICK_2, PASSWORD, ZONE_ID, CREATE_ON);
-        user.setEconomies(new HashSet<>());
+        user1.setBudgets(new HashSet<>());
         userRepository.save(user);
         userRepository.save(user1);
 
@@ -56,7 +58,7 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void delete() throws Exception {
         User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
-        user.setEconomies(new HashSet<>());
+        user.setBudgets(new HashSet<>());
         long id = userRepository.save(user).getId();
 
         assertThat(userRepository.getById(id)).isNotNull();
@@ -67,7 +69,7 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void save() throws Exception {
         User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
-        expected.setEconomies(new HashSet<>());
+        expected.setBudgets(new HashSet<>());
 
         long id = userRepository.save(expected).getId();
         User actual = userRepository.getById(id);
@@ -78,7 +80,7 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void getByEmail() throws Exception {
         User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
-        expected.setEconomies(new HashSet<>());
+        expected.setBudgets(new HashSet<>());
         String email = userRepository.save(expected).getEmail();
 
         User actual = userRepository.getByEmail(email);
@@ -89,7 +91,7 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void getByNick() throws Exception {
         User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
-        expected.setEconomies(new HashSet<>());
+        expected.setBudgets(new HashSet<>());
         String nick = userRepository.save(expected).getNick();
 
         User actual = userRepository.getByNick(nick);
@@ -100,22 +102,22 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void update() throws Exception {
         User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
-        user.setEconomies(new HashSet<>());
+        user.setBudgets(new HashSet<>());
         long id = userRepository.save(user).getId();
         user = userRepository.getById(id);
 
-        assertThat(user.getEconomies().size() == 0).isTrue();
-        Economy economy = new Economy();
-        economy.setBudgets(new HashSet<>());
-        economy.setName("Economy");
-        economy.setCreateOn(CREATE_ON);
-        user.getEconomies().add(economy);
+        assertThat(user.getBudgets().size() == 0).isTrue();
+        Budget budget = new Budget("Name", BigDecimal.TEN, Currency.getInstance("EUR"), CREATE_ON);
+        budget.setArticles(new HashSet<>());
+        budget.setOperations(new HashSet<>());
+        budget.setEmployers(new HashSet<>());
+        user.getBudgets().add(budget);
         userRepository.save(user);
 
         user = userRepository.getById(id);
-        for (Economy eco : user.getEconomies()) {
-            assertThat(eco.getId() > 0).isTrue();
+        for (Budget b : user.getBudgets()) {
+            assertThat(b.getId() > 0).isTrue();
         }
-        assertThat(user.getEconomies().size() == 1).isTrue();
+        assertThat(user.getBudgets().size() == 1).isTrue();
     }
 }

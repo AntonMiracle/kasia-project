@@ -1,6 +1,5 @@
 package com.kasia.service;
 
-import com.kasia.model.Economy;
 import com.kasia.model.User;
 
 import javax.xml.bind.ValidationException;
@@ -19,10 +18,6 @@ public interface UserService extends ValidationService<User>, Service {
     User getByEmail(String email) throws NullPointerException, ValidationException;
 
     User getByNick(String nick) throws NullPointerException, ValidationException;
-
-    User addEconomic(User user, Economy economy) throws NullPointerException, ValidationException, IllegalArgumentException;
-
-    User removeEconomic(User user, Economy economy) throws NullPointerException, ValidationException, IllegalArgumentException;
 
     String cryptPassword(String password) throws NullPointerException, ValidationException;
 

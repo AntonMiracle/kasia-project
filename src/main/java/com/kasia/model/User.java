@@ -26,10 +26,10 @@ public class User implements Model {
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "USERS_ECONOMIES",
+    @JoinTable(name = "USERS_BUDGETS",
             joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ECONOMY_ID"))
-    private Set<Economy> economies;
+            inverseJoinColumns = @JoinColumn(name = "BUDGET_ID"))
+    private Set<Budget> budgets;
     @Column(name = "CREATEON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
@@ -47,6 +47,16 @@ public class User implements Model {
     }
 
     public User() {
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -73,12 +83,20 @@ public class User implements Model {
         this.nick = nick;
     }
 
-    public Set<Economy> getEconomies() {
-        return economies;
+    public Role getRole() {
+        return role;
     }
 
-    public void setEconomies(Set<Economy> economies) {
-        this.economies = economies;
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Set<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(Set<Budget> budgets) {
+        this.budgets = budgets;
     }
 
     public LocalDateTime getCreateOn() {
@@ -98,24 +116,6 @@ public class User implements Model {
     }
 
     @Override
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -127,7 +127,7 @@ public class User implements Model {
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (nick != null ? !nick.equals(user.nick) : user.nick != null) return false;
         if (role != user.role) return false;
-        if (economies != null ? !economies.equals(user.economies) : user.economies != null) return false;
+        if (budgets != null ? !budgets.equals(user.budgets) : user.budgets != null) return false;
         if (createOn != null ? !createOn.equals(user.createOn) : user.createOn != null) return false;
         return zoneId != null ? zoneId.equals(user.zoneId) : user.zoneId == null;
     }
@@ -139,7 +139,7 @@ public class User implements Model {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (nick != null ? nick.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (economies != null ? economies.hashCode() : 0);
+        result = 31 * result + (budgets != null ? budgets.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
         return result;
@@ -153,7 +153,7 @@ public class User implements Model {
                 ", password='" + password + '\'' +
                 ", nick='" + nick + '\'' +
                 ", role=" + role +
-                ", economies=" + economies +
+                ", budgets=" + budgets +
                 ", createOn=" + createOn +
                 ", zoneId=" + zoneId +
                 '}';

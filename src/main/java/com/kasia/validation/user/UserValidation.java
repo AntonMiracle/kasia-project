@@ -18,32 +18,32 @@ public class UserValidation implements ConstraintValidator<UserConstraint, User>
             return false;
         }
         if (user.getRole() == null) {
-            msg.append("{validation.budget.UserConstraint.message.norole}");
+            msg.append("{validation.user.UserConstraint.message.norole}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getEmail() == null || !isEmailValid(user.getEmail())) {
-            msg.append("{validation.budget.UserConstraint.message.email}");
+            msg.append("{validation.user.UserConstraint.message.email}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getNick() == null || !isNickValid(user.getNick())) {
-            msg.append("{validation.budget.UserConstraint.message.nick}");
+            msg.append("{validation.user.UserConstraint.message.nick}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getPassword() == null) {
-            msg.append("{validation.budget.UserConstraint.message.password}");
+            msg.append("{validation.user.UserConstraint.message.password}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getZoneId() == null) {
-            msg.append("{validation.budget.UserConstraint.message.zoneid}");
+            msg.append("{validation.user.UserConstraint.message.zoneid}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
         if (user.getCreateOn() == null) {
-            msg.append("{validation.budget.UserConstraint.message.date}");
+            msg.append("{validation.user.UserConstraint.message.date}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
