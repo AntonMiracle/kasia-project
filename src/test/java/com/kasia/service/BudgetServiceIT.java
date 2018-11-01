@@ -1,14 +1,14 @@
 package com.kasia.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
-import com.kasia.model.Article;
-import com.kasia.model.Budget;
+import com.kasia.model.*;
 import org.junit.After;
 import org.junit.Test;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Currency;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -25,6 +25,12 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
     public void after() {
         for (Budget b : budgetService.getAllBudgets()) {
             budgetService.delete(b.getId());
+        }
+        for (Operation o : operationService.getAllOperations()) {
+            operationService.delete(o.getId());
+        }
+        for (User u : userService.getAllUsers()) {
+            userService.delete(u.getId());
         }
     }
 
@@ -69,30 +75,6 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
         assertThat(budgetService.getBudgetById(budget.getId())).isEqualTo(budget);
     }
 
-//    @Test
-//    public void addArticle() throws Exception {
-//        Budget budget = budgetService.create(NAME, BALANCE, CURRENCY);
-//
-//        assertThat(budget.getArticles().size() == 0).isTrue();
-//        budget = budgetService.addArticle(budget, createArticle("name", Article.Type.INCOME, BigDecimal.TEN));
-//
-//        assertThat(budget.getArticles().size() == 1).isTrue();
-//        assertThat(budgetService.getBudgetById(budget.getId()).getArticles().size() == 1).isTrue();
-//    }
-//
-//    @Test
-//    public void removeArticle() throws Exception {
-//        Budget budget = budgetService.create(NAME, BALANCE, CURRENCY);
-//        budget = budgetService.addArticle(budget, createArticle("name", Article.Type.INCOME, BigDecimal.TEN));
-//
-//        assertThat(budget.getArticles().size() == 1).isTrue();
-//        for (Article art : budget.getArticles()) {
-//            budgetService.removeArticle(budget, art);
-//        }
-//        assertThat(budget.getArticles().size() == 0).isTrue();
-//        assertThat(budgetService.getBudgetById(budget.getId()).getArticles().size() == 0).isTrue();
-//    }
-
     @Test
     public void getArticlesByType() {
         Budget budget = budgetService.create(NAME, BALANCE, CURRENCY);
@@ -116,18 +98,73 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
         assertThat(budgetService.getAllBudgets().size() == 3).isTrue();
     }
 
-    @Test
-    public void addOperation() {
-        BigDecimal balance = BigDecimal.TEN;
-        Budget budget = budgetService.create(NAME, balance, CURRENCY);
+    @Inject
+    private OperationService operationService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private EmployerService employerService;
+    @Inject
+    private ArticleService articleService;
+    private final BigDecimal budgetBalance = BigDecimal.TEN;
+    private final BigDecimal operationAmount = BigDecimal.ONE;
 
-        ////// need User,Article,Employer services
-
+    private Operation newOperation(BigDecimal amount, Article.Type type) {
+        Article article = articleService.create(NAME, type);
+        User user = userService.create(NAME, NAME, NAME, ZoneId.systemDefault());
+        Employer employer = employerService.create(NAME);
+        return operationService.create(amount, article, user, employer);
     }
 
     @Test
-    public void removeOperation() {
+    public void addIncomeOperation() {
+        Budget budget = budgetService.create(NAME, budgetBalance, CURRENCY);
+        Operation operation = newOperation(operationAmount, Article.Type.INCOME);
 
+        assertThat(budget.getOperations().size() == 0).isTrue();
+        budget = budgetService.addOperation(budget, operation);
+
+        assertThat(budget.getBalance()).isEqualTo(budgetBalance.add(operationAmount));
+        assertThat(budget.getOperations().size() == 1).isTrue();
+    }
+
+
+    @Test
+    public void addConsumptionOperation() {
+        Budget budget = budgetService.create(NAME, budgetBalance, CURRENCY);
+        Operation operation = newOperation(operationAmount, Article.Type.CONSUMPTION);
+
+        assertThat(budget.getOperations().size() == 0).isTrue();
+        budget = budgetService.addOperation(budget, operation);
+
+        assertThat(budget.getBalance()).isEqualTo(budgetBalance.subtract(operationAmount));
+        assertThat(budget.getOperations().size() == 1).isTrue();
+    }
+
+    @Test
+    public void removeIncomeOperation() {
+        Budget budget = budgetService.create(NAME, budgetBalance, CURRENCY);
+        Operation operation = newOperation(operationAmount, Article.Type.INCOME);
+        budget = budgetService.addOperation(budget, operation);
+
+        assertThat(budget.getOperations().size() == 1).isTrue();
+        budget = budgetService.removeOperation(budget,operation);
+
+        assertThat(budget.getOperations().size() == 0).isTrue();
+        assertThat(budget.getBalance()).isEqualTo(budgetBalance);
+    }
+
+    @Test
+    public void removeConsumptionOperation() {
+        Budget budget = budgetService.create(NAME, budgetBalance, CURRENCY);
+        Operation operation = newOperation(operationAmount, Article.Type.CONSUMPTION);
+        budget = budgetService.addOperation(budget, operation);
+
+        assertThat(budget.getOperations().size() == 1).isTrue();
+        budget = budgetService.removeOperation(budget,operation);
+
+        assertThat(budget.getOperations().size() == 0).isTrue();
+        assertThat(budget.getBalance()).isEqualTo(budgetBalance);
     }
 
     @Test

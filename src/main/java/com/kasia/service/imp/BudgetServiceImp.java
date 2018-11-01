@@ -88,11 +88,17 @@ public class BudgetServiceImp implements BudgetService {
 
         if (operation.getArticle().getType() == Article.Type.INCOME) {
             nBalance = isAddOperation ? cBalance.add(oAmount) : cBalance.subtract(oAmount);
+            System.out.println(nBalance);
         }
         if (operation.getArticle().getType() == Article.Type.CONSUMPTION) {
             nBalance = isAddOperation ? cBalance.subtract(oAmount) : cBalance.add(oAmount);
         }
 
+        if (isAddOperation) {
+            budget.getOperations().add(operation);
+        } else {
+            budget.getOperations().remove(operation);
+        }
         budget.setBalance(nBalance);
         budgetRepository.save(budget);
         return budgetRepository.getById(budget.getId());
