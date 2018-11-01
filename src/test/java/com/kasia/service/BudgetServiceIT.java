@@ -156,7 +156,22 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     @Test
-    public void getOperationsByArticlesType() {
+    public void getOperationsByArticlesTypeIncome() {
+        Budget budget = budgetService.create(NAME, budgetBalance, CURRENCY);
+        assertThat(budgetService.getOperationsByArticlesType(budget,Article.Type.INCOME).size() == 0).isTrue();
 
+        budgetService.addOperation(budget, newOperation(BigDecimal.TEN, Article.Type.INCOME));
+
+        assertThat(budgetService.getOperationsByArticlesType(budget,Article.Type.INCOME).size() == 1).isTrue();
+    }
+
+    @Test
+    public void getOperationsByArticlesTypeConsumption() {
+        Budget budget = budgetService.create(NAME, budgetBalance, CURRENCY);
+        assertThat(budgetService.getOperationsByArticlesType(budget,Article.Type.CONSUMPTION).size() == 0).isTrue();
+
+        budgetService.addOperation(budget, newOperation(BigDecimal.TEN, Article.Type.CONSUMPTION));
+
+        assertThat(budgetService.getOperationsByArticlesType(budget,Article.Type.CONSUMPTION).size() == 1).isTrue();
     }
 }
