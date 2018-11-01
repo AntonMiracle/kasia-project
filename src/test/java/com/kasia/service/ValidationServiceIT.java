@@ -19,10 +19,10 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     private ValidationService<Article> articleValidationService;
     @Inject
     private ValidationService<Budget> budgetValidationService;
-//    @Inject
-//    private ValidationService<Employer> employerValidationService;
-//    @Inject
-//    private ValidationService<Operation> operationValidationService;
+    @Inject
+    private ValidationService<Employer> employerValidationService;
+    @Inject
+    private ValidationService<Operation> operationValidationService;
 
     @Test
     public void articleIsValidTrue() {
@@ -44,8 +44,14 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void employerIsValidTrue() {
+        Employer employer = new Employer("Name");
+        assertThat(employerValidationService.isValid(employer)).isTrue();
+
     }
+
     @Test
     public void operationIsValidTrue() {
+        Operation operation = new Operation(BigDecimal.TEN, new Article(), new User(), new Employer(), LocalDateTime.now());
+        assertThat(operationValidationService.isValid(operation)).isTrue();
     }
 }
