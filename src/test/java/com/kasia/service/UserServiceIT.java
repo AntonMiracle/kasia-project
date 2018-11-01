@@ -1,6 +1,7 @@
 package com.kasia.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
+import com.kasia.model.Article;
 import com.kasia.model.User;
 import org.junit.After;
 import org.junit.Test;
@@ -11,7 +12,7 @@ import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class UserServiceIT extends ConfigurationEjbCdiContainerForIT{
+public class UserServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private UserService userService;
     private final String MAIL = "email@gmail.com";
@@ -39,6 +40,9 @@ public class UserServiceIT extends ConfigurationEjbCdiContainerForIT{
         assertThat(user.getNick()).isEqualTo(NICK);
         assertThat(user.getZoneId()).isEqualTo(ZONE_ID);
         assertThat(user.getCreateOn()).isBefore(LocalDateTime.now());
+        assertThat(user.getBudgets()).isNotNull();
+        assertThat(user.getEmployers()).isNotNull();
+        assertThat(user.getArticles()).isNotNull();
     }
 
     @Test
@@ -83,10 +87,25 @@ public class UserServiceIT extends ConfigurationEjbCdiContainerForIT{
     }
 
     @Test
+    public void getArticlesByType() {
+        User user = userService.create(MAIL, PASSWORD, NICK, ZONE_ID);
+        user.getArticles().add(createArticle("name1", Article.Type.INCOME));
+        user.getArticles().add(createArticle("name11", Article.Type.CONSUMPTION));
+        user.getArticles().add(createArticle("name13", Article.Type.INCOME));
+        user = userService.update(user);
+
+        assertThat(userService.getArticlesByType(user, Article.Type.INCOME).size() == 2);
+    }
+    @Test
     public void cryptPassword() throws Exception {
         final String password = "password";
         final String crypt = "5f4dcc3b5aa765d61d8327deb882cf99";
         assertThat(userService.cryptPassword(password)).isEqualTo(crypt);
     }
 
+    private Article createArticle(String name, Article.Type type) {
+        Article article = new Article(name, type);
+        article.setDescription("description");
+        return article;
+    }
 }

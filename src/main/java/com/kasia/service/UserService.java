@@ -1,5 +1,6 @@
 package com.kasia.service;
 
+import com.kasia.model.Article;
 import com.kasia.model.User;
 
 import javax.validation.ValidationException;
@@ -20,6 +21,8 @@ public interface UserService extends ValidationService<User>, Service {
     User getByNick(String nick) throws NullPointerException, ValidationException;
 
     String cryptPassword(String password) throws NullPointerException, ValidationException;
+
+    Set<Article> getArticlesByType(User user, Article.Type type) throws NullPointerException;
 
     Set<User> getAllUsers();
 }

@@ -30,6 +30,16 @@ public class User implements Model {
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "BUDGET_ID"))
     private Set<Budget> budgets;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERS_ARTICLES",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ARTICLE_ID"))
+    private Set<Article> articles;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERS_EMPLOYERS",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "EMPLOYER_ID"))
+    private Set<Employer> employers;
     @Column(name = "CREATEON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
@@ -115,6 +125,22 @@ public class User implements Model {
         this.zoneId = zoneId;
     }
 
+    public Set<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Set<Article> articles) {
+        this.articles = articles;
+    }
+
+    public Set<Employer> getEmployers() {
+        return employers;
+    }
+
+    public void setEmployers(Set<Employer> employers) {
+        this.employers = employers;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -128,6 +154,8 @@ public class User implements Model {
         if (nick != null ? !nick.equals(user.nick) : user.nick != null) return false;
         if (role != user.role) return false;
         if (budgets != null ? !budgets.equals(user.budgets) : user.budgets != null) return false;
+        if (articles != null ? !articles.equals(user.articles) : user.articles != null) return false;
+        if (employers != null ? !employers.equals(user.employers) : user.employers != null) return false;
         if (createOn != null ? !createOn.equals(user.createOn) : user.createOn != null) return false;
         return zoneId != null ? zoneId.equals(user.zoneId) : user.zoneId == null;
     }
@@ -140,6 +168,8 @@ public class User implements Model {
         result = 31 * result + (nick != null ? nick.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (budgets != null ? budgets.hashCode() : 0);
+        result = 31 * result + (articles != null ? articles.hashCode() : 0);
+        result = 31 * result + (employers != null ? employers.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
         return result;
@@ -154,6 +184,8 @@ public class User implements Model {
                 ", nick='" + nick + '\'' +
                 ", role=" + role +
                 ", budgets=" + budgets +
+                ", articles=" + articles +
+                ", employers=" + employers +
                 ", createOn=" + createOn +
                 ", zoneId=" + zoneId +
                 '}';

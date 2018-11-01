@@ -22,9 +22,8 @@ public interface BudgetService extends ValidationService<Budget>, Service {
 
     Budget removeOperation(Budget budget, Operation operation) throws NullPointerException, ValidationException;
 
-    Set<Article> getArticlesByType(Budget budget, Article.Type type) throws NullPointerException;
-
     Set<Operation> getOperationsByArticlesType(Budget budget, Article.Type type) throws NullPointerException;
 
     Set<Budget> getAllBudgets();
+
 }

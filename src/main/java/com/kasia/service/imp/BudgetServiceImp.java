@@ -21,8 +21,6 @@ public class BudgetServiceImp implements BudgetService {
     @Override
     public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException, NullPointerException {
         Budget budget = new Budget(name, balance, currency, LocalDateTime.now().withNano(0));
-        budget.setArticles(new HashSet<>());
-        budget.setEmployers(new HashSet<>());
         budget.setOperations(new HashSet<>());
         if (!isValid(budget)) throw new ValidationException();
         budgetRepository.save(budget);
@@ -49,18 +47,6 @@ public class BudgetServiceImp implements BudgetService {
     public Budget getBudgetById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
         return budgetRepository.getById(id);
-    }
-
-    @Override
-    public Set<Article> getArticlesByType(Budget budget, Article.Type type) throws NullPointerException {
-        if (budget == null || type == null) throw new NullPointerException();
-        Set<Article> result = new HashSet<>();
-        for (Article article : budgetRepository.getById(budget.getId()).getArticles()) {
-            if (article.getType() == type) {
-                result.add(article);
-            }
-        }
-        return result;
     }
 
     @Override

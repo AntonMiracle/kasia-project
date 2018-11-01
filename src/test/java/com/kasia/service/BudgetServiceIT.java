@@ -42,9 +42,7 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
         assertThat(budget.getBalance()).isEqualTo(BALANCE);
         assertThat(budget.getCurrency()).isEqualTo(CURRENCY);
         assertThat(budget.getCreateOn()).isBefore(LocalDateTime.now());
-        assertThat(budget.getArticles().size() == 0).isTrue();
         assertThat(budget.getOperations().size() == 0).isTrue();
-        assertThat(budget.getEmployers().size() == 0).isTrue();
     }
 
     @Test
@@ -75,16 +73,6 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
         assertThat(budgetService.getBudgetById(budget.getId())).isEqualTo(budget);
     }
 
-    @Test
-    public void getArticlesByType() {
-        Budget budget = budgetService.create(NAME, BALANCE, CURRENCY);
-        budget.getArticles().add(createArticle("name1", Article.Type.INCOME));
-        budget.getArticles().add(createArticle("name11", Article.Type.CONSUMPTION));
-        budget.getArticles().add(createArticle("name13", Article.Type.INCOME));
-        budget = budgetService.update(budget);
-
-        assertThat(budgetService.getArticlesByType(budget, Article.Type.INCOME).size() == 2);
-    }
 
     @Test
     public void getAllBudgets() {
@@ -170,11 +158,5 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void getOperationsByArticlesType() {
 
-    }
-
-    private Article createArticle(String name, Article.Type type) {
-        Article article = new Article(name, type);
-        article.setDescription("description");
-        return article;
     }
 }

@@ -38,6 +38,8 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void getById() throws Exception {
         User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         user.setBudgets(new HashSet<>());
+        user.setEmployers(new HashSet<>());
+        user.setArticles(new HashSet<>());
         long id = userRepository.save(user).getId();
 
         assertThat(userRepository.getById(id)).isEqualTo(user);
@@ -70,6 +72,8 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void save() throws Exception {
         User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         expected.setBudgets(new HashSet<>());
+        expected.setEmployers(new HashSet<>());
+        expected.setArticles(new HashSet<>());
 
         long id = userRepository.save(expected).getId();
         User actual = userRepository.getById(id);
@@ -81,6 +85,8 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void getByEmail() throws Exception {
         User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         expected.setBudgets(new HashSet<>());
+        expected.setEmployers(new HashSet<>());
+        expected.setArticles(new HashSet<>());
         String email = userRepository.save(expected).getEmail();
 
         User actual = userRepository.getByEmail(email);
@@ -92,6 +98,8 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void getByNick() throws Exception {
         User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         expected.setBudgets(new HashSet<>());
+        expected.setEmployers(new HashSet<>());
+        expected.setArticles(new HashSet<>());
         String nick = userRepository.save(expected).getNick();
 
         User actual = userRepository.getByNick(nick);
@@ -108,9 +116,7 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
         assertThat(user.getBudgets().size() == 0).isTrue();
         Budget budget = new Budget("Name", BigDecimal.TEN, Currency.getInstance("EUR"), CREATE_ON);
-        budget.setArticles(new HashSet<>());
         budget.setOperations(new HashSet<>());
-        budget.setEmployers(new HashSet<>());
         user.getBudgets().add(budget);
         userRepository.save(user);
 

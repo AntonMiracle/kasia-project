@@ -1,7 +1,6 @@
 package com.kasia.repository;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
-import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import org.junit.After;
 import org.junit.Test;
@@ -33,8 +32,6 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void getById() throws Exception {
         Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
-        budget.setArticles(new HashSet<>());
-        budget.setEmployers(new HashSet<>());
         budget.setOperations(new HashSet<>());
         long id = budgetRepository.save(budget).getId();
 
@@ -44,9 +41,7 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void getAll() throws Exception {
         Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
-        budget.setArticles(new HashSet<>());
         Budget budget1 = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
-        budget.setArticles(new HashSet<>());
         budgetRepository.save(budget);
         budgetRepository.save(budget1);
 
@@ -56,7 +51,6 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void delete() throws Exception {
         Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
-        budget.setArticles(new HashSet<>());
         long id = budgetRepository.save(budget).getId();
 
         assertThat(budgetRepository.getById(id)).isNotNull();
@@ -67,8 +61,6 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void save() throws Exception {
         Budget expected = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
-        expected.setArticles(new HashSet<>());
-        expected.setEmployers(new HashSet<>());
         expected.setOperations(new HashSet<>());
 
         long id = budgetRepository.save(expected).getId();
@@ -80,22 +72,13 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void update() throws Exception {
         Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
-        budget.setArticles(new HashSet<>());
         long id = budgetRepository.save(budget).getId();
         budget = budgetRepository.getById(id);
 
-        assertThat(budget.getArticles().size() == 0).isTrue();
-        Article article = new Article("Name",Article.Type.INCOME);
-        article.setDescription("Description");
-        budget.getArticles().add(article);
         budget.setName(NAME_2);
         budgetRepository.save(budget);
 
         budget = budgetRepository.getById(id);
-        for (Article art : budget.getArticles()) {
-            assertThat(art.getId() > 0).isTrue();
-        }
         assertThat(budget.getName()).isEqualTo(NAME_2);
-        assertThat(budget.getArticles().size() == 1).isTrue();
     }
 }

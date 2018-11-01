@@ -1,5 +1,6 @@
 package com.kasia.service.imp;
 
+import com.kasia.model.Article;
 import com.kasia.model.User;
 import com.kasia.repository.UserRepository;
 import com.kasia.service.UserService;
@@ -26,6 +27,8 @@ public class UserServiceImp implements UserService {
         password = cryptPassword(password.trim());
         User user = new User(User.Role.USER, email, nick, password, zoneId, LocalDateTime.now().withNano(0));
         user.setBudgets(new HashSet<>());
+        user.setEmployers(new HashSet<>());
+        user.setArticles(new HashSet<>());
         if (!isValid(user)) throw new ValidationException();
         return userRepository.save(user);
     }
@@ -79,7 +82,17 @@ public class UserServiceImp implements UserService {
         md5.update(password.getBytes(), 0, password.length());
         return new BigInteger(1, md5.digest()).toString(16);
     }
-
+    @Override
+    public Set<Article> getArticlesByType(User user, Article.Type type) throws NullPointerException {
+        if (user == null || type == null) throw new NullPointerException();
+        Set<Article> result = new HashSet<>();
+        for (Article article : userRepository.getById(user.getId()).getArticles()) {
+            if (article.getType() == type) {
+                result.add(article);
+            }
+        }
+        return result;
+    }
     @Override
     public Set<User> getAllUsers() {
         return userRepository.getAll();
