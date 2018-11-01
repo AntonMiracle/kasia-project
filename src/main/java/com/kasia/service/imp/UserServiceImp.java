@@ -81,7 +81,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Set<User> getAll() {
+    public Set<User> getAllUsers() {
         return userRepository.getAll();
     }
 

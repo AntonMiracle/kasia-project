@@ -13,16 +13,16 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class OpertionServiceImp implements OperationService {
+public class OperationServiceImp implements OperationService {
     @EJB
     private OperationRepository operationRepository;
 
     @Override
     public Operation create(BigDecimal amount, Article article, User user, Employer employer) throws ValidationException {
-        Operation opertion = new Operation(amount, article, user, employer, LocalDateTime.now().withNano(0));
-        if (!isValid(opertion)) throw new ValidationException();
-        operationRepository.save(opertion);
-        return operationRepository.getById(opertion.getId());
+        Operation operation = new Operation(amount, article, user, employer, LocalDateTime.now().withNano(0));
+        if (!isValid(operation)) throw new ValidationException();
+        operationRepository.save(operation);
+        return operationRepository.getById(operation.getId());
     }
 
     @Override

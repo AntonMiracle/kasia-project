@@ -34,6 +34,7 @@ public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
         assertThat(article.getId() > 0).isTrue();
         assertThat(article.getDescription()).isNotNull();
         assertThat(article.getType()).isEqualTo(TYPE);
+        assertThat(article.getName()).isEqualTo(NAME);
     }
 
     @Test

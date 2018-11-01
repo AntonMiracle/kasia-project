@@ -23,7 +23,7 @@ public class UserServiceIT extends ConfigurationEjbCdiContainerForIT{
 
     @After
     public void after() {
-        for (User u : userService.getAll()) {
+        for (User u : userService.getAllUsers()) {
             userService.delete(u.getId());
         }
     }

@@ -2,7 +2,7 @@ package com.kasia.service;
 
 import com.kasia.model.User;
 
-import javax.xml.bind.ValidationException;
+import javax.validation.ValidationException;
 import java.time.ZoneId;
 import java.util.Set;
 
@@ -21,5 +21,5 @@ public interface UserService extends ValidationService<User>, Service {
 
     String cryptPassword(String password) throws NullPointerException, ValidationException;
 
-    Set<User> getAll();
+    Set<User> getAllUsers();
 }
