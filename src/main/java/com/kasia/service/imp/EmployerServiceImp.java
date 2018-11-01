@@ -1,16 +1,21 @@
 package com.kasia.service.imp;
 
+import com.kasia.exception.OnUseRunTimeException;
 import com.kasia.model.Employer;
 import com.kasia.repository.EmployerRepository;
 import com.kasia.service.EmployerService;
+import com.kasia.service.OperationService;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.util.Set;
 
 public class EmployerServiceImp implements EmployerService {
     @EJB
     private EmployerRepository employerRepository;
+    @Inject
+    private OperationService operationService;
 
     @Override
     public Employer create(String name) throws ValidationException {
@@ -25,7 +30,9 @@ public class EmployerServiceImp implements EmployerService {
     public boolean delete(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
         Employer employer = employerRepository.getById(id);
-        return employer == null || employerRepository.delete(employer);
+        if (employer == null) return true;
+        if (operationService.getOperationsByEmployerId(employer.getId()).size() != 0) throw new OnUseRunTimeException();
+        return employerRepository.delete(employer);
     }
 
     @Override

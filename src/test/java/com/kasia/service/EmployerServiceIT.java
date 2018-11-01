@@ -1,11 +1,18 @@
 package com.kasia.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
+import com.kasia.exception.OnUseRunTimeException;
+import com.kasia.model.Article;
 import com.kasia.model.Employer;
+import com.kasia.model.Operation;
+import com.kasia.model.User;
 import org.junit.After;
 import org.junit.Test;
 
 import javax.inject.Inject;
+
+import java.math.BigDecimal;
+import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -17,6 +24,15 @@ public class EmployerServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     @After
     public void after() {
+        for (Operation o : operationService.getAllOperations()) {
+            operationService.delete(o.getId());
+        }
+        for (Article a : articleService.getAllArticles()) {
+            articleService.delete(a.getId());
+        }
+        for (User u : userService.getAllUsers()) {
+            userService.delete(u.getId());
+        }
         for (Employer e : employerService.getAllEmployers()) {
             employerService.delete(e.getId());
         }
@@ -38,6 +54,23 @@ public class EmployerServiceIT extends ConfigurationEjbCdiContainerForIT {
         assertThat(employerService.getEmployerById(id)).isNotNull();
         assertThat(employerService.delete(id)).isTrue();
         assertThat(employerService.getEmployerById(id)).isNull();
+    }
+
+    @Inject
+    private OperationService operationService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private ArticleService articleService;
+
+    @Test(expected = OnUseRunTimeException.class)
+    public void whenDeleteArticleThrowOnUseRanTimeException() throws Exception {
+        Article article = articleService.create(NAME, Article.Type.INCOME);
+        User user = userService.create("email@gmail.com", "passw", "NICK", ZoneId.systemDefault());
+        Employer employer = employerService.create("SupN");
+        Operation operation = operationService.create(BigDecimal.TEN, article, user, employer);
+
+        employerService.delete(employer.getId());
     }
 
     @Test

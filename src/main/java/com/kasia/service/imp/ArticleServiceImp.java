@@ -1,16 +1,21 @@
 package com.kasia.service.imp;
 
+import com.kasia.exception.OnUseRunTimeException;
 import com.kasia.model.Article;
 import com.kasia.repository.ArticleRepository;
 import com.kasia.service.ArticleService;
+import com.kasia.service.OperationService;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.util.Set;
 
 public class ArticleServiceImp implements ArticleService {
     @EJB
     private ArticleRepository articleRepository;
+    @Inject
+    private OperationService operationService;
 
     @Override
     public Article create(String name, Article.Type type) throws ValidationException {
@@ -22,10 +27,12 @@ public class ArticleServiceImp implements ArticleService {
     }
 
     @Override
-    public boolean delete(long id) throws IllegalArgumentException {
+    public boolean delete(long id) throws IllegalArgumentException, OnUseRunTimeException {
         if (id <= 0) throw new IllegalArgumentException();
         Article article = articleRepository.getById(id);
-        return article == null || articleRepository.delete(article);
+        if(article == null) return true;
+        if(operationService.getOperationsByArticleId(article.getId()).size() != 0) throw new OnUseRunTimeException();
+        return articleRepository.delete(article);
     }
 
     @Override

@@ -1,29 +1,40 @@
 package com.kasia.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
+import com.kasia.exception.OnUseRunTimeException;
 import com.kasia.model.Article;
+import com.kasia.model.Employer;
+import com.kasia.model.Operation;
+import com.kasia.model.User;
 import org.junit.After;
 import org.junit.Test;
 
 import javax.inject.Inject;
 import java.math.BigDecimal;
+import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private ArticleService articleService;
-    private final String DESCRIPTION = "DESCRIPTION";
     private final String DESCRIPTION_2 = "DESCRIPTION22";
     private final String NAME = "NAMe";
-    private final String NAME_2 = "NAMe22";
     private final Article.Type TYPE = Article.Type.INCOME;
-    private final BigDecimal AMOUNT = BigDecimal.TEN;
 
     @After
     public void after() {
+        for (Operation o : operationService.getAllOperations()) {
+            operationService.delete(o.getId());
+        }
         for (Article a : articleService.getAllArticles()) {
             articleService.delete(a.getId());
+        }
+        for (User u : userService.getAllUsers()) {
+            userService.delete(u.getId());
+        }
+        for (Employer e : employerService.getAllEmployers()) {
+            employerService.delete(e.getId());
         }
     }
 
@@ -45,6 +56,23 @@ public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
         articleService.delete(article.getId());
 
         assertThat(articleService.getArticleById(article.getId())).isNull();
+    }
+
+    @Inject
+    private OperationService operationService;
+    @Inject
+    private UserService userService;
+    @Inject
+    private EmployerService employerService;
+
+    @Test(expected = OnUseRunTimeException.class)
+    public void whenDeleteArticleThrowOnUseRanTimeException() throws Exception {
+        Article article = articleService.create(NAME, TYPE);
+        User user = userService.create("email@gmail.com", "passw", "NICK", ZoneId.systemDefault());
+        Employer employer = employerService.create("SupN");
+        Operation operation = operationService.create(BigDecimal.TEN, article, user, employer);
+
+        articleService.delete(article.getId());
     }
 
     @Test
