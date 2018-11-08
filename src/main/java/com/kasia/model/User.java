@@ -22,9 +22,11 @@ public class User implements Model {
     private String password;
     @Column(name = "NICK", nullable = false, unique = true)
     private String nick;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "ROLES")
     @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Set<Role> roles;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_BUDGETS",
             joinColumns = @JoinColumn(name = "USER_ID"),
@@ -40,15 +42,15 @@ public class User implements Model {
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "EMPLOYER_ID"))
     private Set<Employer> employers;
-    @Column(name = "CREATEON", nullable = false)
+    @Column(name = "CREATE_ON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
-    @Column(name = "ZONEID", nullable = false)
+    @Column(name = "ZONE_ID", nullable = false)
     @Convert(converter = ZoneIdAttributeConverter.class)
     private ZoneId zoneId;
 
-    public User(Role role, String email, String nick, String password, ZoneId zoneId, LocalDateTime createOn) {
-        this.role = role;
+    public User(Set<Role> role, String email, String nick, String password, ZoneId zoneId, LocalDateTime createOn) {
+        this.roles = role;
         this.email = email;
         this.nick = nick;
         this.password = password;
@@ -93,12 +95,12 @@ public class User implements Model {
         this.nick = nick;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Set<Budget> getBudgets() {
@@ -152,7 +154,7 @@ public class User implements Model {
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (nick != null ? !nick.equals(user.nick) : user.nick != null) return false;
-        if (role != user.role) return false;
+        if (roles != null ? !roles.equals(user.roles) : user.roles != null) return false;
         if (budgets != null ? !budgets.equals(user.budgets) : user.budgets != null) return false;
         if (articles != null ? !articles.equals(user.articles) : user.articles != null) return false;
         if (employers != null ? !employers.equals(user.employers) : user.employers != null) return false;
@@ -166,7 +168,7 @@ public class User implements Model {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (nick != null ? nick.hashCode() : 0);
-        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (roles != null ? roles.hashCode() : 0);
         result = 31 * result + (budgets != null ? budgets.hashCode() : 0);
         result = 31 * result + (articles != null ? articles.hashCode() : 0);
         result = 31 * result + (employers != null ? employers.hashCode() : 0);
@@ -182,7 +184,7 @@ public class User implements Model {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", nick='" + nick + '\'' +
-                ", role=" + role +
+                ", roles=" + roles +
                 ", budgets=" + budgets +
                 ", articles=" + articles +
                 ", employers=" + employers +

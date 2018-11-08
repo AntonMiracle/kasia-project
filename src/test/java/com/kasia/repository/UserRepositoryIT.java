@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Currency;
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -36,7 +37,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getById() throws Exception {
-        User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User user = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         user.setBudgets(new HashSet<>());
         user.setEmployers(new HashSet<>());
         user.setArticles(new HashSet<>());
@@ -47,9 +50,11 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getAll() throws Exception {
-        User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User user = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         user.setBudgets(new HashSet<>());
-        User user1 = new User(ROLE, EMAIL_2, NICK_2, PASSWORD, ZONE_ID, CREATE_ON);
+        User user1 = new User(roles, EMAIL_2, NICK_2, PASSWORD, ZONE_ID, CREATE_ON);
         user1.setBudgets(new HashSet<>());
         userRepository.save(user);
         userRepository.save(user1);
@@ -59,7 +64,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void delete() throws Exception {
-        User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User user = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         user.setBudgets(new HashSet<>());
         long id = userRepository.save(user).getId();
 
@@ -70,7 +77,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void save() throws Exception {
-        User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User expected = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         expected.setBudgets(new HashSet<>());
         expected.setEmployers(new HashSet<>());
         expected.setArticles(new HashSet<>());
@@ -83,7 +92,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getByEmail() throws Exception {
-        User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User expected = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         expected.setBudgets(new HashSet<>());
         expected.setEmployers(new HashSet<>());
         expected.setArticles(new HashSet<>());
@@ -96,7 +107,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getByNick() throws Exception {
-        User expected = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User expected = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         expected.setBudgets(new HashSet<>());
         expected.setEmployers(new HashSet<>());
         expected.setArticles(new HashSet<>());
@@ -109,7 +122,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void update() throws Exception {
-        User user = new User(ROLE, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User user = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         user.setBudgets(new HashSet<>());
         long id = userRepository.save(user).getId();
         user = userRepository.getById(id);

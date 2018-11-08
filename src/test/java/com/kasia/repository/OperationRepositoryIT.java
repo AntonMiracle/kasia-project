@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -127,7 +128,9 @@ public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     private User newUser(String nick) {
-        User user = new User(User.Role.USER, "email", nick, "passwoer", ZoneId.systemDefault(), CREATE_ON);
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User user = new User(roles, "email", nick, "passwoer", ZoneId.systemDefault(), CREATE_ON);
         user.setBudgets(new HashSet<>());
         long id = userRepository.save(user).getId();
         return userRepository.getById(id);

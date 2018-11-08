@@ -17,7 +17,7 @@ public class UserValidation implements ConstraintValidator<UserConstraint, User>
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
-        if (user.getRole() == null) {
+        if (user.getRoles() == null) {
             msg.append("{validation.user.UserConstraint.message.norole}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;

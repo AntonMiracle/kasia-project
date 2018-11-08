@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Currency;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -38,7 +40,9 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void userIsValidTrue() {
-        User user = new User(User.Role.USER, "email", "nick", "password", ZoneId.systemDefault(), LocalDateTime.now());
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User user = new User(roles, "email", "nick", "password", ZoneId.systemDefault(), LocalDateTime.now());
         assertThat(userValidationService.isValid(user)).isTrue();
     }
 

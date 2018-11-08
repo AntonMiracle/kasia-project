@@ -29,7 +29,9 @@ public class UserServiceImp implements UserService {
         email = email.trim();
         nick = nick.trim();
         password = cryptPassword(password.trim());
-        User user = new User(User.Role.USER, email, nick, password, zoneId, LocalDateTime.now().withNano(0));
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        User user = new User(roles, email, nick, password, zoneId, LocalDateTime.now().withNano(0));
         user.setBudgets(new HashSet<>());
         user.setEmployers(new HashSet<>());
         user.setArticles(new HashSet<>());
