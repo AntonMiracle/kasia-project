@@ -7,7 +7,7 @@ import javax.validation.ValidationException;
 import java.time.ZoneId;
 import java.util.Set;
 
-public interface UserService extends ValidationService<User>, Service {
+public interface UserService extends Service {
     User create(String email, String password, String nick, ZoneId zoneId) throws NullPointerException, ValidationException;
 
     User update(User user) throws ValidationException, NullPointerException, IllegalArgumentException;

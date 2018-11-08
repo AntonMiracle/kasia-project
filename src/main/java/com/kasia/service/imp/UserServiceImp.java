@@ -4,9 +4,11 @@ import com.kasia.model.Article;
 import com.kasia.model.User;
 import com.kasia.repository.UserRepository;
 import com.kasia.service.UserService;
+import com.kasia.service.ValidationService;
 import com.kasia.validation.user.UserValidation;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -19,6 +21,8 @@ import java.util.Set;
 public class UserServiceImp implements UserService {
     @EJB
     private UserRepository userRepository;
+    @Inject
+    private ValidationService<User> validationService;
 
     @Override
     public User create(String email, String password, String nick, ZoneId zoneId) throws NullPointerException, ValidationException {
@@ -29,13 +33,13 @@ public class UserServiceImp implements UserService {
         user.setBudgets(new HashSet<>());
         user.setEmployers(new HashSet<>());
         user.setArticles(new HashSet<>());
-        if (!isValid(user)) throw new ValidationException();
+        if (!validationService.isValid(user)) throw new ValidationException();
         return userRepository.save(user);
     }
 
     @Override
     public User update(User user) throws ValidationException, NullPointerException, IllegalArgumentException {
-        if (!isValid(user)) throw new ValidationException();
+        if (!validationService.isValid(user)) throw new ValidationException();
         if (user.getId() == 0) throw new IllegalArgumentException();
         userRepository.save(user);
         return userRepository.getById(user.getId());

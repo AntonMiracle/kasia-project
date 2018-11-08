@@ -5,7 +5,7 @@ import com.kasia.model.Model;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 
-public interface ValidationService<T extends Model> {
+public interface ValidationService<T extends Model> extends Service{
     /**
      * @param model
      * @return true if model state is valid otherwise false

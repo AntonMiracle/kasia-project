@@ -1,13 +1,12 @@
 package com.kasia.service.imp;
 
-import com.kasia.model.Article;
-import com.kasia.model.Employer;
-import com.kasia.model.Operation;
-import com.kasia.model.User;
+import com.kasia.model.*;
 import com.kasia.repository.OperationRepository;
 import com.kasia.service.OperationService;
+import com.kasia.service.ValidationService;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,11 +15,13 @@ import java.util.Set;
 public class OperationServiceImp implements OperationService {
     @EJB
     private OperationRepository operationRepository;
+    @Inject
+    private ValidationService<Operation> validationService;
 
     @Override
     public Operation create(BigDecimal amount, Article article, User user, Employer employer) throws ValidationException {
         Operation operation = new Operation(amount, article, user, employer, LocalDateTime.now().withNano(0));
-        if (!isValid(operation)) throw new ValidationException();
+        if (!validationService.isValid(operation)) throw new ValidationException();
         operationRepository.save(operation);
         return operationRepository.getById(operation.getId());
     }
@@ -34,7 +35,7 @@ public class OperationServiceImp implements OperationService {
 
     @Override
     public Operation update(Operation operation) throws ValidationException, IllegalArgumentException {
-        if (!isValid(operation)) throw new ValidationException();
+        if (!validationService.isValid(operation)) throw new ValidationException();
         if (operation.getId() == 0) throw new IllegalArgumentException();
         operationRepository.save(operation);
         return operationRepository.getById(operation.getId());

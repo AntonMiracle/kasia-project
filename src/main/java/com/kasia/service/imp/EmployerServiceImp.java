@@ -5,6 +5,7 @@ import com.kasia.model.Employer;
 import com.kasia.repository.EmployerRepository;
 import com.kasia.service.EmployerService;
 import com.kasia.service.OperationService;
+import com.kasia.service.ValidationService;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -16,12 +17,14 @@ public class EmployerServiceImp implements EmployerService {
     private EmployerRepository employerRepository;
     @Inject
     private OperationService operationService;
+    @Inject
+    private ValidationService<Employer> validationService;
 
     @Override
     public Employer create(String name) throws ValidationException {
         Employer employer = new Employer(name);
         employer.setDescription("");
-        if (!isValid(employer)) throw new ValidationException();
+        if (!validationService.isValid(employer)) throw new ValidationException();
         long id = employerRepository.save(employer).getId();
         return employerRepository.getById(id);
     }
@@ -37,7 +40,7 @@ public class EmployerServiceImp implements EmployerService {
 
     @Override
     public Employer update(Employer employer) throws ValidationException, IllegalArgumentException {
-        if (!isValid(employer)) throw new ValidationException();
+        if (!validationService.isValid(employer)) throw new ValidationException();
         if (employer.getId() == 0) throw new IllegalArgumentException();
         employerRepository.save(employer);
         return employerRepository.getById(employer.getId());

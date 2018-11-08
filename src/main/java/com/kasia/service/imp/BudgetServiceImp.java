@@ -5,8 +5,10 @@ import com.kasia.model.Budget;
 import com.kasia.model.Operation;
 import com.kasia.repository.BudgetRepository;
 import com.kasia.service.BudgetService;
+import com.kasia.service.ValidationService;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,15 +16,17 @@ import java.util.Currency;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BudgetServiceImp implements BudgetService {
+public class BudgetServiceImp implements BudgetService{
     @EJB
     private BudgetRepository budgetRepository;
+    @Inject
+    private ValidationService<Budget> validationService;
 
     @Override
     public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException, NullPointerException {
         Budget budget = new Budget(name, balance, currency, LocalDateTime.now().withNano(0));
         budget.setOperations(new HashSet<>());
-        if (!isValid(budget)) throw new ValidationException();
+        if (!validationService.isValid(budget)) throw new ValidationException();
         budgetRepository.save(budget);
         return budgetRepository.getById(budget.getId());
     }
@@ -36,7 +40,7 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public Budget update(Budget budget) throws IllegalArgumentException, ValidationException {
-        if (!(isValid(budget))) throw new ValidationException();
+        if (!(validationService.isValid(budget))) throw new ValidationException();
         if (budget.getId() == 0) throw new IllegalArgumentException();
         budgetRepository.save(budget);
         return budgetRepository.getById(budget.getId());
@@ -66,7 +70,7 @@ public class BudgetServiceImp implements BudgetService {
 
     private Budget doOperation(boolean isAddOperation, Budget budget, Operation operation) throws NullPointerException, ValidationException {
         if (budget == null || operation == null) throw new NullPointerException();
-        if (!isValid(budget)) throw new ValidationException();
+        if (!validationService.isValid(budget)) throw new ValidationException();
 
         BigDecimal nBalance = BigDecimal.ONE;
         BigDecimal cBalance = budget.getBalance();

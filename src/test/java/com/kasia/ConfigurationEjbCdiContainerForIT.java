@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
         , UserServiceImp.class
         , OperationServiceImp.class
         , EmployerServiceImp.class
+        , ValidationServiceImp.class
         //repositories
         , ArticleRepository.class
         , BudgetRepository.class

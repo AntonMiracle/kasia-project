@@ -6,7 +6,7 @@ import com.kasia.model.Employer;
 import javax.validation.ValidationException;
 import java.util.Set;
 
-public interface EmployerService extends ValidationService<Employer>, Service {
+public interface EmployerService extends Service {
     Employer create(String name) throws ValidationException;
 
     boolean delete(long id) throws IllegalArgumentException, OnUseRunTimeException;

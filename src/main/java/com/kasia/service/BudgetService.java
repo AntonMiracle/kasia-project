@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Set;
 
-public interface BudgetService extends ValidationService<Budget>, Service {
+public interface BudgetService extends Service {
     Budget create(String name, BigDecimal balance, Currency currency) throws NullPointerException, ValidationException;
 
     boolean delete(long id) throws IllegalArgumentException;

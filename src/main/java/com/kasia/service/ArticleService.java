@@ -6,7 +6,7 @@ import com.kasia.model.Article;
 import javax.validation.ValidationException;
 import java.util.Set;
 
-public interface ArticleService extends ValidationService<Article>,Service {
+public interface ArticleService extends Service {
 
     Article create(String name, Article.Type type) throws ValidationException;
 
