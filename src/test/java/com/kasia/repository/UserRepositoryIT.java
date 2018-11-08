@@ -141,4 +141,17 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         }
         assertThat(user.getBudgets().size() == 1).isTrue();
     }
+
+    @Test
+    public void userHasTwoRoles() {
+        Set<User.Role> roles = new HashSet<>();
+        roles.add(User.Role.USER);
+        roles.add(User.Role.ADMINISTRATOR);
+        User user = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
+        user.setBudgets(new HashSet<>());
+        long id = userRepository.save(user).getId();
+        user = userRepository.getById(id);
+
+        assertThat(user.getRoles().size() == 2).isTrue();
+    }
 }
