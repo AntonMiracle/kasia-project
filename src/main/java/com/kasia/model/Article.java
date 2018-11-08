@@ -1,14 +1,10 @@
 package com.kasia.model;
 
-import com.kasia.repository.converter.BigDecimalAttributeConverter;
-import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.validation.article.ArticleConstraint;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.*;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Named
 @ArticleConstraint
