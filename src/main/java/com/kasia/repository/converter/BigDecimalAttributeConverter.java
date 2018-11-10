@@ -1,8 +1,10 @@
 package com.kasia.repository.converter;
 
 import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 import java.math.BigDecimal;
 
+@Converter
 public class BigDecimalAttributeConverter implements AttributeConverter<BigDecimal, String> {
     @Override
     public String convertToDatabaseColumn(BigDecimal bigDecimal) {
