@@ -4,11 +4,13 @@ import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.repository.converter.ZoneIdAttributeConverter;
 import com.kasia.validation.user.UserConstraint;
 
+import javax.inject.Named;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Set;
 
+@Named
 @UserConstraint
 @Entity
 @Table(name = "USERS")

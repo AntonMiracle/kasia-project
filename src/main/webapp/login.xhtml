@@ -5,11 +5,33 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-    <h:outputLabel value="Login PAGE"/>
-</f:view>
-<h:form>
-    <!--<h:inputText id="inputName" value="#{article.description}" required="true"/>-->
-    <!--<h:commandButton action="page1" value="GO to Page1"/>-->
-</h:form>
+
+<h:head>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+<h:body style="align-content: center">
+    <h:outputLabel value="KASIA PROJECT"/>
+    <br/>
+    <h:form style="align-content: center">
+        <br/>
+        <h:outputLabel value="#{param_login_error}"/>
+        <br/>
+        <h:outputLabel value="#{msg['email']}"/>
+        <h:inputText id="login_email" value="#{user.email}">
+            <f:validator validatorId="faces.validator.user.EmailValidator"/>
+        </h:inputText>
+        <h:message for="login_email" style="color:red"/>
+        <br/>
+        <h:outputLabel value="#{msg['password']}"/>
+        <h:inputSecret id="login_password" value="#{user.password}">
+            <f:validator validatorId="faces.validator.user.PasswordValidator"/>
+        </h:inputSecret>
+        <h:message for="login_password" style="color:red"/>
+        <br/>
+        <h:commandButton action="#{loginController.login(user)}" value="#{msg['login']}"/>
+    </h:form>
+    <h:form>
+        <h:commandButton action="registration?faces-redirect=true" value="#{msg['registration']}"/>
+    </h:form>
+</h:body>
 </html>
