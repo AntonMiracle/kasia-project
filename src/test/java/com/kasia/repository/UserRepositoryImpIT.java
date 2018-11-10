@@ -6,7 +6,7 @@ import com.kasia.model.User;
 import org.junit.After;
 import org.junit.Test;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -16,9 +16,9 @@ import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
-    @EJB
-    private UserRepository userRepository;
+public class UserRepositoryImpIT extends ConfigurationEjbCdiContainerForIT {
+    @Inject
+    private UserRepository repository;
     private final String EMAIL = "email@gmail.com";
     private final String EMAIL_2 = "email22@gmail.com";
     private final String NICK = "nick";
@@ -30,8 +30,8 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @After
     public void after() {
-        for (User u : userRepository.getAll()) {
-            userRepository.delete(u);
+        for (User u : repository.getAll()) {
+            repository.delete(u);
         }
     }
 
@@ -43,9 +43,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         user.setBudgets(new HashSet<>());
         user.setEmployers(new HashSet<>());
         user.setArticles(new HashSet<>());
-        long id = userRepository.save(user).getId();
+        long id = repository.save(user).getId();
 
-        assertThat(userRepository.getById(id)).isEqualTo(user);
+        assertThat(repository.getById(id)).isEqualTo(user);
     }
 
     @Test
@@ -56,10 +56,10 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         user.setBudgets(new HashSet<>());
         User user1 = new User(roles, EMAIL_2, NICK_2, PASSWORD, ZONE_ID, CREATE_ON);
         user1.setBudgets(new HashSet<>());
-        userRepository.save(user);
-        userRepository.save(user1);
+        repository.save(user);
+        repository.save(user1);
 
-        assertThat(userRepository.getAll().size() == 2).isTrue();
+        assertThat(repository.getAll().size() == 2).isTrue();
     }
 
     @Test
@@ -68,11 +68,11 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         roles.add(User.Role.USER);
         User user = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         user.setBudgets(new HashSet<>());
-        long id = userRepository.save(user).getId();
+        long id = repository.save(user).getId();
 
-        assertThat(userRepository.getById(id)).isNotNull();
-        assertThat(userRepository.delete(userRepository.getById(id))).isTrue();
-        assertThat(userRepository.getById(id)).isNull();
+        assertThat(repository.getById(id)).isNotNull();
+        assertThat(repository.delete(repository.getById(id))).isTrue();
+        assertThat(repository.getById(id)).isNull();
     }
 
     @Test
@@ -84,8 +84,8 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         expected.setEmployers(new HashSet<>());
         expected.setArticles(new HashSet<>());
 
-        long id = userRepository.save(expected).getId();
-        User actual = userRepository.getById(id);
+        long id = repository.save(expected).getId();
+        User actual = repository.getById(id);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -98,9 +98,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         expected.setBudgets(new HashSet<>());
         expected.setEmployers(new HashSet<>());
         expected.setArticles(new HashSet<>());
-        String email = userRepository.save(expected).getEmail();
+        String email = repository.save(expected).getEmail();
 
-        User actual = userRepository.getByEmail(email);
+        User actual = repository.getByEmail(email);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -113,9 +113,9 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         expected.setBudgets(new HashSet<>());
         expected.setEmployers(new HashSet<>());
         expected.setArticles(new HashSet<>());
-        String nick = userRepository.save(expected).getNick();
+        String nick = repository.save(expected).getNick();
 
-        User actual = userRepository.getByNick(nick);
+        User actual = repository.getByNick(nick);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -126,16 +126,16 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         roles.add(User.Role.USER);
         User user = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         user.setBudgets(new HashSet<>());
-        long id = userRepository.save(user).getId();
-        user = userRepository.getById(id);
+        long id = repository.save(user).getId();
+        user = repository.getById(id);
 
         assertThat(user.getBudgets().size() == 0).isTrue();
         Budget budget = new Budget("Name", BigDecimal.TEN, Currency.getInstance("EUR"), CREATE_ON);
         budget.setOperations(new HashSet<>());
         user.getBudgets().add(budget);
-        userRepository.save(user);
+        repository.save(user);
 
-        user = userRepository.getById(id);
+        user = repository.getById(id);
         for (Budget b : user.getBudgets()) {
             assertThat(b.getId() > 0).isTrue();
         }
@@ -149,8 +149,8 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         roles.add(User.Role.ADMINISTRATOR);
         User user = new User(roles, EMAIL, NICK, PASSWORD, ZONE_ID, CREATE_ON);
         user.setBudgets(new HashSet<>());
-        long id = userRepository.save(user).getId();
-        user = userRepository.getById(id);
+        long id = repository.save(user).getId();
+        user = repository.getById(id);
 
         assertThat(user.getRoles().size() == 2).isTrue();
     }

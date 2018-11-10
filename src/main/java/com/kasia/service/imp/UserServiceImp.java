@@ -7,7 +7,6 @@ import com.kasia.service.UserService;
 import com.kasia.service.ValidationService;
 import com.kasia.validation.user.UserValidation;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.math.BigInteger;
@@ -19,8 +18,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UserServiceImp implements UserService {
-    @EJB
-    private UserRepository userRepository;
+    @Inject
+    private UserRepository repository;
     @Inject
     private ValidationService<User> validationService;
 
@@ -36,42 +35,42 @@ public class UserServiceImp implements UserService {
         user.setEmployers(new HashSet<>());
         user.setArticles(new HashSet<>());
         if (!validationService.isValid(user)) throw new ValidationException();
-        return userRepository.save(user);
+        return repository.save(user);
     }
 
     @Override
     public User update(User user) throws ValidationException, NullPointerException, IllegalArgumentException {
         if (!validationService.isValid(user)) throw new ValidationException();
         if (user.getId() == 0) throw new IllegalArgumentException();
-        userRepository.save(user);
-        return userRepository.getById(user.getId());
+        repository.save(user);
+        return repository.getById(user.getId());
     }
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
-        User user = userRepository.getById(id);
-        return user == null || userRepository.delete(user);
+        User user = repository.getById(id);
+        return user == null || repository.delete(user);
     }
 
     @Override
     public User getUserById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
-        return userRepository.getById(id);
+        return repository.getById(id);
     }
 
     @Override
     public User getByEmail(String email) throws NullPointerException, ValidationException {
         if (email == null) throw new NullPointerException();
         if (!new UserValidation().isEmailValid(email)) throw new ValidationException();
-        return userRepository.getByEmail(email.trim());
+        return repository.getByEmail(email.trim());
     }
 
     @Override
     public User getByNick(String nick) throws NullPointerException, ValidationException {
         if (nick == null) throw new NullPointerException();
         if (!new UserValidation().isNickValid(nick)) throw new ValidationException();
-        return userRepository.getByNick(nick.trim());
+        return repository.getByNick(nick.trim());
     }
 
     @Override
@@ -92,7 +91,7 @@ public class UserServiceImp implements UserService {
     public Set<Article> getArticlesByType(User user, Article.Type type) throws NullPointerException {
         if (user == null || type == null) throw new NullPointerException();
         Set<Article> result = new HashSet<>();
-        for (Article article : userRepository.getById(user.getId()).getArticles()) {
+        for (Article article : repository.getById(user.getId()).getArticles()) {
             if (article.getType() == type) {
                 result.add(article);
             }
@@ -101,7 +100,7 @@ public class UserServiceImp implements UserService {
     }
     @Override
     public Set<User> getAllUsers() {
-        return userRepository.getAll();
+        return repository.getAll();
     }
 
 }

@@ -8,7 +8,7 @@ import com.kasia.model.User;
 import org.junit.After;
 import org.junit.Test;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -17,14 +17,14 @@ import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
-    @EJB
+public class OperationRepositoryImpIT extends ConfigurationEjbCdiContainerForIT {
+    @Inject
     private OperationRepository operationRepository;
-    @EJB
+    @Inject
     private ArticleRepository articleRepository;
-    @EJB
+    @Inject
     private UserRepository userRepository;
-    @EJB
+    @Inject
     private EmployerRepository employerRepository;
     private final LocalDateTime CREATE_ON = LocalDateTime.now().withNano(0);
     private final BigDecimal AMOUNT = BigDecimal.TEN;

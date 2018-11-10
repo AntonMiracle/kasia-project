@@ -5,13 +5,13 @@ import com.kasia.model.Article;
 import org.junit.After;
 import org.junit.Test;
 
-import javax.ejb.EJB;
+import javax.inject.Inject;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
-    @EJB
-    private ArticleRepository articleRepository;
+public class ArticleRepositoryImpIT extends ConfigurationEjbCdiContainerForIT {
+    @Inject
+    private ArticleRepository repository;
     private final Article.Type TYPE_CONSUMTION = Article.Type.CONSUMPTION;
     private final String DESCRIPTION = "Some description";
     private final String DESCRIPTION_2 = "Some description22";
@@ -19,8 +19,8 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @After
     public void after() {
-        for (Article a : articleRepository.getAll()) {
-            articleRepository.delete(a);
+        for (Article a : repository.getAll()) {
+            repository.delete(a);
         }
     }
 
@@ -28,9 +28,9 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void getById() throws Exception {
         Article article = new Article(NAME,TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
-        long id = articleRepository.save(article).getId();
+        long id = repository.save(article).getId();
 
-        assertThat(articleRepository.getById(id)).isEqualTo(article);
+        assertThat(repository.getById(id)).isEqualTo(article);
     }
 
     @Test
@@ -38,8 +38,8 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         Article expected = new Article(NAME,TYPE_CONSUMTION);
         expected.setDescription(DESCRIPTION);
 
-        long id = articleRepository.save(expected).getId();
-        Article actual = articleRepository.getById(id);
+        long id = repository.save(expected).getId();
+        Article actual = repository.getById(id);
 
         assertThat(actual).isEqualTo(expected);
     }
@@ -48,24 +48,24 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void delete() throws Exception {
         Article article = new Article(NAME,TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
-        long id = articleRepository.save(article).getId();
+        long id = repository.save(article).getId();
 
-        assertThat(articleRepository.getById(id)).isNotNull();
-        assertThat(articleRepository.delete(articleRepository.getById(id))).isTrue();
-        assertThat(articleRepository.getById(id)).isNull();
+        assertThat(repository.getById(id)).isNotNull();
+        assertThat(repository.delete(repository.getById(id))).isTrue();
+        assertThat(repository.getById(id)).isNull();
     }
 
     @Test
     public void update() throws Exception {
         Article article = new Article(NAME,TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
-        long id = articleRepository.save(article).getId();
-        article = articleRepository.getById(id);
+        long id = repository.save(article).getId();
+        article = repository.getById(id);
 
         article.setDescription(DESCRIPTION_2);
-        articleRepository.save(article);
+        repository.save(article);
 
-        article = articleRepository.getById(id);
+        article = repository.getById(id);
         assertThat(article.getDescription()).isEqualTo(DESCRIPTION_2);
     }
 
@@ -75,10 +75,10 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         article.setDescription(DESCRIPTION);
         Article article1 = new Article(NAME,TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
-        articleRepository.save(article);
-        articleRepository.save(article1);
+        repository.save(article);
+        repository.save(article1);
 
-        assertThat(articleRepository.getAll().size() == 2).isTrue();
+        assertThat(repository.getAll().size() == 2).isTrue();
     }
 
 }

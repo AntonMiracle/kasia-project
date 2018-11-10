@@ -1,6 +1,6 @@
 package com.kasia;
 
-import com.kasia.repository.*;
+import com.kasia.repository.imp.*;
 import com.kasia.service.imp.*;
 import com.oneandone.ejbcdiunit.EjbUnitRunner;
 import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
@@ -18,11 +18,11 @@ import org.junit.runner.RunWith;
         , EmployerServiceImp.class
         , ValidationServiceImp.class
         //repositories
-        , ArticleRepository.class
-        , BudgetRepository.class
-        , UserRepository.class
-        , EmployerRepository.class
-        , OperationRepository.class
+        , ArticleRepositoryImp.class
+        , BudgetRepositoryImp.class
+        , UserRepositoryImp.class
+        , EmployerRepositoryImp.class
+        , OperationRepositoryImp.class
         //configuration JPA with persist unit name = test
         , TestPersistenceFactory.class})
 public class ConfigurationEjbCdiContainerForIT {

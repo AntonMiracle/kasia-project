@@ -2,61 +2,14 @@ package com.kasia.repository;
 
 import com.kasia.model.Operation;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.HashSet;
 import java.util.Set;
 
-@Stateless
-public class OperationRepository implements Repository<Operation> {
+public interface OperationRepository extends Repository<Operation> {
 
-    @Inject
-    private EntityManager entityManager;
+    public Set<Operation> getByUserId(long id);
 
-    @Override
-    public Operation getById(long id) {
-        return entityManager.find(Operation.class, id);
-    }
+    public Set<Operation> getByEmployerId(long id);
 
-    @Override
-    public Set<Operation> getAll() {
-        Query query = entityManager.createQuery("SELECT o FROM Operation o ");
-        return new HashSet<>(query.getResultList());
-    }
-
-    @Override
-    public boolean delete(Operation model) {
-        model = entityManager.contains(model) ? model : entityManager.merge(model);
-        entityManager.remove(model);
-        return true;
-    }
-
-    @Override
-    public Operation save(Operation model) {
-        if (model.getId() > 0) {
-            entityManager.merge(model);
-        } else {
-            entityManager.persist(model);
-        }
-        return model;
-    }
-
-    public Set<Operation> getByUserId(long id) {
-        Query query = entityManager.createQuery("SELECT o FROM Operation o WHERE o.user.id=" + id);
-        return new HashSet<>(query.getResultList());
-    }
-
-    public Set<Operation> getByEmployerId(long id) {
-        Query query = entityManager.createQuery("SELECT o FROM Operation o WHERE o.employer.id=" + id);
-        return new HashSet<>(query.getResultList());
-    }
-
-    public Set<Operation> getByArticleId(long id) {
-        Query query = entityManager.createQuery("SELECT o FROM Operation o WHERE o.article.id=" + id);
-        return new HashSet<>(query.getResultList());
-    }
-
+    public Set<Operation> getByArticleId(long id);
 
 }

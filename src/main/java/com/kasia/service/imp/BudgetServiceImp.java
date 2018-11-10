@@ -7,7 +7,6 @@ import com.kasia.repository.BudgetRepository;
 import com.kasia.service.BudgetService;
 import com.kasia.service.ValidationService;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
@@ -17,8 +16,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BudgetServiceImp implements BudgetService{
-    @EJB
-    private BudgetRepository budgetRepository;
+    @Inject
+    private BudgetRepository repository;
     @Inject
     private ValidationService<Budget> validationService;
 
@@ -27,35 +26,35 @@ public class BudgetServiceImp implements BudgetService{
         Budget budget = new Budget(name, balance, currency, LocalDateTime.now().withNano(0));
         budget.setOperations(new HashSet<>());
         if (!validationService.isValid(budget)) throw new ValidationException();
-        budgetRepository.save(budget);
-        return budgetRepository.getById(budget.getId());
+        repository.save(budget);
+        return repository.getById(budget.getId());
     }
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
-        Budget budget = budgetRepository.getById(id);
-        return budget == null || budgetRepository.delete(budget);
+        Budget budget = repository.getById(id);
+        return budget == null || repository.delete(budget);
     }
 
     @Override
     public Budget update(Budget budget) throws IllegalArgumentException, ValidationException {
         if (!(validationService.isValid(budget))) throw new ValidationException();
         if (budget.getId() == 0) throw new IllegalArgumentException();
-        budgetRepository.save(budget);
-        return budgetRepository.getById(budget.getId());
+        repository.save(budget);
+        return repository.getById(budget.getId());
     }
 
 
     @Override
     public Budget getBudgetById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
-        return budgetRepository.getById(id);
+        return repository.getById(id);
     }
 
     @Override
     public Set<Budget> getAllBudgets() {
-        return budgetRepository.getAll();
+        return repository.getAll();
     }
 
     @Override
@@ -90,14 +89,14 @@ public class BudgetServiceImp implements BudgetService{
             budget.getOperations().remove(operation);
         }
         budget.setBalance(nBalance);
-        budgetRepository.save(budget);
-        return budgetRepository.getById(budget.getId());
+        repository.save(budget);
+        return repository.getById(budget.getId());
     }
 
     @Override
     public Set<Operation> getOperationsByArticlesType(Budget budget, Article.Type type) throws NullPointerException {
         Set<Operation> result = new HashSet<>();
-        for (Operation operation : budgetRepository.getById(budget.getId()).getOperations()) {
+        for (Operation operation : repository.getById(budget.getId()).getOperations()) {
             if (operation.getArticle().getType() == type) {
                 result.add(operation);
             }

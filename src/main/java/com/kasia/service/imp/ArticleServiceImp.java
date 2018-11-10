@@ -7,14 +7,13 @@ import com.kasia.service.ArticleService;
 import com.kasia.service.OperationService;
 import com.kasia.service.ValidationService;
 
-import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.util.Set;
 
 public class ArticleServiceImp implements ArticleService{
-    @EJB
-    private ArticleRepository articleRepository;
+    @Inject
+    private ArticleRepository repository;
     @Inject
     private OperationService operationService;
     @Inject
@@ -25,35 +24,35 @@ public class ArticleServiceImp implements ArticleService{
         Article article = new Article(name, type);
         article.setDescription("");
         if (!validationService.isValid(article)) throw new ValidationException();
-        articleRepository.save(article);
-        return articleRepository.getById(article.getId());
+        repository.save(article);
+        return repository.getById(article.getId());
     }
 
     @Override
     public boolean delete(long id) throws IllegalArgumentException, OnUseRunTimeException {
         if (id <= 0) throw new IllegalArgumentException();
-        Article article = articleRepository.getById(id);
+        Article article = repository.getById(id);
         if (article == null) return true;
         if (operationService.getOperationsByArticleId(article.getId()).size() != 0) throw new OnUseRunTimeException();
-        return articleRepository.delete(article);
+        return repository.delete(article);
     }
 
     @Override
     public Article update(Article article) throws ValidationException, IllegalArgumentException {
         if (!validationService.isValid(article)) throw new ValidationException();
         if (article.getId() == 0) throw new IllegalArgumentException();
-        articleRepository.save(article);
-        return articleRepository.getById(article.getId());
+        repository.save(article);
+        return repository.getById(article.getId());
     }
 
     @Override
     public Article getArticleById(long id) throws IllegalArgumentException {
         if (id <= 0) throw new IllegalArgumentException();
-        return articleRepository.getById(id);
+        return repository.getById(id);
     }
 
     @Override
     public Set<Article> getAllArticles() {
-        return articleRepository.getAll();
+        return repository.getAll();
     }
 }
