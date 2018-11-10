@@ -3,8 +3,8 @@ package com.kasia.repository;
 import com.kasia.model.Article;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,7 @@ import java.util.Set;
 @Stateless
 public class ArticleRepository implements Repository<Article> {
 
-    @PersistenceContext(unitName = PERSISTENT_UNIT_NAME)
+    @Inject
     private EntityManager entityManager;
 
     @Override
