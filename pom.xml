@@ -50,11 +50,13 @@
             <groupId>org.jboss.weld.se</groupId>
             <artifactId>weld-se-core</artifactId>
             <version>3.0.5.Final</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jboss.weld.module</groupId>
             <artifactId>weld-web</artifactId>
             <version>3.0.5.Final</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -62,7 +64,12 @@
             <version>1.6.4</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency><!--Hibernate provider for testing-->
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.3.6.Final</version>
+            <scope>test</scope>
+        </dependency>
         <!--VALIDATION-->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -82,18 +89,18 @@
             <version>8.0</version>
             <scope>provided</scope>
         </dependency>
-
-        <!--JPA-->
         <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <version>1.0.2.Final</version>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>8.0</version>
+            <scope>provided</scope>
         </dependency>
-        <!--Hibernate provider-->
+
+        <!--Eclipse JPA-->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.3.6.Final</version>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.jpa</artifactId>
+            <version>2.7.3</version>
         </dependency>
         <!--H2-->
         <dependency>
@@ -101,7 +108,6 @@
             <artifactId>h2</artifactId>
             <version>1.4.197</version>
         </dependency>
-
     </dependencies>
 
     <build>

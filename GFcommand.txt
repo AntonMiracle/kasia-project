@@ -1,0 +1,5 @@
+                    -> glassfish.root.dir/glassfish/bin/asadmin.bat
+if only one domain  -> start-domain
+else                -> start-domain domain1
+                    -> deploy 'full path to file.war'
+                    -> start-database to enable 1527 port
