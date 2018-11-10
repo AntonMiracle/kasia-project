@@ -6,13 +6,13 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <h:outputStylesheet library="css" name="style.css"/>
+    <h:outputStylesheet library = "css" name = "styles.css"  />
 </h:head>
 <h:body>
     <h:outputLabel value="REGISTRATION"/>
 
     <h:form>
-        <h:commandButton action="login?faces-redirect=false" value="BACK"/>
+        <h:commandButton action="login" value="#{label['button-back']}"/>
     </h:form>
 </h:body>
 </html>

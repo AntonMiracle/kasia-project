@@ -14,8 +14,8 @@
         </locale-config>
 
         <resource-bundle>
-            <base-name>messages</base-name>
-            <var>msg</var>
+            <base-name>JsfComponentText</base-name>
+            <var>label</var>
         </resource-bundle>
     </application>
 </faces-config>
