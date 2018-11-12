@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
-    <title>KASIA</title>
-    <h:outputStylesheet library="css" name="styles.css"/>
-</h:head>
-<h:body>
-
-    <h:outputLabel value="KASIA PROJECT"/>
-    <br/>
-
-        <h:form>
-            <br/>
-            <h:outputLabel value="#{param_login_error}"/>
-            <br/>
-            <h:outputLabel value="#{label['label-login-email']}"/>
-            <h:inputText id="login_email" value="#{user.email}">
-                <f:validator validatorId="faces.validator.user.EmailValidator"/>
-            </h:inputText>
-            <h:message for="login_email"/>
-            <br/>
-            <h:outputLabel value="#{label['label-login-password']}"/>
-            <h:inputSecret id="login_password" value="#{user.password}">
-                <f:validator validatorId="faces.validator.user.PasswordValidator"/>
-            </h:inputSecret>
-            <h:message for="login_password" title="title"/>
-            <br/>
-            <h:commandButton action="#{loginController.login(user)}" value="#{label['button-login-in']}"/>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="top">
+        <h:outputLabel styleClass="kasiaClass" value="KASIA"/>
+    </ui:define>
+    <ui:define name="content">
+        <h:form styleClass="loginForm">
+            <table border="0">
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <h:outputLabel styleClass="errorClass" value="#{param_login_error}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-login-email']}"/></td>
+                    <td><h:inputText id="login_email" value="#{user.email}"/></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-login-password']}"/></td>
+                    <td><h:inputSecret id="login_password" value="#{user.password}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <h:commandButton styleClass="templateButton" action="#{loginController.login(user)}"
+                                         value="#{label['button-login-in']}"/>
+                        <h:commandButton styleClass="templateButton" action="registration?faces-redirect=true"
+                                         value="#{label['button-login-up']}"/>
+                    </td>
+                </tr>
+            </table>
         </h:form>
-        <h:form>
-            <h:commandButton action="registration?faces-redirect=true" value="#{label['button-login-up']}"/>
-        </h:form>
-
-</h:body>
-</html>
+    </ui:define>
+    <ui:define name="bottom">
+        Develope by Anton Bondarenko
+    </ui:define>
+</ui:composition>
