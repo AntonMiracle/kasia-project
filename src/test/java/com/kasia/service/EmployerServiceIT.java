@@ -6,6 +6,10 @@ import com.kasia.model.Article;
 import com.kasia.model.Employer;
 import com.kasia.model.Operation;
 import com.kasia.model.User;
+import com.kasia.service.model.ArticleService;
+import com.kasia.service.model.EmployerService;
+import com.kasia.service.model.OperationService;
+import com.kasia.service.model.UserService;
 import org.junit.After;
 import org.junit.Test;
 
@@ -66,7 +70,7 @@ public class EmployerServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Test(expected = OnUseRunTimeException.class)
     public void whenDeleteArticleThrowOnUseRanTimeException() throws Exception {
         Article article = articleService.create(NAME, Article.Type.INCOME);
-        User user = userService.create("email@gmail.com", "passw", "NICK", ZoneId.systemDefault());
+        User user = userService.create("email@gmail.com", "Password2", "NICK", ZoneId.systemDefault());
         Employer employer = employerService.create("SupN");
         Operation operation = operationService.create(BigDecimal.TEN, article, user, employer);
 

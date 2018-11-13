@@ -1,6 +1,6 @@
 package com.kasia.model;
 
-import com.kasia.validation.employer.EmployerConstraint;
+import com.kasia.service.validation.constraint.EmployerConstraint;
 
 import javax.persistence.*;
 

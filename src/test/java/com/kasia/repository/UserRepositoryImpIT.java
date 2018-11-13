@@ -23,7 +23,7 @@ public class UserRepositoryImpIT extends ConfigurationEjbCdiContainerForIT {
     private final String EMAIL_2 = "email22@gmail.com";
     private final String NICK = "nick";
     private final String NICK_2 = "nick2";
-    private final String PASSWORD = "pass";
+    private final String PASSWORD = "Password2";
     private final LocalDateTime CREATE_ON = LocalDateTime.of(2020, 10, 10, 10, 10, 10);
     private final ZoneId ZONE_ID = ZoneId.systemDefault();
     private final User.Role ROLE = User.Role.USER;

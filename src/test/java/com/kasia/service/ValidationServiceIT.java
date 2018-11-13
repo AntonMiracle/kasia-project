@@ -2,6 +2,7 @@ package com.kasia.service;
 
 import com.kasia.model.*;
 import com.kasia.ConfigurationEjbCdiContainerForIT;
+import com.kasia.service.validation.ValidationService;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -42,7 +43,7 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     public void userIsValidTrue() {
         Set<User.Role> roles = new HashSet<>();
         roles.add(User.Role.USER);
-        User user = new User(roles, "email", "nick", "password", ZoneId.systemDefault(), LocalDateTime.now());
+        User user = new User(roles, "email@gmail.com", "nick", "Password2", ZoneId.systemDefault(), LocalDateTime.now());
         assertThat(userValidationService.isValid(user)).isTrue();
     }
 

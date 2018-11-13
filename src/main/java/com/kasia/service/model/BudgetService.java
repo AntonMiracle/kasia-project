@@ -1,8 +1,9 @@
-package com.kasia.service;
+package com.kasia.service.model;
 
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.model.Operation;
+import com.kasia.service.Service;
 
 import javax.validation.ValidationException;
 import java.math.BigDecimal;

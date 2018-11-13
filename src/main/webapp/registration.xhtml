@@ -1,18 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
-    <h:outputStylesheet library = "css" name = "styles.css"  />
-</h:head>
-<h:body>
-    <h:outputLabel value="REGISTRATION"/>
-
-    <h:form>
-        <h:commandButton action="login" value="#{label['button-back']}"/>
-    </h:form>
-</h:body>
-</html>
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="./template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="top">
+        <h:outputLabel value="#{label['title-regestration']}"/>
+    </ui:define>
+    <ui:define name="content">
+        <h:form styleClass="loginForm">
+            <table border="0">
+                <tr>
+                    <td><h:outputLabel value="#{label['label-email']}"/></td>
+                    <td><h:inputText id="registration_email" value="#{user.email}"/></td>
+                    <td><h:outputLabel styleClass="errorClass" value="#{param_email_error}"/></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-password']}"/></td>
+                    <td><h:inputSecret id="registration_password" value="#{user.password}"/></td>
+                    <td><h:outputLabel styleClass="errorClass" value="#{param_password_error}"/></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-repeat-password']}"/></td>
+                    <td><h:inputSecret id="registration_repeat_password" value="#{repeatPassword}"/></td>
+                    <td><h:outputLabel styleClass="errorClass" value="#{param_repeat_password_error}"/></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-nick']}"/></td>
+                    <td><h:inputSecret id="registration_nick" value="#{user.mick}"/></td>
+                    <td><h:outputLabel styleClass="errorClass" value="#{param_nick_error}"/></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+                        <h:commandButton styleClass="templateButton"
+                                         action="#{registrationController.registration(user,repeatPassword)}"
+                                         value="#{label['button-finish']}"/>
+                        <h:commandButton styleClass="templateButton" action="login"
+                                         value="#{label['button-back']}"/>
+                    </td>
+                </tr>
+            </table>
+        </h:form>
+    </ui:define>
+</ui:composition>

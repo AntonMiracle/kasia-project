@@ -3,6 +3,7 @@ package com.kasia.service;
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Article;
 import com.kasia.model.User;
+import com.kasia.service.model.UserService;
 import org.junit.After;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class UserServiceIT extends ConfigurationEjbCdiContainerForIT {
     private final String MAIL_2 = "email22@gmail.com";
     private final String NICK = "nick";
     private final String NICK_2 = "nick22";
-    private final String PASSWORD = "password";
+    private final String PASSWORD = "Password2";
     private final ZoneId ZONE_ID = ZoneId.systemDefault();
 
     @After
@@ -98,8 +99,8 @@ public class UserServiceIT extends ConfigurationEjbCdiContainerForIT {
     }
     @Test
     public void cryptPassword() throws Exception {
-        final String password = "password";
-        final String crypt = "5f4dcc3b5aa765d61d8327deb882cf99";
+        final String password = "Password2";
+        final String crypt = "6f9dff5af05096ea9f23cc7bedd65683";
         assertThat(userService.cryptPassword(password)).isEqualTo(crypt);
     }
 

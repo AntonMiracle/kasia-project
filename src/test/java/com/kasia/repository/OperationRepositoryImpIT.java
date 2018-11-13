@@ -130,7 +130,7 @@ public class OperationRepositoryImpIT extends ConfigurationEjbCdiContainerForIT 
     private User newUser(String nick) {
         Set<User.Role> roles = new HashSet<>();
         roles.add(User.Role.USER);
-        User user = new User(roles, "email", nick, "passwoer", ZoneId.systemDefault(), CREATE_ON);
+        User user = new User(roles, "ew2mail@gmail.com", nick, "Passwoe2r", ZoneId.systemDefault(), CREATE_ON);
         user.setBudgets(new HashSet<>());
         long id = userRepository.save(user).getId();
         return userRepository.getById(id);

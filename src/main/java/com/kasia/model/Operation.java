@@ -2,7 +2,7 @@ package com.kasia.model;
 
 import com.kasia.repository.converter.BigDecimalAttributeConverter;
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
-import com.kasia.validation.operation.OperationConstraint;
+import com.kasia.service.validation.constraint.OperationConstraint;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

@@ -29,4 +29,5 @@ public class UserTest {
                 .suppress(Warning.NONFINAL_FIELDS)
                 .verify();
     }
+
 }

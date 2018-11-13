@@ -1,11 +1,11 @@
-package com.kasia.service.imp;
+package com.kasia.service.model.imp;
 
 import com.kasia.exception.OnUseRunTimeException;
 import com.kasia.model.Article;
 import com.kasia.repository.ArticleRepository;
-import com.kasia.service.ArticleService;
-import com.kasia.service.OperationService;
-import com.kasia.service.ValidationService;
+import com.kasia.service.model.ArticleService;
+import com.kasia.service.model.OperationService;
+import com.kasia.service.validation.ArticleValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -17,7 +17,7 @@ public class ArticleServiceImp implements ArticleService{
     @Inject
     private OperationService operationService;
     @Inject
-    private ValidationService<Article> validationService;
+    private ArticleValidationService validationService;
 
     @Override
     public Article create(String name, Article.Type type) throws ValidationException {

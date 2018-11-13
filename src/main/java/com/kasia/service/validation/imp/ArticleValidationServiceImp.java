@@ -1,12 +1,11 @@
-package com.kasia.validation.article;
+package com.kasia.service.validation.imp;
 
 import com.kasia.model.Article;
-import com.kasia.validation.ConstraintViolationManager;
+import com.kasia.service.validation.ArticleValidationService;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ArticleValidation implements ConstraintValidator<ArticleConstraint, Article>, ConstraintViolationManager {
+public class ArticleValidationServiceImp implements ArticleValidationService {
 
     @Override
     public boolean isValid(Article article, ConstraintValidatorContext constraintValidatorContext) {

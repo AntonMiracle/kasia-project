@@ -5,6 +5,10 @@ import com.kasia.model.Article;
 import com.kasia.model.Employer;
 import com.kasia.model.Operation;
 import com.kasia.model.User;
+import com.kasia.service.model.ArticleService;
+import com.kasia.service.model.EmployerService;
+import com.kasia.service.model.OperationService;
+import com.kasia.service.model.UserService;
 import org.junit.After;
 import org.junit.Test;
 
@@ -46,10 +50,7 @@ public class OperationServiceIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     private User newUser() {
-        return userService.create("email@gmail"
-                , "passw"
-                , NICK
-                , ZoneId.systemDefault());
+        return userService.create("email234@gmail.com", "Password22", "SuperNick2", ZoneId.systemDefault());
     }
 
     private Article newArticle() {

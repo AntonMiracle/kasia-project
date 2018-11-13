@@ -1,8 +1,7 @@
 package com.kasia.model;
 
-import com.kasia.validation.article.ArticleConstraint;
+import com.kasia.service.validation.constraint.ArticleConstraint;
 
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.*;
 

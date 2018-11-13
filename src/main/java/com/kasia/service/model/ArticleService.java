@@ -1,7 +1,8 @@
-package com.kasia.service;
+package com.kasia.service.model;
 
 import com.kasia.exception.OnUseRunTimeException;
 import com.kasia.model.Article;
+import com.kasia.service.Service;
 
 import javax.validation.ValidationException;
 import java.util.Set;

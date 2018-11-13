@@ -1,12 +1,11 @@
-package com.kasia.validation.budget;
+package com.kasia.service.validation.imp;
 
 import com.kasia.model.Budget;
-import com.kasia.validation.ConstraintViolationManager;
+import com.kasia.service.validation.BudgetValidationService;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class BudgetValidation implements ConstraintValidator<BudgetConstraint, Budget>, ConstraintViolationManager {
+public class BudgetValidationServiceImp implements BudgetValidationService {
 
     @Override
     public boolean isValid(Budget budget, ConstraintValidatorContext constraintValidatorContext) {

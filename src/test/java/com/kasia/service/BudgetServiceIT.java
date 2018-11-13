@@ -2,6 +2,7 @@ package com.kasia.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.*;
+import com.kasia.service.model.*;
 import org.junit.After;
 import org.junit.Test;
 
@@ -99,7 +100,7 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     private Operation newOperation(BigDecimal amount, Article.Type type) {
         Article article = articleService.create(NAME, type);
-        User user = userService.create(NAME, NAME, NAME, ZoneId.systemDefault());
+        User user = userService.create("email@gmail.com", "Password2", "NICK", ZoneId.systemDefault());
         Employer employer = employerService.create(NAME);
         return operationService.create(amount, article, user, employer);
     }

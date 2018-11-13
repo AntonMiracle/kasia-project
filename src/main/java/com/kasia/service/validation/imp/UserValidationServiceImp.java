@@ -1,12 +1,12 @@
-package com.kasia.validation.user;
+package com.kasia.service.validation.imp;
 
 import com.kasia.model.User;
-import com.kasia.validation.ConstraintViolationManager;
+import com.kasia.service.validation.UserValidationService;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.regex.Pattern;
 
-public class UserValidation implements ConstraintValidator<UserConstraint, User>, ConstraintViolationManager {
+public class UserValidationServiceImp implements UserValidationService {
 
     @Override
     public boolean isValid(User user, ConstraintValidatorContext constraintValidatorContext) {
@@ -22,12 +22,12 @@ public class UserValidation implements ConstraintValidator<UserConstraint, User>
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
-        if (user.getEmail() == null || !isEmailValid(user.getEmail())) {
+        if (!isEmailValid(user.getEmail())) {
             msg.append("{validation.user.UserConstraint.message.email}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
         }
-        if (user.getNick() == null || !isNickValid(user.getNick())) {
+        if (!isNickValid(user.getNick())) {
             msg.append("{validation.user.UserConstraint.message.nick}");
             addConstraintViolation(msg.toString(), constraintValidatorContext);
             return false;
@@ -50,18 +50,22 @@ public class UserValidation implements ConstraintValidator<UserConstraint, User>
         return true;
     }
 
+    private boolean isMatch(String field, Regex regex) {
+        return field != null && Pattern.compile(regex.getREGEX()).matcher(field).matches();
+    }
+
+    @Override
     public boolean isNonCryptPasswordValid(String password) {
-        if (password == null) return true;
-        return true;
+        return password != null && isMatch(password, Regex.PASSWORD);
     }
 
+    @Override
     public boolean isEmailValid(String email) {
-        if (email == null) return true;
-        return true;
+        return email != null && isMatch(email, Regex.EMAIL);
     }
 
+    @Override
     public boolean isNickValid(String nick) {
-        if (nick == null) return true;
-        return true;
+        return nick != null && isMatch(nick, Regex.NICK);
     }
 }

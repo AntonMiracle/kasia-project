@@ -1,12 +1,11 @@
-package com.kasia.validation.employer;
+package com.kasia.service.validation.imp;
 
 import com.kasia.model.Employer;
-import com.kasia.validation.ConstraintViolationManager;
+import com.kasia.service.validation.EmployerValidationService;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class EmployerValidation implements ConstraintValidator<EmployerConstraint, Employer>, ConstraintViolationManager {
+public class EmployerValidationServiceImp implements EmployerValidationService {
     @Override
     public boolean isValid(Employer employer, ConstraintValidatorContext constraintValidatorContext) {
         if (employer == null) return true;

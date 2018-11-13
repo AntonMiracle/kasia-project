@@ -1,7 +1,7 @@
 package com.kasia.controller;
 
 import com.kasia.model.User;
-import com.kasia.service.UserService;
+import com.kasia.service.model.UserService;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;

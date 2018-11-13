@@ -2,7 +2,7 @@ package com.kasia.model;
 
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.repository.converter.ZoneIdAttributeConverter;
-import com.kasia.validation.user.UserConstraint;
+import com.kasia.service.validation.constraint.UserConstraint;
 
 import javax.inject.Named;
 import javax.persistence.*;

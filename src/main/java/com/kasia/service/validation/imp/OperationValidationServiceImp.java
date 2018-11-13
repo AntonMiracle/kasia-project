@@ -1,13 +1,12 @@
-package com.kasia.validation.operation;
+package com.kasia.service.validation.imp;
 
 import com.kasia.model.Operation;
-import com.kasia.validation.ConstraintViolationManager;
+import com.kasia.service.validation.OperationValidationService;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.math.BigDecimal;
 
-public class OperationValidation implements ConstraintValidator<OperationConstraint, Operation>, ConstraintViolationManager {
+public class OperationValidationServiceImp implements OperationValidationService {
     @Override
     public boolean isValid(Operation operation, ConstraintValidatorContext constraintValidatorContext) {
         if (operation == null) return true;

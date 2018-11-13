@@ -1,11 +1,10 @@
-package com.kasia.service.imp;
+package com.kasia.service.model.imp;
 
 import com.kasia.model.Article;
 import com.kasia.model.User;
 import com.kasia.repository.UserRepository;
-import com.kasia.service.UserService;
-import com.kasia.service.ValidationService;
-import com.kasia.validation.user.UserValidation;
+import com.kasia.service.model.UserService;
+import com.kasia.service.validation.UserValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -21,7 +20,7 @@ public class UserServiceImp implements UserService {
     @Inject
     private UserRepository repository;
     @Inject
-    private ValidationService<User> validationService;
+    private UserValidationService validationService;
 
     @Override
     public User create(String email, String password, String nick, ZoneId zoneId) throws NullPointerException, ValidationException {
@@ -62,21 +61,21 @@ public class UserServiceImp implements UserService {
     @Override
     public User getByEmail(String email) throws NullPointerException, ValidationException {
         if (email == null) throw new NullPointerException();
-        if (!new UserValidation().isEmailValid(email)) throw new ValidationException();
+        if (!validationService.isEmailValid(email)) throw new ValidationException();
         return repository.getByEmail(email.trim());
     }
 
     @Override
     public User getByNick(String nick) throws NullPointerException, ValidationException {
         if (nick == null) throw new NullPointerException();
-        if (!new UserValidation().isNickValid(nick)) throw new ValidationException();
+        if (!validationService.isNickValid(nick)) throw new ValidationException();
         return repository.getByNick(nick.trim());
     }
 
     @Override
     public String cryptPassword(String password) throws NullPointerException, ValidationException {
         if (password == null) throw new NullPointerException();
-        if (!new UserValidation().isNonCryptPasswordValid(password)) throw new ValidationException();
+        if (!validationService.isNonCryptPasswordValid(password)) throw new ValidationException();
 
         MessageDigest md5 = null;
         try {
@@ -87,6 +86,7 @@ public class UserServiceImp implements UserService {
         md5.update(password.getBytes(), 0, password.length());
         return new BigInteger(1, md5.digest()).toString(16);
     }
+
     @Override
     public Set<Article> getArticlesByType(User user, Article.Type type) throws NullPointerException {
         if (user == null || type == null) throw new NullPointerException();
@@ -98,6 +98,7 @@ public class UserServiceImp implements UserService {
         }
         return result;
     }
+
     @Override
     public Set<User> getAllUsers() {
         return repository.getAll();
