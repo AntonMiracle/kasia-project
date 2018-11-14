@@ -4,6 +4,7 @@ import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.repository.converter.ZoneIdAttributeConverter;
 import com.kasia.service.validation.constraint.UserConstraint;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.time.ZoneId;
 import java.util.Set;
 
 @Named
+@RequestScoped
 @UserConstraint
 @Entity
 @Table(name = "USERS")
@@ -51,13 +53,18 @@ public class User implements Model {
     @Convert(converter = ZoneIdAttributeConverter.class)
     private ZoneId zoneId;
 
-    public User(Set<Role> role, String email, String nick, String password, ZoneId zoneId, LocalDateTime createOn) {
-        this.roles = role;
+    public User(String email, String password, String nick
+            , Set<Role> roles, Set<Budget> budgets, Set<Article> articles
+            , Set<Employer> employers, LocalDateTime createOn, ZoneId zoneId) {
         this.email = email;
-        this.nick = nick;
         this.password = password;
-        this.zoneId = zoneId;
+        this.nick = nick;
+        this.roles = roles;
+        this.budgets = budgets;
+        this.articles = articles;
+        this.employers = employers;
         this.createOn = createOn;
+        this.zoneId = zoneId;
     }
 
     public User() {

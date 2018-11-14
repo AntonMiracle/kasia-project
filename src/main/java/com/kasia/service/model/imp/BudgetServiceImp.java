@@ -5,7 +5,9 @@ import com.kasia.model.Budget;
 import com.kasia.model.Operation;
 import com.kasia.repository.BudgetRepository;
 import com.kasia.service.model.BudgetService;
-import com.kasia.service.validation.BudgetValidationService;
+import com.kasia.service.validation.ValidationService;
+import com.kasia.service.validation.field.BField;
+import com.kasia.service.validation.message.BMessageLink;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -19,7 +21,7 @@ public class BudgetServiceImp implements BudgetService{
     @Inject
     private BudgetRepository repository;
     @Inject
-    private BudgetValidationService validationService;
+    private ValidationService<Budget,BField,BMessageLink> validationService;
 
     @Override
     public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException, NullPointerException {

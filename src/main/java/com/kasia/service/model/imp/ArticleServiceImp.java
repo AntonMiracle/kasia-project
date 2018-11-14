@@ -5,7 +5,9 @@ import com.kasia.model.Article;
 import com.kasia.repository.ArticleRepository;
 import com.kasia.service.model.ArticleService;
 import com.kasia.service.model.OperationService;
-import com.kasia.service.validation.ArticleValidationService;
+import com.kasia.service.validation.ValidationService;
+import com.kasia.service.validation.field.AField;
+import com.kasia.service.validation.message.AMessageLink;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -17,7 +19,7 @@ public class ArticleServiceImp implements ArticleService{
     @Inject
     private OperationService operationService;
     @Inject
-    private ArticleValidationService validationService;
+    private ValidationService<Article,AField,AMessageLink> validationService;
 
     @Override
     public Article create(String name, Article.Type type) throws ValidationException {
