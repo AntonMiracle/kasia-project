@@ -17,8 +17,15 @@ public class UserTest {
     public void checkEqualsAndHashCode() {
         Set<User.Role> roles = new HashSet<>();
         roles.add(User.Role.USER);
-        User u1 = new User(roles, "email", "nick", "pass", ZoneId.systemDefault(), LocalDateTime.now());
-        User u2 = new User(roles, "email3", "nick3", "pass", ZoneId.systemDefault(), LocalDateTime.now());
+
+        User u1 = new User("email@gmail.com", "Password2", "Nick", roles
+                , new HashSet<>(), new HashSet<>(), new HashSet<>()
+                , LocalDateTime.now().withNano(0), ZoneId.systemDefault());
+
+        User u2 = new User("email2@gmail.com", "Password22", "Nick2", roles
+                , new HashSet<>(), new HashSet<>(), new HashSet<>()
+                , LocalDateTime.now().withNano(0), ZoneId.systemDefault());
+
         Budget b1 = new Budget("Name1", BigDecimal.TEN, Currency.getInstance("EUR"), LocalDateTime.now());
         Budget b2 = new Budget("Name2", BigDecimal.TEN, Currency.getInstance("USD"), LocalDateTime.now());
 
