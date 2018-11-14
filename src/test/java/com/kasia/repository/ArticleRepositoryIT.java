@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ArticleRepositoryImpIT extends ConfigurationEjbCdiContainerForIT {
+public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private ArticleRepository repository;
     private final Article.Type TYPE_CONSUMTION = Article.Type.CONSUMPTION;

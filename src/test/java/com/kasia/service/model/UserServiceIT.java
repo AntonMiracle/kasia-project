@@ -1,9 +1,8 @@
-package com.kasia.service;
+package com.kasia.service.model;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Article;
 import com.kasia.model.User;
-import com.kasia.service.model.UserService;
 import org.junit.After;
 import org.junit.Test;
 
@@ -100,7 +99,7 @@ public class UserServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void cryptPassword() throws Exception {
         final String password = "Password2";
-        final String crypt = "6f9dff5af05096ea9f23cc7bedd65683";
+        final String crypt = "6f9dff5af05096ea9f23cc7bedd656830Aa";
         assertThat(userService.cryptPassword(password)).isEqualTo(crypt);
     }
 

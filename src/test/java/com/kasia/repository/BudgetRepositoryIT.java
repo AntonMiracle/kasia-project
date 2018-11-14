@@ -13,7 +13,7 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BudgetRepositoryImpIT extends ConfigurationEjbCdiContainerForIT {
+public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private BudgetRepository repository;
     private final BigDecimal BALANCE = BigDecimal.TEN;

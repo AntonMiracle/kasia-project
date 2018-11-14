@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class EmployerRepositoryImpIT extends ConfigurationEjbCdiContainerForIT {
+public class EmployerRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private EmployerRepository repository;
     private final String NAME = "name";

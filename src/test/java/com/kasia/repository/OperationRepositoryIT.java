@@ -11,13 +11,10 @@ import org.junit.Test;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class OperationRepositoryImpIT extends ConfigurationEjbCdiContainerForIT {
+public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private OperationRepository operationRepository;
     @Inject
@@ -30,7 +27,6 @@ public class OperationRepositoryImpIT extends ConfigurationEjbCdiContainerForIT 
     private final BigDecimal AMOUNT = BigDecimal.TEN;
     private final String NAME = "name1";
     private final String NAME_2 = "name2";
-
 
     @After
     public void after() {
@@ -128,10 +124,7 @@ public class OperationRepositoryImpIT extends ConfigurationEjbCdiContainerForIT 
     }
 
     private User newUser(String nick) {
-        Set<User.Role> roles = new HashSet<>();
-        roles.add(User.Role.USER);
-        User user = new User(roles, "ew2mail@gmail.com", nick, "Passwoe2r", ZoneId.systemDefault(), CREATE_ON);
-        user.setBudgets(new HashSet<>());
+        User user = createUser("email@gmail.com", nick);
         long id = userRepository.save(user).getId();
         return userRepository.getById(id);
     }

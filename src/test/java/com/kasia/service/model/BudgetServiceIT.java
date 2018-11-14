@@ -1,4 +1,4 @@
-package com.kasia.service;
+package com.kasia.service.model;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.*;
