@@ -1,8 +1,9 @@
-package com.kasia.service;
+package com.kasia.service.validation;
 
-import com.kasia.model.*;
 import com.kasia.ConfigurationEjbCdiContainerForIT;
-import com.kasia.service.validation.ValidationService;
+import com.kasia.model.*;
+import com.kasia.service.validation.field.*;
+import com.kasia.service.validation.message.*;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -17,15 +18,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private ValidationService<User> userValidationService;
+    private ValidationService<User,UField,UMessageLink> userValidationService;
     @Inject
-    private ValidationService<Article> articleValidationService;
+    private ValidationService<Article, AField, AMessageLink> articleValidationService;
     @Inject
-    private ValidationService<Budget> budgetValidationService;
+    private ValidationService<Budget,BField,BMessageLink> budgetValidationService;
     @Inject
-    private ValidationService<Employer> employerValidationService;
+    private ValidationService<Employer,EField,EMessageLink> employerValidationService;
     @Inject
-    private ValidationService<Operation> operationValidationService;
+    private ValidationService<Operation,OField,OMessageLink> operationValidationService;
 
     @Test
     public void articleIsValidTrue() {
@@ -43,7 +44,11 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     public void userIsValidTrue() {
         Set<User.Role> roles = new HashSet<>();
         roles.add(User.Role.USER);
-        User user = new User(roles, "email@gmail.com", "nick", "Password2", ZoneId.systemDefault(), LocalDateTime.now());
+
+        User user = new User("email@gmail.com", "Password2",  "Nick", roles
+                , new HashSet<>(), new HashSet<>(), new HashSet<>()
+                , LocalDateTime.now().withNano(0), ZoneId.systemDefault());
+
         assertThat(userValidationService.isValid(user)).isTrue();
     }
 
