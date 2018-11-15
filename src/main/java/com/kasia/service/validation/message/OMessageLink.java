@@ -6,9 +6,8 @@ public enum OMessageLink implements ModelValidationMessageLink {
     , USER_NULL("{operationUserNull}")
     , ARTICLE_NULL("{operationArticleNull}")
     , EMPLOYER_NULL("{operationEmployerNull}")
-    , CREATE_ON_NULL(CREATE_ON_NULL_LINK)
-
-    ;
+    , CREATE_ON_NULL(CREATE_ON_NULL_LINK),
+    AMOUNT_NEGATIVE("{operationAmountNegative}");
 
     private final String link;
 

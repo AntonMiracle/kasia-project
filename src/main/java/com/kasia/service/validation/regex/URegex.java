@@ -9,8 +9,8 @@ public enum URegex implements ModelRegex {
         this.REGEX = regex;
     }
 
+    @Override
     public String getREGEX() {
         return REGEX;
     }
-
 }

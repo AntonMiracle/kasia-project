@@ -3,9 +3,9 @@ package com.kasia.service.validation.message;
 public enum AMessageLink implements ModelValidationMessageLink {
     ID_NEGATIVE(ID_LINK)
     ,NAME_NULL("{articleNameNull}")
+    ,NAME_REGEX_ERROR("{articleNameRegexError}")
     ,TYPE_NULL("{articleTypeNull}")
     ,DESCRIPTION_NULL("{articleDescriptionNull}")
-
     ;
 
     private final String link;

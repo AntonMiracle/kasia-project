@@ -5,21 +5,18 @@ import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.model.Employer;
 import com.kasia.model.User;
-import com.kasia.service.validation.ValidationService;
-import com.kasia.service.validation.constraint.UserConstraint;
+import com.kasia.service.validation.UserValidationService;
 import com.kasia.service.validation.field.UField;
 import com.kasia.service.validation.message.UMessageLink;
 import com.kasia.service.validation.regex.URegex;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 
-public class UserValidationServiceImp implements ValidationService<User, UField, UMessageLink>, ConstraintValidator<UserConstraint, User> {
+public class UserValidationServiceImp implements UserValidationService {
 
     @Override
     public boolean isValid(User user, ConstraintValidatorContext constraintValidatorContext) {
@@ -62,10 +59,6 @@ public class UserValidationServiceImp implements ValidationService<User, UField,
             errors++;
         }
         return errors == 0;
-    }
-
-    private boolean isMatch(String field, URegex regex) {
-        return field != null && Pattern.compile(regex.getREGEX()).matcher(field).matches();
     }
 
     private boolean isPasswordValid(String password, ConstraintValidatorContext constraintValidatorContext) {
@@ -116,7 +109,8 @@ public class UserValidationServiceImp implements ValidationService<User, UField,
         return true;
     }
 
-    private User createUserWithFieldAndValue(UField field, Object value) {
+    @Override
+    public User createModelWithFieldAndValue(UField field, Object value) throws FieldNotExistRuntimeException {
         if (value == null || field == null) throw new NullPointerException("Field or value is null");
         User user = new User();
         switch (field) {
@@ -154,15 +148,5 @@ public class UserValidationServiceImp implements ValidationService<User, UField,
                 throw new FieldNotExistRuntimeException();
         }
         return user;
-    }
-
-    @Override
-    public boolean isValueValid(UField field, Object value) throws NullPointerException, FieldNotExistRuntimeException {
-        return isValid(createUserWithFieldAndValue(field, value), field);
-    }
-
-    @Override
-    public String getErrorMsgByValue(UField field, Object value) throws NullPointerException, FieldNotExistRuntimeException {
-        return getErrorMsgByField(createUserWithFieldAndValue(field, value), field);
     }
 }

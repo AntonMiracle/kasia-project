@@ -2,7 +2,10 @@ package com.kasia.service.validation.message;
 
 public enum EMessageLink implements ModelValidationMessageLink {
 
-    ID_NEGATIVE(ID_LINK), NAME_NULL("{employerNameNull}"), DESCRIPTION_NULL("{employerDescriptionNull}");
+    ID_NEGATIVE(ID_LINK)
+    , NAME_NULL("{employerNameNull}")
+    ,NAME_REGEX_ERROR("{employerNameRegexError}")
+    , DESCRIPTION_NULL("{employerDescriptionNull}");
 
     private final String link;
 

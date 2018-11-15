@@ -8,14 +8,14 @@ public enum UMessageLink implements ModelValidationMessageLink {
     , BUDGETS_NULL("{userBudgetsNull}")
     , EMPLOYERS_NULL("{userEmployersNull}")
     , PASSWORD_NULL("{userPasswordNull}")
-    , PASSWORD_REGEX_ERROR("{userPasswordDontMatchWithRegex}")
+    , PASSWORD_REGEX_ERROR("{userPasswordRegexError}")
     , PASSWORD_CONFIRM_ERROR("{userPasswordNotEqualsWithConfirmPassword}")
     , ROLES_NULL("{userRolesNull}")
     , ROLES_NEEDED_USER_ROLE("{userRolesWithoutUserRole}")
     , EMAIL_NULL("{userEmailNull}")
-    , EMAIL_REGEX_ERROR("{userEmailDoNotMatchWithRegex}")
+    , EMAIL_REGEX_ERROR("{userEmailRegexError}")
     , NICK_NULL("{userNickNull}")
-    , NICK_REGEX_ERROR("{userNickDontMatchWithRegex}")
+    , NICK_REGEX_ERROR("{userNickRegexError}")
 
     ;
 

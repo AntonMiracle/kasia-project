@@ -5,6 +5,7 @@ import com.kasia.model.Model;
 import com.kasia.service.Service;
 import com.kasia.service.validation.field.ModelField;
 import com.kasia.service.validation.message.ModelValidationMessageLink;
+import com.kasia.service.validation.regex.ModelRegex;
 
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintViolation;
@@ -13,8 +14,9 @@ import javax.validation.ValidatorFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
-public interface ValidationService<M extends Model, F extends ModelField, L extends ModelValidationMessageLink> extends Service {
+public interface ValidationService<M extends Model, F extends ModelField, L extends ModelValidationMessageLink, R extends ModelRegex> extends Service {
 
     default boolean isValid(M model) throws NullPointerException {
         if (model == null) throw new NullPointerException();
@@ -65,8 +67,18 @@ public interface ValidationService<M extends Model, F extends ModelField, L exte
                 .disableDefaultConstraintViolation();
     }
 
-    boolean isValid(F field, Object value) throws NullPointerException, FieldNotExistRuntimeException;
+    M createModelWithFieldAndValue(F field, Object value) throws FieldNotExistRuntimeException;
 
-    String getMessage(F field, Object value) throws NullPointerException, FieldNotExistRuntimeException;
+    default boolean isValid(F field, Object value) throws NullPointerException, FieldNotExistRuntimeException {
+        return isValid(createModelWithFieldAndValue(field, value), field);
+    }
+
+    default String getMessage(F field, Object value) throws NullPointerException, FieldNotExistRuntimeException {
+        return getMessage(createModelWithFieldAndValue(field, value), field);
+    }
+
+    default boolean isMatch(String value, R regex) {
+        return value != null && Pattern.compile(regex.getREGEX()).matcher(value).matches();
+    }
 
 }

@@ -1,16 +1,19 @@
 package com.kasia.service.validation.imp;
 
+import com.kasia.exception.FieldNotExistRuntimeException;
+import com.kasia.model.Article;
+import com.kasia.model.Employer;
 import com.kasia.model.Operation;
-import com.kasia.service.validation.ValidationService;
-import com.kasia.service.validation.constraint.OperationConstraint;
+import com.kasia.model.User;
+import com.kasia.service.validation.OperationValidationService;
 import com.kasia.service.validation.field.OField;
 import com.kasia.service.validation.message.OMessageLink;
 
-import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-public class OperationValidationServiceImp implements ValidationService<Operation, OField, OMessageLink>, ConstraintValidator<OperationConstraint, Operation> {
+public class OperationValidationServiceImp implements OperationValidationService {
     @Override
     public boolean isValid(Operation operation, ConstraintValidatorContext constraintValidatorContext) {
         if (operation == null) return true;
@@ -19,8 +22,7 @@ public class OperationValidationServiceImp implements ValidationService<Operatio
             addConstraintViolation(OField.ID, OMessageLink.ID_NEGATIVE, constraintValidatorContext);
             errors++;
         }
-        if (operation.getAmount() == null || operation.getAmount().compareTo(BigDecimal.ZERO) < 0) {
-            addConstraintViolation(OField.AMOUNT, OMessageLink.AMOUNT_NULL, constraintValidatorContext);
+        if (!isAmountValid(operation.getAmount(), constraintValidatorContext)) {
             errors++;
         }
         if (operation.getArticle() == null) {
@@ -42,13 +44,44 @@ public class OperationValidationServiceImp implements ValidationService<Operatio
         return errors == 0;
     }
 
-    @Override
-    public boolean isValueValid(OField field, Object value) {
-        return false;
+    private boolean isAmountValid(BigDecimal amount, ConstraintValidatorContext constraintValidatorContext) {
+        if (amount == null) {
+            addConstraintViolation(OField.AMOUNT, OMessageLink.AMOUNT_NULL, constraintValidatorContext);
+            return false;
+        }
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            addConstraintViolation(OField.AMOUNT, OMessageLink.AMOUNT_NEGATIVE, constraintValidatorContext);
+            return false;
+        }
+        return true;
     }
 
     @Override
-    public String getErrorMsgByValue(OField field, Object value) {
-        return null;
+    public Operation createModelWithFieldAndValue(OField field, Object value) throws FieldNotExistRuntimeException {
+        if (value == null || field == null) throw new NullPointerException("Field or value is null");
+        Operation operation = new Operation();
+        switch (field) {
+            case ID:
+                operation.setId((Long) value);
+                break;
+            case CREATE_ON:
+                operation.setCreateOn((LocalDateTime) value);
+                break;
+            case USER:
+                operation.setUser((User) value);
+                break;
+            case AMOUNT:
+                operation.setAmount((BigDecimal) value);
+                break;
+            case ARTICLE:
+                operation.setArticle((Article) value);
+                break;
+            case EMPLOYER:
+                operation.setEmployer((Employer) value);
+                break;
+            default:
+                throw new FieldNotExistRuntimeException();
+        }
+        return operation;
     }
 }
