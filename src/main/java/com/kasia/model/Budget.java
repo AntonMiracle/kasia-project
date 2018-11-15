@@ -36,11 +36,12 @@ public class Budget implements Model {
     public Budget() {
     }
 
-    public Budget(String name, BigDecimal balance, Currency currency, LocalDateTime createOn) {
+    public Budget(String name, Set<Operation> operations, BigDecimal balance, LocalDateTime createOn, Currency currency) {
         this.name = name;
+        this.operations = operations;
         this.balance = balance;
-        this.currency = currency;
         this.createOn = createOn;
+        this.currency = currency;
     }
 
     @Override

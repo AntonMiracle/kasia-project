@@ -19,8 +19,9 @@ public class Employer implements Model {
     public Employer() {
     }
 
-    public Employer(String name) {
+    public Employer(String name, String description) {
         this.name = name;
+        this.description = description;
     }
 
     @Override

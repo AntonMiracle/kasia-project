@@ -23,8 +23,9 @@ public class Article implements Model {
     public Article() {
     }
 
-    public Article(String name, Type type) {
+    public Article(String name, String description, Type type) {
         this.name = name;
+        this.description = description;
         this.type = type;
     }
 
