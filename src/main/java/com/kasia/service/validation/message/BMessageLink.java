@@ -1,7 +1,10 @@
 package com.kasia.service.validation.message;
 
 public enum BMessageLink implements ModelValidationMessageLink {
-    ID_NEGATIVE(ID_LINK), BALANCE_NULL("{budgetBalanceNull}"), NAME_NULL("{budgetNameNull}"), CURRENCE_NULL("{budgetCurrencyNull}"), CREATE_ON_NULL(CREATE_ON_NULL_LINK);
+    ID_NEGATIVE(ID_LINK), BALANCE_NULL("{budgetBalanceNull}"), NAME_NULL("{budgetNameNull}")
+    , CURRENCY_NULL("{budgetCurrencyNull}")
+    , OPERATIONS_NULL("{budgetOperationsNull}")
+    , CREATE_ON_NULL(CREATE_ON_NULL_LINK);
 
     private final String link;
 
