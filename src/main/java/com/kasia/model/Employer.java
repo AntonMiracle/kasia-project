@@ -1,18 +1,25 @@
 package com.kasia.model;
 
-import com.kasia.service.validation.constraint.EmployerConstraint;
+import com.kasia.service.validation.ValidationService;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
-@EmployerConstraint
 @Entity
 @Table(name = "EMPLOYERS")
 public class Employer implements Model {
+
     @Id
     @GeneratedValue
     private long id;
+
+    @NotNull
+    @Pattern(regexp = ValidationService.NAME)
     @Column(name = "AMOUNT", nullable = false)
     private String name;
+
+    @NotNull
     @Column(name = "DESCRIPTION")
     private String description;
 

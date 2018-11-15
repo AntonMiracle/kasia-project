@@ -2,53 +2,74 @@ package com.kasia.model;
 
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
 import com.kasia.repository.converter.ZoneIdAttributeConverter;
-import com.kasia.service.validation.constraint.UserConstraint;
+import com.kasia.service.validation.ValidationService;
 
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Set;
 
-@Named
-@RequestScoped
-@UserConstraint
 @Entity
 @Table(name = "USERS")
 public class User implements Model {
+
     @Id
     @GeneratedValue
     private long id;
+
+    @NotNull
+    @Pattern(regexp = ValidationService.EMAIL)
     @Column(name = "EMAIL", nullable = false)
     private String email;
+
+    @NotNull
+    @Pattern(regexp = ValidationService.PASSWORD)
     @Column(name = "PASSWORD", nullable = false)
     private String password;
+
+    @NotNull
+    @Pattern(regexp = ValidationService.NAME)
     @Column(name = "NICK", nullable = false, unique = true)
     private String nick;
+
+    @NotNull
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "ROLES")
     @Column(name = "ROLE", nullable = false)
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @NotNull
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_BUDGETS",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "BUDGET_ID"))
     private Set<Budget> budgets;
+
+    @NotNull
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_ARTICLES",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "ARTICLE_ID"))
     private Set<Article> articles;
+
+    @NotNull
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "USERS_EMPLOYERS",
             joinColumns = @JoinColumn(name = "USER_ID"),
             inverseJoinColumns = @JoinColumn(name = "EMPLOYER_ID"))
     private Set<Employer> employers;
+
+    @NotNull
+    @Past
     @Column(name = "CREATE_ON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
+
+    @NotNull
     @Column(name = "ZONE_ID", nullable = false)
     @Convert(converter = ZoneIdAttributeConverter.class)
     private ZoneId zoneId;

@@ -2,34 +2,49 @@ package com.kasia.model;
 
 import com.kasia.repository.converter.BigDecimalAttributeConverter;
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
-import com.kasia.service.validation.constraint.BudgetConstraint;
+import com.kasia.service.validation.ValidationService;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Set;
 
-@BudgetConstraint
 @Entity
 @Table(name = "BUDGETS")
 public class Budget implements Model {
+
     @Id
     @GeneratedValue
     private long id;
+
+    @NotNull
+    @Pattern(regexp = ValidationService.NAME)
     @Column(name = "NAME", nullable = false)
     private String name;
+
+    @NotNull
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "BUDGETS_OPERATIONS",
             joinColumns = @JoinColumn(name = "BUDGET_ID"),
             inverseJoinColumns = @JoinColumn(name = "OPERATION_ID"))
     private Set<Operation> operations;
+
+    @NotNull
     @Column(name = "BALANCE", nullable = false)
     @Convert(converter = BigDecimalAttributeConverter.class)
     private BigDecimal balance;
+
+    @NotNull
+    @Past
     @Column(name = "CREATE_ON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;
+
+    @NotNull
     @Column(name = "CURRENCY", nullable = false)
     private Currency currency;
 

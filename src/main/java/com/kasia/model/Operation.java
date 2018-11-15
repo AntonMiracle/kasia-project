@@ -2,31 +2,43 @@ package com.kasia.model;
 
 import com.kasia.repository.converter.BigDecimalAttributeConverter;
 import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
-import com.kasia.service.validation.constraint.OperationConstraint;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@OperationConstraint
 @Entity
 @Table(name = "OPERATION")
 public class Operation implements Model {
+
     @Id
     @GeneratedValue
     private long id;
+
+    @NotNull
     @Column(name = "AMOUNT", nullable = false)
     @Convert(converter = BigDecimalAttributeConverter.class)
     private BigDecimal amount;
+
+    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ARTICLE_ID", nullable = false)
     private Article article;
+
+    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
+
+    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "EMPLOYER_ID", nullable = false)
     private Employer employer;
+
+    @NotNull
+    @Past
     @Column(name = "CREATE_ON", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime createOn;

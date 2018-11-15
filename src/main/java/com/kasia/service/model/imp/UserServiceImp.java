@@ -4,8 +4,7 @@ import com.kasia.model.Article;
 import com.kasia.model.User;
 import com.kasia.repository.UserRepository;
 import com.kasia.service.model.UserService;
-import com.kasia.service.validation.UserValidationService;
-import com.kasia.service.validation.field.UField;
+import com.kasia.service.validation.ValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -21,7 +20,7 @@ public class UserServiceImp implements UserService {
     @Inject
     private UserRepository repository;
     @Inject
-    private UserValidationService validationService;
+    private ValidationService<User> validationService;
 
     @Override
     public User create(String email, String password, String nick, ZoneId zoneId) throws NullPointerException, ValidationException {
@@ -62,19 +61,19 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User getByEmail(String email) throws NullPointerException, ValidationException {
-        if (!validationService.isValid(UField.EMAIL, email)) throw new ValidationException();
+        if (!validationService.isMatches(email, ValidationService.EMAIL)) throw new ValidationException();
         return repository.getByEmail(email.trim());
     }
 
     @Override
     public User getByNick(String nick) throws NullPointerException, ValidationException {
-        if (!validationService.isValid(UField.NICK, nick)) throw new ValidationException();
+        if (!validationService.isMatches(nick, ValidationService.NAME)) throw new ValidationException();
         return repository.getByNick(nick.trim());
     }
 
     @Override
     public String cryptPassword(String password) throws NullPointerException, ValidationException {
-        if (!validationService.isValid(UField.PASSWORD, password)) throw new ValidationException();
+        if (!validationService.isMatches(password, ValidationService.PASSWORD)) throw new ValidationException();
 
         MessageDigest md5 = null;
         try {

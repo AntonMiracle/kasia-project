@@ -6,7 +6,7 @@ import com.kasia.model.Operation;
 import com.kasia.model.User;
 import com.kasia.repository.OperationRepository;
 import com.kasia.service.model.OperationService;
-import com.kasia.service.validation.OperationValidationService;
+import com.kasia.service.validation.ValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -18,7 +18,7 @@ public class OperationServiceImp implements OperationService {
     @Inject
     private OperationRepository repository;
     @Inject
-    private OperationValidationService validationService;
+    private ValidationService<Operation> validationService;
 
     @Override
     public Operation create(BigDecimal amount, Article article, User user, Employer employer) throws ValidationException {

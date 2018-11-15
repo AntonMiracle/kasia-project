@@ -1,26 +1,34 @@
 package com.kasia.model;
 
-import com.kasia.service.validation.constraint.ArticleConstraint;
+import com.kasia.service.validation.ValidationService;
 
-import javax.inject.Named;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
-@Named
-@ArticleConstraint
 @Entity
 @Table(name = "ARTICLES")
 public class Article implements Model {
+
     @Id
     @GeneratedValue
     private long id;
+
+    @NotNull
+    @Pattern(regexp = ValidationService.NAME)
     @Column(name = "NAME", nullable = false)
     private String name;
+
+    @NotNull
     @Column(name = "DESCRIPTION")
     private String description;
+
+    @NotNull
     @Column(name = "TYPE", nullable = false)
     private Type type;
 
     public Article() {
+
     }
 
     public Article(String name, String description, Type type) {

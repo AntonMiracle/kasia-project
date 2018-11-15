@@ -5,23 +5,23 @@ import com.kasia.model.Article;
 import com.kasia.repository.ArticleRepository;
 import com.kasia.service.model.ArticleService;
 import com.kasia.service.model.OperationService;
-import com.kasia.service.validation.ArticleValidationService;
+import com.kasia.service.validation.ValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.util.Set;
 
-public class ArticleServiceImp implements ArticleService{
+public class ArticleServiceImp implements ArticleService {
     @Inject
     private ArticleRepository repository;
     @Inject
     private OperationService operationService;
     @Inject
-    private ArticleValidationService validationService;
+    private ValidationService<Article> validationService;
 
     @Override
     public Article create(String name, Article.Type type) throws ValidationException {
-        Article article = new Article(name, "",type);
+        Article article = new Article(name, "", type);
         article.setDescription("");
         if (!validationService.isValid(article)) throw new ValidationException();
         repository.save(article);

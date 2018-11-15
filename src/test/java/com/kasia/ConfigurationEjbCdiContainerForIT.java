@@ -3,7 +3,7 @@ package com.kasia;
 import com.kasia.model.User;
 import com.kasia.repository.imp.*;
 import com.kasia.service.model.imp.*;
-import com.kasia.service.validation.imp.*;
+import com.kasia.service.validation.ValidationService;
 import com.oneandone.ejbcdiunit.EjbUnitRunner;
 import com.oneandone.ejbcdiunit.persistence.TestPersistenceFactory;
 import org.jglue.cdiunit.AdditionalClasses;
@@ -23,12 +23,8 @@ import java.util.Set;
         , UserServiceImp.class
         , OperationServiceImp.class
         , EmployerServiceImp.class
-        // Services validate
-        , UserValidationServiceImp.class
-        , ArticleValidationServiceImp.class
-        , BudgetValidationServiceImp.class
-        , EmployerValidationServiceImp.class
-        , OperationValidationServiceImp.class
+        //validation
+        , ValidationService.class
         //repositories
         , ArticleRepositoryImp.class
         , BudgetRepositoryImp.class
