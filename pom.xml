@@ -152,8 +152,6 @@
                                       todir="src/test/resources/META-INF"/>
                                 <copy file="src/main/resources/META-INF/beans.xml"
                                       todir="src/test/resources/META-INF"/>
-                                <copy file="src/main/resources/ValidationMessages.properties"
-                                      todir="src/test/resources"/>
                             </tasks>
                         </configuration>
                         <goals>
