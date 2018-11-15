@@ -5,9 +5,7 @@ import com.kasia.model.Employer;
 import com.kasia.repository.EmployerRepository;
 import com.kasia.service.model.EmployerService;
 import com.kasia.service.model.OperationService;
-import com.kasia.service.validation.ValidationService;
-import com.kasia.service.validation.field.EField;
-import com.kasia.service.validation.message.EMessageLink;
+import com.kasia.service.validation.EmployerValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -19,12 +17,11 @@ public class EmployerServiceImp implements EmployerService {
     @Inject
     private OperationService operationService;
     @Inject
-    private ValidationService<Employer,EField,EMessageLink> validationService;
+    private EmployerValidationService validationService;
 
     @Override
     public Employer create(String name) throws ValidationException {
-        Employer employer = new Employer(name);
-        employer.setDescription("");
+        Employer employer = new Employer(name,"");
         if (!validationService.isValid(employer)) throw new ValidationException();
         long id = repository.save(employer).getId();
         return repository.getById(id);
