@@ -23,29 +23,30 @@ public interface ValidationService<M extends Model, F extends ModelField, L exte
         }
     }
 
-    default String getErrorMsgByField(M model, F field) {
+    default String getMessage(M model, F field) {
         StringBuilder result = new StringBuilder("");
-        Map<ModelField, String> all = getAllErrorValidationMessage(model, field);
-        if (all.get(field) != null) result.append(all.get(field));
+        Map<ModelField, String> errors = getMessages(model, field);
+        if (errors.get(field) != null) result.append(errors.get(field));
         return result.toString();
     }
 
     default boolean isValid(M model, F field) {
-        return getAllErrorValidationMessage(model, field).get(field) == null;
+        return getMessages(model, field).get(field) == null;
     }
 
     default ValidatorFactory getValidatorFactory() {
         return Validation.buildDefaultValidatorFactory();
     }
 
-    default Map<ModelField, String> getAllErrorValidationMessage(M model, F field) {
+    default Map<ModelField, String> getMessages(M model, ModelField... fields) {
         Map<ModelField, String> result = new HashMap<>();
+        if (fields.length == 0) return result;
 
         try (ValidatorFactory factory = getValidatorFactory()) {
             Set<ConstraintViolation<M>> validate = factory.getValidator().validate(model);
             for (ConstraintViolation<M> c : validate) {
 
-                for (ModelField f : field.getAll()) {
+                for (ModelField f : fields) {
                     if (c.getPropertyPath().toString().equals(f.getName())) {
                         result.put(f, c.getMessage());
                         break;
@@ -64,9 +65,8 @@ public interface ValidationService<M extends Model, F extends ModelField, L exte
                 .disableDefaultConstraintViolation();
     }
 
-    boolean isValueValid(F field, Object value) throws NullPointerException, FieldNotExistRuntimeException;
+    boolean isValid(F field, Object value) throws NullPointerException, FieldNotExistRuntimeException;
 
-    String getErrorMsgByValue(F field, Object value) throws NullPointerException, FieldNotExistRuntimeException;
-
+    String getMessage(F field, Object value) throws NullPointerException, FieldNotExistRuntimeException;
 
 }

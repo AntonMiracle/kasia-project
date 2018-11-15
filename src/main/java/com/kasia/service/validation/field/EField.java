@@ -13,8 +13,5 @@ public enum EField implements ModelField {
     public String getName() {
         return name;
     }
-    @Override
-    public ModelField[] getAll() {
-        return EField.values();
-    }
+
 }

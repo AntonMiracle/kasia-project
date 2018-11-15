@@ -16,10 +16,4 @@ public enum UField implements ModelField {
         return name;
     }
 
-    @Override
-    public ModelField[] getAll() {
-        return UField.values();
-    }
-
-
 }

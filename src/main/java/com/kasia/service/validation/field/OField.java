@@ -13,8 +13,5 @@ public enum OField implements ModelField {
     public String getName() {
         return name;
     }
-    @Override
-    public ModelField[] getAll() {
-        return OField.values();
-    }
+
 }

@@ -5,5 +5,4 @@ public interface ModelField {
 
     String getName();
 
-    ModelField[] getAll();
 }

@@ -14,8 +14,4 @@ public enum BField implements ModelField {
         return name;
     }
 
-    @Override
-    public ModelField[] getAll() {
-        return BField.values();
-    }
 }
