@@ -26,8 +26,8 @@ public class UserTest {
                 , new HashSet<>(), new HashSet<>(), new HashSet<>()
                 , LocalDateTime.now().withNano(0), ZoneId.systemDefault());
 
-        Budget b1 = new Budget("Name1", BigDecimal.TEN, Currency.getInstance("EUR"), LocalDateTime.now());
-        Budget b2 = new Budget("Name2", BigDecimal.TEN, Currency.getInstance("USD"), LocalDateTime.now());
+        Budget b1 = new Budget("Name1", new HashSet<>(), BigDecimal.TEN, LocalDateTime.now(), Currency.getInstance("EUR"));
+        Budget b2 = new Budget("Name2", new HashSet<>(), BigDecimal.TEN, LocalDateTime.now(), Currency.getInstance("USD"));
 
         EqualsVerifier.forClass(User.class)
                 .usingGetClass()

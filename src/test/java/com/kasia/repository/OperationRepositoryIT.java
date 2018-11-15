@@ -130,15 +130,13 @@ public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     private Employer newEmployer(String name) {
-        Employer employer = new Employer(name);
-        employer.setDescription("EmployerDescription");
+        Employer employer = new Employer(name, "EmployerDescription");
         long id = employerRepository.save(employer).getId();
         return employerRepository.getById(id);
     }
 
     private Article newArticle(String name) {
-        Article article = new Article(name, Article.Type.INCOME);
-        article.setDescription("ArticleDescription");
+        Article article = new Article(name, "ArticleDescription", Article.Type.INCOME);
         long id = articleRepository.save(article).getId();
         return articleRepository.getById(id);
     }

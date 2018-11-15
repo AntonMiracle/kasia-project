@@ -104,7 +104,7 @@ public class UserServiceIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     private Article createArticle(String name, Article.Type type) {
-        Article article = new Article(name, type);
+        Article article = new Article(name, "",type);
         article.setDescription("description");
         return article;
     }

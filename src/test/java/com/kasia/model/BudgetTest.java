@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
+import java.util.HashSet;
 
 public class BudgetTest {
 
@@ -16,8 +17,8 @@ public class BudgetTest {
         Operation op2 = new Operation(BigDecimal.ZERO, new Article(), new User(), new Employer(), LocalDateTime.now());
         Currency eur = Currency.getInstance("EUR");
         Currency usd = Currency.getInstance("USD");
-        Budget b1 = new Budget("Name1",BigDecimal.TEN, eur,LocalDateTime.now());
-        Budget b2 = new Budget("Name2",BigDecimal.TEN, usd,LocalDateTime.now());
+        Budget b1 = new Budget("Name1",new HashSet<>(), BigDecimal.TEN, LocalDateTime.now(),eur);
+        Budget b2 = new Budget("Name2",new HashSet<>(), BigDecimal.TEN, LocalDateTime.now(),usd);
 
         EqualsVerifier.forClass(Budget.class)
                 .usingGetClass()

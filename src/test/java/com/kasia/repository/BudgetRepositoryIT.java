@@ -31,7 +31,7 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getById() throws Exception {
-        Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
+        Budget budget = new Budget(NAME,new HashSet<>(), BALANCE,  CREATE_ON, CURRENCY_EUR);
         budget.setOperations(new HashSet<>());
         long id = repository.save(budget).getId();
 
@@ -40,8 +40,8 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getAll() throws Exception {
-        Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
-        Budget budget1 = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
+        Budget budget = new Budget(NAME,new HashSet<>(), BALANCE,  CREATE_ON, CURRENCY_EUR);
+        Budget budget1 = new Budget(NAME,new HashSet<>(), BALANCE,  CREATE_ON, CURRENCY_EUR);
         repository.save(budget);
         repository.save(budget1);
 
@@ -50,7 +50,7 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void delete() throws Exception {
-        Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
+        Budget budget = new Budget(NAME,new HashSet<>(), BALANCE,  CREATE_ON, CURRENCY_EUR);
         long id = repository.save(budget).getId();
 
         assertThat(repository.getById(id)).isNotNull();
@@ -60,7 +60,7 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void save() throws Exception {
-        Budget expected = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
+        Budget expected = new Budget(NAME,new HashSet<>(), BALANCE,  CREATE_ON, CURRENCY_EUR);
         expected.setOperations(new HashSet<>());
 
         long id = repository.save(expected).getId();
@@ -71,7 +71,7 @@ public class BudgetRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void update() throws Exception {
-        Budget budget = new Budget(NAME, BALANCE, CURRENCY_EUR, CREATE_ON);
+        Budget budget = new Budget(NAME,new HashSet<>(), BALANCE,  CREATE_ON, CURRENCY_EUR);
         long id = repository.save(budget).getId();
         budget = repository.getById(id);
 

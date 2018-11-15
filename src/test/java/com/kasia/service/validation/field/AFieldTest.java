@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class AFieldTest implements ModelFieldTestHelper{
+public class AFieldTest extends ModelFieldTestHelper{
     @Test
     public void isValuesEqualsOfFieldsQuantityUser() {
         assertThat(Article.class.getDeclaredFields().length == AField.values().length).isTrue();
@@ -28,7 +28,7 @@ public class AFieldTest implements ModelFieldTestHelper{
 
     @Test
     public void getAll() {
-        assertThat(AField.ID.getAll().length == AField.values().length).isTrue();
+        assertThat(AField.ID.values().length == AField.values().length).isTrue();
     }
 
 

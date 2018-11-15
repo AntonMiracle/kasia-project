@@ -2,8 +2,6 @@ package com.kasia.service.validation;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.*;
-import com.kasia.service.validation.field.*;
-import com.kasia.service.validation.message.*;
 import org.junit.Test;
 
 import javax.inject.Inject;
@@ -18,25 +16,25 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private ValidationService<User,UField,UMessageLink> userValidationService;
+    private UserValidationService userValidationService;
     @Inject
-    private ValidationService<Article, AField, AMessageLink> articleValidationService;
+    private ArticleValidationService articleValidationService;
     @Inject
-    private ValidationService<Budget,BField,BMessageLink> budgetValidationService;
+    private BudgetValidationService budgetValidationService;
     @Inject
-    private ValidationService<Employer,EField,EMessageLink> employerValidationService;
+    private EmployerValidationService employerValidationService;
     @Inject
-    private ValidationService<Operation,OField,OMessageLink> operationValidationService;
+    private OperationValidationService operationValidationService;
 
     @Test
     public void articleIsValidTrue() {
-        Article article = new Article("Name", Article.Type.CONSUMPTION);
+        Article article = new Article("Name", "", Article.Type.CONSUMPTION);
         assertThat(articleValidationService.isValid(article)).isTrue();
     }
 
     @Test
     public void budgetIsValidTrue() {
-        Budget budget = new Budget("Name", BigDecimal.ZERO, Currency.getInstance("EUR"), LocalDateTime.now());
+        Budget budget = new Budget("Name", new HashSet<>(), BigDecimal.ZERO, LocalDateTime.now(),Currency.getInstance("EUR"));
         assertThat(budgetValidationService.isValid(budget)).isTrue();
     }
 
@@ -45,7 +43,7 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
         Set<User.Role> roles = new HashSet<>();
         roles.add(User.Role.USER);
 
-        User user = new User("email@gmail.com", "Password2",  "Nick", roles
+        User user = new User("email@gmail.com", "Password2", "Nick", roles
                 , new HashSet<>(), new HashSet<>(), new HashSet<>()
                 , LocalDateTime.now().withNano(0), ZoneId.systemDefault());
 
@@ -54,7 +52,7 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void employerIsValidTrue() {
-        Employer employer = new Employer("Name");
+        Employer employer = new Employer("Name", "");
         assertThat(employerValidationService.isValid(employer)).isTrue();
 
     }

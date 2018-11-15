@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
+import java.util.HashSet;
 
 public class OperationTest {
 
@@ -14,8 +15,8 @@ public class OperationTest {
     public void checkEqualsAndHashCode() {
         Operation op1 = new Operation(BigDecimal.TEN, new Article(), new User(), new Employer(), LocalDateTime.now());
         Operation op2 = new Operation(BigDecimal.ZERO, new Article(), new User(), new Employer(), LocalDateTime.now());
-        Budget b1 = new Budget("Name1",BigDecimal.TEN, Currency.getInstance("EUR"),LocalDateTime.now());
-        Budget b2 = new Budget("Name2",BigDecimal.TEN, Currency.getInstance("USD"),LocalDateTime.now());
+        Budget b1 = new Budget("Name1", new HashSet<>(), BigDecimal.TEN, LocalDateTime.now(), Currency.getInstance("EUR"));
+        Budget b2 = new Budget("Name2", new HashSet<>(), BigDecimal.TEN, LocalDateTime.now(), Currency.getInstance("USD"));
 
         EqualsVerifier.forClass(Operation.class)
                 .usingGetClass()

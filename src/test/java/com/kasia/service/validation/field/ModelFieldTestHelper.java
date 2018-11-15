@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public interface ModelFieldTestHelper {
-    default int countSameElement(List<String> fields, Set<String> clazz) {
+public class ModelFieldTestHelper {
+    protected int countSameElement(List<String> fields, Set<String> clazz) {
         clazz = new HashSet<>(clazz);
         int checked = 0;
         for (String e : fields) {

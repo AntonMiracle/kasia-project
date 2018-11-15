@@ -26,7 +26,7 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getById() throws Exception {
-        Article article = new Article(NAME,TYPE_CONSUMTION);
+        Article article = new Article(NAME, "", TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
         long id = repository.save(article).getId();
 
@@ -35,7 +35,7 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void save() throws Exception {
-        Article expected = new Article(NAME,TYPE_CONSUMTION);
+        Article expected = new Article(NAME, "", TYPE_CONSUMTION);
         expected.setDescription(DESCRIPTION);
 
         long id = repository.save(expected).getId();
@@ -46,7 +46,7 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void delete() throws Exception {
-        Article article = new Article(NAME,TYPE_CONSUMTION);
+        Article article = new Article(NAME, "", TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
         long id = repository.save(article).getId();
 
@@ -57,7 +57,7 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void update() throws Exception {
-        Article article = new Article(NAME,TYPE_CONSUMTION);
+        Article article = new Article(NAME, "", TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
         long id = repository.save(article).getId();
         article = repository.getById(id);
@@ -71,9 +71,9 @@ public class ArticleRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getAll() {
-        Article article = new Article(NAME,TYPE_CONSUMTION);
+        Article article = new Article(NAME, "", TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
-        Article article1 = new Article(NAME,TYPE_CONSUMTION);
+        Article article1 = new Article(NAME, "", TYPE_CONSUMTION);
         article.setDescription(DESCRIPTION);
         repository.save(article);
         repository.save(article1);

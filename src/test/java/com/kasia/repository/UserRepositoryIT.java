@@ -96,8 +96,7 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         user = repository.getById(id);
 
         assertThat(user.getBudgets().size() == 0).isTrue();
-        Budget budget = new Budget("Name", BigDecimal.TEN, Currency.getInstance("EUR"), LocalDateTime.now());
-        budget.setOperations(new HashSet<>());
+        Budget budget = new Budget("Name", new HashSet<>(),BigDecimal.TEN,  LocalDateTime.now(),Currency.getInstance("EUR"));
         user.getBudgets().add(budget);
         repository.save(user);
 

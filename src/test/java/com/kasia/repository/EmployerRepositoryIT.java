@@ -25,8 +25,7 @@ public class EmployerRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getById() throws Exception {
-        Employer expected = new Employer(NAME);
-        expected.setDescription(DESCRIPTION);
+        Employer expected = new Employer(NAME, DESCRIPTION);
         long id = repository.save(expected).getId();
 
         assertThat(repository.getById(id)).isEqualTo(expected);
@@ -36,16 +35,16 @@ public class EmployerRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void getAll() throws Exception {
         assertThat(repository.getAll().size() == 0).isTrue();
 
-        repository.save(new Employer(NAME));
-        repository.save(new Employer(NAME));
-        repository.save(new Employer(NAME));
+        repository.save(new Employer(NAME, DESCRIPTION));
+        repository.save(new Employer(NAME, DESCRIPTION));
+        repository.save(new Employer(NAME, DESCRIPTION));
 
         assertThat(repository.getAll().size() == 3).isTrue();
     }
 
     @Test
     public void delete() throws Exception {
-        long id = repository.save(new Employer(NAME)).getId();
+        long id = repository.save(new Employer(NAME, DESCRIPTION)).getId();
 
         assertThat(repository.getById(id)).isNotNull();
         assertThat(repository.delete(repository.getById(id))).isTrue();
@@ -54,8 +53,7 @@ public class EmployerRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void save() throws Exception {
-        Employer expected = new Employer(NAME);
-        expected.setDescription(DESCRIPTION);
+        Employer expected = new Employer(NAME, DESCRIPTION);
 
         long id = repository.save(expected).getId();
         Employer actual = repository.getById(id);
@@ -65,8 +63,7 @@ public class EmployerRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void update() throws Exception {
-        Employer employer = new Employer(NAME);
-        employer.setDescription(DESCRIPTION);
+        Employer employer = new Employer(NAME, DESCRIPTION);
         long id = repository.save(employer).getId();
         employer = repository.getById(id);
 
@@ -80,7 +77,7 @@ public class EmployerRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void getByName() throws Exception {
         assertThat(repository.getByName(NAME)).isNull();
 
-        repository.save(new Employer(NAME));
+        repository.save(new Employer(NAME, DESCRIPTION));
         assertThat(repository.getByName(NAME)).isNotNull();
     }
 }

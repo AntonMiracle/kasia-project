@@ -2,7 +2,7 @@ package com.kasia.service.validation.message;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Budget;
-import com.kasia.service.validation.ValidationService;
+import com.kasia.service.validation.BudgetValidationService;
 import com.kasia.service.validation.field.BField;
 import com.kasia.service.validation.field.ModelField;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class BMessageLinkIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private ValidationService<Budget, BField, BMessageLink> validationService;
+    private BudgetValidationService validationService;
 
     @Test
     public void allLinkReturnMessage() {
