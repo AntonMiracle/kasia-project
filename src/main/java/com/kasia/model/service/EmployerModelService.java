@@ -1,13 +1,12 @@
-package com.kasia.service.model;
+package com.kasia.model.service;
 
 import com.kasia.exception.OnUseRunTimeException;
 import com.kasia.model.Employer;
-import com.kasia.service.Service;
 
 import javax.validation.ValidationException;
 import java.util.Set;
 
-public interface EmployerService extends Service {
+public interface EmployerModelService extends ModelService {
     Employer create(String name) throws ValidationException;
 
     boolean delete(long id) throws IllegalArgumentException, OnUseRunTimeException;

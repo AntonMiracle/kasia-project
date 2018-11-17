@@ -1,4 +1,4 @@
-package com.kasia.service.model;
+package com.kasia.model.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Article;
@@ -12,9 +12,9 @@ import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class UserServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class UserModelServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private UserService userService;
+    private UserModelService userService;
     private final String MAIL = "email@gmail.com";
     private final String MAIL_2 = "email22@gmail.com";
     private final String NICK = "nick";

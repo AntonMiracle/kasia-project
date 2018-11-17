@@ -1,4 +1,4 @@
-package com.kasia.service.validation;
+package com.kasia.validation;
 
 import com.kasia.exception.RegexNotExistRunTimeException;
 import com.kasia.model.Model;
@@ -10,7 +10,7 @@ import javax.validation.ValidatorFactory;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class ValidationService<M extends Model> {
+public class ValidationService {
     public static final String EMAIL = "^[A-Za-z0-9+_.-]+@(.+)$";
     public static final String PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$";
     public static final String NAME = "^[A-Za-z0-9+_.-]{3,}$";
@@ -33,12 +33,12 @@ public class ValidationService<M extends Model> {
         }
     }
 
-    public boolean isValid(M model) {
+    public boolean isValid(Model model) {
         if (model == null) return true;
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<M>> violations = validator.validate(model);
+        Set<ConstraintViolation<Model>> violations = validator.validate(model);
         return violations.size() == 0;
     }
 }

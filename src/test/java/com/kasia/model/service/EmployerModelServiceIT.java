@@ -1,4 +1,4 @@
-package com.kasia.service.model;
+package com.kasia.model.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.exception.OnUseRunTimeException;
@@ -15,9 +15,9 @@ import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class EmployerServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class EmployerModelServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private EmployerService employerService;
+    private EmployerModelService employerService;
     private final String NAME = "name";
     private final String NAME_2 = "name2";
 
@@ -56,11 +56,11 @@ public class EmployerServiceIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     @Inject
-    private OperationService operationService;
+    private OperationModelService operationService;
     @Inject
-    private UserService userService;
+    private UserModelService userService;
     @Inject
-    private ArticleService articleService;
+    private ArticleModelService articleService;
 
     @Test(expected = OnUseRunTimeException.class)
     public void whenDeleteArticleThrowOnUseRanTimeException() throws Exception {

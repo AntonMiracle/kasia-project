@@ -1,13 +1,12 @@
-package com.kasia.service.model;
+package com.kasia.model.service;
 
 import com.kasia.exception.OnUseRunTimeException;
 import com.kasia.model.Article;
-import com.kasia.service.Service;
 
 import javax.validation.ValidationException;
 import java.util.Set;
 
-public interface ArticleService extends Service {
+public interface ArticleModelService extends ModelService {
 
     Article create(String name, Article.Type type) throws ValidationException;
 

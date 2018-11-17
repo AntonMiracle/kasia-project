@@ -1,4 +1,4 @@
-package com.kasia.service.validation;
+package com.kasia.validation;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.exception.RegexNotExistRunTimeException;
@@ -15,37 +15,29 @@ import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class ValidationModelServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private ValidationService<User> userValidationService;
-    @Inject
-    private ValidationService<Article> articleValidationService;
-    @Inject
-    private ValidationService<Budget> budgetValidationService;
-    @Inject
-    private ValidationService<Employer> employerValidationService;
-    @Inject
-    private ValidationService<Operation> operationValidationService;
+    private ValidationService validationService;
 
     @Test(expected = RegexNotExistRunTimeException.class)
     public void whenMatchOnNotExistingRegexThenRegexNotExistRunTimeException() {
-        articleValidationService.isMatches("", "3wd");
+        validationService.isMatches("", "3wd");
     }
 
     @Test
     public void articleIsValidTrue() {
         Article article = new Article("Name_2-.", "", Article.Type.CONSUMPTION);
 
-        assertThat(articleValidationService).isNotNull();
-        assertThat(articleValidationService.isValid(article)).isTrue();
+        assertThat(validationService).isNotNull();
+        assertThat(validationService.isValid(article)).isTrue();
     }
 
     @Test
     public void budgetIsValidTrue() {
         Budget budget = new Budget("Name_2-.", new HashSet<>(), BigDecimal.ZERO, LocalDateTime.now(), Currency.getInstance("EUR"));
 
-        assertThat(budgetValidationService).isNotNull();
-        assertThat(budgetValidationService.isValid(budget)).isTrue();
+        assertThat(validationService).isNotNull();
+        assertThat(validationService.isValid(budget)).isTrue();
     }
 
     @Test
@@ -57,16 +49,16 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
                 , new HashSet<>(), new HashSet<>(), new HashSet<>()
                 , LocalDateTime.now().withNano(0), ZoneId.systemDefault());
 
-        assertThat(userValidationService).isNotNull();
-        assertThat(userValidationService.isValid(user)).isTrue();
+        assertThat(validationService).isNotNull();
+        assertThat(validationService.isValid(user)).isTrue();
     }
 
     @Test
     public void employerIsValidTrue() {
         Employer employer = new Employer("Name_2-.", "");
 
-        assertThat(employerValidationService).isNotNull();
-        assertThat(employerValidationService.isValid(employer)).isTrue();
+        assertThat(validationService).isNotNull();
+        assertThat(validationService.isValid(employer)).isTrue();
 
     }
 
@@ -74,7 +66,7 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     public void operationIsValidTrue() {
         Operation operation = new Operation(BigDecimal.TEN, new Article(), new User(), new Employer(), LocalDateTime.now());
 
-        assertThat(operationValidationService).isNotNull();
-        assertThat(operationValidationService.isValid(operation)).isTrue();
+        assertThat(validationService).isNotNull();
+        assertThat(validationService.isValid(operation)).isTrue();
     }
 }

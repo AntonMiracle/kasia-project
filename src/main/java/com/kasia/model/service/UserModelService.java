@@ -1,14 +1,13 @@
-package com.kasia.service.model;
+package com.kasia.model.service;
 
 import com.kasia.model.Article;
 import com.kasia.model.User;
-import com.kasia.service.Service;
 
 import javax.validation.ValidationException;
 import java.time.ZoneId;
 import java.util.Set;
 
-public interface UserService extends Service {
+public interface UserModelService extends ModelService {
     User create(String email, String password, String nick, ZoneId zoneId) throws NullPointerException, ValidationException;
 
     User update(User user) throws ValidationException, NullPointerException, IllegalArgumentException;

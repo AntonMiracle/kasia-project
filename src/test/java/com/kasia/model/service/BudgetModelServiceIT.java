@@ -1,8 +1,7 @@
-package com.kasia.service.model;
+package com.kasia.model.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.*;
-import com.kasia.service.model.*;
 import org.junit.After;
 import org.junit.Test;
 
@@ -14,9 +13,9 @@ import java.util.Currency;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class BudgetModelServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private BudgetService budgetService;
+    private BudgetModelService budgetService;
     private final Currency CURRENCY = Currency.getInstance("EUR");
     private final String NAME = "name";
     private final String NAME_2 = "name22";
@@ -88,13 +87,13 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     @Inject
-    private OperationService operationService;
+    private OperationModelService operationService;
     @Inject
-    private UserService userService;
+    private UserModelService userService;
     @Inject
-    private EmployerService employerService;
+    private EmployerModelService employerService;
     @Inject
-    private ArticleService articleService;
+    private ArticleModelService articleService;
     private final BigDecimal budgetBalance = BigDecimal.TEN;
     private final BigDecimal operationAmount = BigDecimal.ONE;
 

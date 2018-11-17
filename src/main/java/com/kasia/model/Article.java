@@ -1,6 +1,6 @@
 package com.kasia.model;
 
-import com.kasia.service.validation.ValidationService;
+import com.kasia.validation.ValidationService;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

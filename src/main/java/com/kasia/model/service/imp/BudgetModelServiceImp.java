@@ -1,11 +1,11 @@
-package com.kasia.service.model.imp;
+package com.kasia.model.service.imp;
 
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.model.Operation;
 import com.kasia.repository.BudgetRepository;
-import com.kasia.service.model.BudgetService;
-import com.kasia.service.validation.ValidationService;
+import com.kasia.model.service.BudgetModelService;
+import com.kasia.validation.ValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -15,11 +15,11 @@ import java.util.Currency;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BudgetServiceImp implements BudgetService{
+public class BudgetModelServiceImp implements BudgetModelService {
     @Inject
     private BudgetRepository repository;
     @Inject
-    private ValidationService<Budget> validationService;
+    private ValidationService validationService;
 
     @Override
     public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException, NullPointerException {

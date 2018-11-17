@@ -1,16 +1,15 @@
-package com.kasia.service.model;
+package com.kasia.model.service;
 
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.model.Operation;
-import com.kasia.service.Service;
 
 import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Set;
 
-public interface BudgetService extends Service {
+public interface BudgetModelService extends ModelService {
     Budget create(String name, BigDecimal balance, Currency currency) throws NullPointerException, ValidationException;
 
     boolean delete(long id) throws IllegalArgumentException;

@@ -1,12 +1,12 @@
-package com.kasia.service.model.imp;
+package com.kasia.model.service.imp;
 
 import com.kasia.model.Article;
 import com.kasia.model.Employer;
 import com.kasia.model.Operation;
 import com.kasia.model.User;
 import com.kasia.repository.OperationRepository;
-import com.kasia.service.model.OperationService;
-import com.kasia.service.validation.ValidationService;
+import com.kasia.model.service.OperationModelService;
+import com.kasia.validation.ValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -14,11 +14,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class OperationServiceImp implements OperationService {
+public class OperationModelServiceImp implements OperationModelService {
     @Inject
     private OperationRepository repository;
     @Inject
-    private ValidationService<Operation> validationService;
+    private ValidationService validationService;
 
     @Override
     public Operation create(BigDecimal amount, Article article, User user, Employer employer) throws ValidationException {

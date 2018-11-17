@@ -1,10 +1,10 @@
-package com.kasia.service.model.imp;
+package com.kasia.model.service.imp;
 
 import com.kasia.model.Article;
 import com.kasia.model.User;
 import com.kasia.repository.UserRepository;
-import com.kasia.service.model.UserService;
-import com.kasia.service.validation.ValidationService;
+import com.kasia.model.service.UserModelService;
+import com.kasia.validation.ValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -16,11 +16,11 @@ import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserServiceImp implements UserService {
+public class UserModelServiceImp implements UserModelService {
     @Inject
     private UserRepository repository;
     @Inject
-    private ValidationService<User> validationService;
+    private ValidationService validationService;
 
     @Override
     public User create(String email, String password, String nick, ZoneId zoneId) throws NullPointerException, ValidationException {

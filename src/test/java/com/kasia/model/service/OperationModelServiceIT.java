@@ -1,4 +1,4 @@
-package com.kasia.service.model;
+package com.kasia.model.service;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Article;
@@ -14,15 +14,15 @@ import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class OperationServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class OperationModelServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private OperationService operationService;
+    private OperationModelService operationService;
     @Inject
-    private UserService userService;
+    private UserModelService userService;
     @Inject
-    private EmployerService employerService;
+    private EmployerModelService employerService;
     @Inject
-    private ArticleService articleService;
+    private ArticleModelService articleService;
 
     private final BigDecimal AMOUNT = BigDecimal.TEN;
     private final String NICK = "nick";
