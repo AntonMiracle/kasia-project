@@ -2,7 +2,7 @@ package com.kasia.model.service.imp;
 
 import com.kasia.model.Article;
 import com.kasia.model.User;
-import com.kasia.repository.UserRepository;
+import com.kasia.model.repository.UserRepository;
 import com.kasia.model.service.UserModelService;
 import com.kasia.validation.ValidationService;
 

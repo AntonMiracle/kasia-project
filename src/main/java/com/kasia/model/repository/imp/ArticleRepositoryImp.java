@@ -1,7 +1,7 @@
-package com.kasia.repository.imp;
+package com.kasia.model.repository.imp;
 
-import com.kasia.model.Budget;
-import com.kasia.repository.BudgetRepository;
+import com.kasia.model.Article;
+import com.kasia.model.repository.ArticleRepository;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -11,31 +11,31 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Stateless
-public class BudgetRepositoryImp implements BudgetRepository {
+public class ArticleRepositoryImp implements ArticleRepository {
 
     @Inject
     private EntityManager entityManager;
 
     @Override
-    public Budget getById(long id) {
-        return entityManager.find(Budget.class, id);
+    public Article getById(long id) {
+        return entityManager.find(Article.class, id);
     }
 
     @Override
-    public Set<Budget> getAll() {
-        Query query = entityManager.createQuery("SELECT b FROM Budget b ");
+    public Set<Article> getAll() {
+        Query query = entityManager.createQuery("SELECT a FROM Article a ");
         return new HashSet<>(query.getResultList());
     }
 
     @Override
-    public boolean delete(Budget model) {
+    public boolean delete(Article model) {
         model = entityManager.contains(model) ? model : entityManager.merge(model);
         entityManager.remove(model);
         return true;
     }
 
     @Override
-    public Budget save(Budget model) {
+    public Article save(Article model) {
         if (model.getId() > 0) {
             entityManager.merge(model);
         } else {

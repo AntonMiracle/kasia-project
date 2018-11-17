@@ -1,7 +1,7 @@
 package com.kasia.model;
 
-import com.kasia.repository.converter.LocalDateTimeAttributeConverter;
-import com.kasia.repository.converter.ZoneIdAttributeConverter;
+import com.kasia.model.repository.converter.LocalDateTimeAttributeConverter;
+import com.kasia.model.repository.converter.ZoneIdAttributeConverter;
 import com.kasia.validation.ValidationService;
 
 import javax.persistence.*;

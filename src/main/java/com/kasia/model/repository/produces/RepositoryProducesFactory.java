@@ -1,4 +1,4 @@
-package com.kasia.repository.produces;
+package com.kasia.model.repository.produces;
 
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;

@@ -3,7 +3,7 @@ package com.kasia.model.service.imp;
 import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.model.Operation;
-import com.kasia.repository.BudgetRepository;
+import com.kasia.model.repository.BudgetRepository;
 import com.kasia.model.service.BudgetModelService;
 import com.kasia.validation.ValidationService;
 

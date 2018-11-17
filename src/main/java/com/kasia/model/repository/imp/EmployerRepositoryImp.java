@@ -1,7 +1,7 @@
-package com.kasia.repository.imp;
+package com.kasia.model.repository.imp;
 
 import com.kasia.model.Employer;
-import com.kasia.repository.EmployerRepository;
+import com.kasia.model.repository.EmployerRepository;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

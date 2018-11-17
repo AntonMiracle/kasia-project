@@ -2,7 +2,7 @@ package com.kasia.model.service.imp;
 
 import com.kasia.exception.OnUseRunTimeException;
 import com.kasia.model.Employer;
-import com.kasia.repository.EmployerRepository;
+import com.kasia.model.repository.EmployerRepository;
 import com.kasia.model.service.EmployerModelService;
 import com.kasia.model.service.OperationModelService;
 import com.kasia.validation.ValidationService;

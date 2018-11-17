@@ -1,7 +1,7 @@
 package com.kasia;
 
 import com.kasia.model.User;
-import com.kasia.repository.imp.*;
+import com.kasia.model.repository.imp.*;
 import com.kasia.model.service.imp.*;
 import com.kasia.validation.ValidationService;
 import com.oneandone.ejbcdiunit.EjbUnitRunner;

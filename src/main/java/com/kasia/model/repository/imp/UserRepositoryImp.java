@@ -1,7 +1,7 @@
-package com.kasia.repository.imp;
+package com.kasia.model.repository.imp;
 
 import com.kasia.model.User;
-import com.kasia.repository.UserRepository;
+import com.kasia.model.repository.UserRepository;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;

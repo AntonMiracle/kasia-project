@@ -1,4 +1,4 @@
-package com.kasia.repository;
+package com.kasia.model.repository;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
 import com.kasia.model.Article;

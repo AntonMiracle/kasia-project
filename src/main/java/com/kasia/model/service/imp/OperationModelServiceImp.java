@@ -4,7 +4,7 @@ import com.kasia.model.Article;
 import com.kasia.model.Employer;
 import com.kasia.model.Operation;
 import com.kasia.model.User;
-import com.kasia.repository.OperationRepository;
+import com.kasia.model.repository.OperationRepository;
 import com.kasia.model.service.OperationModelService;
 import com.kasia.validation.ValidationService;
 

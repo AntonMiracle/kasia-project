@@ -1,4 +1,4 @@
-package com.kasia.repository.converter;
+package com.kasia.model.repository.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

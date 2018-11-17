@@ -1,4 +1,4 @@
-package com.kasia.repository.converter;
+package com.kasia.model.repository.converter;
 
 import org.junit.Test;
 

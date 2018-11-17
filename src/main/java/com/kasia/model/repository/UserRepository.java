@@ -1,4 +1,4 @@
-package com.kasia.repository;
+package com.kasia.model.repository;
 
 import com.kasia.model.User;
 
