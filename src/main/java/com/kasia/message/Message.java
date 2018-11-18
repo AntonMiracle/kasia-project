@@ -13,4 +13,5 @@ public interface Message {
     default FacesMessage get(FacesContext facesContext) {
         return new FacesMessage(get(facesContext.getViewRoot().getLocale()));
     }
+
 }

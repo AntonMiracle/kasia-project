@@ -4,7 +4,7 @@ import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.model.Operation;
 import com.kasia.model.repository.BudgetRepository;
-import com.kasia.model.service.BudgetModelService;
+import com.kasia.model.service.BudgetService;
 import com.kasia.validation.ValidationService;
 
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ import java.util.Currency;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BudgetModelServiceImp implements BudgetModelService {
+public class BudgetServiceImp implements BudgetService {
     @Inject
     private BudgetRepository repository;
     @Inject

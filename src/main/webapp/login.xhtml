@@ -9,26 +9,34 @@
         <h:outputLabel styleClass="kasiaClass" value="KASIA"/>
     </ui:define>
     <ui:define name="content">
-        <h:form styleClass="loginForm">
-            <table border="0">
+        <h:form id="loginFormId" >
+            <table class="loginTable">
                 <tr>
                     <td colspan="2" style="text-align: center">
-                        <h:outputLabel styleClass="errorClass" value="#{param_login_error}"/>
+                        <h:outputLabel value="#{registrationInformation}"/>
+                        <h:message for="emailId" styleClass="errorClass"/>
                     </td>
                 </tr>
                 <tr>
                     <td><h:outputLabel value="#{label['label-login-email']}"/></td>
-                    <td><h:inputText id="login_email" value="#{user.email}"/></td>
+                    <td>
+                        <h:inputText id="emailId" value="#{loginDTO.email}" validator="#{loginValidator.validate}">
+                            <f:attribute name="password" value="#{passwordId}"/>
+                        </h:inputText>
+                    </td>
                 </tr>
                 <tr>
                     <td><h:outputLabel value="#{label['label-login-password']}"/></td>
-                    <td><h:inputSecret id="login_password" value="#{user.password}"/></td>
+                    <td><h:inputSecret id="passwordId" value="#{loginDTO.password}" binding="#{passwordId}"/></td>
                 </tr>
                 <tr>
                     <td colspan="2" style="text-align: center">
-                        <h:commandButton styleClass="templateButton" action="#{loginController.login(user)}"
+                        <h:commandButton styleClass="templateButton"
+                                         action="#{loginController.login(loginDTO)}"
                                          value="#{label['button-login-in']}"/>
-                        <h:commandButton styleClass="templateButton" action="registration?faces-redirect=true"
+                        <h:commandButton styleClass="templateButton"
+                                         immediate="true"
+                                         action="registration?faces-redirect=true"
                                          value="#{label['button-login-up']}"/>
                     </td>
                 </tr>

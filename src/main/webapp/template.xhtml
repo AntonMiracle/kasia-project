@@ -6,9 +6,14 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
     <title>KASIA</title>
+    <h:outputScript library="default" name="js/jquery-3.3.1.js"/>
+    <h:outputScript library="default" name="js/main.js"/>
     <h:outputStylesheet library="default" name="css/styles.css"/>
     <link href="https://fonts.googleapis.com/css?family=Cinzel Decorative" rel='stylesheet'/>
     <link href="https://fonts.googleapis.com/css?family=Cutive" rel='stylesheet'/>
+    <h:panelGroup id="head" layout="block" >
+        <ui:insert name="head"/>
+    </h:panelGroup>
 </h:head>
 <h:body>
     <h:panelGroup  styleClass="background">

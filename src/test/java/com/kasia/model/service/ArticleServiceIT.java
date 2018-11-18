@@ -15,9 +15,9 @@ import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ArticleModelServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private ArticleModelService articleService;
+    private ArticleService articleService;
     private final String DESCRIPTION_2 = "DESCRIPTION22";
     private final String NAME = "NAMe";
     private final Article.Type TYPE = Article.Type.INCOME;
@@ -59,11 +59,11 @@ public class ArticleModelServiceIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     @Inject
-    private OperationModelService operationService;
+    private OperationService operationService;
     @Inject
-    private UserModelService userService;
+    private UserService userService;
     @Inject
-    private EmployerModelService employerService;
+    private EmployerService employerService;
 
     @Test(expected = OnUseRunTimeException.class)
     public void whenDeleteArticleThrowOnUseRanTimeException() throws Exception {

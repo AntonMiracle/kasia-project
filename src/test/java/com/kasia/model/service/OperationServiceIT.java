@@ -14,15 +14,15 @@ import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class OperationModelServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class OperationServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private OperationModelService operationService;
+    private OperationService operationService;
     @Inject
-    private UserModelService userService;
+    private UserService userService;
     @Inject
-    private EmployerModelService employerService;
+    private EmployerService employerService;
     @Inject
-    private ArticleModelService articleService;
+    private ArticleService articleService;
 
     private final BigDecimal AMOUNT = BigDecimal.TEN;
     private final String NICK = "nick";

@@ -5,7 +5,7 @@ import com.kasia.model.Employer;
 import com.kasia.model.Operation;
 import com.kasia.model.User;
 import com.kasia.model.repository.OperationRepository;
-import com.kasia.model.service.OperationModelService;
+import com.kasia.model.service.OperationService;
 import com.kasia.validation.ValidationService;
 
 import javax.inject.Inject;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class OperationModelServiceImp implements OperationModelService {
+public class OperationServiceImp implements OperationService {
     @Inject
     private OperationRepository repository;
     @Inject

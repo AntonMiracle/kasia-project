@@ -18,11 +18,11 @@ import java.util.Set;
 @RunWith(EjbUnitRunner.class)
 @AdditionalClasses({
         //Services dto
-        ArticleModelServiceImp.class
-        , BudgetModelServiceImp.class
-        , UserModelServiceImp.class
-        , OperationModelServiceImp.class
-        , EmployerModelServiceImp.class
+        ArticleServiceImp.class
+        , BudgetServiceImp.class
+        , UserServiceImp.class
+        , OperationServiceImp.class
+        , EmployerServiceImp.class
         //validation
         , ValidationService.class
         //repositories

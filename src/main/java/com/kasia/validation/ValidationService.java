@@ -14,19 +14,22 @@ public class ValidationService {
     public static final String EMAIL = "^[A-Za-z0-9+_.-]+@(.+)$";
     public static final String PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$";
     public static final String NAME = "^[A-Za-z0-9+_.-]{3,}$";
+    public static final String NICK = "^[A-Za-z0-9+_.-]+$";
 
     public boolean isMatches(String value, String regex) throws RegexNotExistRunTimeException {
         if (!isExist(regex)) throw new RegexNotExistRunTimeException();
         return Pattern.compile(regex).matcher(value).matches();
     }
 
-    private boolean isExist(String regex) {
+    public boolean isExist(String regex) {
         switch (regex) {
             case EMAIL:
                 return true;
             case PASSWORD:
                 return true;
             case NAME:
+                return true;
+            case NICK:
                 return true;
             default:
                 return false;

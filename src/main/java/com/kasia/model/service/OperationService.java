@@ -9,7 +9,7 @@ import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public interface OperationModelService extends ModelService {
+public interface OperationService extends ModelService {
     Operation create(BigDecimal amount, Article article, User user, Employer employer) throws ValidationException;
 
     boolean delete(long id) throws IllegalArgumentException;

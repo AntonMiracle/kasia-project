@@ -12,9 +12,9 @@ import java.time.ZoneId;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class UserModelServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class UserServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private UserModelService userService;
+    private UserService userService;
     private final String MAIL = "email@gmail.com";
     private final String MAIL_2 = "email22@gmail.com";
     private final String NICK = "nick";

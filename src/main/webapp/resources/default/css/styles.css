@@ -1,4 +1,4 @@
-body {
+* {
     font-size: 12px;
     text-align: center;
     font-family: "Cutive";
@@ -39,7 +39,7 @@ body {
     padding: 10px;
 }
 
-.loginForm {
+.loginTable {
     margin: 15px;
     box-shadow: 10px 10px 1px 0px rgba(0, 0, 0, 0.8);
     border-radius: 0px;

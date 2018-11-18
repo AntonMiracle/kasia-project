@@ -3,19 +3,19 @@ package com.kasia.model.service.imp;
 import com.kasia.exception.OnUseRunTimeException;
 import com.kasia.model.Employer;
 import com.kasia.model.repository.EmployerRepository;
-import com.kasia.model.service.EmployerModelService;
-import com.kasia.model.service.OperationModelService;
+import com.kasia.model.service.EmployerService;
+import com.kasia.model.service.OperationService;
 import com.kasia.validation.ValidationService;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import java.util.Set;
 
-public class EmployerModelServiceImp implements EmployerModelService {
+public class EmployerServiceImp implements EmployerService {
     @Inject
     private EmployerRepository repository;
     @Inject
-    private OperationModelService operationService;
+    private OperationService operationService;
     @Inject
     private ValidationService validationService;
 

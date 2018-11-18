@@ -13,9 +13,9 @@ import java.util.Currency;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class BudgetModelServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
-    private BudgetModelService budgetService;
+    private BudgetService budgetService;
     private final Currency CURRENCY = Currency.getInstance("EUR");
     private final String NAME = "name";
     private final String NAME_2 = "name22";
@@ -87,13 +87,13 @@ public class BudgetModelServiceIT extends ConfigurationEjbCdiContainerForIT {
     }
 
     @Inject
-    private OperationModelService operationService;
+    private OperationService operationService;
     @Inject
-    private UserModelService userService;
+    private UserService userService;
     @Inject
-    private EmployerModelService employerService;
+    private EmployerService employerService;
     @Inject
-    private ArticleModelService articleService;
+    private ArticleService articleService;
     private final BigDecimal budgetBalance = BigDecimal.TEN;
     private final BigDecimal operationAmount = BigDecimal.ONE;
 

@@ -3,7 +3,7 @@ package com.kasia.model.service.imp;
 import com.kasia.model.Article;
 import com.kasia.model.User;
 import com.kasia.model.repository.UserRepository;
-import com.kasia.model.service.UserModelService;
+import com.kasia.model.service.UserService;
 import com.kasia.validation.ValidationService;
 
 import javax.inject.Inject;
@@ -16,7 +16,7 @@ import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
-public class UserModelServiceImp implements UserModelService {
+public class UserServiceImp implements UserService {
     @Inject
     private UserRepository repository;
     @Inject
@@ -67,7 +67,7 @@ public class UserModelServiceImp implements UserModelService {
 
     @Override
     public User getByNick(String nick) throws NullPointerException, ValidationException {
-        if (!validationService.isMatches(nick, ValidationService.NAME)) throw new ValidationException();
+        if (!validationService.isMatches(nick, ValidationService.NICK)) throw new ValidationException();
         return repository.getByNick(nick.trim());
     }
 

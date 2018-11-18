@@ -31,7 +31,7 @@ public class User implements Model {
     private String password;
 
     @NotNull
-    @Pattern(regexp = ValidationService.NAME)
+    @Pattern(regexp = ValidationService.NICK)
     @Column(name = "NICK", nullable = false, unique = true)
     private String nick;
 
