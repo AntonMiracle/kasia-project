@@ -1,4 +1,4 @@
-package com.kasia.controller.dto;
+package com.kasia.dto;
 
 import com.kasia.model.Model;
 

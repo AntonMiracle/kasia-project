@@ -15,8 +15,8 @@ public class Article implements Model {
     private long id;
 
     @NotNull
-    @Pattern(regexp = ValidationService.NAME)
-    @Column(name = "NAME", nullable = false)
+    @Pattern(regexp = ValidationService.REGEX_ARTICLE_NAME)
+    @Column(name = "REGEX_ARTICLE_NAME", nullable = false)
     private String name;
 
     @NotNull

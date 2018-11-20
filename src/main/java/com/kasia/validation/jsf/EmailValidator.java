@@ -1,6 +1,6 @@
-package com.kasia.validation.jsf.registration;
+package com.kasia.validation.jsf;
 
-import com.kasia.message.RegistrationMessage;
+import com.kasia.message.Message;
 import com.kasia.model.service.UserService;
 import com.kasia.validation.ValidationService;
 
@@ -24,12 +24,12 @@ public class EmailValidator implements Validator<String> {
     public void validate(FacesContext facesContext, UIComponent uiComponent, String email) throws ValidatorException {
         email = email.trim();
 
-        if (!validationService.isMatches(email, ValidationService.EMAIL)) {
-            throw new ValidatorException(RegistrationMessage.EMAIL_REGEX_ERROR.get(facesContext));
+        if (!ValidationService.FieldRegex.USER_EMAIL.isMatch(email)) {
+            throw new ValidatorException(Message.EMAIL_REGEX_ERROR.get(facesContext));
         }
 
         if (userService.getByEmail(email) != null) {
-            throw new ValidatorException(RegistrationMessage.EMAIL_EXIST.get(facesContext));
+            throw new ValidatorException(Message.EMAIL_EXIST.get(facesContext));
         }
     }
 }

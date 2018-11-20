@@ -2,7 +2,7 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="./template.xhtml"
+                template="pages/template/template.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="head">
@@ -51,7 +51,7 @@
 
                         <h:commandButton styleClass="templateButton"
                                          immediate="true"
-                                         action="login?faces-redirect=true"
+                                         action="login"
                                          value="#{label['button-back']}"/>
                     </td>
                 </tr>

@@ -96,7 +96,7 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
         user = repository.getById(id);
 
         assertThat(user.getBudgets().size() == 0).isTrue();
-        Budget budget = new Budget("Name", new HashSet<>(),BigDecimal.TEN,  LocalDateTime.now(),Currency.getInstance("EUR"));
+        Budget budget = new Budget("Name", new HashSet<>(),BigDecimal.TEN,  LocalDateTime.now().withNano(0),Currency.getInstance("EUR"));
         user.getBudgets().add(budget);
         repository.save(user);
 
@@ -110,7 +110,7 @@ public class UserRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     @Test
     public void userHasTwoRoles() {
         User user = createUser(EMAIL, NICK);
-        user.getRoles().add(User.Role.ADMINISTRATOR);
+        user.getRoles().add(User.Role.ADMIN);
         long id = repository.save(user).getId();
         user = repository.getById(id);
 

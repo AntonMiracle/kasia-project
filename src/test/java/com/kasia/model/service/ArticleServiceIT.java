@@ -68,7 +68,7 @@ public class ArticleServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Test(expected = OnUseRunTimeException.class)
     public void whenDeleteArticleThrowOnUseRanTimeException() throws Exception {
         Article article = articleService.create(NAME, TYPE);
-        User user = userService.create("email@gmail.com", "Password2", "NICK", ZoneId.systemDefault());
+        User user = userService.create("email@gmail.com", "Password2", "REGEX_USER_NICK", ZoneId.systemDefault());
         Employer employer = employerService.create("SupN");
         Operation operation = operationService.create(BigDecimal.TEN, article, user, employer);
 

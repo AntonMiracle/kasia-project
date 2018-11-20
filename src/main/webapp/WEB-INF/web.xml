@@ -3,6 +3,9 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <welcome-file-list>
+        <welcome-file>pages/home.xhtml</welcome-file>
+    </welcome-file-list>
 
     <!-- JSF -->
     <servlet>
@@ -15,8 +18,9 @@
         <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
 
+    <!--SESSION-->
     <session-config>
-        <session-timeout>10</session-timeout>
+        <session-timeout>15</session-timeout>
     </session-config>
 
 </web-app>

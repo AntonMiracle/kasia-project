@@ -1,7 +1,8 @@
-package com.kasia.validation.jsf.registration;
+package com.kasia.validation.jsf;
 
-import com.kasia.message.RegistrationMessage;
+import com.kasia.message.Message;
 import com.kasia.validation.ValidationService;
+import com.kasia.validation.ValidationService.FieldRegex;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
@@ -20,16 +21,17 @@ public class PasswordValidator implements Validator<String> {
 
     @Override
     public void validate(FacesContext facesContext, UIComponent uiComponent, String password) throws ValidatorException {
-        password = password.trim();
         UIInput inputConfirmPassword = (UIInput) uiComponent.getAttributes().get("confirmPassword");
-        String confirm = inputConfirmPassword.getSubmittedValue().toString().trim();
+        String confirm = inputConfirmPassword.getSubmittedValue().toString();
+        confirm = confirm.trim();
+        password = password.trim();
 
-        if (!validationService.isMatches(password, ValidationService.PASSWORD)) {
-            throw new ValidatorException(RegistrationMessage.PASSWORD_REGEX_ERROR.get(facesContext));
+        if (!FieldRegex.USER_PASSWORD.isMatch(password)) {
+            throw new ValidatorException(Message.PASSWORD_REGEX_ERROR.get(facesContext));
         }
 
         if (!password.equals(confirm)) {
-            throw new ValidatorException(RegistrationMessage.CONFIRM_ERROR.get(facesContext));
+            throw new ValidatorException(Message.CONFIRM_ERROR.get(facesContext));
         }
     }
 }

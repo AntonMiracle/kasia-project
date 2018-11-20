@@ -1,7 +1,6 @@
 package com.kasia.validation;
 
 import com.kasia.ConfigurationEjbCdiContainerForIT;
-import com.kasia.exception.RegexNotExistRunTimeException;
 import com.kasia.model.*;
 import org.junit.Test;
 
@@ -15,14 +14,10 @@ import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ValidationModelServiceIT extends ConfigurationEjbCdiContainerForIT {
+public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
     @Inject
     private ValidationService validationService;
 
-    @Test(expected = RegexNotExistRunTimeException.class)
-    public void whenMatchOnNotExistingRegexThenRegexNotExistRunTimeException() {
-        validationService.isMatches("", "3wd");
-    }
 
     @Test
     public void articleIsValidTrue() {
@@ -64,7 +59,7 @@ public class ValidationModelServiceIT extends ConfigurationEjbCdiContainerForIT 
 
     @Test
     public void operationIsValidTrue() {
-        Operation operation = new Operation(BigDecimal.TEN, new Article(), new User(), new Employer(), LocalDateTime.now());
+        Operation operation = new Operation(BigDecimal.TEN, new Article(), new User(), new Employer(), LocalDateTime.now().withNano(0));
 
         assertThat(validationService).isNotNull();
         assertThat(validationService.isValid(operation)).isTrue();

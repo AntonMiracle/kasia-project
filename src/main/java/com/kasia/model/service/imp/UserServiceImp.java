@@ -5,6 +5,7 @@ import com.kasia.model.User;
 import com.kasia.model.repository.UserRepository;
 import com.kasia.model.service.UserService;
 import com.kasia.validation.ValidationService;
+import com.kasia.validation.ValidationService.FieldRegex;
 
 import javax.inject.Inject;
 import javax.validation.ValidationException;
@@ -61,19 +62,19 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User getByEmail(String email) throws NullPointerException, ValidationException {
-        if (!validationService.isMatches(email, ValidationService.EMAIL)) throw new ValidationException();
+        if (!FieldRegex.USER_EMAIL.isMatch(email)) throw new ValidationException();
         return repository.getByEmail(email.trim());
     }
 
     @Override
     public User getByNick(String nick) throws NullPointerException, ValidationException {
-        if (!validationService.isMatches(nick, ValidationService.NICK)) throw new ValidationException();
+        if (!FieldRegex.USER_NICK.isMatch(nick)) throw new ValidationException();
         return repository.getByNick(nick.trim());
     }
 
     @Override
     public String cryptPassword(String password) throws NullPointerException, ValidationException {
-        if (!validationService.isMatches(password, ValidationService.PASSWORD)) throw new ValidationException();
+        if (!FieldRegex.USER_PASSWORD.isMatch(password)) throw new ValidationException();
 
         MessageDigest md5 = null;
         try {

@@ -15,7 +15,7 @@ public class Employer implements Model {
     private long id;
 
     @NotNull
-    @Pattern(regexp = ValidationService.NAME)
+    @Pattern(regexp = ValidationService.REGEX_EMPLOYER_NAME)
     @Column(name = "AMOUNT", nullable = false)
     private String name;
 

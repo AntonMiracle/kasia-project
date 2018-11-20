@@ -1,9 +1,9 @@
 package com.kasia.controller;
 
-import com.kasia.controller.dto.RegistrationDTO;
-import com.kasia.controller.page.Page;
-import com.kasia.controller.page.parameter.RegistrationLoginParameter;
-import com.kasia.message.RegistrationMessage;
+import com.kasia.dto.RegistrationDTO;
+import com.kasia.page.Page;
+import com.kasia.page.Attribute;
+import com.kasia.message.Message;
 import com.kasia.model.service.UserService;
 
 import javax.enterprise.context.RequestScoped;
@@ -26,8 +26,8 @@ public class RegistrationController implements Controller {
             zone = ZoneId.systemDefault();
         }
         userService.create(dto.getEmail(), dto.getPassword(), dto.getNick(), zone);
-        addParam(RegistrationLoginParameter.REGISTRATION_INFORMATION, RegistrationMessage.REGISTRATION_SUCCESS);
-        return Page.LOGIN.get();
+        addAttribute(Attribute.LOGIN_INFORMATION, Message.REGISTRATION_SUCCESS);
+        return Page.LOGIN.relativePath();
     }
 
 }

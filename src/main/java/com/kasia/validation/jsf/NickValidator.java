@@ -1,6 +1,6 @@
-package com.kasia.validation.jsf.registration;
+package com.kasia.validation.jsf;
 
-import com.kasia.message.RegistrationMessage;
+import com.kasia.message.Message;
 import com.kasia.model.service.UserService;
 import com.kasia.validation.ValidationService;
 
@@ -24,12 +24,12 @@ public class NickValidator implements Validator<String> {
     public void validate(FacesContext facesContext, UIComponent uiComponent, String nick) throws ValidatorException {
         nick = nick.trim();
 
-        if (!validationService.isMatches(nick, ValidationService.NICK)) {
-            throw new ValidatorException(RegistrationMessage.NICK_REGEX_ERROR.get(facesContext));
+        if (!ValidationService.FieldRegex.USER_NICK.isMatch(nick)) {
+            throw new ValidatorException(Message.NICK_REGEX_ERROR.get(facesContext));
         }
 
         if (userService.getByNick(nick) != null) {
-            throw new ValidatorException(RegistrationMessage.NICK_EXIST.get(facesContext));
+            throw new ValidatorException(Message.NICK_EXIST.get(facesContext));
         }
     }
 }

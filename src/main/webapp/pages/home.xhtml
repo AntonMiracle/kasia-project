@@ -7,11 +7,20 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <h:head>
-    <h:outputStylesheet library = "default" name = "css/styles.css"  />
+    <h:outputStylesheet library="default" name="css/styles.css"/>
 </h:head>
 <h:body>
     <f:view>
         <h:outputLabel value="HOME"/>
     </f:view>
+    <h:button styleClass="templateButton"
+              outcome="/pages/some.jsf"
+              value="SOME"/>
+    <h:form>
+        <h:commandButton styleClass="templateButton"
+                         action="#{loginController.logOut()}"
+                         value="#{label['button-login-out']}"/>
+    </h:form>
+
 </h:body>
 </html>

@@ -99,7 +99,7 @@ public class BudgetServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     private Operation newOperation(BigDecimal amount, Article.Type type) {
         Article article = articleService.create(NAME, type);
-        User user = userService.create("email@gmail.com", "Password2", "NICK", ZoneId.systemDefault());
+        User user = userService.create("email@gmail.com", "Password2", "REGEX_USER_NICK", ZoneId.systemDefault());
         Employer employer = employerService.create(NAME);
         return operationService.create(amount, article, user, employer);
     }

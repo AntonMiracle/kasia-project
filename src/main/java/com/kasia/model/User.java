@@ -21,18 +21,18 @@ public class User implements Model {
     private long id;
 
     @NotNull
-    @Pattern(regexp = ValidationService.EMAIL)
-    @Column(name = "EMAIL", nullable = false)
+    @Pattern(regexp = ValidationService.REGEX_USER_EMAIL)
+    @Column(name = "REGEX_USER_EMAIL", nullable = false)
     private String email;
 
     @NotNull
-    @Pattern(regexp = ValidationService.PASSWORD)
-    @Column(name = "PASSWORD", nullable = false)
+    @Pattern(regexp = ValidationService.REGEX_USER_PASSWORD)
+    @Column(name = "REGEX_USER_PASSWORD", nullable = false)
     private String password;
 
     @NotNull
-    @Pattern(regexp = ValidationService.NICK)
-    @Column(name = "NICK", nullable = false, unique = true)
+    @Pattern(regexp = ValidationService.REGEX_USER_NICK)
+    @Column(name = "REGEX_USER_NICK", nullable = false, unique = true)
     private String nick;
 
     @NotNull
@@ -224,7 +224,17 @@ public class User implements Model {
     }
 
     public enum Role {
-        ADMINISTRATOR, USER
+        ADMIN("admin"), USER("user");
+
+        private final String name;
+
+        Role(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }
 
