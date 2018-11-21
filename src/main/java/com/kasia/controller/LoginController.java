@@ -1,6 +1,6 @@
 package com.kasia.controller;
 
-import com.kasia.dto.LoginDTO;
+import com.kasia.controller.dto.LoginDTO;
 import com.kasia.model.User;
 import com.kasia.model.service.UserService;
 import com.kasia.page.Page;

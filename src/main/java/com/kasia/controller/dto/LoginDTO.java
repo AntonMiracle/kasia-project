@@ -1,4 +1,4 @@
-package com.kasia.dto;
+package com.kasia.controller.dto;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;

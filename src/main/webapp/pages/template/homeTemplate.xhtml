@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:define name="base_content">
+        <h:panelGroup  layout="block" styleClass="homeMenu">
+            <ui:insert name="menu"/>
+        </h:panelGroup>
+        <h:panelGroup  layout="block" styleClass="homeInformation">
+            <ui:insert name="information"/>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

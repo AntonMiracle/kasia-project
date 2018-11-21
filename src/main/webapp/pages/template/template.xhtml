@@ -16,18 +16,8 @@
     </h:panelGroup>
 </h:head>
 <h:body>
-    <h:panelGroup  styleClass="background">
-        <h:panelGroup id="top" layout="block" styleClass="templateTop">
-            <ui:insert name="top"/>
-        </h:panelGroup>
-        <br/>
-        <h:panelGroup id="content" layout="block" styleClass="templateContent">
-            <ui:insert name="content"/>
-        </h:panelGroup>
-        <br/>
-        <h:panelGroup id="bottom" layout="block" styleClass="templateBottom">
-            <ui:insert name="bottom"/>
-        </h:panelGroup>
-    </h:panelGroup>>
+    <h:panelGroup layout="block" styleClass="baseContent">
+        <ui:insert name="base_content"/>
+    </h:panelGroup>
 </h:body>
 </html>

@@ -1,6 +1,6 @@
 package com.kasia.controller;
 
-import com.kasia.dto.RegistrationDTO;
+import com.kasia.controller.dto.RegistrationDTO;
 import com.kasia.page.Page;
 import com.kasia.page.Attribute;
 import com.kasia.message.Message;

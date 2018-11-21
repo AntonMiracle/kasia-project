@@ -70,6 +70,7 @@
             <version>5.3.6.Final</version>
             <scope>test</scope>
         </dependency>
+
         <!--VALIDATION-->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -114,14 +115,6 @@
             <artifactId>h2</artifactId>
             <version>1.4.197</version>
         </dependency>
-
-        <!--GlassFish-->
-        <dependency>
-            <groupId>org.glassfish.security</groupId>
-            <artifactId>websecurity</artifactId>
-            <version>10.0-b28</version>
-        </dependency>
-
     </dependencies>
 
     <build>
