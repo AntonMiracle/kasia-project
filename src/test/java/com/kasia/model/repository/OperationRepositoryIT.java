@@ -46,7 +46,7 @@ public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getById() throws Exception {
-        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME), newEmployer(NAME), CREATE_ON);
+        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME).getId(), newEmployer(NAME), CREATE_ON);
         long id = operationRepository.save(operation).getId();
         operation = operationRepository.getById(id);
 
@@ -57,15 +57,15 @@ public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
     public void getAll() throws Exception {
         assertThat(operationRepository.getAll().size() == 0).isTrue();
 
-        operationRepository.save(new Operation(AMOUNT, newArticle(NAME), newUser(NAME), newEmployer(NAME), CREATE_ON));
-        operationRepository.save(new Operation(AMOUNT, newArticle(NAME_2), newUser(NAME_2), newEmployer(NAME_2), CREATE_ON));
+        operationRepository.save(new Operation(AMOUNT, newArticle(NAME), newUser(NAME).getId(), newEmployer(NAME), CREATE_ON));
+        operationRepository.save(new Operation(AMOUNT, newArticle(NAME_2), newUser(NAME_2).getId(), newEmployer(NAME_2), CREATE_ON));
 
         assertThat(operationRepository.getAll().size() == 2).isTrue();
     }
 
     @Test
     public void delete() throws Exception {
-        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME), newEmployer(NAME), CREATE_ON);
+        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME).getId(), newEmployer(NAME), CREATE_ON);
         long id = operationRepository.save(operation).getId();
         operation = operationRepository.getById(id);
 
@@ -76,7 +76,7 @@ public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void save() throws Exception {
-        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME), newEmployer(NAME), CREATE_ON);
+        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME).getId(), newEmployer(NAME), CREATE_ON);
         assertThat(operation.getId() == 0).isTrue();
 
         assertThat(operationRepository.save(operation).getId() > 0).isTrue();
@@ -84,7 +84,7 @@ public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void update() throws Exception {
-        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME), newEmployer(NAME), CREATE_ON);
+        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME).getId(), newEmployer(NAME), CREATE_ON);
         long id = operationRepository.save(operation).getId();
         operation = operationRepository.getById(id);
 
@@ -98,16 +98,16 @@ public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getByUserId() throws Exception {
-        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME), newEmployer(NAME), CREATE_ON);
+        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME).getId(), newEmployer(NAME), CREATE_ON);
         operation = operationRepository.getById(operationRepository.save(operation).getId());
 
-        long id = operation.getUser().getId();
+        long id = operation.getUserId();
         assertThat(operationRepository.getByUserId(id).size() == 1).isTrue();
     }
 
     @Test
     public void getByEmployerId() throws Exception {
-        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME), newEmployer(NAME), CREATE_ON);
+        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME).getId(), newEmployer(NAME), CREATE_ON);
         operation = operationRepository.getById(operationRepository.save(operation).getId());
 
         long id = operation.getEmployer().getId();
@@ -116,7 +116,7 @@ public class OperationRepositoryIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void getByArticleId() throws Exception {
-        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME), newEmployer(NAME), CREATE_ON);
+        Operation operation = new Operation(AMOUNT, newArticle(NAME), newUser(NAME).getId(), newEmployer(NAME), CREATE_ON);
         operation = operationRepository.getById(operationRepository.save(operation).getId());
 
         long id = operation.getArticle().getId();

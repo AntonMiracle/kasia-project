@@ -67,7 +67,7 @@ public class OperationServiceIT extends ConfigurationEjbCdiContainerForIT {
 
         assertThat(operation).isNotNull();
         assertThat(operation.getEmployer()).isEqualTo(employer);
-        assertThat(operation.getUser()).isEqualTo(user);
+        assertThat(operation.getUserId()).isEqualTo(user.getId());
         assertThat(operation.getArticle()).isEqualTo(article);
     }
 
@@ -126,7 +126,7 @@ public class OperationServiceIT extends ConfigurationEjbCdiContainerForIT {
         Employer employer = newEmployer();
         Operation operation = operationService.create(AMOUNT, article, user, employer);
 
-        assertThat(operationService.getOperationsByUserId(operation.getUser().getId()).size() == 1).isTrue();
+        assertThat(operationService.getOperationsByUserId(operation.getUserId()).size() == 1).isTrue();
     }
 
     @Test

@@ -13,8 +13,8 @@ public class BudgetTest {
 
     @Test
     public void checkEqualsAndHashCode() {
-        Operation op1 = new Operation(BigDecimal.TEN, new Article(), new User(), new Employer(), LocalDateTime.now());
-        Operation op2 = new Operation(BigDecimal.ZERO, new Article(), new User(), new Employer(), LocalDateTime.now());
+        Operation op1 = new Operation(BigDecimal.TEN, new Article(), new User().getId(), new Employer(), LocalDateTime.now());
+        Operation op2 = new Operation(BigDecimal.ZERO, new Article(), new User().getId(), new Employer(), LocalDateTime.now());
         Currency eur = Currency.getInstance("EUR");
         Currency usd = Currency.getInstance("USD");
         Budget b1 = new Budget("Name1",new HashSet<>(), BigDecimal.TEN, LocalDateTime.now(),eur);

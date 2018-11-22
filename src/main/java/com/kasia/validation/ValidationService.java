@@ -14,7 +14,7 @@ public class ValidationService {
     public static final String REGEX_USER_EMAIL = "^[A-Za-z0-9+_.-]+@(.+)$";
     public static final String REGEX_USER_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$";
     public static final String REGEX_USER_NICK = "^[A-Za-z0-9+_.-]+$";
-    public static final String REGEX_ARTICLE_NAME = "^[A-Za-z0-9+_.-]{3,}$";
+    public static final String REGEX_ARTICLE_NAME = "^[A-Za-z0-9+_.-]{2,}$";
     public static final String REGEX_EMPLOYER_NAME = REGEX_ARTICLE_NAME;
     public static final String REGEX_BUDGET_NAME = REGEX_ARTICLE_NAME;
 
@@ -56,6 +56,21 @@ public class ValidationService {
 
         public boolean isMatch(String text) {
             return matcher(text).matches();
+        }
+    }
+
+    public enum Currency {
+        EUR(java.util.Currency.getInstance("EUR"))
+        , USD(java.util.Currency.getInstance("USD"))
+        , PLN(java.util.Currency.getInstance("PLN"))
+        , RUB(java.util.Currency.getInstance("RUB"));
+        private final java.util.Currency currency;
+
+        Currency(java.util.Currency currency) {
+            this.currency = currency;
+        }
+        public java.util.Currency get(){
+            return currency;
         }
     }
 }

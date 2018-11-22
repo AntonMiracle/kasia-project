@@ -4,6 +4,7 @@ import com.kasia.model.Article;
 import com.kasia.model.Budget;
 import com.kasia.model.Operation;
 import com.kasia.model.repository.BudgetRepository;
+import com.kasia.model.service.ArticleService;
 import com.kasia.model.service.BudgetService;
 import com.kasia.validation.ValidationService;
 
@@ -20,10 +21,12 @@ public class BudgetServiceImp implements BudgetService {
     private BudgetRepository repository;
     @Inject
     private ValidationService validationService;
+    @Inject
+    private ArticleService articleService;
 
     @Override
     public Budget create(String name, BigDecimal balance, Currency currency) throws ValidationException, NullPointerException {
-        Budget budget = new Budget(name,new HashSet<>(), balance, LocalDateTime.now().withNano(0), currency);
+        Budget budget = new Budget(name, new HashSet<>(), balance, LocalDateTime.now().withNano(0), currency);
         if (!validationService.isValid(budget)) throw new ValidationException();
         repository.save(budget);
         return repository.getById(budget.getId());

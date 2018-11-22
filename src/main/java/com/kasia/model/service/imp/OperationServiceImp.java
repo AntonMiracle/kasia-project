@@ -22,7 +22,7 @@ public class OperationServiceImp implements OperationService {
 
     @Override
     public Operation create(BigDecimal amount, Article article, User user, Employer employer) throws ValidationException {
-        Operation operation = new Operation(amount, article, user, employer, LocalDateTime.now().withNano(0));
+        Operation operation = new Operation(amount, article, user.getId(), employer, LocalDateTime.now().withNano(0));
         if (!validationService.isValid(operation)) throw new ValidationException();
         repository.save(operation);
         return repository.getById(operation.getId());

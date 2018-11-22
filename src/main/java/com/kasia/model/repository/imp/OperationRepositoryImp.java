@@ -46,7 +46,7 @@ public class OperationRepositoryImp implements OperationRepository {
 
     @Override
     public Set<Operation> getByUserId(long id) {
-        Query query = entityManager.createQuery("SELECT o FROM Operation o WHERE o.user.id=" + id);
+        Query query = entityManager.createQuery("SELECT o FROM Operation o WHERE o.userId=" + id);
         return new HashSet<>(query.getResultList());
     }
 

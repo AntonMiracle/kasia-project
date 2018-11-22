@@ -4,6 +4,7 @@ import com.kasia.model.repository.converter.BigDecimalAttributeConverter;
 import com.kasia.model.repository.converter.LocalDateTimeAttributeConverter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.math.BigDecimal;
@@ -27,10 +28,8 @@ public class Operation implements Model {
     @JoinColumn(name = "ARTICLE_ID", nullable = false)
     private Article article;
 
-    @NotNull
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private User user;
+    @Min(1)
+    private long userId;
 
     @NotNull
     @OneToOne(fetch = FetchType.EAGER)
@@ -46,10 +45,10 @@ public class Operation implements Model {
     public Operation() {
     }
 
-    public Operation(BigDecimal amount, Article article, User user, Employer employer, LocalDateTime createOn) {
+    public Operation(BigDecimal amount, Article article, long userId, Employer employer, LocalDateTime createOn) {
         this.amount = amount;
         this.article = article;
-        this.user = user;
+        this.userId = userId;
         this.employer = employer;
         this.createOn = createOn;
     }
@@ -60,7 +59,7 @@ public class Operation implements Model {
                 "id=" + id +
                 ", amount=" + amount +
                 ", article=" + article +
-                ", user=" + user +
+                ", userId=" + userId +
                 ", employer=" + employer +
                 ", createOn=" + createOn +
                 '}';
@@ -74,9 +73,9 @@ public class Operation implements Model {
         Operation operation = (Operation) o;
 
         if (id != operation.id) return false;
+        if (userId != operation.userId) return false;
         if (amount != null ? !amount.equals(operation.amount) : operation.amount != null) return false;
         if (article != null ? !article.equals(operation.article) : operation.article != null) return false;
-        if (user != null ? !user.equals(operation.user) : operation.user != null) return false;
         if (employer != null ? !employer.equals(operation.employer) : operation.employer != null) return false;
         return createOn != null ? createOn.equals(operation.createOn) : operation.createOn == null;
     }
@@ -86,7 +85,7 @@ public class Operation implements Model {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (amount != null ? amount.hashCode() : 0);
         result = 31 * result + (article != null ? article.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
         result = 31 * result + (employer != null ? employer.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         return result;
@@ -118,12 +117,12 @@ public class Operation implements Model {
         this.article = article;
     }
 
-    public User getUser() {
-        return user;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUser(User operator) {
-        this.user = operator;
+    public void setUserId(long operator) {
+        this.userId = operator;
     }
 
     public Employer getEmployer() {

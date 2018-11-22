@@ -59,7 +59,7 @@ public class ValidationServiceIT extends ConfigurationEjbCdiContainerForIT {
 
     @Test
     public void operationIsValidTrue() {
-        Operation operation = new Operation(BigDecimal.TEN, new Article(), new User(), new Employer(), LocalDateTime.now().withNano(0));
+        Operation operation = new Operation(BigDecimal.TEN, new Article(), 2, new Employer(), LocalDateTime.now().withNano(0));
 
         assertThat(validationService).isNotNull();
         assertThat(validationService.isValid(operation)).isTrue();
