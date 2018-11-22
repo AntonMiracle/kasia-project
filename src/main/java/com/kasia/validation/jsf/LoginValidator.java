@@ -1,5 +1,6 @@
 package com.kasia.validation.jsf;
 
+import com.kasia.controller.InitializedController;
 import com.kasia.message.Message;
 import com.kasia.model.User;
 import com.kasia.model.service.UserService;
@@ -14,7 +15,6 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.time.ZoneId;
 
 import static com.kasia.validation.ValidationService.FieldRegex.USER_PASSWORD;
 
@@ -25,13 +25,12 @@ public class LoginValidator implements Validator<String> {
     private UserService userService;
     @Inject
     private ValidationService validationService;
+    @Inject
+    private InitializedController initializedController;
 
     @Override
     public void validate(FacesContext facesContext, UIComponent uiComponent, String email) throws ValidatorException {
-        // for testing
-        if (userService.getByEmail("anton@gmail.com") == null)
-            userService.create("anton@gmail.com", "Password2", "Anton", ZoneId.systemDefault());
-        // end test
+
 
 
         UIInput inputConfirmPassword = (UIInput) uiComponent.getAttributes().get("password");

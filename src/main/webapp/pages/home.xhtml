@@ -8,20 +8,25 @@
     <ui:define name="menu">
         <h1>#{kasia.nick}</h1>
         <h:form styleClass="none">
-            <h:commandButton styleClass="templateButton"
-                             action="#{loginController.logOut()}"
+            <h:commandButton styleClass="button"
+                             action="profile"
                              value="#{label['button-profile']}"/>
         </h:form>
         <h:form styleClass="none">
-            <h:commandButton styleClass="templateButton"
+            <h:commandButton styleClass="button"
                              action="#{loginController.logOut()}"
                              value="#{label['button-login-out']}"/>
         </h:form>
-        <h1>#{label['label-budget']}</h1>
+        <h1>#{label['title-budget']}</h1>
         <h:form styleClass="none">
-            <h:commandButton styleClass="templateButton"
+            <h:commandButton styleClass="button"
                              action="#{loginController.logOut()}"
                              value="#{label['button-add']}"/>
+            <ui:repeat value="#{kasia.budgets}" var="budget">
+                <h:commandButton styleClass="button"
+                                 action="profile"
+                                 value="#{budget.name}"/>
+            </ui:repeat>
         </h:form>
     </ui:define>
     <ui:define name="information">

@@ -7,6 +7,7 @@ public enum Page {
     LOGIN("/login.jsf")
     ,REGISTRATION("/registration.jsf")
     ,HOME("/pages/home.jsf")
+    ,PROFILE("/pages/profile.jsf")
     ;
     private final String name;
 

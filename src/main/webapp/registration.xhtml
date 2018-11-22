@@ -50,11 +50,11 @@
                     <td colspan="3" style="text-align: center">
                         <h:inputHidden id="browserTimeZoneId" value="#{registrationDTO.zone}"/>
 
-                        <h:commandButton styleClass="templateButton"
+                        <h:commandButton styleClass="button"
                                          action="#{registrationController.registration(registrationDTO)}"
                                          value="#{label['button-finish']}"/>
 
-                        <h:commandButton styleClass="templateButton"
+                        <h:commandButton styleClass="button"
                                          immediate="true"
                                          action="login"
                                          value="#{label['button-back']}"/>
