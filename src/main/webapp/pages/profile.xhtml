@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template/homeTemplate.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="">
+        <script type="text/javascript" language="javascript">
+            $(document).ready(function () {
+                getTimeZone("profileUserUpdateId:browserTimeZoneId")
+            });
+        </script>
+    </ui:define>
+    <ui:define name="information">
+        <table class="templateTable">
+            <h:form id="profileUserUpdateId">
+                <tr>
+                    <td colspan="3"><h1>#{label['title-profile']}</h1></td>
+                </tr>
+                <tr>
+                    <td><h2>#{label['title-user-profile']}</h2></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-nick']}"/></td>
+                    <td><h:outputLabel value="#{kasia.nick}"/></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-email']}"/></td>
+                    <td><h:outputLabel value="#{kasia.email}"/></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-new-password']}"/></td>
+                    <td>
+                        <h:inputSecret id="passwordId" binding="#{thePassword}" value="#{profileDTO.password}"
+                                       validator="#{updatePasswordValidator.validate}">
+                            <f:attribute name="confirmPassword" value="#{confirmId}"/>
+                        </h:inputSecret>
+                    </td>
+                    <td><h:message for="passwordId" styleClass="errorClass"/></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-repeat-password']}"/></td>
+                    <td><h:inputSecret id="confirmId" value="#{profileDTO.confirm}" binding="#{confirmId}"/></td>
+                </tr>
+                <tr>
+                    <td><h:outputLabel value="#{label['label-registration-time']}"/></td>
+                    <td>
+                        <h:outputLabel value="#{kasia.createOn}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td> Update to current time zone</td>
+                    <td>
+                        <h:selectBooleanCheckbox value="#{profileDTO.updateZoneId}"/>
+                        <h:inputHidden id="browserTimeZoneId" value="#{profileDTO.zoneId}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <h:commandButton styleClass="button"
+                                         action="#{profileController.update(profileDTO,kasia)}"
+                                         value="#{label['button-save']}"/>
+                    </td>
+                </tr>
+            </h:form>
+            <h:form>
+                <tr>
+                    <td><h2>#{label['title-budget-profile']}</h2></td>
+                </tr>
+                <tr>
+                    <td>#{label['label-default-budget']}</td>
+                    <td>
+                        <h:selectOneMenu value="#{profileDTO.defaultBudgetId}">
+                            <f:selectItems value="#{kasia.budgets}" var="budget"
+                                           itemLabel="#{budget.name}" itemValue="#{budget.id}"/>
+                        </h:selectOneMenu>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <h:commandButton styleClass="button"
+                                         action="#{profileController.defaultBudget(profileDTO,kasia)}"
+                                         value="#{label['button-save']}"/>
+                    </td>
+                </tr>
+            </h:form>
+        </table>
+    </ui:define>
+</ui:composition>

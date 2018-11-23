@@ -5,32 +5,9 @@
                 template="template/homeTemplate.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:define name="menu">
-        <h1>#{kasia.nick}</h1>
-        <h:form styleClass="none">
-            <h:commandButton styleClass="button"
-                             action="profile"
-                             value="#{label['button-profile']}"/>
-        </h:form>
-        <h:form styleClass="none">
-            <h:commandButton styleClass="button"
-                             action="#{loginController.logOut()}"
-                             value="#{label['button-login-out']}"/>
-        </h:form>
-        <h1>#{label['title-budget']}</h1>
-        <h:form styleClass="none">
-            <h:commandButton styleClass="button"
-                             action="#{loginController.logOut()}"
-                             value="#{label['button-add']}"/>
-            <ui:repeat value="#{kasia.budgets}" var="budget">
-                <h:commandButton styleClass="button"
-                                 action="profile"
-                                 value="#{budget.name}"/>
-            </ui:repeat>
-        </h:form>
-    </ui:define>
     <ui:define name="information">
         <h5>SOME INFORMATION</h5>
+        #{kasia}
     </ui:define>
 </ui:composition>
 

@@ -8,13 +8,9 @@
     <ui:define name="head">
         <script type="text/javascript" language="javascript">
             $(document).ready(function () {
-                getTimeZone()
+                getTimeZone("registrationFormId:browserTimeZoneId")
             });
-            // registration timeZone
-            var getTimeZone = function () {
-                var timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                document.getElementById("registrationFormId:browserTimeZoneId").value = timeZone;
-            }
+
         </script>
     </ui:define>
     <ui:define name="top">

@@ -29,28 +29,26 @@ html {
 /*template classes*/
 .loginTemplateTop {
     width: 100%;
-    border-bottom: 1px solid darkgreen;
 }
 
 .loginTemplateContent {
 }
 
 .loginTemplateBottom {
-    left: 0px;
-    bottom: 0px;
-    height: 20px;
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    font-size: 15px;
-    border-top: 1px solid #006400;
 }
 
 .button {
-    margin: 5px;
-    padding: 5px;
-    width: 130px;
+    margin: 3px;
+    padding: 3px;
+    width: 120px;
+    height: 60px;
     border: 1px solid darkgreen;
-    background-color: darkgreen;
-    color: white;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: black;
     text-align: center;
     cursor: pointer;
     transition: 0.3s;
@@ -58,8 +56,8 @@ html {
 
 .button:hover {
     color: black;
-    background-color: white;
-    box-shadow: 0px 0px 5px 5px rgba(0, 100, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.2);
 }
 
 .errorClass {
@@ -67,21 +65,30 @@ html {
     font-size: 10px;
 }
 
+.templateTable {
+    margin: 15px;
+    padding: 20px;
+    border: 1px solid darkgreen;
+    background-color: rgba(255, 255, 255, 0.6);
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.templateTable td {
+    text-align: left;
+}
+
 /*login classes*/
 .loginTable {
     margin: 15px;
-    box-shadow: 10px 10px 1px 0px rgba(0, 0, 0, 0.8);
-    border-radius: 0px;
     padding: 20px;
-    border: 2px solid darkgreen;
-    background-color: rgba(255, 255, 255, 1);
     display: inline-block;
 }
 
 .kasiaClass {
     margin: 10px;
     text-align: center;
-    font-size: 40px;
+    font-size: 160px;
     font-family: "Cinzel Decorative";
     font-weight: bold;
     color: black;
@@ -93,12 +100,10 @@ html {
     left: 0px;
     top: 0px;
     width: 150px;
-    border-right: 1px solid #006400;
-    border-bottom: 1px solid #006400;
 }
 
 .homeInformation {
     position: absolute;
     left: 150px;
-    top: 0px;
+    text-align: center;
 }

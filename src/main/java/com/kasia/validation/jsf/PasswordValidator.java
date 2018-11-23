@@ -25,7 +25,7 @@ public class PasswordValidator implements Validator<String> {
         String confirm = inputConfirmPassword.getSubmittedValue().toString();
         confirm = confirm.trim();
         password = password.trim();
-
+        System.out.println("=========== VALIDATE PASSWORD ============");
         if (!FieldRegex.USER_PASSWORD.isMatch(password)) {
             throw new ValidatorException(Message.PASSWORD_REGEX_ERROR.get(facesContext));
         }
