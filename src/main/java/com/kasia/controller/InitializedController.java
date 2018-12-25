@@ -94,5 +94,9 @@ public class InitializedController {
         user.setBudgets(budgets);
 
         userService.update(user);
+
+        for(int i = 0, c=50;;){
+
+        }
     }
 }
