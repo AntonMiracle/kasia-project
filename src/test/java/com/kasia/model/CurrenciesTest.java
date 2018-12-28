@@ -7,7 +7,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BudgetCurrencyTest {
+public class CurrenciesTest {
     @Test
     public void availableCurrencyExist() {
         Set<String> currencies = new HashSet<>();
@@ -17,7 +17,7 @@ public class BudgetCurrencyTest {
         currencies.add("UAH");
         currencies.add("PLN");
 
-        for (BudgetCurrency cur : BudgetCurrency.values()) {
+        for (Currencies cur : Currencies.values()) {
             assertThat(currencies.contains(cur.getCurrency().toString())).isTrue();
         }
     }

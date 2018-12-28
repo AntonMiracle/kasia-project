@@ -2,7 +2,7 @@ package com.kasia.model;
 
 import java.util.Currency;
 
-public enum BudgetCurrency {
+public enum Currencies {
     EUR(Currency.getInstance("EUR"))
     , USD(Currency.getInstance("USD"))
     , RUB(Currency.getInstance("RUB"))
@@ -11,7 +11,7 @@ public enum BudgetCurrency {
 
     private final Currency currency;
 
-    BudgetCurrency(Currency currency){
+    Currencies(Currency currency){
         this.currency = currency;
     }
 
