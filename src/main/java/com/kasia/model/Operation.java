@@ -2,15 +2,15 @@ package com.kasia.model;
 
 import java.time.LocalDateTime;
 
-public class Operation implements Model{
-    private long id;
+public class Operation implements Model {
     private Element element;
+    private ElementProvider elementProvider;
     private Price price;
     private LocalDateTime createOn;
 
-    public Operation(long id, Element element, Price price, LocalDateTime createOn) {
-        this.id = id;
+    public Operation(Element element, ElementProvider elementProvider, Price price, LocalDateTime createOn) {
         this.element = element;
+        this.elementProvider = elementProvider;
         this.price = price;
         this.createOn = createOn;
     }
@@ -26,27 +26,20 @@ public class Operation implements Model{
 
         Operation operation = (Operation) o;
 
-        if (id != operation.id) return false;
         if (element != null ? !element.equals(operation.element) : operation.element != null) return false;
+        if (elementProvider != null ? !elementProvider.equals(operation.elementProvider) : operation.elementProvider != null)
+            return false;
         if (price != null ? !price.equals(operation.price) : operation.price != null) return false;
         return createOn != null ? createOn.equals(operation.createOn) : operation.createOn == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (element != null ? element.hashCode() : 0);
+        int result = element != null ? element.hashCode() : 0;
+        result = 31 * result + (elementProvider != null ? elementProvider.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         return result;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Element getElement() {
@@ -55,6 +48,14 @@ public class Operation implements Model{
 
     public void setElement(Element element) {
         this.element = element;
+    }
+
+    public ElementProvider getElementProvider() {
+        return elementProvider;
+    }
+
+    public void setElementProvider(ElementProvider elementProvider) {
+        this.elementProvider = elementProvider;
     }
 
     public Price getPrice() {

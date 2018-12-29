@@ -3,7 +3,7 @@ package com.kasia.model;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-public class Price implements Model{
+public class Price{
     private BigDecimal amount;
     private Currency currency;
 

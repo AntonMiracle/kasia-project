@@ -5,8 +5,8 @@ import java.time.ZoneId;
 import java.util.Locale;
 
 public class User implements Model{
-    private String email;// unique, login
-    private String name;// unique, pattern
+    private String email;
+    private String name;
     private String password;
     private ZoneId zoneId;
     private Locale locale;

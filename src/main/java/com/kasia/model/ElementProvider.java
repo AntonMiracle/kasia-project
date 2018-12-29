@@ -1,7 +1,7 @@
 package com.kasia.model;
 
 public class ElementProvider implements Model{
-    private String name;//unique w budget scope
+    private String name;
     private String description;
 
     public ElementProvider(String name, String description) {

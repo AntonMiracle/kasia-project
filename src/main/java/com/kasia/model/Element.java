@@ -1,19 +1,17 @@
 package com.kasia.model;
 
-public class Element implements Model{
-    private String name;//unique budget scope
+public class Element implements Model {
+    private String name;
     private Price defaultPrice;
     private ElementType type;
-    private ElementProvider provider;
 
     public Element() {
     }
 
-    public Element(String name, Price defaultPrice, ElementType type, ElementProvider provider) {
+    public Element(String name, Price defaultPrice, ElementType type) {
         this.name = name;
         this.defaultPrice = defaultPrice;
         this.type = type;
-        this.provider = provider;
     }
 
     @Override
@@ -26,8 +24,7 @@ public class Element implements Model{
         if (name != null ? !name.equals(element.name) : element.name != null) return false;
         if (defaultPrice != null ? !defaultPrice.equals(element.defaultPrice) : element.defaultPrice != null)
             return false;
-        if (type != element.type) return false;
-        return provider != null ? provider.equals(element.provider) : element.provider == null;
+        return type == element.type;
     }
 
     @Override
@@ -35,7 +32,6 @@ public class Element implements Model{
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (defaultPrice != null ? defaultPrice.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (provider != null ? provider.hashCode() : 0);
         return result;
     }
 
@@ -63,11 +59,4 @@ public class Element implements Model{
         this.type = type;
     }
 
-    public ElementProvider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(ElementProvider provider) {
-        this.provider = provider;
-    }
 }
