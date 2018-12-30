@@ -36,6 +36,15 @@ public class Budget implements Model{
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Budget{" +
+                "name='" + name + '\'' +
+                ", balance=" + balance +
+                ", createOn=" + createOn +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

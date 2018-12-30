@@ -1,19 +1,12 @@
 package com.kasia.service;
 
-import com.kasia.model.*;
-
-import java.time.LocalDateTime;
-import java.util.Set;
+import com.kasia.model.Element;
+import com.kasia.model.ElementProvider;
+import com.kasia.model.Operation;
+import com.kasia.model.Price;
 
 public interface OperationService extends CRUDService<Operation> {
     Operation create(Element element, Price price, ElementProvider elementProvider);
 
-    Set<Operation> getByElement(Budget budget, Element element);
-
-    Set<Operation> getByElementProvider(Budget budget, ElementProvider elementProvider);
-
-    Set<Operation> getBetweenDate(Budget budget, LocalDateTime from, LocalDateTime to);
-
-    Set<Operation> getBetweenPrice(Budget budget, Price from, Price to);
 
 }

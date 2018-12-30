@@ -33,6 +33,14 @@ public class UserBudget implements Model{
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "UserBudget{" +
+                "user=" + user +
+                ", budgets=" + budgets +
+                '}';
+    }
+
     public User getUser() {
         return user;
     }

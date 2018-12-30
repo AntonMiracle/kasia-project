@@ -5,10 +5,14 @@ import com.kasia.model.*;
 public interface BudgetElementProviderService extends CRUDService<BudgetElementProvider> {
     BudgetElement create(Budget budget);
 
-    boolean addElementProvider(Budget budget, ElementProvider elementProvider);
+    boolean addElementProvider(BudgetElementProvider budgetElementProvider, ElementProvider elementProvider);
 
-    boolean removeElementProvider(Budget budget, ElementProvider elementProvider);
+    boolean removeElementProvider(BudgetElementProvider budgetElementProvider, ElementProvider elementProvider);
 
     BudgetElement getByBudgetId(long id);
+
+    ElementProvider getByElementProviderName(BudgetElementProvider budgetElementProvider, String name);
+
+    boolean isElementProviderNameUnique(BudgetElementProvider budgetElementProvider, String name);
 
 }

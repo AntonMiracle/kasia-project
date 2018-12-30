@@ -50,6 +50,18 @@ public class User implements Model{
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", zoneId=" + zoneId +
+                ", locale=" + locale +
+                ", createOn=" + createOn +
+                '}';
+    }
+
     public String getEmail() {
         return email;
     }

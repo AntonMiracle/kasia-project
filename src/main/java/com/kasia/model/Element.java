@@ -35,6 +35,15 @@ public class Element implements Model {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Element{" +
+                "name='" + name + '\'' +
+                ", defaultPrice=" + defaultPrice +
+                ", type=" + type +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

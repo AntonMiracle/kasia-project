@@ -33,6 +33,14 @@ public class Price{
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Price{" +
+                "amount=" + amount +
+                ", currency=" + currency +
+                '}';
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }

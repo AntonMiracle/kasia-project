@@ -4,13 +4,14 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
-public class BudgetTest {
+public class BudgetOperationTest {
     @Test
     public void equalsAndHashCode() throws Exception {
 
-        EqualsVerifier.forClass(Budget.class)
+        EqualsVerifier.forClass(BudgetOperation.class)
                 .usingGetClass()
-                .withPrefabValues(Price.class, ModelTestHelper.getPrice1(), ModelTestHelper.getPrice2())
+                .withPrefabValues(Budget.class,ModelTestHelper.getBudget1(), ModelTestHelper.getBudget2())
+                .withPrefabValues(Operation.class,ModelTestHelper.getOperation1(), ModelTestHelper.getOperation2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .verify();
     }

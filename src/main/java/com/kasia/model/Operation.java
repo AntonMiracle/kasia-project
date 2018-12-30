@@ -42,6 +42,16 @@ public class Operation implements Model {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Operation{" +
+                "element=" + element +
+                ", elementProvider=" + elementProvider +
+                ", price=" + price +
+                ", createOn=" + createOn +
+                '}';
+    }
+
     public Element getElement() {
         return element;
     }

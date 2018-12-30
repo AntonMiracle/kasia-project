@@ -31,6 +31,14 @@ public class ElementProvider implements Model{
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "ElementProvider{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

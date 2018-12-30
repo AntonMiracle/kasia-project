@@ -17,9 +17,11 @@ public class CurrenciesTest {
         currencies.add("UAH");
         currencies.add("PLN");
 
+        assertThat(currencies.size()).isEqualTo(Currencies.values().length);
         for (Currencies cur : Currencies.values()) {
             assertThat(currencies.contains(cur.getCurrency().toString())).isTrue();
         }
+
     }
 
 }

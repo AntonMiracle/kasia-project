@@ -33,6 +33,14 @@ public class UserConnectBudget implements Model{
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "UserConnectBudget{" +
+                "user=" + user +
+                ", connectBudgets=" + connectBudgets +
+                '}';
+    }
+
     public User getUser() {
         return user;
     }

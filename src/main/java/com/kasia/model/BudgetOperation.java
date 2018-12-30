@@ -32,6 +32,14 @@ public class BudgetOperation implements Model{
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "BudgetOperation{" +
+                "budget=" + budget +
+                ", operations=" + operations +
+                '}';
+    }
+
     public Budget getBudget() {
         return budget;
     }

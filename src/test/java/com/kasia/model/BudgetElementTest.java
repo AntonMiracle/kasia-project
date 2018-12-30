@@ -4,15 +4,15 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
-public class BudgetTest {
+public class BudgetElementTest {
     @Test
     public void equalsAndHashCode() throws Exception {
 
-        EqualsVerifier.forClass(Budget.class)
+        EqualsVerifier.forClass(BudgetElement.class)
                 .usingGetClass()
-                .withPrefabValues(Price.class, ModelTestHelper.getPrice1(), ModelTestHelper.getPrice2())
+                .withPrefabValues(Budget.class, ModelTestHelper.getBudget1(), ModelTestHelper.getBudget2())
+                .withPrefabValues(Element.class, ModelTestHelper.getElement1(), ModelTestHelper.getElement2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .verify();
     }
-
 }

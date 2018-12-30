@@ -32,6 +32,14 @@ public class BudgetElementProvider implements Model{
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "BudgetElementProvider{" +
+                "budget=" + budget +
+                ", elementProviders=" + elementProviders +
+                '}';
+    }
+
     public Budget getBudget() {
         return budget;
     }
