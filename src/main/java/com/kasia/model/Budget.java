@@ -1,9 +1,15 @@
 package com.kasia.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
-public class Budget implements Model{
+@Entity
+public class Budget implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private String name;
+    @Embedded
     private Price balance;
     private LocalDateTime createOn;
 
@@ -23,6 +29,7 @@ public class Budget implements Model{
 
         Budget budget = (Budget) o;
 
+        if (id != budget.id) return false;
         if (name != null ? !name.equals(budget.name) : budget.name != null) return false;
         if (balance != null ? !balance.equals(budget.balance) : budget.balance != null) return false;
         return createOn != null ? createOn.equals(budget.createOn) : budget.createOn == null;
@@ -30,7 +37,8 @@ public class Budget implements Model{
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (balance != null ? balance.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         return result;
@@ -39,7 +47,8 @@ public class Budget implements Model{
     @Override
     public String toString() {
         return "Budget{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", balance=" + balance +
                 ", createOn=" + createOn +
                 '}';
@@ -67,5 +76,13 @@ public class Budget implements Model{
 
     public void setCreateOn(LocalDateTime createOn) {
         this.createOn = createOn;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

@@ -1,9 +1,11 @@
 package com.kasia.model;
 
+import javax.persistence.Embeddable;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-public class Price{
+@Embeddable
+public class Price {
     private BigDecimal amount;
     private Currency currency;
 
