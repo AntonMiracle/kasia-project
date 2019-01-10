@@ -4,6 +4,8 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;
 
+import javax.persistence.Id;
+
 public class OperationTest {
     @Test
     public void equalsAndHashCode() throws Exception {
@@ -13,6 +15,7 @@ public class OperationTest {
                 .withPrefabValues(ElementProvider.class, ModelTestHelper.getElementProvider1(), ModelTestHelper.getElementProvider2())
                 .withPrefabValues(Price.class, ModelTestHelper.getPrice1(), ModelTestHelper.getPrice2())
                 .suppress(Warning.NONFINAL_FIELDS)
+                .withIgnoredAnnotations(Id.class)
                 .verify();
     }
 

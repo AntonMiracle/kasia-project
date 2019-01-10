@@ -1,7 +1,7 @@
 package com.kasia.repository.imp;
 
-import com.kasia.model.Budget;
-import com.kasia.repository.BudgetRepository;
+import com.kasia.model.ElementProvider;
+import com.kasia.repository.ElementProviderRepository;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -11,12 +11,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Stateless
-public class BudgetRepositoryImp implements BudgetRepository {
+public class ElementProviderRepositoryImp implements ElementProviderRepository {
     @Inject
     private EntityManager em;
 
     @Override
-    public void save(Budget model) {
+    public void save(ElementProvider model) {
         if (em.contains(model)) {
             em.merge(model);
         } else {
@@ -25,18 +25,18 @@ public class BudgetRepositoryImp implements BudgetRepository {
     }
 
     @Override
-    public Budget getById(long id) {
-        return em.find(Budget.class, id);
+    public ElementProvider getById(long id) {
+        return em.find(ElementProvider.class, id);
     }
 
     @Override
-    public void delete(Budget model) {
+    public void delete(ElementProvider model) {
         em.remove(model);
     }
 
     @Override
-    public Set<Budget> getAll() {
-        Query query = em.createQuery("SELECT b FROM Budget b");
+    public Set<ElementProvider> getAll() {
+        Query query = em.createQuery("SELECT ep FROM ElementProvider ep");
         return new HashSet<>(query.getResultList());
     }
 

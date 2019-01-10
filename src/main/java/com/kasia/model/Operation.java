@@ -1,10 +1,18 @@
 package com.kasia.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 public class Operation implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @OneToOne(fetch = FetchType.EAGER)
     private Element element;
+    @OneToOne(fetch = FetchType.EAGER)
     private ElementProvider elementProvider;
+    @Embedded
     private Price price;
     private LocalDateTime createOn;
 
@@ -20,12 +28,24 @@ public class Operation implements Model {
     }
 
     @Override
+    public String toString() {
+        return "Operation{" +
+                "id=" + id +
+                ", element=" + element +
+                ", elementProvider=" + elementProvider +
+                ", price=" + price +
+                ", createOn=" + createOn +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Operation operation = (Operation) o;
 
+        if (id != operation.id) return false;
         if (element != null ? !element.equals(operation.element) : operation.element != null) return false;
         if (elementProvider != null ? !elementProvider.equals(operation.elementProvider) : operation.elementProvider != null)
             return false;
@@ -35,21 +55,12 @@ public class Operation implements Model {
 
     @Override
     public int hashCode() {
-        int result = element != null ? element.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (element != null ? element.hashCode() : 0);
         result = 31 * result + (elementProvider != null ? elementProvider.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Operation{" +
-                "element=" + element +
-                ", elementProvider=" + elementProvider +
-                ", price=" + price +
-                ", createOn=" + createOn +
-                '}';
     }
 
     public Element getElement() {
@@ -83,4 +94,13 @@ public class Operation implements Model {
     public void setCreateOn(LocalDateTime createOn) {
         this.createOn = createOn;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
 }

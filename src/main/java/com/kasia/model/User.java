@@ -1,10 +1,16 @@
 package com.kasia.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
 
-public class User implements Model{
+@Entity
+@Table(name = "project_user")
+public class User implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private String email;
     private String name;
     private String password;
@@ -31,6 +37,7 @@ public class User implements Model{
 
         User user = (User) o;
 
+        if (id != user.id) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
@@ -41,7 +48,8 @@ public class User implements Model{
 
     @Override
     public int hashCode() {
-        int result = email != null ? email.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
@@ -53,7 +61,8 @@ public class User implements Model{
     @Override
     public String toString() {
         return "User{" +
-                "email='" + email + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", zoneId=" + zoneId +
@@ -108,5 +117,13 @@ public class User implements Model{
 
     public void setCreateOn(LocalDateTime createOn) {
         this.createOn = createOn;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

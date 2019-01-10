@@ -3,24 +3,16 @@ package com.kasia.repository;
 import com.kasia.model.Budget;
 import com.kasia.model.ModelTestHelper;
 import com.kasia.repository.imp.BudgetRepositoryImp;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BudgetRepositoryIT {
-    private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("UnitForTest");
+public class BudgetRepositoryIT extends ModelRepositoryTestHelper {
     private BudgetRepositoryImp repository;
-    private EntityManager em;
-    private EntityTransaction et;
 
     @Before
     public void setUp() throws NamingException {
@@ -30,19 +22,12 @@ public class BudgetRepositoryIT {
         repository.setEm(em);
     }
 
-    @After
-    public void tearDown() {
-        if (em != null) em.close();
-    }
-
     @Test
     public void save() throws Exception {
         Budget budget = ModelTestHelper.getBudget1();
         assertThat(budget.getId() == 0).isTrue();
 
-        et.begin();
-        repository.save(budget);
-        et.commit();
+        saveForTest(budget);
 
         assertThat(budget.getId() > 0).isTrue();
     }
