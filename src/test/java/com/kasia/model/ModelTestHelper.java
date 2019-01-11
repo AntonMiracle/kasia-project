@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Currency;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
 final public class ModelTestHelper {
@@ -62,11 +61,11 @@ final public class ModelTestHelper {
     }
 
     public static User getUser1() {
-        return new User("email2@gmail.com", "Name1", "Password2", ZoneId.systemDefault(), Locale.getDefault(), getNow());
+        return new User("email2@gmail.com", "Name1", "Password2", ZoneId.systemDefault(), getNow());
     }
 
     public static User getUser2() {
-        return new User("email3@gmail.com", "Name2", "Password3", ZoneId.systemDefault(), Locale.getDefault(), getNow().minusDays(2));
+        return new User("email3@gmail.com", "Name2", "Password3", ZoneId.systemDefault(), getNow().minusDays(2));
     }
 
     public static BudgetElement getBudgetElement1() {

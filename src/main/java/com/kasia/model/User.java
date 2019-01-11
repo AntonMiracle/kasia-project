@@ -15,18 +15,16 @@ public class User implements Model {
     private String name;
     private String password;
     private ZoneId zoneId;
-    private Locale locale;
     private LocalDateTime createOn;
 
     public User() {
     }
 
-    public User(String email, String name, String password, ZoneId zoneId, Locale locale, LocalDateTime createOn) {
+    public User(String email, String name, String password, ZoneId zoneId, LocalDateTime createOn) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.zoneId = zoneId;
-        this.locale = locale;
         this.createOn = createOn;
     }
 
@@ -42,7 +40,6 @@ public class User implements Model {
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (zoneId != null ? !zoneId.equals(user.zoneId) : user.zoneId != null) return false;
-        if (locale != null ? !locale.equals(user.locale) : user.locale != null) return false;
         return createOn != null ? createOn.equals(user.createOn) : user.createOn == null;
     }
 
@@ -53,7 +50,6 @@ public class User implements Model {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
-        result = 31 * result + (locale != null ? locale.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         return result;
     }
@@ -66,7 +62,6 @@ public class User implements Model {
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", zoneId=" + zoneId +
-                ", locale=" + locale +
                 ", createOn=" + createOn +
                 '}';
     }
@@ -101,14 +96,6 @@ public class User implements Model {
 
     public void setZoneId(ZoneId zoneId) {
         this.zoneId = zoneId;
-    }
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
     }
 
     public LocalDateTime getCreateOn() {
