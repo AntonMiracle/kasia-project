@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Currency;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 final public class ModelTestHelper {
     public static Price getPrice1() {
@@ -65,5 +67,65 @@ final public class ModelTestHelper {
 
     public static User getUser2() {
         return new User("email3@gmail.com", "Name2", "Password3", ZoneId.systemDefault(), Locale.getDefault(), getNow().minusDays(2));
+    }
+
+    public static BudgetElement getBudgetElement1() {
+        Set<Element> elements = new HashSet<>();
+        elements.add(getElement1());
+        return new BudgetElement(getBudget1(), elements);
+    }
+
+    public static BudgetElement getBudgetElement2() {
+        Set<Element> elements = new HashSet<>();
+        elements.add(getElement2());
+        return new BudgetElement(getBudget2(), elements);
+    }
+
+    public static BudgetElementProvider getBudgetElementProvider1() {
+        Set<ElementProvider> providers = new HashSet<>();
+        providers.add(getElementProvider1());
+        return new BudgetElementProvider(getBudget1(), providers);
+    }
+
+    public static BudgetElementProvider getBudgetElementProvider2() {
+        Set<ElementProvider> providers = new HashSet<>();
+        providers.add(getElementProvider2());
+        return new BudgetElementProvider(getBudget2(), providers);
+    }
+
+    public static BudgetOperation getBudgetOperation1() {
+        Set<Operation> operations = new HashSet<>();
+        operations.add(getOperation1());
+        return new BudgetOperation(getBudget1(), operations);
+    }
+
+    public static BudgetOperation getBudgetOperation2() {
+        Set<Operation> operations = new HashSet<>();
+        operations.add(getOperation2());
+        return new BudgetOperation(getBudget1(), operations);
+    }
+
+    public static UserBudget getUserBudget1() {
+        Set<Budget> budgets = new HashSet<>();
+        budgets.add(getBudget1());
+        return new UserBudget(getUser1(), budgets);
+    }
+
+    public static UserBudget getUserBudget2() {
+        Set<Budget> budgets = new HashSet<>();
+        budgets.add(getBudget2());
+        return new UserBudget(getUser2(), budgets);
+    }
+
+    public static UserConnectBudget getUserConnectBudget1() {
+        Set<Budget> budgets = new HashSet<>();
+        budgets.add(getBudget1());
+        return new UserConnectBudget(getUser1(), budgets);
+    }
+
+    public static UserConnectBudget getUserConnectBudget2() {
+        Set<Budget> budgets = new HashSet<>();
+        budgets.add(getBudget2());
+        return new UserConnectBudget(getUser2(), budgets);
     }
 }

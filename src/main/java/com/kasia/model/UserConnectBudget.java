@@ -1,9 +1,16 @@
 package com.kasia.model;
 
+import javax.persistence.*;
 import java.util.Set;
 
-public class UserConnectBudget implements Model{
+@Entity
+public class UserConnectBudget implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @OneToOne(fetch = FetchType.EAGER)
     private User user;
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Budget> connectBudgets;
 
     public UserConnectBudget(User user, Set<Budget> connectBudgets) {
@@ -22,13 +29,15 @@ public class UserConnectBudget implements Model{
 
         UserConnectBudget that = (UserConnectBudget) o;
 
+        if (id != that.id) return false;
         if (user != null ? !user.equals(that.user) : that.user != null) return false;
         return connectBudgets != null ? connectBudgets.equals(that.connectBudgets) : that.connectBudgets == null;
     }
 
     @Override
     public int hashCode() {
-        int result = user != null ? user.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (connectBudgets != null ? connectBudgets.hashCode() : 0);
         return result;
     }
@@ -36,9 +45,18 @@ public class UserConnectBudget implements Model{
     @Override
     public String toString() {
         return "UserConnectBudget{" +
-                "user=" + user +
+                "id=" + id +
+                ", user=" + user +
                 ", connectBudgets=" + connectBudgets +
                 '}';
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public User getUser() {

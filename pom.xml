@@ -34,9 +34,9 @@
             <scope>test</scope>
         </dependency>
         <dependency><!--DB-->
-            <groupId>org.apache.derby</groupId>
-            <artifactId>derby</artifactId>
-            <version>10.14.2.0</version>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.4.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -54,6 +54,12 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.4.0.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>5.4.0.Final</version>
+        </dependency>
+
 
     </dependencies>
 

@@ -1,9 +1,16 @@
 package com.kasia.model;
 
+import javax.persistence.*;
 import java.util.Set;
 
+@Entity
 public class BudgetElement implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @OneToOne(fetch = FetchType.EAGER)
     private Budget budget;
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Element> elements;
 
     public BudgetElement() {
@@ -15,29 +22,40 @@ public class BudgetElement implements Model {
     }
 
     @Override
+    public String toString() {
+        return "BudgetElement{" +
+                "id=" + id +
+                ", budget=" + budget +
+                ", elements=" + elements +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         BudgetElement that = (BudgetElement) o;
 
+        if (id != that.id) return false;
         if (budget != null ? !budget.equals(that.budget) : that.budget != null) return false;
         return elements != null ? elements.equals(that.elements) : that.elements == null;
     }
 
     @Override
     public int hashCode() {
-        int result = budget != null ? budget.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (budget != null ? budget.hashCode() : 0);
         result = 31 * result + (elements != null ? elements.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "BudgetElement{" +
-                "budget=" + budget +
-                ", elements=" + elements +
-                '}';
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Budget getBudget() {

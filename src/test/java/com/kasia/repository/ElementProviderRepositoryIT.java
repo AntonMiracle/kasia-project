@@ -3,23 +3,37 @@ package com.kasia.repository;
 import com.kasia.model.ElementProvider;
 import com.kasia.model.ModelTestHelper;
 import com.kasia.repository.imp.ElementProviderRepositoryImp;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.Set;
 
+import static com.kasia.repository.ModelRepositoryTestHelper.PERSISTENCE_TEST_UNIT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ElementProviderRepositoryIT extends ModelRepositoryTestHelper {
+public class ElementProviderRepositoryIT {
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_TEST_UNIT_NAME);
+    private EntityManager em;
+    private EntityTransaction et;
     private ElementProviderRepositoryImp repository;
 
     @Before
-    public void setUp() throws NamingException {
+    public void before() throws NamingException {
         em = emf.createEntityManager();
         et = em.getTransaction();
         repository = new ElementProviderRepositoryImp();
         repository.setEm(em);
+    }
+
+    @After
+    public void after() {
+        if (em != null) em.close();
     }
 
     @Test

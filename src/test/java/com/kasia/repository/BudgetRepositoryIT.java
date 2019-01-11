@@ -3,23 +3,37 @@ package com.kasia.repository;
 import com.kasia.model.Budget;
 import com.kasia.model.ModelTestHelper;
 import com.kasia.repository.imp.BudgetRepositoryImp;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.naming.NamingException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.Set;
 
+import static com.kasia.repository.ModelRepositoryTestHelper.PERSISTENCE_TEST_UNIT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BudgetRepositoryIT extends ModelRepositoryTestHelper {
+public class BudgetRepositoryIT {
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_TEST_UNIT_NAME);
+    private EntityManager em;
+    private EntityTransaction et;
     private BudgetRepositoryImp repository;
 
     @Before
-    public void setUp() throws NamingException {
+    public void before() throws NamingException {
         em = emf.createEntityManager();
         et = em.getTransaction();
         repository = new BudgetRepositoryImp();
         repository.setEm(em);
+    }
+
+    @After
+    public void after() {
+        if (em != null) em.close();
     }
 
     @Test
@@ -69,7 +83,7 @@ public class BudgetRepositoryIT extends ModelRepositoryTestHelper {
         Set<Budget> budgets = repository.getAll();
 
         assertThat(budgets).isNotNull();
-        assertThat(budgets.size() == 2).isTrue();
+        assertThat(budgets.size()).isEqualTo(2);
     }
 
 }

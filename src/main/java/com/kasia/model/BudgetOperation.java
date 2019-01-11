@@ -1,9 +1,16 @@
 package com.kasia.model;
 
+import javax.persistence.*;
 import java.util.Set;
 
-public class BudgetOperation implements Model{
+@Entity
+public class BudgetOperation implements Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @OneToOne(fetch = FetchType.EAGER)
     private Budget budget;
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<Operation> operations;
 
     public BudgetOperation() {
@@ -21,13 +28,15 @@ public class BudgetOperation implements Model{
 
         BudgetOperation that = (BudgetOperation) o;
 
+        if (id != that.id) return false;
         if (budget != null ? !budget.equals(that.budget) : that.budget != null) return false;
         return operations != null ? operations.equals(that.operations) : that.operations == null;
     }
 
     @Override
     public int hashCode() {
-        int result = budget != null ? budget.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (budget != null ? budget.hashCode() : 0);
         result = 31 * result + (operations != null ? operations.hashCode() : 0);
         return result;
     }
@@ -35,9 +44,18 @@ public class BudgetOperation implements Model{
     @Override
     public String toString() {
         return "BudgetOperation{" +
-                "budget=" + budget +
+                "id=" + id +
+                ", budget=" + budget +
                 ", operations=" + operations +
                 '}';
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Budget getBudget() {
