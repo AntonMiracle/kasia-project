@@ -5,7 +5,7 @@ import com.kasia.model.ElementProvider;
 import com.kasia.model.Operation;
 import com.kasia.model.Price;
 
-public interface OperationService extends CRUDService<Operation> {
+public interface OperationService extends Service<Operation> {
     Operation create(Element element, Price price, ElementProvider elementProvider);
 
 

@@ -4,7 +4,7 @@ import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.UserConnectBudget;
 
-public interface UserConnectBudgetService extends CRUDService<UserConnectBudget> {
+public interface UserConnectBudgetService extends Service<UserConnectBudget> {
     UserConnectBudget create(User user);
 
     boolean addConnectBudget(User user, Budget budget);

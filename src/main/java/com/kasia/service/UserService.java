@@ -3,10 +3,9 @@ package com.kasia.service;
 import com.kasia.model.User;
 
 import java.time.ZoneId;
-import java.util.Locale;
 
-public interface UserService extends CRUDService<User> {
-    User create(String email, String name, String password, ZoneId zoneId, Locale locale);
+public interface UserService extends Service<User> {
+    User create(String email, String name, String password, ZoneId zoneId);
 
     boolean isEmailUnique(String email);
 
@@ -14,9 +13,7 @@ public interface UserService extends CRUDService<User> {
 
     String crypt(String nonCryptPassword);
 
-    boolean isZoneIdExist(String zoneId);
-
-    boolean isLocaleExist(Locale locale);
+    ZoneId zoneIdOf(String zoneId);
 
     User getByName(String name);
 

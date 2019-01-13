@@ -5,7 +5,7 @@ import com.kasia.model.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public interface BudgetOperationService extends CRUDService<BudgetOperation> {
+public interface BudgetOperationService extends Service<BudgetOperation> {
     BudgetOperation create(Budget budget);
 
     boolean addOperation(BudgetOperation budgetOperation, Operation operation);

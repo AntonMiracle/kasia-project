@@ -6,7 +6,7 @@ import com.kasia.repository.imp.*;
 import javax.persistence.EntityManager;
 
 public class ModelRepositoryTestHelper {
-    final static String PERSISTENCE_TEST_UNIT_NAME = "testUnit";
+    final static String PERSISTENCE_TEST_UNIT_NAME = "test";
 
     static void persistElement(Element element, EntityManager em) {
         ElementRepositoryImp er = new ElementRepositoryImp();

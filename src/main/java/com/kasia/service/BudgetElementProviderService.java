@@ -2,7 +2,7 @@ package com.kasia.service;
 
 import com.kasia.model.*;
 
-public interface BudgetElementProviderService extends CRUDService<BudgetElementProvider> {
+public interface BudgetElementProviderService extends Service<BudgetElementProvider> {
     BudgetElement create(Budget budget);
 
     boolean addElementProvider(BudgetElementProvider budgetElementProvider, ElementProvider elementProvider);

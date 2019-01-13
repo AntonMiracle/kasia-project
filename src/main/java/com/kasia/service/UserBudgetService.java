@@ -4,7 +4,7 @@ import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.UserBudget;
 
-public interface UserBudgetService extends CRUDService<UserBudget> {
+public interface UserBudgetService extends Service<UserBudget> {
 
     UserBudget getByUserId(long id);
 
