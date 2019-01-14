@@ -1,47 +1,34 @@
 package com.kasia.repository;
 
 import com.kasia.model.BudgetElementProvider;
-import com.kasia.model.ElementProvider;
-import com.kasia.model.ModelTestHelper;
-import com.kasia.repository.imp.BudgetElementProviderRepositoryImp;
+import com.kasia.model.ModelTestData;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import java.util.HashSet;
 import java.util.Set;
 
-import static com.kasia.repository.ModelRepositoryTestHelper.PERSISTENCE_TEST_UNIT_NAME;
-import static com.kasia.repository.ModelRepositoryTestHelper.persistBudget;
-import static com.kasia.repository.ModelRepositoryTestHelper.persistElementProvider;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BudgetElementProviderRepositoryIT {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_TEST_UNIT_NAME);
-    private EntityManager em;
-    private EntityTransaction et;
-    private BudgetElementProviderRepositoryImp repository;
-
-    @Before
-    public void before() throws NamingException {
-        em = emf.createEntityManager();
-        et = em.getTransaction();
-        repository = new BudgetElementProviderRepositoryImp();
-        repository.setEm(em);
-    }
+public class BudgetElementProviderRepositoryIT extends ConfigurationRepositoryIT {
+    @Autowired
+    private BudgetElementProviderRepository repository;
+    @Autowired
+    private ElementProviderRepository providerRepository;
+    @Autowired
+    private BudgetRepository budgetRepository;
 
     @After
-    public void after() {
-        if (em != null) em.close();
+    public void cleanData() {
+        repository.findAll().forEach(model -> repository.delete(model));
+        budgetRepository.findAll().forEach(model -> budgetRepository.delete(model));
+        providerRepository.findAll().forEach(model -> providerRepository.delete(model));
     }
 
     @Test
-    public void save() throws Exception {
-        BudgetElementProvider budgetElementProvider = ModelTestHelper.getBudgetElementProvider1();
+    public void save() {
+        BudgetElementProvider budgetElementProvider = ModelTestData.getBudgetElementProvider1();
         assertThat(budgetElementProvider.getId() == 0).isTrue();
 
         saveForTest(budgetElementProvider);
@@ -50,24 +37,18 @@ public class BudgetElementProviderRepositoryIT {
     }
 
     private BudgetElementProvider saveForTest(BudgetElementProvider budgetElementProvider) {
-        et.begin();
-
-        for (ElementProvider provider : budgetElementProvider.getElementProviders()) {
-            persistElementProvider(provider, em);
-        }
-        persistBudget(budgetElementProvider.getBudget(), em);
-
+        budgetElementProvider.getElementProviders().forEach(providerRepository::save);
+        budgetRepository.save(budgetElementProvider.getBudget());
         repository.save(budgetElementProvider);
-        et.commit();
         return budgetElementProvider;
     }
 
     @Test
     public void getById() throws Exception {
-        BudgetElementProvider budgetElementProvider = saveForTest(ModelTestHelper.getBudgetElementProvider1());
+        BudgetElementProvider budgetElementProvider = saveForTest(ModelTestData.getBudgetElementProvider1());
         long id = budgetElementProvider.getId();
 
-        budgetElementProvider = repository.getById(id);
+        budgetElementProvider = repository.findById(id).get();
 
         assertThat(budgetElementProvider).isNotNull();
         assertThat(budgetElementProvider.getId()).isEqualTo(id);
@@ -75,23 +56,21 @@ public class BudgetElementProviderRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        BudgetElementProvider budgetElementProvider = saveForTest(ModelTestHelper.getBudgetElementProvider1());
+        BudgetElementProvider budgetElementProvider = saveForTest(ModelTestData.getBudgetElementProvider1());
 
-        et.begin();
         repository.delete(budgetElementProvider);
-        et.commit();
 
-        assertThat(repository.getById(budgetElementProvider.getId())).isNull();
+        assertThat(repository.findById(budgetElementProvider.getId()).isPresent()).isFalse();
     }
 
     @Test
     public void getAll() throws Exception {
-        saveForTest(ModelTestHelper.getBudgetElementProvider1());
-        saveForTest(ModelTestHelper.getBudgetElementProvider2());
+        saveForTest(ModelTestData.getBudgetElementProvider1());
+        saveForTest(ModelTestData.getBudgetElementProvider2());
+        Set<BudgetElementProvider> budgetElementProviders = new HashSet<>();
 
-        Set<BudgetElementProvider> budgetElementProviders = repository.getAll();
+        repository.findAll().forEach(budgetElementProviders::add);
 
-        assertThat(budgetElementProviders).isNotNull();
         assertThat(budgetElementProviders.size() == 2).isTrue();
     }
 }

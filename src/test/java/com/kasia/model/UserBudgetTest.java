@@ -11,8 +11,8 @@ public class UserBudgetTest {
     public void equalsAndHashCode() {
         EqualsVerifier.forClass(UserBudget.class)
                 .usingGetClass()
-                .withPrefabValues(Budget.class, ModelTestHelper.getBudget1(), ModelTestHelper.getBudget2())
-                .withPrefabValues(User.class, ModelTestHelper.getUser1(), ModelTestHelper.getUser2())
+                .withPrefabValues(Budget.class, ModelTestData.getBudget1(), ModelTestData.getBudget2())
+                .withPrefabValues(User.class, ModelTestData.getUser1(), ModelTestData.getUser2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)
                 .verify();

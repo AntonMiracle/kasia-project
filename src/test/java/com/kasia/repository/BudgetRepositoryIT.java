@@ -1,44 +1,28 @@
 package com.kasia.repository;
 
 import com.kasia.model.Budget;
-import com.kasia.model.ModelTestHelper;
-import com.kasia.repository.imp.BudgetRepositoryImp;
+import com.kasia.model.ModelTestData;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import java.util.HashSet;
 import java.util.Set;
 
-import static com.kasia.repository.ModelRepositoryTestHelper.PERSISTENCE_TEST_UNIT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BudgetRepositoryIT {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_TEST_UNIT_NAME);
-    private EntityManager em;
-    private EntityTransaction et;
-    private BudgetRepositoryImp repository;
-
-    @Before
-    public void before() throws NamingException {
-        em = emf.createEntityManager();
-        et = em.getTransaction();
-        repository = new BudgetRepositoryImp();
-        repository.setEm(em);
-    }
+public class BudgetRepositoryIT extends ConfigurationRepositoryIT {
+    @Autowired
+    private BudgetRepository repository;
 
     @After
-    public void after() {
-        if (em != null) em.close();
+    public void cleanData() {
+        repository.findAll().forEach(model -> repository.delete(model));
     }
 
     @Test
     public void save() throws Exception {
-        Budget budget = ModelTestHelper.getBudget1();
+        Budget budget = ModelTestData.getBudget1();
         assertThat(budget.getId() == 0).isTrue();
 
         saveForTest(budget);
@@ -47,18 +31,16 @@ public class BudgetRepositoryIT {
     }
 
     private Budget saveForTest(Budget budget) {
-        et.begin();
         repository.save(budget);
-        et.commit();
         return budget;
     }
 
     @Test
-    public void getById() throws Exception {
-        Budget budget = saveForTest(ModelTestHelper.getBudget1());
+    public void getById() {
+        Budget budget = saveForTest(ModelTestData.getBudget1());
         long id = budget.getId();
 
-        budget = repository.getById(id);
+        budget = repository.findById(id).get();
 
         assertThat(budget).isNotNull();
         assertThat(budget.getId()).isEqualTo(id);
@@ -66,24 +48,21 @@ public class BudgetRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        Budget budget = saveForTest(ModelTestHelper.getBudget1());
+        Budget budget = saveForTest(ModelTestData.getBudget1());
 
-        et.begin();
         repository.delete(budget);
-        et.commit();
 
-        assertThat(repository.getById(budget.getId())).isNull();
+        assertThat(repository.findById(budget.getId()).isPresent()).isFalse();
     }
 
     @Test
     public void getAll() throws Exception {
-        saveForTest(ModelTestHelper.getBudget1());
-        saveForTest(ModelTestHelper.getBudget2());
+        saveForTest(ModelTestData.getBudget1());
+        saveForTest(ModelTestData.getBudget2());
+        Set<Budget> budgets = new HashSet<>();
 
-        Set<Budget> budgets = repository.getAll();
+        repository.findAll().forEach(budgets::add);
 
-        assertThat(budgets).isNotNull();
         assertThat(budgets.size()).isEqualTo(2);
     }
-
 }

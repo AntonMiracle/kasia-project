@@ -12,8 +12,8 @@ public class BudgetElementTest {
 
         EqualsVerifier.forClass(BudgetElement.class)
                 .usingGetClass()
-                .withPrefabValues(Budget.class, ModelTestHelper.getBudget1(), ModelTestHelper.getBudget2())
-                .withPrefabValues(Element.class, ModelTestHelper.getElement1(), ModelTestHelper.getElement2())
+                .withPrefabValues(Budget.class, ModelTestData.getBudget1(), ModelTestData.getBudget2())
+                .withPrefabValues(Element.class, ModelTestData.getElement1(), ModelTestData.getElement2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)
                 .verify();

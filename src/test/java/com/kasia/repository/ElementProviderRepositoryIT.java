@@ -1,44 +1,28 @@
 package com.kasia.repository;
 
 import com.kasia.model.ElementProvider;
-import com.kasia.model.ModelTestHelper;
-import com.kasia.repository.imp.ElementProviderRepositoryImp;
+import com.kasia.model.ModelTestData;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import java.util.HashSet;
 import java.util.Set;
 
-import static com.kasia.repository.ModelRepositoryTestHelper.PERSISTENCE_TEST_UNIT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ElementProviderRepositoryIT {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_TEST_UNIT_NAME);
-    private EntityManager em;
-    private EntityTransaction et;
-    private ElementProviderRepositoryImp repository;
-
-    @Before
-    public void before() throws NamingException {
-        em = emf.createEntityManager();
-        et = em.getTransaction();
-        repository = new ElementProviderRepositoryImp();
-        repository.setEm(em);
-    }
+public class ElementProviderRepositoryIT extends ConfigurationRepositoryIT {
+    @Autowired
+    private ElementProviderRepository repository;
 
     @After
-    public void after() {
-        if (em != null) em.close();
+    public void cleanData() {
+        repository.findAll().forEach(model -> repository.delete(model));
     }
 
     @Test
-    public void save() throws Exception {
-        ElementProvider elementProvider = ModelTestHelper.getElementProvider1();
+    public void save() {
+        ElementProvider elementProvider = ModelTestData.getElementProvider1();
         assertThat(elementProvider.getId() == 0).isTrue();
 
         saveForTest(elementProvider);
@@ -47,18 +31,16 @@ public class ElementProviderRepositoryIT {
     }
 
     private ElementProvider saveForTest(ElementProvider elementProvider) {
-        et.begin();
         repository.save(elementProvider);
-        et.commit();
         return elementProvider;
     }
 
     @Test
     public void getById() throws Exception {
-        ElementProvider elementProvider = saveForTest(ModelTestHelper.getElementProvider1());
+        ElementProvider elementProvider = saveForTest(ModelTestData.getElementProvider1());
         long id = elementProvider.getId();
 
-        elementProvider = repository.getById(id);
+        elementProvider = repository.findById(id).get();
 
         assertThat(elementProvider).isNotNull();
         assertThat(elementProvider.getId()).isEqualTo(id);
@@ -66,24 +48,22 @@ public class ElementProviderRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        ElementProvider elementProvider = ModelTestHelper.getElementProvider1();
+        ElementProvider elementProvider = ModelTestData.getElementProvider1();
 
-        et.begin();
         repository.delete(elementProvider);
-        et.commit();
 
-        assertThat(repository.getById(elementProvider.getId())).isNull();
+        assertThat(repository.findById(elementProvider.getId()).isPresent()).isFalse();
     }
 
     @Test
     public void getAll() throws Exception {
-        saveForTest(ModelTestHelper.getElementProvider1());
-        saveForTest(ModelTestHelper.getElementProvider2());
+        saveForTest(ModelTestData.getElementProvider1());
+        saveForTest(ModelTestData.getElementProvider2());
+        Set<ElementProvider> providers = new HashSet<>();
 
-        Set<ElementProvider> elementProviders = repository.getAll();
+        repository.findAll().forEach(providers::add);
 
-        assertThat(elementProviders).isNotNull();
-        assertThat(elementProviders.size() == 2).isTrue();
+        assertThat(providers.size() == 2).isTrue();
     }
 
 }

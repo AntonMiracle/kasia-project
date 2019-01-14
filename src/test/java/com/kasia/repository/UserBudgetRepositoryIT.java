@@ -1,45 +1,34 @@
 package com.kasia.repository;
 
-import com.kasia.model.*;
-import com.kasia.repository.imp.UserBudgetRepositoryImp;
+import com.kasia.model.ModelTestData;
+import com.kasia.model.UserBudget;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import java.util.HashSet;
 import java.util.Set;
 
-import static com.kasia.repository.ModelRepositoryTestHelper.PERSISTENCE_TEST_UNIT_NAME;
-import static com.kasia.repository.ModelRepositoryTestHelper.persistBudget;
-import static com.kasia.repository.ModelRepositoryTestHelper.persistUser;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserBudgetRepositoryIT {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_TEST_UNIT_NAME);
-    private EntityManager em;
-    private EntityTransaction et;
-    private UserBudgetRepositoryImp repository;
-
-    @Before
-    public void before() throws NamingException {
-        em = emf.createEntityManager();
-        et = em.getTransaction();
-        repository = new UserBudgetRepositoryImp();
-        repository.setEm(em);
-    }
+public class UserBudgetRepositoryIT extends ConfigurationRepositoryIT {
+    @Autowired
+    private UserBudgetRepository repository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private BudgetRepository budgetRepository;
 
     @After
-    public void after() {
-        if (em != null) em.close();
+    public void cleanData() {
+        repository.findAll().forEach(model -> repository.delete(model));
+        budgetRepository.findAll().forEach(model -> budgetRepository.delete(model));
+        userRepository.findAll().forEach(model -> userRepository.delete(model));
     }
 
     @Test
-    public void save() throws Exception {
-        UserBudget userBudget = ModelTestHelper.getUserBudget1();
+    public void save() {
+        UserBudget userBudget = ModelTestData.getUserBudget1();
         assertThat(userBudget.getId() == 0).isTrue();
 
         saveForTest(userBudget);
@@ -48,24 +37,18 @@ public class UserBudgetRepositoryIT {
     }
 
     private UserBudget saveForTest(UserBudget userBudget) {
-        et.begin();
-
-        for (Budget budget : userBudget.getBudgets()) {
-            persistBudget(budget, em);
-        }
-        persistUser(userBudget.getUser(), em);
-
+        userBudget.getBudgets().forEach(budgetRepository::save);
+        userRepository.save(userBudget.getUser());
         repository.save(userBudget);
-        et.commit();
         return userBudget;
     }
 
     @Test
     public void getById() throws Exception {
-        UserBudget userBudget = saveForTest(ModelTestHelper.getUserBudget1());
+        UserBudget userBudget = saveForTest(ModelTestData.getUserBudget1());
         long id = userBudget.getId();
 
-        userBudget = repository.getById(id);
+        userBudget = repository.findById(id).get();
 
         assertThat(userBudget).isNotNull();
         assertThat(userBudget.getId()).isEqualTo(id);
@@ -73,23 +56,21 @@ public class UserBudgetRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        UserBudget userBudget = saveForTest(ModelTestHelper.getUserBudget1());
+        UserBudget userBudget = saveForTest(ModelTestData.getUserBudget1());
 
-        et.begin();
         repository.delete(userBudget);
-        et.commit();
 
-        assertThat(repository.getById(userBudget.getId())).isNull();
+        assertThat(repository.findById(userBudget.getId()).isPresent()).isFalse();
     }
 
     @Test
     public void getAll() throws Exception {
-        saveForTest(ModelTestHelper.getUserBudget1());
-        saveForTest(ModelTestHelper.getUserBudget2());
+        saveForTest(ModelTestData.getUserBudget1());
+        saveForTest(ModelTestData.getUserBudget2());
+        Set<UserBudget> userBudgets = new HashSet<>();
 
-        Set<UserBudget> userBudgets = repository.getAll();
+        repository.findAll().forEach(userBudgets::add);
 
-        assertThat(userBudgets).isNotNull();
         assertThat(userBudgets.size() == 2).isTrue();
     }
 }

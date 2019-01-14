@@ -1,64 +1,51 @@
 package com.kasia.repository;
 
-import com.kasia.model.ModelTestHelper;
+import com.kasia.model.ModelTestData;
 import com.kasia.model.User;
-import com.kasia.repository.imp.UserRepositoryImp;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import java.util.HashSet;
 import java.util.Set;
 
-import static com.kasia.repository.ModelRepositoryTestHelper.PERSISTENCE_TEST_UNIT_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserRepositoryIT {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_TEST_UNIT_NAME);
-    private EntityManager em;
-    private EntityTransaction et;
-    private UserRepositoryImp repository;
-
-    @Before
-    public void before() throws NamingException {
-        em = emf.createEntityManager();
-        et = em.getTransaction();
-        repository = new UserRepositoryImp();
-        repository.setEm(em);
-
-    }
+public class UserRepositoryIT extends ConfigurationRepositoryIT {
+    @Autowired
+    private UserRepository repository;
 
     @After
-    public void after() {
-        if (em != null) em.close();
+    public void cleanData() {
+        repository.findAll().forEach(model -> repository.delete(model));
     }
 
     @Test
-    public void save() throws Exception {
-        User user = ModelTestHelper.getUser1();
+    public void repositoryIsNotNull() {
+        assertThat(repository).isNotNull();
+    }
+
+    @Test
+    public void save() {
+        User user = ModelTestData.getUser1();
         assertThat(user.getId() == 0).isTrue();
 
         saveForTest(user);
+
         assertThat(user.getId() > 0).isTrue();
     }
 
     private User saveForTest(User user) {
-        et.begin();
         repository.save(user);
-        et.commit();
         return user;
     }
 
     @Test
     public void getById() throws Exception {
-        User user = saveForTest(ModelTestHelper.getUser1());
+        User user = saveForTest(ModelTestData.getUser1());
         long id = user.getId();
 
-        user = repository.getById(id);
+        user = repository.findById(id).get();
 
         assertThat(user).isNotNull();
         assertThat(user.getId()).isEqualTo(id);
@@ -66,21 +53,20 @@ public class UserRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        User user = saveForTest(ModelTestHelper.getUser1());
+        User user = saveForTest(ModelTestData.getUser1());
 
-        et.begin();
         repository.delete(user);
-        et.commit();
 
-        assertThat(repository.getById(user.getId())).isNull();
+        assertThat(repository.findById(user.getId()).isPresent()).isFalse();
     }
 
     @Test
     public void getAll() throws Exception {
-        saveForTest(ModelTestHelper.getUser1());
-        saveForTest(ModelTestHelper.getUser2());
+        saveForTest(ModelTestData.getUser1());
+        saveForTest(ModelTestData.getUser2());
+        Set<User> users = new HashSet<>();
 
-        Set<User> users = repository.getAll();
+        repository.findAll().forEach(users::add);
 
         assertThat(users).isNotNull();
         assertThat(users.size() == 2).isTrue();
@@ -88,12 +74,11 @@ public class UserRepositoryIT {
 
     @Test
     public void getByEmail() {
-        User user = ModelTestHelper.getUser1();
-        String email = "opps@gmail.com";
-        user.setEmail(email);
+        User user = ModelTestData.getUser1();
+        String email = user.getEmail();
         saveForTest(user);
 
-        user = repository.getByEmail(email);
+        user = repository.findByEmail(email).get();
 
         assertThat(user).isNotNull();
         assertThat(user.getEmail()).isEqualTo(email);
@@ -102,24 +87,23 @@ public class UserRepositoryIT {
 
     @Test
     public void whenEmailNotExistGetByEmailReturnNull() {
-        assertThat(repository.getByEmail("iiii@gmail.com")).isNull();
+        assertThat(repository.findByEmail(ModelTestData.getUser1().getEmail()).isPresent()).isFalse();
     }
 
     @Test
     public void getByName() {
-        User user = ModelTestHelper.getUser1();
-        String name = "someName";
-        user.setName(name);
+        User user = ModelTestData.getUser1();
+        String name = user.getName();
         saveForTest(user);
 
-        user = repository.getByName(name);
+        user = repository.findByName(name).get();
 
-        assertThat(user).isNotNull();
         assertThat(user.getName()).isEqualTo(name);
     }
 
     @Test
     public void whenNameNotExistGetByNameReturnNull() {
-        assertThat(repository.getByName("iiii@gmail.com")).isNull();
+        assertThat(repository.findByName(ModelTestData.getUser1().getName()).isPresent()).isFalse();
     }
+
 }

@@ -1,46 +1,39 @@
 package com.kasia.repository;
 
-import com.kasia.model.ModelTestHelper;
+import com.kasia.model.ModelTestData;
 import com.kasia.model.Operation;
-import com.kasia.repository.imp.OperationRepositoryImp;
+import com.kasia.model.User;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import java.util.HashSet;
 import java.util.Set;
 
-import static com.kasia.repository.ModelRepositoryTestHelper.PERSISTENCE_TEST_UNIT_NAME;
-import static com.kasia.repository.ModelRepositoryTestHelper.persistElement;
-import static com.kasia.repository.ModelRepositoryTestHelper.persistElementProvider;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OperationRepositoryIT {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_TEST_UNIT_NAME);
-    private EntityManager em;
-    private EntityTransaction et;
-    private OperationRepositoryImp repository;
-
-    @Before
-    public void before() throws NamingException {
-        em = emf.createEntityManager();
-        et = em.getTransaction();
-        repository = new OperationRepositoryImp();
-        repository.setEm(em);
-    }
+public class OperationRepositoryIT extends ConfigurationRepositoryIT {
+    @Autowired
+    private OperationRepository repository;
+    @Autowired
+    private ElementRepository elementRepository;
+    @Autowired
+    private ElementProviderRepository providerRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @After
-    public void after() {
-        if (em != null) em.close();
+    public void cleanData() {
+        repository.findAll().forEach(model -> repository.delete(model));
+        elementRepository.findAll().forEach(model -> elementRepository.delete(model));
+        providerRepository.findAll().forEach(model -> providerRepository.delete(model));
+        userRepository.findAll().forEach(model -> userRepository.delete(model));
     }
 
+
     @Test
-    public void save() throws Exception {
-        Operation operation = ModelTestHelper.getOperation1();
+    public void save() {
+        Operation operation = ModelTestData.getOperation1();
         assertThat(operation.getId() == 0).isTrue();
 
         saveForTest(operation);
@@ -49,21 +42,20 @@ public class OperationRepositoryIT {
     }
 
     private Operation saveForTest(Operation operation) {
-        et.begin();
-        persistElement(operation.getElement(), em);
-        persistElementProvider(operation.getElementProvider(), em);
+        elementRepository.save(operation.getElement());
+        providerRepository.save(operation.getElementProvider());
+        userRepository.save(operation.getUser());
         repository.save(operation);
-        et.commit();
         return operation;
     }
 
 
     @Test
     public void getById() throws Exception {
-        Operation operation = saveForTest(ModelTestHelper.getOperation1());
+        Operation operation = saveForTest(ModelTestData.getOperation1());
         long id = operation.getId();
 
-        operation = repository.getById(id);
+        operation = repository.findById(id).get();
 
         assertThat(operation).isNotNull();
         assertThat(operation.getId()).isEqualTo(id);
@@ -71,24 +63,44 @@ public class OperationRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        Operation operation = saveForTest(ModelTestHelper.getOperation1());
+        Operation operation = saveForTest(ModelTestData.getOperation1());
 
-        et.begin();
         repository.delete(operation);
-        et.commit();
 
-        assertThat(repository.getById(operation.getId())).isNull();
+        assertThat(repository.findById(operation.getId()).isPresent()).isFalse();
     }
 
     @Test
     public void getAll() throws Exception {
-        saveForTest(ModelTestHelper.getOperation1());
-        saveForTest(ModelTestHelper.getOperation2());
+        saveForTest(ModelTestData.getOperation1());
+        saveForTest(ModelTestData.getOperation2());
+        Set<Operation> operations = new HashSet<>();
 
-        Set<Operation> operations = repository.getAll();
+        repository.findAll().forEach(operations::add);
 
-        assertThat(operations).isNotNull();
         assertThat(operations.size() == 2).isTrue();
+    }
+
+    @Test
+    public void findByUserName() {
+        Operation operation = saveForTest(ModelTestData.getOperation1());
+        User user = operation.getUser();
+        Set<Operation> operations = new HashSet<>();
+
+        repository.findByUserName(user.getName()).forEach(operations::add);
+
+        assertThat(operations.size() == 1).isTrue();
+    }
+
+    @Test
+    public void findByUserId() {
+        Operation operation = saveForTest(ModelTestData.getOperation1());
+        User user = operation.getUser();
+        Set<Operation> operations = new HashSet<>();
+
+        repository.findByUserId(user.getId()).forEach(operations::add);
+
+        assertThat(operations.size() == 1).isTrue();
     }
 
 }

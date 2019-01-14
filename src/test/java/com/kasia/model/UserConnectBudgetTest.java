@@ -11,8 +11,8 @@ public class UserConnectBudgetTest {
     public void equals() throws Exception {
         EqualsVerifier.forClass(UserConnectBudget.class)
                 .usingGetClass()
-                .withPrefabValues(User.class, ModelTestHelper.getUser1(), ModelTestHelper.getUser2())
-                .withPrefabValues(Budget.class, ModelTestHelper.getBudget1(), ModelTestHelper.getBudget2())
+                .withPrefabValues(User.class, ModelTestData.getUser1(), ModelTestData.getUser2())
+                .withPrefabValues(Budget.class, ModelTestData.getBudget1(), ModelTestData.getBudget2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)
                 .verify();

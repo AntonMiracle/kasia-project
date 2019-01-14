@@ -1,45 +1,34 @@
 package com.kasia.repository;
 
-import com.kasia.model.*;
-import com.kasia.repository.imp.BudgetElementRepositoryImp;
+import com.kasia.model.BudgetElement;
+import com.kasia.model.ModelTestData;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import java.util.HashSet;
 import java.util.Set;
 
-import static com.kasia.repository.ModelRepositoryTestHelper.PERSISTENCE_TEST_UNIT_NAME;
-import static com.kasia.repository.ModelRepositoryTestHelper.persistBudget;
-import static com.kasia.repository.ModelRepositoryTestHelper.persistElement;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BudgetElementRepositoryIT {
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_TEST_UNIT_NAME);
-    private EntityManager em;
-    private EntityTransaction et;
-    private BudgetElementRepositoryImp repository;
-
-    @Before
-    public void before() throws NamingException {
-        em = emf.createEntityManager();
-        et = em.getTransaction();
-        repository = new BudgetElementRepositoryImp();
-        repository.setEm(em);
-    }
+public class BudgetElementRepositoryIT extends ConfigurationRepositoryIT {
+    @Autowired
+    private BudgetElementRepository repository;
+    @Autowired
+    private ElementRepository elementRepository;
+    @Autowired
+    private BudgetRepository budgetRepository;
 
     @After
-    public void after() {
-        if (em != null) em.close();
+    public void cleanData() {
+        repository.findAll().forEach(model -> repository.delete(model));
+        budgetRepository.findAll().forEach(model -> budgetRepository.delete(model));
+        elementRepository.findAll().forEach(model -> elementRepository.delete(model));
     }
 
     @Test
-    public void save() throws Exception {
-        BudgetElement budgetElement = ModelTestHelper.getBudgetElement1();
+    public void save() {
+        BudgetElement budgetElement = ModelTestData.getBudgetElement1();
         assertThat(budgetElement.getId() == 0).isTrue();
 
         saveForTest(budgetElement);
@@ -48,24 +37,18 @@ public class BudgetElementRepositoryIT {
     }
 
     private BudgetElement saveForTest(BudgetElement budgetElement) {
-        et.begin();
-
-        for (Element element : budgetElement.getElements()) {
-            persistElement(element, em);
-        }
-        persistBudget(budgetElement.getBudget(), em);
-
+        budgetElement.getElements().forEach(elementRepository::save);
+        budgetRepository.save(budgetElement.getBudget());
         repository.save(budgetElement);
-        et.commit();
         return budgetElement;
     }
 
     @Test
     public void getById() throws Exception {
-        BudgetElement budgetElement = saveForTest(ModelTestHelper.getBudgetElement1());
+        BudgetElement budgetElement = saveForTest(ModelTestData.getBudgetElement1());
         long id = budgetElement.getId();
 
-        budgetElement = repository.getById(id);
+        budgetElement = repository.findById(id).get();
 
         assertThat(budgetElement).isNotNull();
         assertThat(budgetElement.getId()).isEqualTo(id);
@@ -73,23 +56,21 @@ public class BudgetElementRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        BudgetElement budgetElement = saveForTest(ModelTestHelper.getBudgetElement1());
+        BudgetElement budgetElement = saveForTest(ModelTestData.getBudgetElement1());
 
-        et.begin();
         repository.delete(budgetElement);
-        et.commit();
 
-        assertThat(repository.getById(budgetElement.getId())).isNull();
+        assertThat(repository.findById(budgetElement.getId()).isPresent()).isFalse();
     }
 
     @Test
     public void getAll() throws Exception {
-        saveForTest(ModelTestHelper.getBudgetElement1());
-        saveForTest(ModelTestHelper.getBudgetElement2());
+        saveForTest(ModelTestData.getBudgetElement1());
+        saveForTest(ModelTestData.getBudgetElement2());
+        Set<BudgetElement> budgetElements = new HashSet<>();
 
-        Set<BudgetElement> budgetElements = repository.getAll();
+        repository.findAll().forEach(budgetElements::add);
 
-        assertThat(budgetElements).isNotNull();
         assertThat(budgetElements.size() == 2).isTrue();
     }
 

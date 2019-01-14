@@ -11,9 +11,9 @@ public class OperationTest {
     public void equalsAndHashCode() throws Exception {
         EqualsVerifier.forClass(Operation.class)
                 .usingGetClass()
-                .withPrefabValues(Element.class, ModelTestHelper.getElement1(), ModelTestHelper.getElement2())
-                .withPrefabValues(ElementProvider.class, ModelTestHelper.getElementProvider1(), ModelTestHelper.getElementProvider2())
-                .withPrefabValues(Price.class, ModelTestHelper.getPrice1(), ModelTestHelper.getPrice2())
+                .withPrefabValues(Element.class, ModelTestData.getElement1(), ModelTestData.getElement2())
+                .withPrefabValues(ElementProvider.class, ModelTestData.getElementProvider1(), ModelTestData.getElementProvider2())
+                .withPrefabValues(Price.class, ModelTestData.getPrice1(), ModelTestData.getPrice2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)
                 .verify();

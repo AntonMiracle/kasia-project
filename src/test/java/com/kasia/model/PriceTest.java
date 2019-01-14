@@ -11,7 +11,7 @@ public class PriceTest {
     public void equals() throws Exception {
         EqualsVerifier.forClass(Price.class)
                 .usingGetClass()
-                .withPrefabValues(Currency.class, ModelTestHelper.getBudgetCurrency1(), ModelTestHelper.getBudgetCurrency2())
+                .withPrefabValues(Currency.class, ModelTestData.getBudgetCurrency1(), ModelTestData.getBudgetCurrency2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .verify();
     }

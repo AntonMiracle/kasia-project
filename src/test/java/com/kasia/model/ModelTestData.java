@@ -7,7 +7,7 @@ import java.util.Currency;
 import java.util.HashSet;
 import java.util.Set;
 
-final public class ModelTestHelper {
+final public class ModelTestData {
     public static Price getPrice1() {
         return new Price(BigDecimal.ZERO, Currency.getInstance("USD"));
     }
@@ -45,11 +45,11 @@ final public class ModelTestHelper {
     }
 
     public static Operation getOperation1() {
-        return new Operation(getElement1(), getElementProvider1(), getPrice1(), getNow());
+        return new Operation(getUser1(), getElement1(), getElementProvider1(), getPrice1(), getNow());
     }
 
     public static Operation getOperation2() {
-        return new Operation(getElement2(), getElementProvider2(), getPrice2(), getNow());
+        return new Operation(getUser2(), getElement2(), getElementProvider2(), getPrice2(), getNow());
     }
 
     public static Currency getBudgetCurrency1() {
