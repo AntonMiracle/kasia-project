@@ -58,4 +58,19 @@ public class ElementProviderValidationServiceIT {
         assertThat(validationService.isValid(elementProvider5)).isFalse();
         assertThat(validationService.isValid(elementProvider6)).isFalse();
     }
+
+    @Test
+    public void descriptionIsValid() {
+        int maxLength = 250;
+        StringBuilder description = new StringBuilder();
+        while (maxLength-- > 0) description.append("a");
+
+        ElementProvider elementProvider1 = ModelTestData.getElementProvider1();
+        elementProvider1.setDescription(description.toString());
+        ElementProvider elementProvider2 = ModelTestData.getElementProvider1();
+        elementProvider2.setDescription("aa");
+
+        assertThat(validationService.isValid(elementProvider1)).isTrue();
+        assertThat(validationService.isValid(elementProvider2)).isTrue();
+    }
 }

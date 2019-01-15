@@ -4,4 +4,5 @@
     <logger name="org.springframework" level="ERROR"/>
     <logger name="org.hibernate" level="WARN"/>
     <logger name="com.zaxxer.hikari" level="WARN"/>
+    <logger name="com.kasia" level="WARN"/>
 </configuration>

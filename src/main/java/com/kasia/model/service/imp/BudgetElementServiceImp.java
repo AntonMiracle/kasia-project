@@ -23,7 +23,12 @@ public class BudgetElementServiceImp implements BudgetElementService, Validation
     }
 
     @Override
-    public BudgetElement getById(long id) {
+    public BudgetElement findById(long id) {
+        return null;
+    }
+
+    @Override
+    public Set<BudgetElement> findAll() {
         return null;
     }
 

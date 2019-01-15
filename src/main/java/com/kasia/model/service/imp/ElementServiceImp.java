@@ -7,6 +7,8 @@ import com.kasia.model.service.ElementService;
 import com.kasia.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class ElementServiceImp implements ElementService, ValidationService<Element>{
     @Override
@@ -20,7 +22,12 @@ public class ElementServiceImp implements ElementService, ValidationService<Elem
     }
 
     @Override
-    public Element getById(long id) {
+    public Element findById(long id) {
+        return null;
+    }
+
+    @Override
+    public Set<Element> findAll() {
         return null;
     }
 

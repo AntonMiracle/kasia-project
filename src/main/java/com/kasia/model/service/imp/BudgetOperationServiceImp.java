@@ -21,7 +21,12 @@ public class BudgetOperationServiceImp implements BudgetOperationService, Valida
     }
 
     @Override
-    public BudgetOperation getById(long id) {
+    public BudgetOperation findById(long id) {
+        return null;
+    }
+
+    @Override
+    public Set<BudgetOperation> findAll() {
         return null;
     }
 

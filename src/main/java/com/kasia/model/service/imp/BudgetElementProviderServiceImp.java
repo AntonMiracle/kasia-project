@@ -8,6 +8,8 @@ import com.kasia.model.service.BudgetElementProviderService;
 import com.kasia.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class BudgetElementProviderServiceImp implements BudgetElementProviderService, ValidationService<BudgetElementProvider> {
     @Override
@@ -21,7 +23,12 @@ public class BudgetElementProviderServiceImp implements BudgetElementProviderSer
     }
 
     @Override
-    public BudgetElementProvider getById(long id) {
+    public BudgetElementProvider findById(long id) {
+        return null;
+    }
+
+    @Override
+    public Set<BudgetElementProvider> findAll() {
         return null;
     }
 

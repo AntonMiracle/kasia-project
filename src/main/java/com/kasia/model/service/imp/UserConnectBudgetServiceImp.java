@@ -7,6 +7,8 @@ import com.kasia.model.service.UserConnectBudgetService;
 import com.kasia.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class UserConnectBudgetServiceImp implements UserConnectBudgetService, ValidationService<UserConnectBudget> {
     @Override
@@ -20,7 +22,12 @@ public class UserConnectBudgetServiceImp implements UserConnectBudgetService, Va
     }
 
     @Override
-    public UserConnectBudget getById(long id) {
+    public UserConnectBudget findById(long id) {
+        return null;
+    }
+
+    @Override
+    public Set<UserConnectBudget> findAll() {
         return null;
     }
 

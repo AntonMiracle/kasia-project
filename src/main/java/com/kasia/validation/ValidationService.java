@@ -12,7 +12,7 @@ public interface ValidationService<T extends Model> {
     String PATTERN_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
     String PATTERN_NAME = "^\\S{2,16}$";
     String PATTERN_EMAIL = "^\\S+@\\S+$";
-    String PATTERN_DESCRIPTION = "^\\S.*\\S$";
+    String PATTERN_DESCRIPTION = "^(?=\\S.*\\S).{2,250}$";
 
     default boolean isValid(T model) {
         if (model == null) return true;

@@ -1,6 +1,7 @@
 package com.kasia.model;
 
 import com.kasia.validation.ValidationService;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;

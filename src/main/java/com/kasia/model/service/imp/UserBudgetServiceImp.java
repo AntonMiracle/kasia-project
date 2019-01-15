@@ -7,6 +7,8 @@ import com.kasia.model.service.UserBudgetService;
 import com.kasia.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class UserBudgetServiceImp implements UserBudgetService, ValidationService<UserBudget> {
     @Override
@@ -20,7 +22,12 @@ public class UserBudgetServiceImp implements UserBudgetService, ValidationServic
     }
 
     @Override
-    public UserBudget getById(long id) {
+    public UserBudget findById(long id) {
+        return null;
+    }
+
+    @Override
+    public Set<UserBudget> findAll() {
         return null;
     }
 

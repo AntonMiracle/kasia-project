@@ -8,6 +8,8 @@ import com.kasia.model.service.OperationService;
 import com.kasia.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 public class OperationServiceImp implements OperationService, ValidationService<Operation> {
     @Override
@@ -21,7 +23,12 @@ public class OperationServiceImp implements OperationService, ValidationService<
     }
 
     @Override
-    public Operation getById(long id) {
+    public Operation findById(long id) {
+        return null;
+    }
+
+    @Override
+    public Set<Operation> findAll() {
         return null;
     }
 

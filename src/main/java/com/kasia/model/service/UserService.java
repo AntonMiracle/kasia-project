@@ -15,7 +15,7 @@ public interface UserService extends Service<User> {
 
     ZoneId zoneIdOf(String zoneId);
 
-    User getByName(String name);
+    User findByName(String name);
 
-    User getByEmail(String email);
+    User findByEmail(String email);
 }
