@@ -11,19 +11,19 @@ import java.util.Set;
 
 final public class ModelTestData {
     public static Balance getBalance1() {
-        return new Balance(BigDecimal.ZERO, Currencies.EUR.getCurrency(), getNow());
+        return new Balance(BigDecimal.ZERO, Currencies.EUR, getNow());
     }
 
     public static Balance getBalance2() {
-        return new Balance(BigDecimal.TEN, Currencies.USD.getCurrency(), getNow());
+        return new Balance(BigDecimal.valueOf(-0.01), Currencies.USD, getNow());
     }
 
     public static Price getPrice1() {
-        return new Price(BigDecimal.ZERO, Currencies.PLN.getCurrency());
+        return new Price(BigDecimal.ZERO, Currencies.PLN);
     }
 
     public static Price getPrice2() {
-        return new Price(BigDecimal.TEN, Currencies.UAH.getCurrency());
+        return new Price(BigDecimal.TEN, Currencies.UAH);
     }
 
     public static Budget getBudget1() {
