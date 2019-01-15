@@ -10,20 +10,28 @@ import java.util.HashSet;
 import java.util.Set;
 
 final public class ModelTestData {
+    public static Balance getBalance1() {
+        return new Balance(BigDecimal.ZERO, Currencies.EUR.getCurrency(), getNow());
+    }
+
+    public static Balance getBalance2() {
+        return new Balance(BigDecimal.TEN, Currencies.USD.getCurrency(), getNow());
+    }
+
     public static Price getPrice1() {
-        return new Price(BigDecimal.ZERO, Currency.getInstance("USD"));
+        return new Price(BigDecimal.ZERO, Currencies.PLN.getCurrency());
     }
 
     public static Price getPrice2() {
-        return new Price(BigDecimal.TEN, Currency.getInstance("USD"));
+        return new Price(BigDecimal.TEN, Currencies.UAH.getCurrency());
     }
 
     public static Budget getBudget1() {
-        return new Budget("name1", getPrice1(), LocalDateTime.now());
+        return new Budget("name1", getBalance1(), LocalDateTime.now());
     }
 
     public static Budget getBudget2() {
-        return new Budget("name2", getPrice2(), LocalDateTime.now());
+        return new Budget("name2", getBalance2(), LocalDateTime.now());
     }
 
     public static Element getElement1() {

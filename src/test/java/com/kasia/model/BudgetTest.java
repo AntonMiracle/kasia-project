@@ -13,7 +13,7 @@ public class BudgetTest {
 
         EqualsVerifier.forClass(Budget.class)
                 .usingGetClass()
-                .withPrefabValues(Price.class, ModelTestData.getPrice1(), ModelTestData.getPrice2())
+                .withPrefabValues(Balance.class, ModelTestData.getBalance1(), ModelTestData.getBalance2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)
                 .verify();

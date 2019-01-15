@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserBudgetSpringForTest {
+public class UserBudgetRepositoryIT {
     @Autowired
     private UserBudgetRepository repository;
     @Autowired

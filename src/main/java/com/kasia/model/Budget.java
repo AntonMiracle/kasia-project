@@ -14,18 +14,28 @@ public class Budget implements Model {
     private String name;
     @NotNull
     @Embedded
-    private Price balance;
+    private Balance balance;
     @NotNull
     @PastOrPresent
     private LocalDateTime createOn;
 
-    public Budget(String name, Price balance, LocalDateTime createOn) {
+    public Budget(String name, Balance balance, LocalDateTime createOn) {
         this.name = name;
         this.balance = balance;
         this.createOn = createOn;
     }
 
     public Budget() {
+    }
+
+    @Override
+    public String toString() {
+        return "Budget{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", balance=" + balance +
+                ", createOn=" + createOn +
+                '}';
     }
 
     @Override
@@ -50,16 +60,6 @@ public class Budget implements Model {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Budget{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", balance=" + balance +
-                ", createOn=" + createOn +
-                '}';
-    }
-
     public String getName() {
         return name;
     }
@@ -68,11 +68,11 @@ public class Budget implements Model {
         this.name = name;
     }
 
-    public Price getBalance() {
+    public Balance getBalance() {
         return balance;
     }
 
-    public void setBalance(Price balance) {
+    public void setBalance(Balance balance) {
         this.balance = balance;
     }
 
