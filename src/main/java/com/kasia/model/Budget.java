@@ -1,6 +1,7 @@
 package com.kasia.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -8,9 +9,14 @@ public class Budget implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @NotBlank
+    @Pattern(regexp = "^\\S{2,16}$")
     private String name;
+    @NotNull
     @Embedded
     private Price balance;
+    @NotNull
+    @PastOrPresent
     private LocalDateTime createOn;
 
     public Budget(String name, Price balance, LocalDateTime createOn) {

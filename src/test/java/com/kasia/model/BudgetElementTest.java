@@ -1,5 +1,6 @@
 package com.kasia.model;
 
+import com.kasia.ModelTestData;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 import org.junit.Test;

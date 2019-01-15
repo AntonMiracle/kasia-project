@@ -1,6 +1,9 @@
 package com.kasia.model;
 
+import com.kasia.validation.ValidationService;
+
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
@@ -11,10 +14,19 @@ public class User implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @NotBlank
+    @Pattern(regexp = ValidationService.PATTERN_EMAIL)
     private String email;
+    @NotBlank
+    @Pattern(regexp = ValidationService.PATTERN_NAME)
     private String name;
+    @NotBlank
+    @Pattern(regexp = ValidationService.PATTERN_PASSWORD)
     private String password;
+    @NotNull
     private ZoneId zoneId;
+    @NotNull
+    @PastOrPresent
     private LocalDateTime createOn;
 
     public User() {

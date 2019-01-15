@@ -1,16 +1,24 @@
 package com.kasia.model;
 
+import com.kasia.validation.ValidationService;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class ElementProvider implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @NotBlank
+    @Pattern(regexp = ValidationService.PATTERN_NAME)
     private String name;
+    @NotBlank
+    @Pattern(regexp = ValidationService.PATTERN_DESCRIPTION)
     private String description;
 
     public ElementProvider(String name, String description) {

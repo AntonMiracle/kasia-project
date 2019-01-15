@@ -1,6 +1,7 @@
 package com.kasia.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -8,8 +9,10 @@ public class BudgetElementProvider implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     private Budget budget;
+    @NotNull
     @OneToMany(fetch = FetchType.EAGER)
     private Set<ElementProvider> elementProviders;
 

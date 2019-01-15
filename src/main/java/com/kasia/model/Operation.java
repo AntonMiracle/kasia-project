@@ -1,6 +1,8 @@
 package com.kasia.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDateTime;
 
 @Entity
@@ -8,14 +10,20 @@ public class Operation implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     private Element element;
+    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     private ElementProvider elementProvider;
+    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
+    @NotNull
     @Embedded
     private Price price;
+    @NotNull
+    @PastOrPresent
     private LocalDateTime createOn;
 
     public Operation(User user, Element element, ElementProvider elementProvider, Price price, LocalDateTime createOn) {

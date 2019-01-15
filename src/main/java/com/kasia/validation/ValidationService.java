@@ -1,0 +1,25 @@
+package com.kasia.validation;
+
+import com.kasia.model.Model;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.Set;
+
+public interface ValidationService<T extends Model> {
+    String PATTERN_PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+    String PATTERN_NAME = "^\\S{2,16}$";
+    String PATTERN_EMAIL = "^\\S+@\\S+$";
+    String PATTERN_DESCRIPTION = "^\\S.*\\S$";
+
+    default boolean isValid(T model) {
+        if (model == null) return true;
+
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Model>> violations = validator.validate(model);
+        return violations.size() == 0;
+    }
+}
