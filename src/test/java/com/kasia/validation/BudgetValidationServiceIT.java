@@ -1,14 +1,18 @@
 package com.kasia.validation;
 
-import com.kasia.ConfigurationSpringForTest;
 import com.kasia.ModelTestData;
 import com.kasia.model.Budget;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BudgetValidationServiceIT extends ConfigurationSpringForTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class BudgetValidationServiceIT {
     @Autowired
     private ValidationService<Budget> validationService;
 

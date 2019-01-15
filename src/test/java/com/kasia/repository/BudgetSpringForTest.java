@@ -1,19 +1,23 @@
 package com.kasia.repository;
 
-import com.kasia.ConfigurationSpringForTest;
-import com.kasia.model.Budget;
 import com.kasia.ModelTestData;
+import com.kasia.model.Budget;
 import com.kasia.model.repository.BudgetRepository;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BudgetSpringForTest extends ConfigurationSpringForTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class BudgetSpringForTest {
     @Autowired
     private BudgetRepository repository;
 
