@@ -12,7 +12,7 @@ public interface BalanceService {
 
     Balance subtract(Balance balanceTo, Price price);
 
-    Balance subtract(Balance balanceTo, Price... prices);
+    Balance subtract(Balance balanceFrom, Price... prices);
 
     String parseToString(Balance balance, Locale locale);
 

@@ -34,7 +34,7 @@ public class BalanceValidationServiceIT {
         Balance balance2 = ModelTestData.getBalance1();
         balance2.setChangeOn(null);
         Balance balance3 = ModelTestData.getBalance1();
-        balance3.setCurrency(null);
+        balance3.setCurrencies(null);
 
         assertThat(validationService.isValid(balance1)).isFalse();
         assertThat(validationService.isValid(balance2)).isFalse();

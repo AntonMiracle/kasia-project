@@ -27,10 +27,10 @@ public class BalanceServiceIT {
         Currencies currencies = Currencies.EUR;
         Price price = ModelTestData.getPrice1();
         price.setAmount(BigDecimal.valueOf(1.0001));
-        price.setCurrency(currencies);
+        price.setCurrencies(currencies);
         Balance balance = ModelTestData.getBalance1();
         balance.setAmount(BigDecimal.ZERO);
-        balance.setCurrency(currencies);
+        balance.setCurrencies(currencies);
 
         assertThat(balanceService.add(balance, price).getAmount()).isEqualTo(BigDecimal.valueOf(1.0001));
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(1.0001));
@@ -39,18 +39,18 @@ public class BalanceServiceIT {
     @Test(expected = CurrenciesNotEqualsRuntimeException.class)
     public void whenAddWithDifferentCurrencyThenException() throws Exception {
         Price price = ModelTestData.getPrice1();
-        price.setCurrency(Currencies.USD);
+        price.setCurrencies(Currencies.USD);
         Balance balance = ModelTestData.getBalance1();
-        balance.setCurrency(Currencies.EUR);
+        balance.setCurrencies(Currencies.EUR);
         balanceService.add(balance, price);
     }
 
     @Test(expected = CurrenciesNotEqualsRuntimeException.class)
     public void whenSubtractWithDifferentCurrencyThenException() throws Exception {
         Price price = ModelTestData.getPrice1();
-        price.setCurrency(Currencies.USD);
+        price.setCurrencies(Currencies.USD);
         Balance balance = ModelTestData.getBalance1();
-        balance.setCurrency(Currencies.EUR);
+        balance.setCurrencies(Currencies.EUR);
         balanceService.subtract(balance, price);
     }
 
@@ -59,10 +59,10 @@ public class BalanceServiceIT {
         Currencies currencies = Currencies.EUR;
         Price price = ModelTestData.getPrice1();
         price.setAmount(BigDecimal.valueOf(1.0001));
-        price.setCurrency(currencies);
+        price.setCurrencies(currencies);
         Balance balance = ModelTestData.getBalance1();
         balance.setAmount(BigDecimal.ZERO);
-        balance.setCurrency(currencies);
+        balance.setCurrencies(currencies);
 
         assertThat(balanceService.subtract(balance, price).getAmount()).isEqualTo(BigDecimal.valueOf(-1.0001));
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(-1.0001));
