@@ -35,6 +35,11 @@ public class UserServiceImp implements UserService, ValidationService<User> {
             model.setPassword(crypt(model.getPassword()));
             return userRepository.save(model);
         }
+        checkEmailAndNameBeforeUpdate(model);
+        return userRepository.save(model);
+    }
+
+    private void checkEmailAndNameBeforeUpdate(User model) {
         User user = userRepository.findById(model.getId()).get();
         String oldEmail = user.getEmail();
         String oldName = user.getName();
@@ -45,7 +50,6 @@ public class UserServiceImp implements UserService, ValidationService<User> {
         if (!model.getEmail().equals(oldEmail) && !isEmailUnique(model.getEmail())) {
             model.setEmail(oldEmail);
         }
-        return userRepository.save(model);
     }
 
     @Override
