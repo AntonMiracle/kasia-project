@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.util.Locale;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -69,9 +68,6 @@ public class BalanceServiceIT {
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(-1.0001));
     }
 
-    @Autowired
-    private UserService userService;
-
     @Test
     public void parseToString() throws Exception {
         Balance balance1 = ModelTestData.getBalance1();
@@ -80,12 +76,6 @@ public class BalanceServiceIT {
         Locale locale2 = new Locale("sl", "SI");
         Locale locale3 = new Locale("en", "CA");
         Locale locale4 = new Locale("nl", "BE");
-
-        Set<Locale> locales = userService.getCorrectAvailableLocales();
-        assertThat(locales.contains(locale1)).isTrue();
-        assertThat(locales.contains(locale2)).isTrue();
-        assertThat(locales.contains(locale3)).isTrue();
-        assertThat(locales.contains(locale4)).isTrue();
 
         assertThat(balanceService.parseToString(balance1, locale1)).isEqualTo("-€110.01");
         assertThat(balanceService.parseToString(balance1, locale2)).isEqualTo("-€ 110,01");
