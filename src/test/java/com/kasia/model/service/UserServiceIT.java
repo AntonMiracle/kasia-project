@@ -100,7 +100,7 @@ public class UserServiceIT {
     }
 
     @Test
-    public void saveNewUser() {
+    public void saveNew() {
         User notSaved = ModelTestData.getUser1();
         long idBeforeSave = notSaved.getId();
         assertThat(userService.isActivated(notSaved)).isFalse();
@@ -115,7 +115,7 @@ public class UserServiceIT {
     }
 
     @Test
-    public void saveUpdateUser() {
+    public void saveUpdate() {
         User expected = ModelTestData.getUser1();
         String newEmail = ModelTestData.getUser2().getEmail();
         userService.save(expected);
@@ -157,6 +157,20 @@ public class UserServiceIT {
         userService.delete(user);
 
         assertThat(userService.findById(user.getId())).isNull();
+    }
+
+    @Test(expected = IdRuntimeException.class)
+    public void whenDeleteWithZeroIdThenException() {
+        User user = ModelTestData.getUser1();
+        user.setId(0);
+        userService.delete(user);
+    }
+
+    @Test(expected = IdRuntimeException.class)
+    public void whenDeleteWithNegativeIdThenException() {
+        User user = ModelTestData.getUser1();
+        user.setId(-1);
+        userService.delete(user);
     }
 
     @Test

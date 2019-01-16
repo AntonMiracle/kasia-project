@@ -38,7 +38,7 @@ public class BudgetServiceIT {
     }
 
     @Test
-    public void saveNewBudget() {
+    public void saveNew() {
         Budget budget = ModelTestData.getBudget1();
         assertThat(budget.getId() == 0).isTrue();
 
@@ -49,7 +49,7 @@ public class BudgetServiceIT {
     }
 
     @Test
-    public void saveUpdateBudget() {
+    public void saveUpdate() {
         Budget budget = ModelTestData.getBudget1();
         budgetService.save(budget);
         String newName = "newName";
@@ -65,7 +65,7 @@ public class BudgetServiceIT {
     public void findAll() {
         assertThat(budgetService.findAll().size() == 0).isTrue();
         budgetService.save(ModelTestData.getBudget1());
-        budgetService.save(ModelTestData.getBudget1());
+        budgetService.save(ModelTestData.getBudget2());
 
         assertThat(budgetService.findAll().size() == 2).isTrue();
     }
@@ -78,6 +78,20 @@ public class BudgetServiceIT {
         budgetService.delete(budget);
 
         assertThat(budgetService.findById(budget.getId())).isNull();
+    }
+
+    @Test(expected = IdRuntimeException.class)
+    public void whenDeleteWithZeroIdThenException() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(0);
+        budgetService.delete(budget);
+    }
+
+    @Test(expected = IdRuntimeException.class)
+    public void whenDeleteWithNegativeIdThenException() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(-1);
+        budgetService.delete(budget);
     }
 
     @Test
