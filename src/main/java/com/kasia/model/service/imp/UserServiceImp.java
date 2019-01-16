@@ -45,6 +45,7 @@ public class UserServiceImp implements UserService, ValidationService<User> {
 
     @Override
     public User findById(long id) {
+        if (id <= 0) throw new IdRuntimeException();
         Optional<User> user = userRepository.findById(id);
         return user.isPresent() ? user.get() : null;
     }

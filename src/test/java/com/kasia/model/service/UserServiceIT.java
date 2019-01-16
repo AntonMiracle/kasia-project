@@ -2,6 +2,7 @@ package com.kasia.model.service;
 
 import com.kasia.ModelTestData;
 import com.kasia.exception.EmailExistRuntimeException;
+import com.kasia.exception.IdRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.User;
 import org.junit.After;
@@ -164,6 +165,16 @@ public class UserServiceIT {
 
         assertThat(userService.findById(user.getId())).isEqualTo(user);
         assertThat(userService.findById(user.getId() + 1)).isNull();
+    }
+
+    @Test(expected = IdRuntimeException.class)
+    public void whenFindByIdWithZeroIdThenException() {
+        assertThat(userService.findById(0)).isNotNull();
+    }
+
+    @Test(expected = IdRuntimeException.class)
+    public void whenFindByIdWithNegativeIdThenException() {
+        assertThat(userService.findById(-1)).isNotNull();
     }
 
     @Test
