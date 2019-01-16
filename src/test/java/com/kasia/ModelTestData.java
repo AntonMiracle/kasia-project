@@ -7,11 +7,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Currency;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 final public class ModelTestData {
     public static Balance getBalance1() {
-        return new Balance(BigDecimal.ZERO, Currencies.EUR, getNow());
+        return new Balance(BigDecimal.valueOf(0.00), Currencies.EUR, getNow());
     }
 
     public static Balance getBalance2() {
@@ -71,11 +72,11 @@ final public class ModelTestData {
     }
 
     public static User getUser1() {
-        return new User("email2@gmail.com", "Name1", "Password2", ZoneId.systemDefault(), getNow(), Role.USER, false);
+        return new User("email2@gmail.com", "Name1", "Password2", ZoneId.systemDefault(), getNow(), Role.USER, false, Locale.ENGLISH);
     }
 
     public static User getUser2() {
-        return new User("email3@gmail.com", "Name3", "Password3", ZoneId.systemDefault(), getNow(), Role.USER, false);
+        return new User("email3@gmail.com", "Name3", "Password3", ZoneId.systemDefault(), getNow(), Role.USER, false,Locale.ENGLISH);
     }
 
     public static BudgetElement getBudgetElement1() {

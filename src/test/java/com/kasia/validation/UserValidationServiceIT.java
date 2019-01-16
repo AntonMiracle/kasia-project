@@ -38,6 +38,8 @@ public class UserValidationServiceIT {
         user5.setCreateOn(null);
         User user6 = ModelTestData.getUser1();
         user6.setRole(null);
+        User user7 = ModelTestData.getUser1();
+        user7.setLocale(null);
 
         assertThat(validationService.isValid(user1)).isFalse();
         assertThat(validationService.isValid(user2)).isFalse();
@@ -45,6 +47,7 @@ public class UserValidationServiceIT {
         assertThat(validationService.isValid(user4)).isFalse();
         assertThat(validationService.isValid(user5)).isFalse();
         assertThat(validationService.isValid(user6)).isFalse();
+        assertThat(validationService.isValid(user7)).isFalse();
     }
 
     @Test

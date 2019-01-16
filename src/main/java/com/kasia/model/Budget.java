@@ -1,7 +1,12 @@
 package com.kasia.model;
 
+import com.kasia.validation.ValidationService;
+
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,7 +15,7 @@ public class Budget implements Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotBlank
-    @Pattern(regexp = "^\\S{2,16}$")
+    @Pattern(regexp = ValidationService.PATTERN_NAME)
     private String name;
     @NotNull
     @Embedded

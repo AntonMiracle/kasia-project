@@ -1,5 +1,8 @@
 package com.kasia.model;
 
+import com.kasia.model.repository.converter.BigDecimalAttributeConverter;
+
+import javax.persistence.Convert;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,6 +14,7 @@ import java.time.LocalDateTime;
 @Embeddable
 public class Balance implements Model {
     @NotNull
+    @Convert(converter = BigDecimalAttributeConverter.class)
     private BigDecimal amount;
     @NotNull
     @Enumerated(EnumType.STRING)

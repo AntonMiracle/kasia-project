@@ -1,7 +1,9 @@
 package com.kasia.model;
 
+import com.kasia.model.repository.converter.LocaleAttributeConverter;
 import com.kasia.validation.ValidationService;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.cglib.core.Local;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -33,11 +35,14 @@ public class User implements Model {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;
+    @NotNull
+    @Convert(converter = LocaleAttributeConverter.class)
+    private Locale locale;
 
     public User() {
     }
 
-    public User(String email, String name, String password, ZoneId zoneId, LocalDateTime createOn, Role role, boolean isActivated) {
+    public User(String email, String name, String password, ZoneId zoneId, LocalDateTime createOn, Role role, boolean isActivated, Locale locale) {
         this.email = email;
         this.name = name;
         this.password = password;
@@ -45,6 +50,7 @@ public class User implements Model {
         this.createOn = createOn;
         this.role = role;
         this.activated = isActivated;
+        this.locale = locale;
     }
 
     @Override
@@ -61,7 +67,8 @@ public class User implements Model {
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (zoneId != null ? !zoneId.equals(user.zoneId) : user.zoneId != null) return false;
         if (createOn != null ? !createOn.equals(user.createOn) : user.createOn != null) return false;
-        return role == user.role;
+        if (role != user.role) return false;
+        return locale != null ? locale.equals(user.locale) : user.locale == null;
     }
 
     @Override
@@ -74,6 +81,7 @@ public class User implements Model {
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
         result = 31 * result + (activated ? 1 : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (locale != null ? locale.hashCode() : 0);
         return result;
     }
 
@@ -88,6 +96,7 @@ public class User implements Model {
                 ", createOn=" + createOn +
                 ", activated=" + activated +
                 ", role=" + role +
+                ", locale=" + locale +
                 '}';
     }
 
@@ -153,5 +162,13 @@ public class User implements Model {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 }
