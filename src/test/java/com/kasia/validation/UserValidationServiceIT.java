@@ -36,12 +36,15 @@ public class UserValidationServiceIT {
         user4.setPassword(null);
         User user5 = ModelTestData.getUser1();
         user5.setCreateOn(null);
+        User user6 = ModelTestData.getUser1();
+        user6.setRole(null);
 
         assertThat(validationService.isValid(user1)).isFalse();
         assertThat(validationService.isValid(user2)).isFalse();
         assertThat(validationService.isValid(user3)).isFalse();
         assertThat(validationService.isValid(user4)).isFalse();
         assertThat(validationService.isValid(user5)).isFalse();
+        assertThat(validationService.isValid(user6)).isFalse();
     }
 
     @Test

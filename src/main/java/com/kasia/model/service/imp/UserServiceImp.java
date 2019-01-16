@@ -2,7 +2,9 @@ package com.kasia.model.service.imp;
 
 import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdRuntimeException;
+import com.kasia.exception.UserActivatedRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
+import com.kasia.model.Role;
 import com.kasia.model.User;
 import com.kasia.model.repository.UserRepository;
 import com.kasia.model.service.UserService;
@@ -30,6 +32,7 @@ public class UserServiceImp implements UserService, ValidationService<User> {
     public User save(User model) {
         if (model.getId() == 0 && !isNameUnique(model.getName())) throw new UserNameExistRuntimeException();
         if (model.getId() == 0 && !isEmailUnique(model.getEmail())) throw new EmailExistRuntimeException();
+        if (model.getId() == 0 && !activate(model)) throw new UserActivatedRuntimeException();
         return userRepository.save(model);
     }
 
@@ -56,7 +59,7 @@ public class UserServiceImp implements UserService, ValidationService<User> {
     @Override
     public User create(String email, String name, String password, ZoneId zoneId) {
         password = crypt(password);
-        return new User(email, name, password, zoneId, LocalDateTime.now().withNano(0));
+        return new User(email, name, password, zoneId, LocalDateTime.now().withNano(0), Role.USER, false);
     }
 
     @Override
@@ -101,4 +104,22 @@ public class UserServiceImp implements UserService, ValidationService<User> {
         Optional<User> user = userRepository.findByEmail(email);
         return user.isPresent() ? user.get() : null;
     }
+
+    @Override
+    public boolean isActivated(User user) {
+        return user.isActivated();
+    }
+
+    @Override
+    public boolean activate(User user) {
+        user.setActivated(true);
+        return true;
+    }
+
+    @Override
+    public boolean deactivate(User user) {
+        user.setActivated(false);
+        return true;
+    }
+
 }

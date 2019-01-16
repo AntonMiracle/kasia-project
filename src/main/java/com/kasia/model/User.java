@@ -29,16 +29,22 @@ public class User implements Model {
     @NotNull
     @PastOrPresent
     private LocalDateTime createOn;
+    private boolean activated;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     public User() {
     }
 
-    public User(String email, String name, String password, ZoneId zoneId, LocalDateTime createOn) {
+    public User(String email, String name, String password, ZoneId zoneId, LocalDateTime createOn, Role role, boolean isActivated) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.zoneId = zoneId;
         this.createOn = createOn;
+        this.role = role;
+        this.activated = isActivated;
     }
 
     @Override
@@ -49,11 +55,13 @@ public class User implements Model {
         User user = (User) o;
 
         if (id != user.id) return false;
+        if (activated != user.activated) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (zoneId != null ? !zoneId.equals(user.zoneId) : user.zoneId != null) return false;
-        return createOn != null ? createOn.equals(user.createOn) : user.createOn == null;
+        if (createOn != null ? !createOn.equals(user.createOn) : user.createOn != null) return false;
+        return role == user.role;
     }
 
     @Override
@@ -64,6 +72,8 @@ public class User implements Model {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
+        result = 31 * result + (activated ? 1 : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
         return result;
     }
 
@@ -76,6 +86,8 @@ public class User implements Model {
                 ", password='" + password + '\'' +
                 ", zoneId=" + zoneId +
                 ", createOn=" + createOn +
+                ", activated=" + activated +
+                ", role=" + role +
                 '}';
     }
 
@@ -125,5 +137,21 @@ public class User implements Model {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

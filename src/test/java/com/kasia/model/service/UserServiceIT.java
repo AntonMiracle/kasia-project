@@ -34,6 +34,7 @@ public class UserServiceIT {
         user = userService.create(user.getEmail(), user.getName(), user.getPassword(), user.getZoneId());
 
         assertThat(user.getId() == 0).isTrue();
+        assertThat(user.isActivated()).isFalse();
         assertThat(user.getZoneId()).isNotNull();
         assertThat(user.getPassword()).isNotNull();
         assertThat(user.getPassword().length()).isNotEqualTo(nonCryptPassword.length());
@@ -73,7 +74,7 @@ public class UserServiceIT {
         String validZone = "Pacific/Johnston";
         String invalidZoneId = "SomeWrongZoneId";
 
-        assertThat(userService.zoneIdOf(validZone)).isEqualTo(ZoneId.of("Pacific/Johnston"));
+        assertThat(userService.zoneIdOf(validZone)).isEqualTo(ZoneId.of(validZone));
         assertThat(userService.zoneIdOf(invalidZoneId)).isEqualTo(ZoneId.systemDefault());
     }
 
@@ -97,26 +98,32 @@ public class UserServiceIT {
 
     @Test
     public void saveNewUser() {
-        User user = ModelTestData.getUser1();
-        long idBeforeSave = user.getId();
+        User expected = ModelTestData.getUser1();
+        long idBeforeSave = expected.getId();
+        assertThat(userService.isActivated(expected)).isFalse();
 
-        userService.save(user);
+        userService.save(expected);
 
-        assertThat(user.getId() > 0).isTrue();
-        assertThat(user.getId() != idBeforeSave).isTrue();
-        assertThat(userService.findById(user.getId())).isNotNull();
+        User actual = userService.findById(expected.getId());
+        assertThat(actual.getId() > 0).isTrue();
+        assertThat(actual.getId() != idBeforeSave).isTrue();
+        assertThat(actual).isNotNull();
+        assertThat(userService.isActivated(actual)).isTrue();
     }
 
     @Test
     public void saveUpdateUser() {
-        User user = ModelTestData.getUser1();
+        User expected = ModelTestData.getUser1();
         String newEmail = ModelTestData.getUser2().getEmail();
-        userService.save(user);
-        user.setEmail(newEmail);
+        userService.save(expected);
+        assertThat(userService.isActivated(expected)).isTrue();
+        expected.setEmail(newEmail);
 
-        userService.save(user);
+        userService.save(expected);
 
-        assertThat(userService.findByEmail(newEmail)).isEqualTo(user);
+        User actual = userService.findByEmail(newEmail);
+        assertThat(actual).isEqualTo(expected);
+        assertThat(userService.isActivated(actual)).isTrue();
     }
 
     @Test(expected = EmailExistRuntimeException.class)
@@ -157,5 +164,35 @@ public class UserServiceIT {
 
         assertThat(userService.findById(user.getId())).isEqualTo(user);
         assertThat(userService.findById(user.getId() + 1)).isNull();
+    }
+
+    @Test
+    public void activatedUser() {
+        User user = ModelTestData.getUser1();
+        assertThat(userService.isActivated(user)).isFalse();
+
+        userService.activate(user);
+
+        assertThat(userService.isActivated(user)).isTrue();
+    }
+
+    @Test
+    public void isActivated() {
+        User user = ModelTestData.getUser1();
+        assertThat(userService.isActivated(user)).isFalse();
+
+        userService.save(user);
+
+        assertThat(userService.isActivated(user)).isTrue();
+    }
+
+    @Test
+    public void deactivate() {
+        User user = ModelTestData.getUser1();
+        userService.save(user);
+
+        userService.deactivate(user);
+
+        assertThat(userService.isActivated(user)).isFalse();
     }
 }

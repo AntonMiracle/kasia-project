@@ -18,4 +18,11 @@ public interface UserService extends Service<User> {
     User findByName(String name);
 
     User findByEmail(String email);
+
+    boolean isActivated(User user);
+
+    boolean activate(User user);
+
+    boolean deactivate(User user);
+
 }
