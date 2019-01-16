@@ -206,4 +206,13 @@ public class UserServiceIT {
 
         assertThat(userService.isActivated(user)).isFalse();
     }
+
+    @Test
+    public void findAll() {
+        assertThat(userService.findAll().size()==0).isTrue();
+        userService.save(ModelTestData.getUser1());
+        userService.save(ModelTestData.getUser2());
+
+        assertThat(userService.findAll().size()==2).isTrue();
+    }
 }
