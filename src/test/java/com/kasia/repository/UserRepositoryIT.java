@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +32,17 @@ public class UserRepositoryIT {
         assertThat(repository).isNotNull();
     }
 
+    @Test
+    public void correctLocaleConvert() {
+        User user = ModelTestData.getUser1();
+        Locale locale = new Locale("en","CA");
+        user.setLocale(locale);
+
+        repository.save(user);
+
+        assertThat(repository.findById(user.getId()).get().getLocale()).isEqualTo(locale);
+
+    }
     @Test
     public void save() {
         User user = ModelTestData.getUser1();

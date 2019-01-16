@@ -72,11 +72,11 @@ final public class ModelTestData {
     }
 
     public static User getUser1() {
-        return new User("email2@gmail.com", "Name1", "Password2", ZoneId.systemDefault(), getNow(), Role.USER, false, Locale.ENGLISH);
+        return new User("email2@gmail.com", "Name1", "Password2", ZoneId.systemDefault(), getNow(), Role.USER, false, new Locale("en","CA"));
     }
 
     public static User getUser2() {
-        return new User("email3@gmail.com", "Name3", "Password3", ZoneId.systemDefault(), getNow(), Role.USER, false,Locale.ENGLISH);
+        return new User("email3@gmail.com", "Name3", "Password3", ZoneId.systemDefault(), getNow(), Role.USER, false,new Locale("en","SG"));
     }
 
     public static BudgetElement getBudgetElement1() {

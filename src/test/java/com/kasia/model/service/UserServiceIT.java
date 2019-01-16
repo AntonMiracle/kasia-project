@@ -3,6 +3,7 @@ package com.kasia.model.service;
 import com.kasia.ModelTestData;
 import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdRuntimeException;
+import com.kasia.exception.LocaleFormatRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.User;
 import org.junit.After;
@@ -14,6 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Locale;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,7 +35,7 @@ public class UserServiceIT {
     public void create() throws Exception {
         User user = ModelTestData.getUser1();
         String nonCryptPassword = user.getPassword();
-        user = userService.create(user.getEmail(), user.getName(), user.getPassword(), user.getZoneId());
+        user = userService.create(user.getEmail(), user.getName(), user.getPassword(), user.getZoneId(), user.getLocale());
 
         assertThat(user.getId() == 0).isTrue();
         assertThat(user.isActivated()).isFalse();
@@ -99,13 +102,13 @@ public class UserServiceIT {
 
     @Test
     public void saveNewUser() {
-        User expected = ModelTestData.getUser1();
-        long idBeforeSave = expected.getId();
-        assertThat(userService.isActivated(expected)).isFalse();
+        User notSaved = ModelTestData.getUser1();
+        long idBeforeSave = notSaved.getId();
+        assertThat(userService.isActivated(notSaved)).isFalse();
 
-        userService.save(expected);
+        userService.save(notSaved);
 
-        User actual = userService.findById(expected.getId());
+        User actual = userService.findById(notSaved.getId());
         assertThat(actual.getId() > 0).isTrue();
         assertThat(actual.getId() != idBeforeSave).isTrue();
         assertThat(actual).isNotNull();
@@ -209,10 +212,39 @@ public class UserServiceIT {
 
     @Test
     public void findAll() {
-        assertThat(userService.findAll().size()==0).isTrue();
+        assertThat(userService.findAll().size() == 0).isTrue();
         userService.save(ModelTestData.getUser1());
         userService.save(ModelTestData.getUser2());
 
-        assertThat(userService.findAll().size()==2).isTrue();
+        assertThat(userService.findAll().size() == 2).isTrue();
+    }
+
+    @Test
+    public void allCorrectAvailableLocalesHaveLangAndCountry() {
+        Set<Locale> locales = userService.getCorrectAvailableLocales();
+        int count = 0;
+        for (Locale locale : Locale.getAvailableLocales()) {
+            if (locale.getLanguage().length() > 0 && locale.getCountry().length() > 0) {
+                count++;
+                assertThat(locales.contains(locale)).isTrue();
+            }
+        }
+        assertThat(locales.size() == count).isTrue();
+    }
+
+    @Test
+    public void localeOfWithInvalidLangAndCountryReturnDefaultLocale() {
+        Locale locale1 = userService.localeOf("asdf", "Fsda");
+        User user = ModelTestData.getUser1();
+        Locale locale2 = userService.localeOf(user.getLocale().getLanguage(), user.getLocale().getCountry());
+
+        assertThat(locale1).isEqualTo(Locale.getDefault());
+        assertThat(userService.getCorrectAvailableLocales().contains(locale2)).isTrue();
+    }
+
+    @Test(expected = LocaleFormatRuntimeException.class)
+    public void whenDefaultLocaleWrongThenLocaleFormatRuntimeException() {
+        Locale.setDefault(new Locale("en"));
+        userService.localeOf("sdsd", "sdsd");
     }
 }

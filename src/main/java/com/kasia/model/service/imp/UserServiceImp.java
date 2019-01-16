@@ -1,9 +1,6 @@
 package com.kasia.model.service.imp;
 
-import com.kasia.exception.EmailExistRuntimeException;
-import com.kasia.exception.IdRuntimeException;
-import com.kasia.exception.UserActivatedRuntimeException;
-import com.kasia.exception.UserNameExistRuntimeException;
+import com.kasia.exception.*;
 import com.kasia.model.Role;
 import com.kasia.model.User;
 import com.kasia.model.repository.UserRepository;
@@ -19,6 +16,7 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -58,9 +56,9 @@ public class UserServiceImp implements UserService, ValidationService<User> {
     }
 
     @Override
-    public User create(String email, String name, String password, ZoneId zoneId) {
+    public User create(String email, String name, String password, ZoneId zoneId, Locale locale) {
         password = crypt(password);
-        return new User(email, name, password, zoneId, LocalDateTime.now().withNano(0), Role.USER, false);
+        return new User(email, name, password, zoneId, LocalDateTime.now().withNano(0), Role.USER, false, locale);
     }
 
     @Override
@@ -95,6 +93,15 @@ public class UserServiceImp implements UserService, ValidationService<User> {
     }
 
     @Override
+    public Locale localeOf(String lang, String country) {
+        Locale locale = new Locale(lang, country);
+        if (getCorrectAvailableLocales().contains(locale)) return locale;
+        locale = Locale.getDefault();
+        if (locale.getLanguage().length() > 0 && locale.getCountry().length() > 0) return locale;
+        throw new LocaleFormatRuntimeException();
+    }
+
+    @Override
     public User findByName(String name) {
         Optional<User> user = userRepository.findByName(name);
         return user.isPresent() ? user.get() : null;
@@ -121,6 +128,16 @@ public class UserServiceImp implements UserService, ValidationService<User> {
     public boolean deactivate(User user) {
         user.setActivated(false);
         return true;
+    }
+
+    @Override
+    public Set<Locale> getCorrectAvailableLocales() {
+        Set<Locale> locales = new HashSet<>();
+        for (Locale locale : Locale.getAvailableLocales()) {
+            if (locale.getLanguage().length() > 0 && locale.getCountry().length() > 0)
+                locales.add(locale);
+        }
+        return locales;
     }
 
 }

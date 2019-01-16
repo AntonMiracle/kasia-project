@@ -3,9 +3,11 @@ package com.kasia.model.service;
 import com.kasia.model.User;
 
 import java.time.ZoneId;
+import java.util.Locale;
+import java.util.Set;
 
 public interface UserService extends Service<User> {
-    User create(String email, String name, String password, ZoneId zoneId);
+    User create(String email, String name, String password, ZoneId zoneId, Locale locale);
 
     boolean isEmailUnique(String email);
 
@@ -14,6 +16,8 @@ public interface UserService extends Service<User> {
     String crypt(String nonCryptPassword);
 
     ZoneId zoneIdOf(String zoneId);
+
+    Locale localeOf(String lang, String country);
 
     User findByName(String name);
 
@@ -24,5 +28,7 @@ public interface UserService extends Service<User> {
     boolean activate(User user);
 
     boolean deactivate(User user);
+
+    Set<Locale> getCorrectAvailableLocales();
 
 }
