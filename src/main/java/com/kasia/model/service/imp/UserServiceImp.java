@@ -28,9 +28,12 @@ public class UserServiceImp implements UserService, ValidationService<User> {
 
     @Override
     public User save(User model) {
-        if (model.getId() == 0 && !isNameUnique(model.getName())) throw new UserNameExistRuntimeException();
-        if (model.getId() == 0 && !isEmailUnique(model.getEmail())) throw new EmailExistRuntimeException();
-        if (model.getId() == 0 && !activate(model)) throw new UserActivatedRuntimeException();
+        if (model.getId() == 0) {
+            if (!isNameUnique(model.getName())) throw new UserNameExistRuntimeException();
+            if (!isEmailUnique(model.getEmail())) throw new EmailExistRuntimeException();
+            if (!activate(model)) throw new UserActivatedRuntimeException();
+            model.setPassword(crypt(model.getPassword()));
+        }
         return userRepository.save(model);
     }
 
@@ -96,7 +99,7 @@ public class UserServiceImp implements UserService, ValidationService<User> {
     public Locale localeOf(String lang, String country) {
         Locale locale = new Locale(lang, country);
         if (getCorrectAvailableLocales().contains(locale)) return locale;
-        locale = new Locale("pl", "PL");
+        locale = getDefaultLocale();
         if (getCorrectAvailableLocales().contains(locale)) return locale;
         throw new LocaleFormatRuntimeException();
     }
@@ -138,6 +141,11 @@ public class UserServiceImp implements UserService, ValidationService<User> {
                 locales.add(locale);
         }
         return locales;
+    }
+
+    @Override
+    public Locale getDefaultLocale() {
+        return new Locale("pl", "PL");
     }
 
 }

@@ -31,4 +31,6 @@ public interface UserService extends Service<User> {
 
     Set<Locale> getCorrectAvailableLocales();
 
+    Locale getDefaultLocale();
+
 }

@@ -4,6 +4,7 @@ import com.kasia.ModelTestData;
 import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
+import com.kasia.model.Role;
 import com.kasia.model.User;
 import org.junit.After;
 import org.junit.Test;
@@ -101,17 +102,37 @@ public class UserServiceIT {
 
     @Test
     public void saveNew() {
-        User notSaved = ModelTestData.getUser1();
-        long idBeforeSave = notSaved.getId();
-        assertThat(userService.isActivated(notSaved)).isFalse();
+        User expected = ModelTestData.getUser1();
+        assertThat(userService.isActivated(expected)).isFalse();
 
-        userService.save(notSaved);
+        userService.save(expected);
 
-        User actual = userService.findById(notSaved.getId());
+        User actual = userService.findById(expected.getId());
         assertThat(actual.getId() > 0).isTrue();
-        assertThat(actual.getId() != idBeforeSave).isTrue();
         assertThat(actual).isNotNull();
         assertThat(userService.isActivated(actual)).isTrue();
+        assertThat(actual.getLocale()).isEqualTo(expected.getLocale());
+        assertThat(actual.getCreateOn().compareTo(LocalDateTime.now().plusSeconds(3)) < 0).isTrue();
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertThat(actual.getEmail()).isEqualTo(expected.getEmail());
+        assertThat(actual.getZoneId()).isEqualTo(expected.getZoneId());
+        assertThat(actual.getRole()).isEqualTo(Role.USER);
+        assertThat(actual.getPassword()).isEqualTo(expected.getPassword());
+    }
+
+    @Test
+    public void cryptSameResult() {
+        String pass1 = "Password2";
+        String pass2 = "Password2";
+        String pass3 = "Password2";
+
+        pass1 = userService.crypt(pass1);
+        pass2 = userService.crypt(pass2);
+        pass3 = userService.crypt(pass3);
+
+        assertThat(pass1).isEqualTo(pass2);
+        assertThat(pass1).isEqualTo(pass3);
+        assertThat(pass2).isEqualTo(pass3);
     }
 
     @Test
