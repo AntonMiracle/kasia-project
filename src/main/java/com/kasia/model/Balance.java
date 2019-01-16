@@ -18,14 +18,14 @@ public class Balance implements Model {
     private BigDecimal amount;
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Currencies currency;
+    private Currencies currencies;
     @NotNull
     @PastOrPresent
     private LocalDateTime changeOn;
 
-    public Balance(BigDecimal amount, Currencies currency, LocalDateTime changeOn) {
+    public Balance(BigDecimal amount, Currencies currencies, LocalDateTime changeOn) {
         this.amount = amount;
-        this.currency = currency;
+        this.currencies = currencies;
         this.changeOn = changeOn;
     }
 
@@ -36,7 +36,7 @@ public class Balance implements Model {
     public String toString() {
         return "Balance{" +
                 "amount=" + amount +
-                ", currency=" + currency +
+                ", currencies=" + currencies +
                 ", changeOn=" + changeOn +
                 '}';
     }
@@ -49,14 +49,14 @@ public class Balance implements Model {
         Balance balance = (Balance) o;
 
         if (amount != null ? !amount.equals(balance.amount) : balance.amount != null) return false;
-        if (currency != balance.currency) return false;
+        if (currencies != balance.currencies) return false;
         return changeOn != null ? changeOn.equals(balance.changeOn) : balance.changeOn == null;
     }
 
     @Override
     public int hashCode() {
         int result = amount != null ? amount.hashCode() : 0;
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (currencies != null ? currencies.hashCode() : 0);
         result = 31 * result + (changeOn != null ? changeOn.hashCode() : 0);
         return result;
     }
@@ -77,11 +77,11 @@ public class Balance implements Model {
         this.changeOn = changeOn;
     }
 
-    public Currencies getCurrency() {
-        return currency;
+    public Currencies getCurrencies() {
+        return currencies;
     }
 
-    public void setCurrency(Currencies currency) {
-        this.currency = currency;
+    public void setCurrencies(Currencies currency) {
+        this.currencies = currency;
     }
 }

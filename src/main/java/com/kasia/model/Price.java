@@ -18,21 +18,21 @@ public class Price implements Model {
     private BigDecimal amount;
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Currencies currency;
+    private Currencies currencies;
 
     public Price() {
     }
 
-    public Price(BigDecimal amount, Currencies currency) {
+    public Price(BigDecimal amount, Currencies currencies) {
         this.amount = amount;
-        this.currency = currency;
+        this.currencies = currencies;
     }
 
     @Override
     public String toString() {
         return "Price{" +
                 "amount=" + amount +
-                ", currency=" + currency +
+                ", currencies=" + currencies +
                 '}';
     }
 
@@ -44,13 +44,13 @@ public class Price implements Model {
         Price price = (Price) o;
 
         if (amount != null ? !amount.equals(price.amount) : price.amount != null) return false;
-        return currency == price.currency;
+        return currencies == price.currencies;
     }
 
     @Override
     public int hashCode() {
         int result = amount != null ? amount.hashCode() : 0;
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (currencies != null ? currencies.hashCode() : 0);
         return result;
     }
 
@@ -62,11 +62,11 @@ public class Price implements Model {
         this.amount = amount;
     }
 
-    public Currencies getCurrency() {
-        return currency;
+    public Currencies getCurrencies() {
+        return currencies;
     }
 
-    public void setCurrency(Currencies currency) {
-        this.currency = currency;
+    public void setCurrencies(Currencies currency) {
+        this.currencies = currency;
     }
 }
