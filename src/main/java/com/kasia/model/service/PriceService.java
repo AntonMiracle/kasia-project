@@ -1,9 +1,10 @@
 package com.kasia.model.service;
 
+import com.kasia.model.Currencies;
 import com.kasia.model.Price;
 
-public interface PriceService {
-    Price add(Price... prices);
+import java.math.BigDecimal;
 
-    Price substruct(Price from, Price... prices);
+public interface PriceService {
+    Price create(BigDecimal amount, Currencies currencies);
 }

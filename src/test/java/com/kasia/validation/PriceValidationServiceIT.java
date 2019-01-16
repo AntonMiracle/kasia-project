@@ -33,7 +33,7 @@ public class PriceValidationServiceIT {
         Price price1 = ModelTestData.getPrice1();
         price1.setAmount(null);
         Price price2 = ModelTestData.getPrice1();
-        price2.setCurrency(null);
+        price2.setCurrencies(null);
 
         assertThat(validationService.isValid(price1)).isFalse();
         assertThat(validationService.isValid(price2)).isFalse();
