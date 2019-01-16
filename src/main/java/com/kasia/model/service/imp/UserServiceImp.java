@@ -33,6 +33,17 @@ public class UserServiceImp implements UserService, ValidationService<User> {
             if (!isEmailUnique(model.getEmail())) throw new EmailExistRuntimeException();
             if (!activate(model)) throw new UserActivatedRuntimeException();
             model.setPassword(crypt(model.getPassword()));
+            return userRepository.save(model);
+        }
+        User user = userRepository.findById(model.getId()).get();
+        String oldEmail = user.getEmail();
+        String oldName = user.getName();
+
+        if (!model.getName().equals(oldName) && !isNameUnique(model.getName())) {
+            model.setName(oldName);
+        }
+        if (!model.getEmail().equals(oldEmail) && !isEmailUnique(model.getEmail())) {
+            model.setEmail(oldEmail);
         }
         return userRepository.save(model);
     }

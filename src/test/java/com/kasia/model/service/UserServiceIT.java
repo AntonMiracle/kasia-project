@@ -150,6 +150,32 @@ public class UserServiceIT {
         assertThat(userService.isActivated(actual)).isTrue();
     }
 
+    @Test
+    public void whenUpdateNotUniqueNameThenNameNotUpdate() {
+        User user1 = ModelTestData.getUser1();
+        User user2 = ModelTestData.getUser2();
+        userService.save(user1);
+        userService.save(user2);
+        user1.setName(user2.getName());
+
+        userService.save(user1);
+
+        assertThat(userService.findById(user1.getId()).getName()).isNotEqualTo(user2.getName());
+    }
+
+    @Test
+    public void whenUpdateNotUniqueEmailThenEmailNotUpdate() {
+        User user1 = ModelTestData.getUser1();
+        User user2 = ModelTestData.getUser2();
+        userService.save(user1);
+        userService.save(user2);
+        user1.setEmail(user2.getEmail());
+
+        userService.save(user1);
+
+        assertThat(userService.findById(user1.getId()).getEmail()).isNotEqualTo(user2.getEmail());
+    }
+
     @Test(expected = EmailExistRuntimeException.class)
     public void whenSaveNewUserWithNonUniqueEmailThenException() {
         User uniqueUser = ModelTestData.getUser1();
