@@ -20,16 +20,16 @@ public class PriceValidationServiceIT {
 
 
     @Test
-    public void elementProviderIsValid() {
-        Price element1 = ModelTestData.getPrice1();
-        Price element2 = ModelTestData.getPrice2();
+    public void isValid() {
+        Price price1 = ModelTestData.getPrice1();
+        Price price2 = ModelTestData.getPrice2();
 
-        assertThat(validationService.isValid(element2)).isTrue();
-        assertThat(validationService.isValid(element1)).isTrue();
+        assertThat(validationService.isValid(price2)).isTrue();
+        assertThat(validationService.isValid(price1)).isTrue();
     }
 
     @Test
-    public void elementProviderInvalidWithNull() {
+    public void invalidWithNull() {
         Price price1 = ModelTestData.getPrice1();
         price1.setAmount(null);
         Price price2 = ModelTestData.getPrice1();
@@ -40,7 +40,7 @@ public class PriceValidationServiceIT {
     }
 
     @Test
-    public void elementProviderInvalidWithNonCorrectField() {
+    public void invalidWithNonCorrectField() {
         Price price1 = ModelTestData.getPrice1();
         price1.setAmount(BigDecimal.valueOf(-0.01));
 
