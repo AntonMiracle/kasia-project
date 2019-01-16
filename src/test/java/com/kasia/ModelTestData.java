@@ -72,11 +72,11 @@ final public class ModelTestData {
     }
 
     public static User getUser1() {
-        return new User("email2@gmail.com", "Name1", "Password2", ZoneId.systemDefault(), getNow(), Role.USER, false, new Locale("en","CA"));
+        return new User("email2@gmail.com", "Name1", "Password2", ZoneId.systemDefault(), getNow(), Role.USER, false, new Locale("en", "CA"));
     }
 
     public static User getUser2() {
-        return new User("email3@gmail.com", "Name3", "Password3", ZoneId.systemDefault(), getNow(), Role.USER, false,new Locale("en","SG"));
+        return new User("email3@gmail.com", "Name3", "Password3", ZoneId.systemDefault(), getNow(), Role.USER, false, new Locale("en", "SG"));
     }
 
     public static BudgetElement getBudgetElement1() {
@@ -137,5 +137,9 @@ final public class ModelTestData {
         Set<Budget> budgets = new HashSet<>();
         budgets.add(getBudget2());
         return new UserConnectBudget(getUser2(), budgets);
+    }
+
+    public static Locale getDefaultLocale() {
+        return new Locale("pl", "PL");
     }
 }

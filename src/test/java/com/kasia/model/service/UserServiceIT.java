@@ -3,7 +3,6 @@ package com.kasia.model.service;
 import com.kasia.ModelTestData;
 import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdRuntimeException;
-import com.kasia.exception.LocaleFormatRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.User;
 import org.junit.After;
@@ -238,13 +237,7 @@ public class UserServiceIT {
         User user = ModelTestData.getUser1();
         Locale locale2 = userService.localeOf(user.getLocale().getLanguage(), user.getLocale().getCountry());
 
-        assertThat(locale1).isEqualTo(Locale.getDefault());
+        assertThat(locale1).isEqualTo(ModelTestData.getDefaultLocale());
         assertThat(userService.getCorrectAvailableLocales().contains(locale2)).isTrue();
-    }
-
-    @Test(expected = LocaleFormatRuntimeException.class)
-    public void whenDefaultLocaleWrongThenLocaleFormatRuntimeException() {
-        Locale.setDefault(new Locale("en"));
-        userService.localeOf("sdsd", "sdsd");
     }
 }

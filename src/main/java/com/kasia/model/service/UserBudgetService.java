@@ -6,6 +6,8 @@ import com.kasia.model.UserBudget;
 
 public interface UserBudgetService extends Service<UserBudget> {
 
+    boolean isNameUnique(User user, String budgetName);
+
     UserBudget getByUserId(long id);
 
     UserBudget create(User user);

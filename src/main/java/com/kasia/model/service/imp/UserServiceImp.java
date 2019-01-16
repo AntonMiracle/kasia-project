@@ -63,12 +63,12 @@ public class UserServiceImp implements UserService, ValidationService<User> {
 
     @Override
     public boolean isEmailUnique(String email) {
-        return userRepository.findByEmail(email).isPresent() ? false : true;
+        return !userRepository.findByEmail(email).isPresent();
     }
 
     @Override
     public boolean isNameUnique(String name) {
-        return userRepository.findByName(name).isPresent() ? false : true;
+        return !userRepository.findByName(name).isPresent();
     }
 
     @Override
@@ -96,8 +96,8 @@ public class UserServiceImp implements UserService, ValidationService<User> {
     public Locale localeOf(String lang, String country) {
         Locale locale = new Locale(lang, country);
         if (getCorrectAvailableLocales().contains(locale)) return locale;
-        locale = Locale.getDefault();
-        if (locale.getLanguage().length() > 0 && locale.getCountry().length() > 0) return locale;
+        locale = new Locale("pl", "PL");
+        if (getCorrectAvailableLocales().contains(locale)) return locale;
         throw new LocaleFormatRuntimeException();
     }
 

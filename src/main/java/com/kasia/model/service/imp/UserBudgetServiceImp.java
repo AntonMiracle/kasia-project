@@ -32,6 +32,11 @@ public class UserBudgetServiceImp implements UserBudgetService, ValidationServic
     }
 
     @Override
+    public boolean isNameUnique(User user, String budgetName) {
+        return false;
+    }
+
+    @Override
     public UserBudget getByUserId(long id) {
         return null;
     }
