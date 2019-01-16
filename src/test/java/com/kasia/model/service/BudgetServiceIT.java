@@ -39,13 +39,17 @@ public class BudgetServiceIT {
 
     @Test
     public void saveNew() {
-        Budget budget = ModelTestData.getBudget1();
-        assertThat(budget.getId() == 0).isTrue();
+        Budget expected = ModelTestData.getBudget1();
+        assertThat(expected.getId() == 0).isTrue();
 
-        budgetService.save(budget);
+        budgetService.save(expected);
 
-        assertThat(budget.getId() > 0).isTrue();
-        assertThat(budgetService.findById(budget.getId())).isNotNull();
+        Budget actual = budgetService.findById(expected.getId());
+        assertThat(expected.getId() > 0).isTrue();
+        assertThat(actual).isNotNull();
+        assertThat(actual.getBalance()).isEqualTo(expected.getBalance());
+        assertThat(actual.getName()).isEqualTo(expected.getName());
+        assertThat(actual.getCreateOn().compareTo(LocalDateTime.now().plusSeconds(2)) < 0).isTrue();
     }
 
     @Test
