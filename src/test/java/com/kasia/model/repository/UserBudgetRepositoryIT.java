@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,6 +58,17 @@ public class UserBudgetRepositoryIT {
 
         assertThat(userBudget).isNotNull();
         assertThat(userBudget.getId()).isEqualTo(id);
+    }
+
+    @Test
+    public void findByUserId() {
+        UserBudget expected = saveForTest(ModelTestData.getUserBudget1());
+        long userId = expected.getUser().getId();
+
+        Optional<UserBudget> actual = repository.findByUserId(userId);
+
+        assertThat(actual.isPresent()).isTrue();
+        assertThat(actual.get()).isEqualTo(expected);
     }
 
     @Test
