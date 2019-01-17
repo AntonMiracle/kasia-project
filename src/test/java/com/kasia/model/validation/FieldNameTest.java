@@ -1,7 +1,7 @@
 package com.kasia.model.validation;
 
+import com.kasia.model.Budget;
 import com.kasia.model.User;
-import com.kasia.model.validation.FieldName;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -25,6 +25,15 @@ public class FieldNameTest {
         assertThat(currentFieldsName.contains(name)).isTrue();
         assertThat(currentFieldsName.contains(password)).isTrue();
         assertThat(currentFieldsName.contains(email)).isTrue();
+    }
+    @Test
+    public void budgetFieldNameCorrect() {
+        Set<String> currentFieldsName = Arrays.stream(Budget.class.getDeclaredFields())
+                .map(field -> field.getName())
+                .collect(Collectors.toCollection(HashSet<String>::new));
+        String name = FieldName.BUDGET_NAME.getName();
+
+        assertThat(currentFieldsName.contains(name)).isTrue();
     }
 
 }

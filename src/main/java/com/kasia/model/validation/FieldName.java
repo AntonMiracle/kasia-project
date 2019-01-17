@@ -4,6 +4,7 @@ public enum FieldName {
     USER_PASSWORD("password")
     , USER_NAME("name")
     , USER_EMAIL("email")
+    , BUDGET_NAME("name")
     ;
 
     private final String name;
