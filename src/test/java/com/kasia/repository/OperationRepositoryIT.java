@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -53,7 +54,12 @@ public class OperationRepositoryIT {
     private Operation saveForTest(Operation operation) {
         elementRepository.save(operation.getElement());
         providerRepository.save(operation.getElementProvider());
-        userRepository.save(operation.getUser());
+        Optional<User> user = userRepository.findByName(operation.getUser().getName());
+        if (user.isPresent()) {
+            operation.setUser(user.get());
+        } else {
+            userRepository.save(operation.getUser());
+        }
         repository.save(operation);
         return operation;
     }

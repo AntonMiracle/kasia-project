@@ -2,6 +2,7 @@ package com.kasia.repository;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.BudgetOperation;
+import com.kasia.model.User;
 import com.kasia.model.repository.*;
 import org.junit.After;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,7 +57,12 @@ public class BudgetOperationRepositoryIT {
         {
             elementRepository.save(operation.getElement());
             providerRepository.save(operation.getElementProvider());
-            userRepository.save(operation.getUser());
+            Optional<User> user = userRepository.findByName(operation.getUser().getName());
+            if (user.isPresent()) {
+                operation.setUser(user.get());
+            } else {
+                userRepository.save(operation.getUser());
+            }
             operationRepository.save(operation);
         });
         budgetRepository.save(budgetOperation.getBudget());
