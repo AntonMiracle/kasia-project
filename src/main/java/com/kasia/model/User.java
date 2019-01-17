@@ -19,9 +19,11 @@ public class User implements Model {
     private long id;
     @NotBlank
     @Pattern(regexp = ValidationService.PATTERN_EMAIL)
+    @Column(unique = true)
     private String email;
     @NotBlank
     @Pattern(regexp = ValidationService.PATTERN_NAME)
+    @Column(unique = true)
     private String name;
     @NotBlank
     @Pattern(regexp = ValidationService.PATTERN_PASSWORD)
