@@ -6,7 +6,7 @@ import com.kasia.model.ElementType;
 import com.kasia.model.Price;
 import com.kasia.model.repository.ElementRepository;
 import com.kasia.model.service.ElementService;
-import com.kasia.validation.ValidationService;
+import com.kasia.model.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

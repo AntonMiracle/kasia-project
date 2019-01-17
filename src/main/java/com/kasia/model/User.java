@@ -1,9 +1,7 @@
 package com.kasia.model;
 
 import com.kasia.model.repository.converter.LocaleAttributeConverter;
-import com.kasia.validation.ValidationService;
-import org.hibernate.validator.constraints.UniqueElements;
-import org.springframework.cglib.core.Local;
+import com.kasia.model.validation.ValidationService;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;

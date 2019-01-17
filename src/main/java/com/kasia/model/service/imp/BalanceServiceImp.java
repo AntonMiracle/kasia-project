@@ -4,7 +4,7 @@ import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.model.Balance;
 import com.kasia.model.Price;
 import com.kasia.model.service.BalanceService;
-import com.kasia.validation.ValidationService;
+import com.kasia.model.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

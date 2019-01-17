@@ -4,7 +4,7 @@ import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.UserConnectBudget;
 import com.kasia.model.service.UserConnectBudgetService;
-import com.kasia.validation.ValidationService;
+import com.kasia.model.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;

@@ -1,6 +1,6 @@
 package com.kasia.model;
 
-import com.kasia.validation.ValidationService;
+import com.kasia.model.validation.ValidationService;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

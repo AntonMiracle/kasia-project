@@ -5,7 +5,7 @@ import com.kasia.model.BudgetElement;
 import com.kasia.model.Element;
 import com.kasia.model.ElementType;
 import com.kasia.model.service.BudgetElementService;
-import com.kasia.validation.ValidationService;
+import com.kasia.model.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;

@@ -2,7 +2,7 @@ package com.kasia.model.service.imp;
 
 import com.kasia.model.*;
 import com.kasia.model.service.BudgetOperationService;
-import com.kasia.validation.ValidationService;
+import com.kasia.model.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

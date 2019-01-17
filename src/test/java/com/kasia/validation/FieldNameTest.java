@@ -1,6 +1,7 @@
 package com.kasia.validation;
 
 import com.kasia.model.User;
+import com.kasia.model.validation.FieldName;
 import org.junit.Test;
 
 import java.util.Arrays;

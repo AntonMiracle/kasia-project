@@ -5,7 +5,7 @@ import com.kasia.model.Balance;
 import com.kasia.model.Budget;
 import com.kasia.model.repository.BudgetRepository;
 import com.kasia.model.service.BudgetService;
-import com.kasia.validation.ValidationService;
+import com.kasia.model.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
