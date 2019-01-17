@@ -15,7 +15,7 @@ public interface ValidationService<T extends Model> {
     String PATTERN_DESCRIPTION = "^(?=\\S.*\\S).{2,250}$";
 
     default boolean isValid(T model) {
-        if (model == null) return true;
+        if (model == null) throw new NullPointerException();
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
