@@ -29,11 +29,6 @@ public class UserRepositoryIT {
     }
 
     @Test
-    public void repositoryIsNotNull() {
-        assertThat(repository).isNotNull();
-    }
-
-    @Test
     public void correctLocaleConvert() {
         User user = ModelTestData.getUser1();
         Locale locale = new Locale("en", "CA");
@@ -62,6 +57,7 @@ public class UserRepositoryIT {
 
     @Test(expected = DataIntegrityViolationException.class)
     public void whenSaveWithNonUniqueEmailThenException() {
+        System.out.println("================= Must be DataIntegrityViolationException or ConstraintViolationException");
         User user1 = ModelTestData.getUser1();
         User user2 = ModelTestData.getUser2();
         user2.setEmail(user1.getEmail());
@@ -74,6 +70,7 @@ public class UserRepositoryIT {
 
     @Test(expected = DataIntegrityViolationException.class)
     public void whenSaveWithNonUniqueNameThenException() {
+        System.out.println("================= Must be DataIntegrityViolationException or ConstraintViolationException");
         User user1 = ModelTestData.getUser1();
         User user2 = ModelTestData.getUser2();
         user2.setName(user1.getName());
@@ -112,7 +109,6 @@ public class UserRepositoryIT {
 
         repository.findAll().forEach(users::add);
 
-        assertThat(users).isNotNull();
         assertThat(users.size() == 2).isTrue();
     }
 
