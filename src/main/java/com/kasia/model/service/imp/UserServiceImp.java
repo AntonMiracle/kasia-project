@@ -28,10 +28,12 @@ public class UserServiceImp implements UserService, UserValidationService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserValidationService userValidationService;
 
     @Override
     public User save(User model) {
-        verifyValidation(model);
+        userValidationService.verifyValidation(model);
 
         if (model.getId() == 0) {
             if (!isNameUnique(model.getName())) throw new UserNameExistRuntimeException();
@@ -63,7 +65,7 @@ public class UserServiceImp implements UserService, UserValidationService {
 
     @Override
     public boolean delete(User model) {
-        verifyValidation(model);
+        userValidationService.verifyValidation(model);
         if (model.getId() <= 0) throw new IdRuntimeException();
         userRepository.delete(model);
         return true;
@@ -87,7 +89,7 @@ public class UserServiceImp implements UserService, UserValidationService {
     public User create(String email, String name, String password, ZoneId zoneId, Locale locale) {
         password = crypt(password);
         User user = new User(email, name, password, zoneId, LocalDateTime.now().withNano(0), Role.USER, false, locale);
-        verifyValidation(user);
+        userValidationService.verifyValidation(user);
         return user;
     }
 
@@ -145,20 +147,20 @@ public class UserServiceImp implements UserService, UserValidationService {
 
     @Override
     public boolean isActivated(User user) {
-        verifyValidation(user);
+        userValidationService.verifyValidation(user);
         return user.isActivated();
     }
 
     @Override
     public boolean activate(User user) {
-        verifyValidation(user);
+        userValidationService.verifyValidation(user);
         user.setActivated(true);
         return true;
     }
 
     @Override
     public boolean deactivate(User user) {
-        verifyValidation(user);
+        userValidationService.verifyValidation(user);
         user.setActivated(false);
         return true;
     }

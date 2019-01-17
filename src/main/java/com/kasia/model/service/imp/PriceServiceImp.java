@@ -1,5 +1,6 @@
 package com.kasia.model.service.imp;
 
+import com.kasia.exception.NoCurrenciesRuntimeException;
 import com.kasia.exception.PriceNegativeRuntimeException;
 import com.kasia.model.Currencies;
 import com.kasia.model.Price;
@@ -15,6 +16,7 @@ public class PriceServiceImp implements PriceService, ValidationService<Price> {
     @Override
     public Price create(BigDecimal amount, Currencies currencies) {
         if (amount.doubleValue() < 0) throw new PriceNegativeRuntimeException();
+        if (currencies == null) throw new NoCurrenciesRuntimeException();
         return new Price(amount, currencies);
     }
 }

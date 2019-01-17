@@ -16,16 +16,18 @@ import java.util.Set;
 public class ElementProviderServiceImp implements ElementProviderService, ValidationService<ElementProvider> {
     @Autowired
     private ElementProviderRepository elementProviderRepository;
+    @Autowired
+    private ValidationService<ElementProvider> elementProviderValidationService;
 
     @Override
     public ElementProvider save(ElementProvider model) {
-        verifyValidation(model);
+        elementProviderValidationService.verifyValidation(model);
         return elementProviderRepository.save(model);
     }
 
     @Override
     public boolean delete(ElementProvider model) {
-        verifyValidation(model);
+        elementProviderValidationService.verifyValidation(model);
         if (model.getId() <= 0) throw new IdRuntimeException();
         elementProviderRepository.delete(model);
         return true;
@@ -48,7 +50,7 @@ public class ElementProviderServiceImp implements ElementProviderService, Valida
     @Override
     public ElementProvider create(String name, String description) {
         ElementProvider model = new ElementProvider(name, description);
-        verifyValidation(model);
+        elementProviderValidationService.verifyValidation(model);
         return model;
     }
 }

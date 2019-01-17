@@ -18,14 +18,18 @@ import java.util.Set;
 public class ElementServiceImp implements ElementService, ValidationService<Element> {
     @Autowired
     private ElementRepository elementRepository;
+    @Autowired
+    private ValidationService<Element> elementValidationService;
 
     @Override
     public Element save(Element model) {
+        elementValidationService.verifyValidation(model);
         return elementRepository.save(model);
     }
 
     @Override
     public boolean delete(Element model) {
+        elementValidationService.verifyValidation(model);
         if (model.getId() <= 0) throw new IdRuntimeException();
         elementRepository.delete(model);
         return true;
@@ -47,6 +51,8 @@ public class ElementServiceImp implements ElementService, ValidationService<Elem
 
     @Override
     public Element create(String name, ElementType type, Price defaultPrice) {
-        return new Element(name, defaultPrice, type);
+        Element model = new Element(name, defaultPrice, type);
+        elementValidationService.verifyValidation(model);
+        return model;
     }
 }

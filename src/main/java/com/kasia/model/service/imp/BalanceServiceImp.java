@@ -5,6 +5,7 @@ import com.kasia.model.Balance;
 import com.kasia.model.Price;
 import com.kasia.model.service.BalanceService;
 import com.kasia.validation.ValidationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,9 +14,14 @@ import java.util.Locale;
 
 @Service
 public class BalanceServiceImp implements BalanceService, ValidationService<Balance> {
-
+@Autowired
+private ValidationService<Price> priceValidationService;
+@Autowired
+private ValidationService<Balance> balanceValidationService;
     @Override
     public Balance add(Balance balanceTo, Price price) {
+        balanceValidationService.verifyValidation(balanceTo);
+        priceValidationService.verifyValidation(price);
         if (balanceTo.getCurrencies() != price.getCurrencies()) throw new CurrenciesNotEqualsRuntimeException();
         BigDecimal newAmount = balanceTo.getAmount().add(price.getAmount());
         balanceTo.setAmount(newAmount);
@@ -41,9 +47,9 @@ public class BalanceServiceImp implements BalanceService, ValidationService<Bala
 
         Price sum = new Price();
         sum.setAmount(BigDecimal.ZERO);
+        sum.setCurrencies(prices[0].getCurrencies());
         for (Price price : prices) {
 
-            if (sum.getCurrencies() == null) sum.setCurrencies(price.getCurrencies());
             if (price.getCurrencies() == null || sum.getCurrencies() != price.getCurrencies())
                 throw new CurrenciesNotEqualsRuntimeException();
 
@@ -54,6 +60,8 @@ public class BalanceServiceImp implements BalanceService, ValidationService<Bala
 
     @Override
     public Balance subtract(Balance balanceTo, Price price) {
+        balanceValidationService.verifyValidation(balanceTo);
+        priceValidationService.verifyValidation(price);
         if (balanceTo.getCurrencies() != price.getCurrencies()) throw new CurrenciesNotEqualsRuntimeException();
         if (balanceTo.getCurrencies() != price.getCurrencies()) throw new CurrenciesNotEqualsRuntimeException();
         BigDecimal newAmount = balanceTo.getAmount().subtract(price.getAmount());
@@ -63,6 +71,7 @@ public class BalanceServiceImp implements BalanceService, ValidationService<Bala
 
     @Override
     public String parseToString(Balance balance, Locale locale) {
+        balanceValidationService.verifyValidation(balance);
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(locale);
         currencyFormat.setCurrency(balance.getCurrencies().getCurrency());
         return currencyFormat.format(balance.getAmount().setScale(2, BigDecimal.ROUND_HALF_UP));

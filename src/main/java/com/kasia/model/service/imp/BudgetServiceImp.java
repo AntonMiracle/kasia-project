@@ -18,17 +18,19 @@ import java.util.Set;
 public class BudgetServiceImp implements BudgetService, ValidationService<Budget> {
     @Autowired
     private BudgetRepository budgetRepository;
+    @Autowired
+    private ValidationService<Budget> budgetValidationService;
 
     @Override
     public Budget save(Budget model) {
-        verifyValidation(model);
+        budgetValidationService.verifyValidation(model);
         budgetRepository.save(model);
         return model;
     }
 
     @Override
     public boolean delete(Budget model) {
-        verifyValidation(model);
+        budgetValidationService.verifyValidation(model);
         if (model.getId() <= 0) throw new IdRuntimeException();
         budgetRepository.delete(model);
         return true;
@@ -51,7 +53,7 @@ public class BudgetServiceImp implements BudgetService, ValidationService<Budget
     @Override
     public Budget create(String name, Balance balance) {
         Budget budget = new Budget(name, balance, LocalDateTime.now().withNano(0));
-        verifyValidation(budget);
+        budgetValidationService.verifyValidation(budget);
         return budget;
     }
 }
