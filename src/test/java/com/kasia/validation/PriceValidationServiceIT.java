@@ -2,7 +2,7 @@ package com.kasia.validation;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.Price;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.PriceValidationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class PriceValidationServiceIT {
     @Autowired
-    private ValidationService<Price> validationService;
+    private PriceValidationService validationService;
 
 
     @Test

@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class ElementProviderServiceImp implements ElementProviderService, ValidationService<ElementProvider> {
+public class ElementProviderServiceImp implements ElementProviderService {
     @Autowired
     private ElementProviderRepository elementProviderRepository;
     @Autowired

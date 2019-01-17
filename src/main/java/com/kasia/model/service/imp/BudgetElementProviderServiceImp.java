@@ -5,13 +5,12 @@ import com.kasia.model.BudgetElement;
 import com.kasia.model.BudgetElementProvider;
 import com.kasia.model.ElementProvider;
 import com.kasia.model.service.BudgetElementProviderService;
-import com.kasia.model.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
-public class BudgetElementProviderServiceImp implements BudgetElementProviderService, ValidationService<BudgetElementProvider> {
+public class BudgetElementProviderServiceImp implements BudgetElementProviderService {
     @Override
     public BudgetElementProvider save(BudgetElementProvider model) {
         return null;

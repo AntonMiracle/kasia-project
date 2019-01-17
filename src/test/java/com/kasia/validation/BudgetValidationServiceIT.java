@@ -2,7 +2,7 @@ package com.kasia.validation;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.Budget;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.BudgetValidationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class BudgetValidationServiceIT {
     @Autowired
-    private ValidationService<Budget> validationService;
+    private BudgetValidationService validationService;
 
     @Test
     public void budgetIsValid() {

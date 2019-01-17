@@ -2,14 +2,13 @@ package com.kasia.model.service.imp;
 
 import com.kasia.model.*;
 import com.kasia.model.service.BudgetOperationService;
-import com.kasia.model.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service
-public class BudgetOperationServiceImp implements BudgetOperationService, ValidationService<BudgetOperation> {
+public class BudgetOperationServiceImp implements BudgetOperationService {
     @Override
     public BudgetOperation save(BudgetOperation model) {
         return null;

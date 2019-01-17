@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class ElementServiceImp implements ElementService, ValidationService<Element> {
+public class ElementServiceImp implements ElementService {
     @Autowired
     private ElementRepository elementRepository;
     @Autowired

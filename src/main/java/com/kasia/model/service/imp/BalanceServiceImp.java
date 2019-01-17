@@ -13,11 +13,12 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 @Service
-public class BalanceServiceImp implements BalanceService, ValidationService<Balance> {
-@Autowired
-private ValidationService<Price> priceValidationService;
-@Autowired
-private ValidationService<Balance> balanceValidationService;
+public class BalanceServiceImp implements BalanceService {
+    @Autowired
+    private ValidationService<Price> priceValidationService;
+    @Autowired
+    private ValidationService<Balance> balanceValidationService;
+
     @Override
     public Balance add(Balance balanceTo, Price price) {
         balanceValidationService.verifyValidation(balanceTo);

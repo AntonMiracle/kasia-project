@@ -2,7 +2,7 @@ package com.kasia.validation;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.BudgetElementProvider;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.BudgetElementProviderValidationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class BudgetElementProviderValidationServiceIT {
     @Autowired
-    private ValidationService<BudgetElementProvider> validationService;
+    private BudgetElementProviderValidationService validationService;
 
     @Test
     public void elementProviderIsValid() {

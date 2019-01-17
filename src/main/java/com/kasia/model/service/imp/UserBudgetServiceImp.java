@@ -4,13 +4,12 @@ import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.UserBudget;
 import com.kasia.model.service.UserBudgetService;
-import com.kasia.model.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
-public class UserBudgetServiceImp implements UserBudgetService, ValidationService<UserBudget> {
+public class UserBudgetServiceImp implements UserBudgetService {
     @Override
     public UserBudget save(UserBudget model) {
         return null;

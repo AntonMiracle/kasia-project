@@ -2,7 +2,7 @@ package com.kasia.validation;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.Operation;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.OperationValidationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class OperationValidationServiceIT {
     @Autowired
-    private ValidationService<Operation> validationService;
+    private OperationValidationService validationService;
 
     @Test
     public void elementProviderIsValid() {

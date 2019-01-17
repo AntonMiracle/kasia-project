@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class BudgetServiceImp implements BudgetService, ValidationService<Budget> {
+public class BudgetServiceImp implements BudgetService {
     @Autowired
     private BudgetRepository budgetRepository;
     @Autowired

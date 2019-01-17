@@ -4,13 +4,12 @@ import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.UserConnectBudget;
 import com.kasia.model.service.UserConnectBudgetService;
-import com.kasia.model.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
-public class UserConnectBudgetServiceImp implements UserConnectBudgetService, ValidationService<UserConnectBudget> {
+public class UserConnectBudgetServiceImp implements UserConnectBudgetService {
     @Override
     public UserConnectBudget save(UserConnectBudget model) {
         return null;
