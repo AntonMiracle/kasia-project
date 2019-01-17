@@ -26,7 +26,8 @@ public class UserBudgetValidationServiceImp implements UserBudgetValidationServi
     public boolean isValid(UserBudget model) {
         if (model == null) return false;
 
-        if (!userValidationService.isValid(model.getUser())) return false;
+        if (!userValidationService.isValid(model.getUser()) || model.getBudgets() == null) return false;
+
         for (Budget budget : model.getBudgets()) {
             if (!budgetValidationService.isValid(budget)) return false;
         }
