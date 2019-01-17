@@ -2,7 +2,6 @@ package com.kasia.model.validation;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.Budget;
-import com.kasia.model.validation.BudgetValidationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +51,15 @@ public class BudgetValidationServiceIT {
 
         assertThat(validationService.isValid(budget1)).isFalse();
         assertThat(validationService.isValid(budget2)).isFalse();
+    }
+
+    @Test
+    public void nameValidation() {
+        String validName = ModelTestData.getBudget1().getName();
+        assertThat(validationService.isNameValid(validName)).isTrue();
+        assertThat(validationService.isNameValid(" " + validName + " ")).isFalse();
+        assertThat(validationService.isNameValid("")).isFalse();
+        assertThat(validationService.isNameValid(null)).isFalse();
+        assertThat(validationService.isNameValid("m")).isFalse();
     }
 }
