@@ -22,4 +22,8 @@ public interface ValidationService<T extends Model> {
         Set<ConstraintViolation<Model>> violations = validator.validate(model);
         return violations.size() == 0;
     }
+
+    default Validator getValidator() {
+        return Validation.buildDefaultValidatorFactory().getValidator();
+    }
 }
