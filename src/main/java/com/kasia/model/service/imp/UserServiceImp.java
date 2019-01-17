@@ -7,12 +7,10 @@ import com.kasia.model.repository.UserRepository;
 import com.kasia.model.service.UserService;
 import com.kasia.validation.FieldName;
 import com.kasia.validation.UserValidationService;
-import com.kasia.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.ValidationException;
 import javax.validation.Validator;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -26,16 +24,10 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class UserServiceImpService implements UserService, UserValidationService {
+public class UserServiceImp implements UserService, UserValidationService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private ValidationService<User> userValidationService;
-
-    private void verifyValidation(User model) throws ValidationException {
-        if (!userValidationService.isValid(model)) throw new ValidationException();
-    }
 
     @Override
     public User save(User model) {

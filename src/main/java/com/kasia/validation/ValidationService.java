@@ -2,10 +2,7 @@ package com.kasia.validation;
 
 import com.kasia.model.Model;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import javax.validation.*;
 import java.util.Set;
 
 public interface ValidationService<T extends Model> {
@@ -25,5 +22,9 @@ public interface ValidationService<T extends Model> {
 
     default Validator getValidator() {
         return Validation.buildDefaultValidatorFactory().getValidator();
+    }
+
+    default void verifyValidation(T model) throws ValidationException {
+        if (!isValid(model)) throw new ValidationException();
     }
 }
