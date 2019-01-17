@@ -19,11 +19,13 @@ public class ElementProviderServiceImp implements ElementProviderService, Valida
 
     @Override
     public ElementProvider save(ElementProvider model) {
+        verifyValidation(model);
         return elementProviderRepository.save(model);
     }
 
     @Override
     public boolean delete(ElementProvider model) {
+        verifyValidation(model);
         if (model.getId() <= 0) throw new IdRuntimeException();
         elementProviderRepository.delete(model);
         return true;
@@ -45,6 +47,8 @@ public class ElementProviderServiceImp implements ElementProviderService, Valida
 
     @Override
     public ElementProvider create(String name, String description) {
-        return new ElementProvider(name,description);
+        ElementProvider model = new ElementProvider(name, description);
+        verifyValidation(model);
+        return model;
     }
 }
