@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class UserValidationServiceIT {
     @Autowired
-    private ValidationService<User> validationService;
+    private UserValidationService validationService;
 
     @Test
     public void userIsValid() throws Exception {
