@@ -36,6 +36,29 @@ public class BalanceServiceIT {
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(1.0001));
     }
 
+    @Test
+    public void addManyPrices() throws Exception {
+        Currencies currencies = Currencies.EUR;
+        Price price = ModelTestData.getPrice1();
+        price.setAmount(BigDecimal.valueOf(1.001));
+        price.setCurrencies(currencies);
+        Balance balance = ModelTestData.getBalance1();
+        balance.setAmount(BigDecimal.ZERO);
+        balance.setCurrencies(currencies);
+
+        assertThat(balanceService.add(balance, price, price, price, price, price).getAmount()).isEqualTo(BigDecimal.valueOf(5.005));
+        assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(5.005));
+    }
+
+    @Test
+    public void addZeroPrice() throws Exception {
+        Balance balance = ModelTestData.getBalance1();
+        balance.setAmount(BigDecimal.ZERO);
+
+        assertThat(balanceService.add(balance).getAmount()).isEqualTo(BigDecimal.ZERO);
+        assertThat(balance.getAmount()).isEqualTo(BigDecimal.ZERO);
+    }
+
     @Test(expected = CurrenciesNotEqualsRuntimeException.class)
     public void whenAddWithDifferentCurrencyThenException() throws Exception {
         Price price = ModelTestData.getPrice1();
@@ -66,6 +89,29 @@ public class BalanceServiceIT {
 
         assertThat(balanceService.subtract(balance, price).getAmount()).isEqualTo(BigDecimal.valueOf(-1.0001));
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(-1.0001));
+    }
+
+    @Test
+    public void subtractManyPrices() throws Exception {
+        Currencies currencies = Currencies.EUR;
+        Price price = ModelTestData.getPrice1();
+        price.setAmount(BigDecimal.valueOf(1.0001));
+        price.setCurrencies(currencies);
+        Balance balance = ModelTestData.getBalance1();
+        balance.setAmount(BigDecimal.ZERO);
+        balance.setCurrencies(currencies);
+
+        assertThat(balanceService.subtract(balance, price, price, price, price, price).getAmount()).isEqualTo(BigDecimal.valueOf(-5.0005));
+        assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(-5.0005));
+    }
+
+    @Test
+    public void subtractZeroPrices() throws Exception {
+        Balance balance = ModelTestData.getBalance1();
+        balance.setAmount(BigDecimal.ZERO);
+
+        assertThat(balanceService.subtract(balance).getAmount()).isEqualTo(BigDecimal.ZERO);
+        assertThat(balance.getAmount()).isEqualTo(BigDecimal.ZERO);
     }
 
     @Test
