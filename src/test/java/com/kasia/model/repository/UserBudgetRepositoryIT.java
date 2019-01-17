@@ -1,10 +1,7 @@
-package com.kasia.repository;
+package com.kasia.model.repository;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.UserBudget;
-import com.kasia.model.repository.BudgetRepository;
-import com.kasia.model.repository.UserBudgetRepository;
-import com.kasia.model.repository.UserRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

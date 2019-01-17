@@ -4,7 +4,8 @@ import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.model.Balance;
 import com.kasia.model.Price;
 import com.kasia.model.service.BalanceService;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.BalanceValidationService;
+import com.kasia.model.validation.PriceValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +16,9 @@ import java.util.Locale;
 @Service
 public class BalanceServiceImp implements BalanceService {
     @Autowired
-    private ValidationService<Price> priceValidationService;
+    private PriceValidationService priceValidationService;
     @Autowired
-    private ValidationService<Balance> balanceValidationService;
+    private BalanceValidationService balanceValidationService;
 
     @Override
     public Balance add(Balance balanceTo, Price price) {

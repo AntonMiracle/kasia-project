@@ -6,7 +6,7 @@ import com.kasia.model.Operation;
 import com.kasia.model.Price;
 import com.kasia.model.repository.OperationRepository;
 import com.kasia.model.service.OperationService;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.OperationValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class OperationServiceImp implements OperationService {
     @Autowired
     private OperationRepository operationRepository;
     @Autowired
-    private ValidationService<Operation> operationValidationService;
+    private OperationValidationService operationValidationService;
 
     @Override
     public Operation save(Operation model) {

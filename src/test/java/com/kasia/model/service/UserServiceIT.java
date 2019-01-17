@@ -6,6 +6,7 @@ import com.kasia.exception.IdRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.Role;
 import com.kasia.model.User;
+import com.kasia.model.validation.UserValidationService;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserServiceIT {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserValidationService userValidationService;
 
     @After
     public void after() {
@@ -280,6 +283,16 @@ public class UserServiceIT {
     }
 
     @Test
+    public void localeOfWithInvalidLangAndCountryReturnDefaultLocale() {
+        Locale locale1 = userService.localeOf("asdf", "Fsda");
+        User user = ModelTestData.getUser1();
+        Locale locale2 = userService.localeOf(user.getLocale().getLanguage(), user.getLocale().getCountry());
+
+        assertThat(locale1).isEqualTo(ModelTestData.getDefaultLocale());
+        assertThat(userService.getCorrectAvailableLocales().contains(locale2)).isTrue();
+    }
+
+    @Test
     public void allCorrectAvailableLocalesHaveLangAndCountry() {
         Set<Locale> locales = userService.getCorrectAvailableLocales();
         int count = 0;
@@ -290,15 +303,5 @@ public class UserServiceIT {
             }
         }
         assertThat(locales.size() == count).isTrue();
-    }
-
-    @Test
-    public void localeOfWithInvalidLangAndCountryReturnDefaultLocale() {
-        Locale locale1 = userService.localeOf("asdf", "Fsda");
-        User user = ModelTestData.getUser1();
-        Locale locale2 = userService.localeOf(user.getLocale().getLanguage(), user.getLocale().getCountry());
-
-        assertThat(locale1).isEqualTo(ModelTestData.getDefaultLocale());
-        assertThat(userService.getCorrectAvailableLocales().contains(locale2)).isTrue();
     }
 }

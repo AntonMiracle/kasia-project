@@ -6,7 +6,7 @@ import com.kasia.model.ElementType;
 import com.kasia.model.Price;
 import com.kasia.model.repository.ElementRepository;
 import com.kasia.model.service.ElementService;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.ElementValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class ElementServiceImp implements ElementService {
     @Autowired
     private ElementRepository elementRepository;
     @Autowired
-    private ValidationService<Element> elementValidationService;
+    private ElementValidationService elementValidationService;
 
     @Override
     public Element save(Element model) {

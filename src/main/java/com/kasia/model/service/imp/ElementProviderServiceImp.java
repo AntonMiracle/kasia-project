@@ -4,7 +4,7 @@ import com.kasia.exception.IdRuntimeException;
 import com.kasia.model.ElementProvider;
 import com.kasia.model.repository.ElementProviderRepository;
 import com.kasia.model.service.ElementProviderService;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.ElementProviderValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class ElementProviderServiceImp implements ElementProviderService {
     @Autowired
     private ElementProviderRepository elementProviderRepository;
     @Autowired
-    private ValidationService<ElementProvider> elementProviderValidationService;
+    private ElementProviderValidationService elementProviderValidationService;
 
     @Override
     public ElementProvider save(ElementProvider model) {

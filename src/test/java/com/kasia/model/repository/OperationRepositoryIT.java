@@ -1,12 +1,8 @@
-package com.kasia.repository;
+package com.kasia.model.repository;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.Operation;
 import com.kasia.model.User;
-import com.kasia.model.repository.ElementProviderRepository;
-import com.kasia.model.repository.ElementRepository;
-import com.kasia.model.repository.OperationRepository;
-import com.kasia.model.repository.UserRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;

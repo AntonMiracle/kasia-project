@@ -5,13 +5,10 @@ import com.kasia.model.Role;
 import com.kasia.model.User;
 import com.kasia.model.repository.UserRepository;
 import com.kasia.model.service.UserService;
-import com.kasia.model.validation.FieldName;
 import com.kasia.model.validation.UserValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -176,8 +173,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public boolean isLocaleAvailable(Locale locale) {
+        return getCorrectAvailableLocales().contains(locale);
+    }
+
+    @Override
     public Locale getDefaultLocale() {
         return new Locale("pl", "PL");
     }
-
 }

@@ -5,7 +5,7 @@ import com.kasia.model.Balance;
 import com.kasia.model.Budget;
 import com.kasia.model.repository.BudgetRepository;
 import com.kasia.model.service.BudgetService;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.BudgetValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class BudgetServiceImp implements BudgetService {
     @Autowired
     private BudgetRepository budgetRepository;
     @Autowired
-    private ValidationService<Budget> budgetValidationService;
+    private BudgetValidationService budgetValidationService;
 
     @Override
     public Budget save(Budget model) {

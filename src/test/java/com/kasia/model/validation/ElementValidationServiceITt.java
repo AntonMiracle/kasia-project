@@ -1,4 +1,4 @@
-package com.kasia.validation;
+package com.kasia.model.validation;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.Element;
