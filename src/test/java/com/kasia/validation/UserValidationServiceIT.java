@@ -99,4 +99,39 @@ public class UserValidationServiceIT {
         assertThat(validationService.isValid(user16)).isFalse();
         assertThat(validationService.isValid(user17)).isFalse();
     }
+
+    @Test
+    public void passwordValidation() {
+        assertThat(validationService.isPasswordValid(ModelTestData.getUser1().getPassword())).isTrue();
+        assertThat(validationService.isPasswordValid("")).isFalse();
+        assertThat(validationService.isPasswordValid("password")).isFalse();
+        assertThat(validationService.isPasswordValid("password2")).isFalse();
+        assertThat(validationService.isPasswordValid("passworD")).isFalse();
+        assertThat(validationService.isPasswordValid("11111111")).isFalse();
+        assertThat(validationService.isPasswordValid("PASSWORD")).isFalse();
+        assertThat(validationService.isPasswordValid("PASSWORD22")).isFalse();
+        assertThat(validationService.isPasswordValid(null)).isFalse();
+        assertThat(validationService.isPasswordValid(" " + ModelTestData.getUser1().getPassword() + " ")).isFalse();
+    }
+
+    @Test
+    public void emailValidation() {
+        assertThat(validationService.isEmailValid(ModelTestData.getUser1().getEmail())).isTrue();
+        assertThat(validationService.isEmailValid("")).isFalse();
+        assertThat(validationService.isEmailValid("email")).isFalse();
+        assertThat(validationService.isEmailValid("@gmail.com")).isFalse();
+        assertThat(validationService.isEmailValid("email.gmail.com")).isFalse();
+        assertThat(validationService.isEmailValid(null)).isFalse();
+        assertThat(validationService.isEmailValid(" " + ModelTestData.getUser1().getEmail() + " ")).isFalse();
+    }
+
+    @Test
+    public void nameIsValid() {
+        assertThat(validationService.isNameValid(ModelTestData.getUser1().getName())).isTrue();
+        assertThat(validationService.isNameValid("")).isFalse();
+        assertThat(validationService.isNameValid("n")).isFalse();
+        assertThat(validationService.isNameValid(null)).isFalse();
+        assertThat(validationService.isNameValid(" " + ModelTestData.getUser1().getName() + " ")).isFalse();
+    }
+
 }

@@ -5,10 +5,15 @@ import com.kasia.model.Role;
 import com.kasia.model.User;
 import com.kasia.model.repository.UserRepository;
 import com.kasia.model.service.UserService;
+import com.kasia.validation.FieldName;
+import com.kasia.validation.UserValidationService;
 import com.kasia.validation.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ValidationException;
+import javax.validation.Validator;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -21,13 +26,21 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class UserServiceImp implements UserService, ValidationService<User> {
+public class UserServiceImpService implements UserService, UserValidationService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ValidationService<User> userValidationService;
+
+    private void verifyValidation(User model) throws ValidationException {
+        if (!userValidationService.isValid(model)) throw new ValidationException();
+    }
 
     @Override
     public User save(User model) {
+        verifyValidation(model);
+
         if (model.getId() == 0) {
             if (!isNameUnique(model.getName())) throw new UserNameExistRuntimeException();
             if (!isEmailUnique(model.getEmail())) throw new EmailExistRuntimeException();
@@ -35,8 +48,12 @@ public class UserServiceImp implements UserService, ValidationService<User> {
             model.setPassword(crypt(model.getPassword()));
             return userRepository.save(model);
         }
-        checkEmailAndNameBeforeUpdate(model);
-        return userRepository.save(model);
+
+        if (model.getId() > 0) {
+            checkEmailAndNameBeforeUpdate(model);
+            return userRepository.save(model);
+        }
+        throw new IdRuntimeException();
     }
 
     private void checkEmailAndNameBeforeUpdate(User model) {
@@ -54,6 +71,7 @@ public class UserServiceImp implements UserService, ValidationService<User> {
 
     @Override
     public boolean delete(User model) {
+        verifyValidation(model);
         if (model.getId() <= 0) throw new IdRuntimeException();
         userRepository.delete(model);
         return true;
@@ -76,7 +94,9 @@ public class UserServiceImp implements UserService, ValidationService<User> {
     @Override
     public User create(String email, String name, String password, ZoneId zoneId, Locale locale) {
         password = crypt(password);
-        return new User(email, name, password, zoneId, LocalDateTime.now().withNano(0), Role.USER, false, locale);
+        User user = new User(email, name, password, zoneId, LocalDateTime.now().withNano(0), Role.USER, false, locale);
+        verifyValidation(user);
+        return user;
     }
 
     @Override
@@ -133,17 +153,20 @@ public class UserServiceImp implements UserService, ValidationService<User> {
 
     @Override
     public boolean isActivated(User user) {
+        verifyValidation(user);
         return user.isActivated();
     }
 
     @Override
     public boolean activate(User user) {
+        verifyValidation(user);
         user.setActivated(true);
         return true;
     }
 
     @Override
     public boolean deactivate(User user) {
+        verifyValidation(user);
         user.setActivated(false);
         return true;
     }
@@ -163,4 +186,45 @@ public class UserServiceImp implements UserService, ValidationService<User> {
         return new Locale("pl", "PL");
     }
 
+    @Override
+    public boolean isPasswordValid(String password) {
+        User user = new User();
+        user.setPassword(password);
+
+        Validator validator = getValidator();
+        for (ConstraintViolation<User> violation : validator.validate(user)) {
+            if (violation.getPropertyPath().toString().equals(FieldName.USER_PASSWORD.getName())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isEmailValid(String email) {
+        User user = new User();
+        user.setEmail(email);
+
+        Validator validator = getValidator();
+        for (ConstraintViolation<User> violation : validator.validate(user)) {
+            if (violation.getPropertyPath().toString().equals(FieldName.USER_EMAIL.getName())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean isNameValid(String name) {
+        User user = new User();
+        user.setName(name);
+
+        Validator validator = getValidator();
+        for (ConstraintViolation<User> violation : validator.validate(user)) {
+            if (violation.getPropertyPath().toString().equals(FieldName.USER_NAME.getName())) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
