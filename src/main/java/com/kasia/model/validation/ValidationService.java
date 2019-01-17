@@ -1,5 +1,6 @@
 package com.kasia.model.validation;
 
+import com.kasia.exception.IdRuntimeException;
 import com.kasia.model.Model;
 
 import javax.validation.*;
@@ -12,7 +13,7 @@ public interface ValidationService<T extends Model> {
     String PATTERN_DESCRIPTION = "^(?=\\S.*\\S).{2,250}$";
 
     default boolean isValid(T model) {
-        if (model == null) throw new NullPointerException();
+        if (model == null) return false;
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
@@ -26,5 +27,9 @@ public interface ValidationService<T extends Model> {
 
     default void verifyValidation(T model) throws ValidationException {
         if (!isValid(model)) throw new ValidationException();
+    }
+
+    default void verifyPositiveId(long id) throws IdRuntimeException {
+        if (id <= 0) throw new IdRuntimeException();
     }
 }
