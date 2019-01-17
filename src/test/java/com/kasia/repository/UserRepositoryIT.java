@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
@@ -35,7 +36,7 @@ public class UserRepositoryIT {
     @Test
     public void correctLocaleConvert() {
         User user = ModelTestData.getUser1();
-        Locale locale = new Locale("en","CA");
+        Locale locale = new Locale("en", "CA");
         user.setLocale(locale);
 
         repository.save(user);
@@ -43,6 +44,7 @@ public class UserRepositoryIT {
         assertThat(repository.findById(user.getId()).get().getLocale()).isEqualTo(locale);
 
     }
+
     @Test
     public void save() {
         User user = ModelTestData.getUser1();
@@ -56,6 +58,30 @@ public class UserRepositoryIT {
     private User saveForTest(User user) {
         repository.save(user);
         return user;
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void whenSaveWithNonUniqueEmailThenException() {
+        User user1 = ModelTestData.getUser1();
+        User user2 = ModelTestData.getUser2();
+        user2.setEmail(user1.getEmail());
+        assertThat(user1.getEmail()).isEqualTo(user2.getEmail());
+        assertThat(user1.getName()).isNotEqualTo(user2.getName());
+
+        saveForTest(user1);
+        saveForTest(user2);
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void whenSaveWithNonUniqueNameThenException() {
+        User user1 = ModelTestData.getUser1();
+        User user2 = ModelTestData.getUser2();
+        user2.setName(user1.getName());
+        assertThat(user1.getEmail()).isNotEqualTo(user2.getEmail());
+        assertThat(user1.getName()).isEqualTo(user2.getName());
+
+        saveForTest(user1);
+        saveForTest(user2);
     }
 
     @Test
