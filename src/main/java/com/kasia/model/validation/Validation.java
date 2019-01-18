@@ -1,6 +1,6 @@
 package com.kasia.model.validation;
 
-import com.kasia.exception.IdRuntimeException;
+import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.Model;
 
 import javax.validation.*;
@@ -29,7 +29,7 @@ public interface Validation<T extends Model> {
         if (!isValid(model)) throw new ValidationException();
     }
 
-    default void verifyPositiveId(long id) throws IdRuntimeException {
-        if (id <= 0) throw new IdRuntimeException();
+    default void verifyPositiveId(long id) throws IdInvalidRuntimeException {
+        if (id <= 0) throw new IdInvalidRuntimeException();
     }
 }
