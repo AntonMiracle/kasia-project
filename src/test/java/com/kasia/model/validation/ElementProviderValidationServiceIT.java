@@ -2,7 +2,6 @@ package com.kasia.model.validation;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.ElementProvider;
-import com.kasia.model.validation.ElementProviderValidationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +72,16 @@ public class ElementProviderValidationServiceIT {
 
         assertThat(validationService.isValid(elementProvider1)).isTrue();
         assertThat(validationService.isValid(elementProvider2)).isTrue();
+    }
+
+    @Test
+    public void nameValidation() {
+        ElementProvider provider = ModelTestData.getElementProvider1();
+
+        assertThat(validationService.isNameValid(provider.getName())).isTrue();
+        assertThat(validationService.isNameValid(" " + provider.getName() + " ")).isFalse();
+        assertThat(validationService.isNameValid(" ")).isFalse();
+        assertThat(validationService.isNameValid("")).isFalse();
+        assertThat(validationService.isNameValid("n")).isFalse();
     }
 }
