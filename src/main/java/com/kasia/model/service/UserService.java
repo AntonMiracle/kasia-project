@@ -1,27 +1,37 @@
 package com.kasia.model.service;
 
+import com.kasia.model.Budget;
 import com.kasia.model.User;
 
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Set;
 
-public interface UserService extends Service<User> {
-    User create(String email, String name, String password, ZoneId zoneId, Locale locale);
+public interface UserService {
 
-    boolean isEmailUnique(String email);
+    User save(User model);
 
-    boolean isNameUnique(String name);
+    boolean delete(User model);
 
-    String crypt(String nonCryptPassword);
+    User findUserById(long id);
+
+    Set<User> findAllUsers();
+
+    User createUser(String email, String name, String password, ZoneId zoneId, Locale locale);
+
+    boolean isUserEmailUnique(String email);
+
+    boolean isUserNameUnique(String name);
+
+    String cryptPassword(String nonCryptPassword);
 
     ZoneId zoneIdOf(String zoneId);
 
     Locale localeOf(String lang, String country);
 
-    User findByName(String name);
+    User findUserByName(String name);
 
-    User findByEmail(String email);
+    User findUserByEmail(String email);
 
     boolean isActivated(User user);
 
@@ -34,4 +44,12 @@ public interface UserService extends Service<User> {
     boolean isLocaleAvailable(Locale locale);
 
     Locale getDefaultLocale();
+
+    boolean addOwnBudget(User user, Budget budget);
+
+    boolean removeOwnBudget(User user, Budget budget);
+
+    boolean addConnectBudget(User user, Budget budget);
+
+    boolean removeConnectBudget(User user, Budget budget);
 }

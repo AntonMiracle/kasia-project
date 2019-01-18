@@ -1,6 +1,6 @@
 package com.kasia.model;
 
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.Validation;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ public class Element implements Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotBlank
-    @Pattern(regexp = ValidationService.PATTERN_NAME)
+    @Pattern(regexp = Validation.PATTERN_NAME)
     private String name;
     @NotNull
     @Embedded

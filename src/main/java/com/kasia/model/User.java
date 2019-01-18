@@ -1,7 +1,7 @@
 package com.kasia.model;
 
 import com.kasia.model.repository.converter.LocaleAttributeConverter;
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.Validation;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -16,15 +16,15 @@ public class User implements Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotBlank
-    @Pattern(regexp = ValidationService.PATTERN_EMAIL)
+    @Pattern(regexp = Validation.PATTERN_EMAIL)
     @Column(unique = true)
     private String email;
     @NotBlank
-    @Pattern(regexp = ValidationService.PATTERN_NAME)
+    @Pattern(regexp = Validation.PATTERN_NAME)
     @Column(unique = true)
     private String name;
     @NotBlank
-    @Pattern(regexp = ValidationService.PATTERN_PASSWORD)
+    @Pattern(regexp = Validation.PATTERN_PASSWORD)
     private String password;
     @NotNull
     private ZoneId zoneId;

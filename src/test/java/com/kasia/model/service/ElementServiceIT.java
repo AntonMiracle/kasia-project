@@ -19,7 +19,7 @@ public class ElementServiceIT {
     private ElementService elementService;
 
     @After
-    public void after() {
+    public void cleanData() {
         for (Element element : elementService.findAll()) elementService.delete(element);
     }
 

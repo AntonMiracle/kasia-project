@@ -1,6 +1,6 @@
 package com.kasia.model;
 
-import com.kasia.model.validation.ValidationService;
+import com.kasia.model.validation.Validation;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,10 +15,10 @@ public class ElementProvider implements Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotBlank
-    @Pattern(regexp = ValidationService.PATTERN_NAME)
+    @Pattern(regexp = Validation.PATTERN_NAME)
     private String name;
     @NotBlank
-    @Pattern(regexp = ValidationService.PATTERN_DESCRIPTION)
+    @Pattern(regexp = Validation.PATTERN_DESCRIPTION)
     private String description;
 
     public ElementProvider(String name, String description) {

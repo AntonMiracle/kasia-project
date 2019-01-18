@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,7 +21,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class BalanceServiceIT {
     @Autowired
-    private BalanceService balanceService;
+    private BalanceService bService;
+
+    @Test
+    public void createBalance() {
+        Balance expected = ModelTestData.getBalance1();
+
+        Balance actual = bService.createBalance(expected.getAmount(), expected.getCurrencies());
+
+        assertThat(actual.getChangeOn().compareTo(LocalDateTime.now().plusSeconds(2)) < 0).isTrue();
+        assertThat(actual.getAmount()).isEqualTo(expected.getAmount());
+        assertThat(actual.getCurrencies()).isEqualTo(expected.getCurrencies());
+    }
+
+    @Test
+    public void createPrice() {
+        Price expected = ModelTestData.getPrice1();
+
+        Price actual = bService.createPrice(expected.getAmount(), expected.getCurrencies());
+
+        assertThat(actual.getAmount()).isEqualTo(expected.getAmount());
+        assertThat(actual.getCurrencies()).isEqualTo(expected.getCurrencies());
+    }
 
     @Test
     public void add() throws Exception {
@@ -32,7 +54,7 @@ public class BalanceServiceIT {
         balance.setAmount(BigDecimal.ZERO);
         balance.setCurrencies(currencies);
 
-        assertThat(balanceService.add(balance, price).getAmount()).isEqualTo(BigDecimal.valueOf(1.0001));
+        assertThat(bService.add(balance, price).getAmount()).isEqualTo(BigDecimal.valueOf(1.0001));
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(1.0001));
     }
 
@@ -46,7 +68,7 @@ public class BalanceServiceIT {
         balance.setAmount(BigDecimal.ZERO);
         balance.setCurrencies(currencies);
 
-        assertThat(balanceService.add(balance, price, price, price, price, price).getAmount()).isEqualTo(BigDecimal.valueOf(5.005));
+        assertThat(bService.add(balance, price, price, price, price, price).getAmount()).isEqualTo(BigDecimal.valueOf(5.005));
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(5.005));
     }
 
@@ -55,7 +77,7 @@ public class BalanceServiceIT {
         Balance balance = ModelTestData.getBalance1();
         balance.setAmount(BigDecimal.ZERO);
 
-        assertThat(balanceService.add(balance).getAmount()).isEqualTo(BigDecimal.ZERO);
+        assertThat(bService.add(balance).getAmount()).isEqualTo(BigDecimal.ZERO);
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.ZERO);
     }
 
@@ -65,7 +87,7 @@ public class BalanceServiceIT {
         price.setCurrencies(Currencies.USD);
         Balance balance = ModelTestData.getBalance1();
         balance.setCurrencies(Currencies.EUR);
-        balanceService.add(balance, price);
+        bService.add(balance, price);
     }
 
     @Test(expected = CurrenciesNotEqualsRuntimeException.class)
@@ -74,7 +96,7 @@ public class BalanceServiceIT {
         price.setCurrencies(Currencies.USD);
         Balance balance = ModelTestData.getBalance1();
         balance.setCurrencies(Currencies.EUR);
-        balanceService.subtract(balance, price);
+        bService.subtract(balance, price);
     }
 
     @Test
@@ -87,7 +109,7 @@ public class BalanceServiceIT {
         balance.setAmount(BigDecimal.ZERO);
         balance.setCurrencies(currencies);
 
-        assertThat(balanceService.subtract(balance, price).getAmount()).isEqualTo(BigDecimal.valueOf(-1.0001));
+        assertThat(bService.subtract(balance, price).getAmount()).isEqualTo(BigDecimal.valueOf(-1.0001));
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(-1.0001));
     }
 
@@ -101,7 +123,7 @@ public class BalanceServiceIT {
         balance.setAmount(BigDecimal.ZERO);
         balance.setCurrencies(currencies);
 
-        assertThat(balanceService.subtract(balance, price, price, price, price, price).getAmount()).isEqualTo(BigDecimal.valueOf(-5.0005));
+        assertThat(bService.subtract(balance, price, price, price, price, price).getAmount()).isEqualTo(BigDecimal.valueOf(-5.0005));
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.valueOf(-5.0005));
     }
 
@@ -110,7 +132,7 @@ public class BalanceServiceIT {
         Balance balance = ModelTestData.getBalance1();
         balance.setAmount(BigDecimal.ZERO);
 
-        assertThat(balanceService.subtract(balance).getAmount()).isEqualTo(BigDecimal.ZERO);
+        assertThat(bService.subtract(balance).getAmount()).isEqualTo(BigDecimal.ZERO);
         assertThat(balance.getAmount()).isEqualTo(BigDecimal.ZERO);
     }
 
@@ -123,9 +145,9 @@ public class BalanceServiceIT {
         Locale locale3 = new Locale("en", "CA");
         Locale locale4 = new Locale("nl", "BE");
 
-        assertThat(balanceService.parseToString(balance1, locale1)).isEqualTo("-€110.01");
-        assertThat(balanceService.parseToString(balance1, locale2)).isEqualTo("-€ 110,01");
-        assertThat(balanceService.parseToString(balance1, locale3)).isEqualTo("-EUR110.01");
-        assertThat(balanceService.parseToString(balance1, locale4)).isEqualTo("-110,01 €");
+        assertThat(bService.parseToString(balance1, locale1)).isEqualTo("-€110.01");
+        assertThat(bService.parseToString(balance1, locale2)).isEqualTo("-€ 110,01");
+        assertThat(bService.parseToString(balance1, locale3)).isEqualTo("-EUR110.01");
+        assertThat(bService.parseToString(balance1, locale4)).isEqualTo("-110,01 €");
     }
 }
