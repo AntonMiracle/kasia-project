@@ -100,4 +100,11 @@ public class BudgetOperationRepositoryIT {
         assertThat(budgetOperations).isNotNull();
         assertThat(budgetOperations.size() == 2).isTrue();
     }
+
+    @Test
+    public void findByBudgetId() {
+        BudgetOperation expected = saveForTest(ModelTestData.getBudgetOperation1());
+
+        assertThat(repository.findByBudgetId(expected.getBudget().getId()).get()).isEqualTo(expected);
+    }
 }
