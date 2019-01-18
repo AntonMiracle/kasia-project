@@ -73,9 +73,6 @@ public class UserBudgetServiceImp implements UserBudgetService {
 
     @Override
     public boolean isNameUnique(User user, String budgetName) {
-        budgetValidationService.verifyName(budgetName);
-        userValidationService.verifyValidation(user);
-
         UserBudget userBudget = findByUserId(user.getId());
         if (userBudget == null) return true;
 
@@ -95,14 +92,17 @@ public class UserBudgetServiceImp implements UserBudgetService {
     @Override
     public boolean addBudget(User user, Budget budget) {
         userValidationService.verifyValidation(user);
-        budgetValidationService.verifyValidation(budget);
         userValidationService.verifyPositiveId(user.getId());
+        budgetValidationService.verifyValidation(budget);
         if (!isNameUnique(user, budget.getName())) return false;
 
         UserBudget userBudget = findByUserId(user.getId());
         if (userBudget == null) userBudget = create(user);
+        if (userBudget.getBudgets().contains(budget)) return false;
 
-        return userBudget.getBudgets().add(budgetService.save(budget));
+        userBudget.getBudgets().add(budgetService.save(budget));
+        save(userBudget);
+        return true;
     }
 
     @Override
@@ -114,6 +114,7 @@ public class UserBudgetServiceImp implements UserBudgetService {
 
         UserBudget userBudget = findByUserId(user.getId());
         if (userBudget == null || !userBudget.getBudgets().contains(budget)) return true;
+
         userBudget.getBudgets().remove(budget);
         save(userBudget);
         return true;
