@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ElementValidationITt {
+public class ElementValidationIT {
     @Autowired
     private ElementValidation validationService;
 
@@ -50,5 +50,15 @@ public class ElementValidationITt {
         assertThat(validationService.isValid(element1)).isFalse();
         assertThat(validationService.isValid(element2)).isFalse();
         assertThat(validationService.isValid(element3)).isFalse();
+    }
+
+    @Test
+    public void nameValidation() {
+        assertThat(validationService.isNameValid(ModelTestData.getElement1().getName())).isTrue();
+        assertThat(validationService.isNameValid(ModelTestData.getElement1().getName() + " ")).isFalse();
+        assertThat(validationService.isNameValid(" ")).isFalse();
+        assertThat(validationService.isNameValid(null)).isFalse();
+        assertThat(validationService.isNameValid("d")).isFalse();
+        assertThat(validationService.isNameValid("")).isFalse();
     }
 }
