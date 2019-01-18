@@ -1,6 +1,5 @@
 package com.kasia.model;
 
-import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.model.repository.converter.BigDecimalAttributeConverter;
 
 import javax.persistence.Convert;
