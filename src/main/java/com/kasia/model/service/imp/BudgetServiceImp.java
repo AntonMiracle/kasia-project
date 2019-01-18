@@ -70,21 +70,6 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean addOperation(Budget budget, Operation operation) {
-        return false;
-    }
-
-    @Override
-    public boolean removeOperation(Budget budget, Operation operation) {
-        return false;
-    }
-
-    @Override
-    public Set<Operation> findAllOperations(Budget budget) {
-        return null;
-    }
-
-    @Override
     public Element findElementByName(Budget budget, String name) {
         bValidation.verifyPositiveId(budget.getId());
         Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
@@ -174,7 +159,22 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Set<Element> findAllElementProviders(Budget budget) {
+    public Set<ElementProvider> findAllElementProviders(Budget budget) {
+        return null;
+    }
+
+    @Override
+    public boolean addOperation(Budget budget, Operation operation) {
+        return false;
+    }
+
+    @Override
+    public boolean removeOperation(Budget budget, Operation operation) {
+        return false;
+    }
+
+    @Override
+    public Set<Operation> findAllOperations(Budget budget) {
         return null;
     }
 
