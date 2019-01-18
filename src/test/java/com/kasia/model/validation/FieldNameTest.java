@@ -1,6 +1,7 @@
 package com.kasia.model.validation;
 
 import com.kasia.model.Budget;
+import com.kasia.model.ElementProvider;
 import com.kasia.model.User;
 import org.junit.Test;
 
@@ -32,6 +33,15 @@ public class FieldNameTest {
                 .map(field -> field.getName())
                 .collect(Collectors.toCollection(HashSet<String>::new));
         String name = FieldName.BUDGET_NAME.getName();
+
+        assertThat(currentFieldsName.contains(name)).isTrue();
+    }
+    @Test
+    public void elementProviderFieldNameCorrect() {
+        Set<String> currentFieldsName = Arrays.stream(ElementProvider.class.getDeclaredFields())
+                .map(field -> field.getName())
+                .collect(Collectors.toCollection(HashSet<String>::new));
+        String name = FieldName.ELEMENT_PROVIDER_NAME.getName();
 
         assertThat(currentFieldsName.contains(name)).isTrue();
     }

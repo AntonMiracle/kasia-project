@@ -5,6 +5,7 @@ public enum FieldName {
     , USER_NAME("name")
     , USER_EMAIL("email")
     , BUDGET_NAME("name")
+    , ELEMENT_PROVIDER_NAME("name")
     ;
 
     private final String name;
