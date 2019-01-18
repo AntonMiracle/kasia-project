@@ -1,6 +1,5 @@
 package com.kasia.model.service.imp;
 
-import com.kasia.exception.IdRuntimeException;
 import com.kasia.model.Element;
 import com.kasia.model.ElementType;
 import com.kasia.model.Price;
@@ -30,14 +29,14 @@ public class ElementServiceImp implements ElementService {
     @Override
     public boolean delete(Element model) {
         elementValidationService.verifyValidation(model);
-        if (model.getId() <= 0) throw new IdRuntimeException();
+        elementValidationService.verifyPositiveId(model.getId());
         elementRepository.delete(model);
         return true;
     }
 
     @Override
     public Element findById(long id) {
-        if (id <= 0) throw new IdRuntimeException();
+        elementValidationService.verifyPositiveId(id);
         Optional<Element> element = elementRepository.findById(id);
         return element.isPresent() ? element.get() : null;
     }
