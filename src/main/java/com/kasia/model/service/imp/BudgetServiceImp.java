@@ -112,8 +112,10 @@ public class BudgetServiceImp implements BudgetService {
         eService.save(element);
         be.getElements().add(element);
 
+        beValidation.verifyValidation(be);
         beRepository.save(be);
-        return true;
+
+        return be.getElements().contains(element);
     }
 
     @Override
@@ -126,6 +128,8 @@ public class BudgetServiceImp implements BudgetService {
         if (!optional.isPresent() || !optional.get().getElements().contains(element)) return false;
 
         optional.get().getElements().remove(element);
+
+        beValidation.verifyValidation(optional.get());
         beRepository.save(optional.get());
 
         return !optional.get().getElements().contains(element);
