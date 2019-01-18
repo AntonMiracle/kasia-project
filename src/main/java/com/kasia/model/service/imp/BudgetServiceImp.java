@@ -1,6 +1,5 @@
 package com.kasia.model.service.imp;
 
-import com.kasia.exception.IdRuntimeException;
 import com.kasia.model.Balance;
 import com.kasia.model.Budget;
 import com.kasia.model.repository.BudgetRepository;
@@ -31,14 +30,14 @@ public class BudgetServiceImp implements BudgetService {
     @Override
     public boolean delete(Budget model) {
         budgetValidationService.verifyValidation(model);
-        if (model.getId() <= 0) throw new IdRuntimeException();
+        budgetValidationService.verifyPositiveId(model.getId());
         budgetRepository.delete(model);
         return true;
     }
 
     @Override
     public Budget findById(long id) {
-        if (id <= 0) throw new IdRuntimeException();
+        budgetValidationService.verifyPositiveId(id);
         Optional<Budget> budget = budgetRepository.findById(id);
         return budget.isPresent() ? budget.get() : null;
     }
