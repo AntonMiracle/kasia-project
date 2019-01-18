@@ -192,6 +192,21 @@ public class BudgetServiceIT {
         assertThat(elementsAfterAdd == (elementsBeforeAdd + 1)).isTrue();
     }
 
+    @Test
+    public void addOnlyUniqueElement() {
+        BudgetElement be = getSavedForTestCleanBudgetElement();
+        int elementsBeforeAdd = beRepository.findByBudgetId(be.getBudget().getId()).get().getElements().size();
+        Element element = ModelTestData.getElement1();
+        Element element2 = ModelTestData.getElement2();
+        element2.setName(element.getName());
+
+        assertThat(bService.addElement(be.getBudget(), element)).isTrue();
+        assertThat(bService.addElement(be.getBudget(), element2)).isFalse();
+
+        int elementsAfterAdd = beRepository.findByBudgetId(be.getBudget().getId()).get().getElements().size();
+        assertThat(elementsAfterAdd == (elementsBeforeAdd + 1)).isTrue();
+    }
+
     @Test(expected = ValidationException.class)
     public void whenBudgetInvalidAddElementThrowException() {
         BudgetElement be = getSavedForTestCleanBudgetElement();
@@ -293,5 +308,16 @@ public class BudgetServiceIT {
         be.getBudget().setId(0);
 
         bService.findElementByName(be.getBudget(), expected.getName());
+    }
+
+    @Test
+    public void findAllElments() {
+        BudgetElement be = getSavedForTestCleanBudgetElement();
+        Element element1 = ModelTestData.getElement1();
+        Element element2 = ModelTestData.getElement2();
+        bService.addElement(be.getBudget(), element1);
+        bService.addElement(be.getBudget(), element2);
+
+        assertThat(bService.findAllElements(be.getBudget()).size() == 2).isTrue();
     }
 }

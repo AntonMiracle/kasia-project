@@ -148,7 +148,9 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public Set<Element> findAllElements(Budget budget) {
-        return null;
+        bValidation.verifyPositiveId(budget.getId());
+        Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
+        return optional.map(BudgetElement::getElements).orElseGet(HashSet::new);
     }
 
     @Override
