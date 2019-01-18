@@ -3,16 +3,16 @@ package com.kasia.model.service;
 import com.kasia.model.*;
 
 public interface BudgetElementProviderService extends Service<BudgetElementProvider> {
-    BudgetElement create(Budget budget);
+    BudgetElementProvider create(Budget budget);
 
-    boolean addElementProvider(BudgetElementProvider budgetElementProvider, ElementProvider elementProvider);
+    boolean addElementProvider(Budget budget, ElementProvider elementProvider);
 
-    boolean removeElementProvider(BudgetElementProvider budgetElementProvider, ElementProvider elementProvider);
+    boolean removeElementProvider(Budget budget, ElementProvider elementProvider);
 
-    BudgetElement getByBudgetId(long id);
+    BudgetElementProvider findByBudgetId(long id);
 
-    ElementProvider getByElementProviderName(BudgetElementProvider budgetElementProvider, String name);
+    ElementProvider findElementProviderByName(Budget budget, String name);
 
-    boolean isElementProviderNameUnique(BudgetElementProvider budgetElementProvider, String name);
+    boolean isElementProviderNameUnique(Budget budget, String name);
 
 }
