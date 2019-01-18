@@ -10,16 +10,16 @@ import java.util.Set;
 public interface BudgetElementService extends Service<BudgetElement> {
     BudgetElement create(Budget budget);
 
-    boolean addElement(BudgetElement budgetElement, Element element);
+    boolean addElement(Budget budget, Element element);
 
-    boolean removeElement(BudgetElement budgetElement, Element element);
+    boolean removeElement(Budget budget, Element element);
 
-    BudgetElement getByBudgetId(long id);
+    BudgetElement findByBudgetId(long id);
 
-    Element getByName(BudgetElement budgetElement, String name);
+    Element findElementByName(Budget budget, String name);
 
-    Set<Element> getByElementType(BudgetElement budgetElement, ElementType type);
+    Set<Element> findByElementType(Budget budget, ElementType type);
 
-    boolean isElementNameUnique(BudgetElement budgetElement, String name);
+    boolean isElementNameUnique(Budget budget, String name);
 
 }

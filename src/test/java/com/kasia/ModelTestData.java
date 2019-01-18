@@ -40,7 +40,7 @@ final public class ModelTestData {
     }
 
     public static Element getElement2() {
-        return new Element("name1", getPrice2(), ElementType.INCOME);
+        return new Element("name2", getPrice2(), ElementType.INCOME);
     }
 
     public static ElementProvider getElementProvider1() {
