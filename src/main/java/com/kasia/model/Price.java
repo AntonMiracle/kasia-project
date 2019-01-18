@@ -73,7 +73,6 @@ public class Price implements Model, Comparable<Price> {
 
     @Override
     public int compareTo(Price o) {
-        if (this.currencies != o.getCurrencies()) throw new CurrenciesNotEqualsRuntimeException();
         return this.amount.compareTo(o.getAmount());
     }
 }
