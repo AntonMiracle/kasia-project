@@ -27,6 +27,7 @@ public class FieldNameTest {
         assertThat(currentFieldsName.contains(password)).isTrue();
         assertThat(currentFieldsName.contains(email)).isTrue();
     }
+
     @Test
     public void budgetFieldNameCorrect() {
         Set<String> currentFieldsName = Arrays.stream(Budget.class.getDeclaredFields())
@@ -36,12 +37,23 @@ public class FieldNameTest {
 
         assertThat(currentFieldsName.contains(name)).isTrue();
     }
+
     @Test
     public void elementProviderFieldNameCorrect() {
         Set<String> currentFieldsName = Arrays.stream(ElementProvider.class.getDeclaredFields())
                 .map(field -> field.getName())
                 .collect(Collectors.toCollection(HashSet<String>::new));
         String name = FieldName.ELEMENT_PROVIDER_NAME.getName();
+
+        assertThat(currentFieldsName.contains(name)).isTrue();
+    }
+
+    @Test
+    public void elementFieldNameCorrect() {
+        Set<String> currentFieldsName = Arrays.stream(ElementProvider.class.getDeclaredFields())
+                .map(field -> field.getName())
+                .collect(Collectors.toCollection(HashSet<String>::new));
+        String name = FieldName.ELEMENT_NAME.getName();
 
         assertThat(currentFieldsName.contains(name)).isTrue();
     }
