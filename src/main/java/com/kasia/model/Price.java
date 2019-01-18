@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Embeddable
-public class Price implements Model {
+public class Price implements Model, Comparable<Price> {
     @NotNull
     @Min(0)
     @Convert(converter = BigDecimalAttributeConverter.class)
@@ -68,5 +68,10 @@ public class Price implements Model {
 
     public void setCurrencies(Currencies currency) {
         this.currencies = currency;
+    }
+
+    @Override
+    public int compareTo(Price o) {
+        return this.amount.compareTo(o.getAmount());
     }
 }
