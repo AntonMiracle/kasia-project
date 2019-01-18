@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -77,5 +78,15 @@ public class BudgetElementProviderRepositoryIT {
         repository.findAll().forEach(budgetElementProviders::add);
 
         assertThat(budgetElementProviders.size() == 2).isTrue();
+    }
+
+    @Test
+    public void findByBudgetId() {
+        BudgetElementProvider expected = saveForTest(ModelTestData.getBudgetElementProvider1());
+
+        Optional<BudgetElementProvider> actual = repository.findByBudgetId(expected.getBudget().getId());
+
+        assertThat(actual.isPresent()).isTrue();
+        assertThat(actual.get()).isEqualTo(expected);
     }
 }
