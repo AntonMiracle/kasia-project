@@ -1,5 +1,6 @@
 package com.kasia.model;
 
+import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.model.repository.converter.BigDecimalAttributeConverter;
 
 import javax.persistence.Convert;
@@ -72,6 +73,7 @@ public class Price implements Model, Comparable<Price> {
 
     @Override
     public int compareTo(Price o) {
+        if (this.currencies != o.getCurrencies()) throw new CurrenciesNotEqualsRuntimeException();
         return this.amount.compareTo(o.getAmount());
     }
 }
