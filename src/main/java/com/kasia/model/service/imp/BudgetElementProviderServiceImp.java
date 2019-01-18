@@ -96,7 +96,7 @@ public class BudgetElementProviderServiceImp implements BudgetElementProviderSer
         providerValidationService.verifyPositiveId(elementProvider.getId());
 
         BudgetElementProvider bep = findByBudgetId(budget.getId());
-        if (bep == null || !bep.getElementProviders().contains(elementProvider)) return true;
+        if (bep == null || !bep.getElementProviders().contains(elementProvider)) return false;
         bep.getElementProviders().remove(elementProvider);
 
         save(bep);
