@@ -1,5 +1,6 @@
 package com.kasia.model.service;
 
+import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.*;
 
@@ -41,7 +42,7 @@ public interface BudgetService {
 
     Set<ElementProvider> findAllElementProviders(Budget budget) throws IdInvalidRuntimeException;
 
-    boolean addOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException;
+    boolean addOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException, CurrenciesNotEqualsRuntimeException;
 
     boolean removeOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException;
 

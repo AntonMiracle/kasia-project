@@ -1,6 +1,7 @@
 package com.kasia.model.service;
 
 import com.kasia.ModelTestData;
+import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.*;
 import com.kasia.model.repository.BudgetElementProviderRepository;
@@ -634,6 +635,19 @@ public class BudgetServiceIT {
 
         bService.addOperation(savedBudget, op2);
         assertThat(bService.findAllOperations(savedBudget).size() == 2).isTrue();
+    }
+
+    @Test(expected = CurrenciesNotEqualsRuntimeException.class)
+    public void whenCurrenciesNotEqualsAddOperationThrowException() {
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        op1.getPrice().setCurrencies(Currencies.EUR);
+        budget.getBalance().setCurrencies(Currencies.PLN);
+
+        bService.addOperation(budget, op1);
     }
 
     private Operation getSavedOperationForCheckRuntimeException() {

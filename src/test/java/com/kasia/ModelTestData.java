@@ -20,11 +20,11 @@ final public class ModelTestData {
     }
 
     public static Price getPrice1() {
-        return new Price(BigDecimal.ZERO, Currencies.PLN);
+        return new Price(BigDecimal.ZERO, Currencies.EUR);
     }
 
     public static Price getPrice2() {
-        return new Price(BigDecimal.TEN, Currencies.UAH);
+        return new Price(BigDecimal.TEN, Currencies.USD);
     }
 
     public static Budget getBudget1() {

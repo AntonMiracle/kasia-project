@@ -1,5 +1,6 @@
 package com.kasia.model.service.imp;
 
+import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.model.*;
 import com.kasia.model.repository.*;
 import com.kasia.model.service.BudgetService;
@@ -250,6 +251,8 @@ public class BudgetServiceImp implements BudgetService {
         bValidation.verifyPositiveId(budget.getId());
         oValidation.verifyValidation(operation);
         oValidation.verifyPositiveIdInside(operation);
+        if (budget.getBalance().getCurrencies() != operation.getPrice().getCurrencies())
+            throw new CurrenciesNotEqualsRuntimeException();
 
         BudgetOperation bo = boRepository.findByBudgetId(budget.getId())
                 .orElse(new BudgetOperation(budget, new HashSet<>()));
