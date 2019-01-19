@@ -455,4 +455,34 @@ public class UserServiceIT {
 
         uService.isUserConnectToBudget(budget, user);
     }
+
+    @Test
+    public void findAllConnectedUser() {
+        User haveConnect = uService.saveUser(ModelTestData.getUser1());
+        Budget withBudget = bService.saveBudget(ModelTestData.getBudget1());
+
+        UserConnectBudget ucb = ModelTestData.getUserConnectBudget1();
+        ucb.getConnectBudgets().clear();
+        ucb.getConnectBudgets().add(withBudget);
+        ucb.setUser(haveConnect);
+        ucbRepository.save(ucb);
+
+        assertThat(uService.findConnectUsers(withBudget).size() == 1).isTrue();
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenBudgetInvalidFindAllConnectedUserThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(1);
+        budget.setName("");
+
+        uService.findConnectUsers(budget);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindAllConnectedUserThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+
+        uService.findConnectUsers(budget);
+    }
 }

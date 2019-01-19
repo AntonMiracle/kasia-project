@@ -55,7 +55,7 @@ public interface UserService {
 
     boolean removeBudget(User user, Budget budget);
 
-    Set<User> findAllConnectedUser(Budget budget);
+    Set<User> findConnectUsers(Budget budget);
 
     boolean isUserOwnBudget(Budget budget, User user) throws ValidationException, IdInvalidRuntimeException;
 

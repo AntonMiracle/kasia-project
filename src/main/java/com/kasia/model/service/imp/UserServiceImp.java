@@ -205,8 +205,16 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Set<User> findAllConnectedUser(Budget budget) {
-        throw new NotImplementedException();
+    public Set<User> findConnectUsers(Budget budget) {
+        bValidation.verifyValidation(budget);
+        bValidation.verifyPositiveId(budget.getId());
+
+        Set<User> users = new HashSet<>();
+        ucbRepository.findAll()
+                .forEach(ucb -> {
+                    if (ucb.getConnectBudgets().contains(budget)) users.add(ucb.getUser());
+                });
+        return users;
     }
 
     @Override
