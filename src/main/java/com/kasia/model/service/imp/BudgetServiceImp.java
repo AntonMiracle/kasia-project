@@ -9,7 +9,6 @@ import com.kasia.model.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -371,7 +370,18 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public Set<Operation> findOperationsBetweenPrices(Budget budget, Price from, Price to) {
-        throw new NotImplementedException();
+        bValidation.verifyPositiveId(budget.getId());
+        if (from.compareTo(to) > 0) throw new IntervalRuntimeException();
+
+        Set<Operation> result = new HashSet<>();
+
+        findAllOperations(budget)
+                .stream()
+                .filter(operation -> (operation.getPrice().compareTo(from) >= 0)
+                        && (operation.getPrice().compareTo(to) <= 0))
+                .forEach(result::add);
+
+        return result;
     }
 
     @Override

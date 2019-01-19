@@ -1090,4 +1090,52 @@ public class BudgetServiceIT {
 
         bService.findOperationsBetweenDates(budget, from, to);
     }
+
+    @Test
+    public void findOperationsBetweenPrices() {
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        Price from = ModelTestData.getPrice1();
+        from.setAmount(BigDecimal.TEN);
+        Price to = ModelTestData.getPrice1();
+        to.setAmount(from.getAmount().add(from.getAmount()));
+
+        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        op1.getPrice().setAmount(from.getAmount().add(BigDecimal.valueOf(0.01)));
+        Operation op2 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        op2.getPrice().setAmount(to.getAmount().subtract(BigDecimal.valueOf(0.01)));
+        Operation op3 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        op3.getPrice().setAmount(BigDecimal.ZERO);
+
+        bService.addOperation(budget, op1);
+        bService.addOperation(budget, op2);
+        bService.addOperation(budget, op3);
+
+        assertThat(bService.findOperationsBetweenPrices(budget, from, to).size() == 2).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindOperationsBetweenPricesThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        Price from = ModelTestData.getPrice1();
+        from.setAmount(BigDecimal.TEN);
+        Price to = ModelTestData.getPrice1();
+        to.setAmount(from.getAmount().add(from.getAmount()));
+
+        bService.findOperationsBetweenPrices(budget, from, to);
+    }
+
+    @Test(expected = IntervalRuntimeException.class)
+    public void whenIntervalInvalidFindOperationsBetweenPricesThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(1);
+        Price to = ModelTestData.getPrice1();
+        Price from = ModelTestData.getPrice1();
+        from.setAmount(BigDecimal.TEN);
+        to.setAmount(BigDecimal.ZERO);
+
+        bService.findOperationsBetweenPrices(budget, from, to);
+    }
 }

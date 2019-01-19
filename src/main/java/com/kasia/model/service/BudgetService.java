@@ -2,6 +2,7 @@ package com.kasia.model.service;
 
 import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
+import com.kasia.exception.IntervalRuntimeException;
 import com.kasia.model.*;
 
 import javax.validation.ValidationException;
@@ -52,9 +53,9 @@ public interface BudgetService {
 
     Set<Operation> findOperationsByElementProvider(Budget budget, ElementProvider provider);
 
-    Set<Operation> findOperationsBetweenDates(Budget budget, LocalDateTime from, LocalDateTime to);
+    Set<Operation> findOperationsBetweenDates(Budget budget, LocalDateTime from, LocalDateTime to) throws IdInvalidRuntimeException, IntervalRuntimeException;
 
-    Set<Operation> findOperationsBetweenPrices(Budget budget, Price from, Price to);
+    Set<Operation> findOperationsBetweenPrices(Budget budget, Price from, Price to) throws IdInvalidRuntimeException, IntervalRuntimeException;
 
     Set<Operation> findOperationsByUser(Budget budget, User user) throws ValidationException, IdInvalidRuntimeException;
 
