@@ -272,6 +272,8 @@ public class BudgetServiceImp implements BudgetService {
         oValidation.verifyValidation(operation);
         oValidation.verifyPositiveIdInside(operation);
         oValidation.verifyPositiveId(operation.getId());
+        if (budget.getBalance().getCurrencies() != operation.getPrice().getCurrencies())
+            throw new CurrenciesNotEqualsRuntimeException();
 
         Optional<BudgetOperation> optional = boRepository.findByBudgetId(budget.getId());
         if (!optional.isPresent() || !optional.get().getOperations().contains(operation)) return false;

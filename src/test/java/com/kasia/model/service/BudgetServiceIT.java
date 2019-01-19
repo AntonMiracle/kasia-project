@@ -731,6 +731,21 @@ public class BudgetServiceIT {
         assertThat(bService.findAllOperations(savedBudget).size() == 0).isTrue();
     }
 
+    @Test(expected = CurrenciesNotEqualsRuntimeException.class)
+    public void whenCurrenciesNotEqualsRemoveOperationThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.getBalance().setCurrencies(Currencies.PLN);
+        Budget savedBudget = bService.saveBudget(budget);
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        bService.addOperation(savedBudget, op1);
+        op1.getPrice().setCurrencies(Currencies.EUR);
+
+        bService.removeOperation(savedBudget, op1);
+    }
+
     private boolean isWasIdInvalidRuntimeExceptionWhenRemoveOperation(Budget budget, Operation operation) {
         try {
             bService.removeOperation(budget, operation);
