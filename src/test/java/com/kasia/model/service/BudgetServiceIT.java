@@ -3,6 +3,7 @@ package com.kasia.model.service;
 import com.kasia.ModelTestData;
 import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
+import com.kasia.exception.IntervalRuntimeException;
 import com.kasia.model.*;
 import com.kasia.model.repository.BudgetElementProviderRepository;
 import com.kasia.model.repository.BudgetElementRepository;
@@ -1046,5 +1047,47 @@ public class BudgetServiceIT {
         budget.setId(1);
 
         bService.findOperationsByUser(budget, user);
+    }
+
+    @Test
+    public void findOperationsBetweenDates() {
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        LocalDateTime from = LocalDateTime.now().minusDays(1);
+        LocalDateTime to = LocalDateTime.now().plusDays(1);
+
+        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        op1.setCreateOn(from.plusSeconds(2));
+        Operation op2 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        op2.setCreateOn(from.plusHours(2));
+        Operation op3 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        op3.setCreateOn(from.minusDays(12));
+
+        bService.addOperation(budget, op1);
+        bService.addOperation(budget, op2);
+        bService.addOperation(budget, op3);
+
+        assertThat(bService.findOperationsBetweenDates(budget, from, to).size() == 2).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindOperationBetweenDatesThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        LocalDateTime from = LocalDateTime.now().minusDays(1);
+        LocalDateTime to = LocalDateTime.now().plusDays(1);
+
+        bService.findOperationsBetweenDates(budget, from, to);
+    }
+
+    @Test(expected = IntervalRuntimeException.class)
+    public void whenPeriodInvalidFindOperationBetweenDatesThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(2);
+        LocalDateTime to = LocalDateTime.now().minusDays(1);
+        LocalDateTime from = LocalDateTime.now().plusDays(1);
+
+        bService.findOperationsBetweenDates(budget, from, to);
     }
 }

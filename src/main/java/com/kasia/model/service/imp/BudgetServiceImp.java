@@ -1,6 +1,7 @@
 package com.kasia.model.service.imp;
 
 import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
+import com.kasia.exception.IntervalRuntimeException;
 import com.kasia.model.*;
 import com.kasia.model.repository.*;
 import com.kasia.model.service.*;
@@ -354,7 +355,18 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public Set<Operation> findOperationsBetweenDates(Budget budget, LocalDateTime from, LocalDateTime to) {
-        throw new NotImplementedException();
+        bValidation.verifyPositiveId(budget.getId());
+        if (from.compareTo(to) > 0) throw new IntervalRuntimeException();
+
+        Set<Operation> result = new HashSet<>();
+
+        findAllOperations(budget)
+                .stream()
+                .filter(operation -> (operation.getCreateOn().compareTo(from) >= 0)
+                        && (operation.getCreateOn().compareTo(to) <= 0))
+                .forEach(result::add);
+
+        return result;
     }
 
     @Override
