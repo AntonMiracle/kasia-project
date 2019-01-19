@@ -50,7 +50,7 @@ public interface BudgetService {
 
     Set<Operation> findOperationsByElement(Budget budget, Element element) throws ValidationException, IdInvalidRuntimeException;
 
-    Set<Operation> findOperationByElementProvider(Budget budget, ElementProvider provider);
+    Set<Operation> findOperationsByElementProvider(Budget budget, ElementProvider provider);
 
     Set<Operation> findOperationsBetweenDates(Budget budget, LocalDateTime from, LocalDateTime to);
 

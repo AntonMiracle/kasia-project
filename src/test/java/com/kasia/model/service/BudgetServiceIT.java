@@ -954,4 +954,50 @@ public class BudgetServiceIT {
         bService.findOperationsByElement(budget, element);
     }
 
+    @Test
+    public void findOperationByElementProvider() {
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider1 = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider2 = epService.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user, element, provider1, ModelTestData.getPrice1());
+        Operation op2 = bService.createOperation(user, element, provider1, ModelTestData.getPrice1());
+        Operation op3 = bService.createOperation(user, element, provider2, ModelTestData.getPrice1());
+
+        bService.addOperation(budget, op1);
+        bService.addOperation(budget, op2);
+        bService.addOperation(budget, op3);
+
+        assertThat(bService.findOperationsByElementProvider(budget, provider1).size() == 2).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindOperationByElementProviderThrowException() {
+        Budget bu = ModelTestData.getBudget1();
+        ElementProvider ep = ModelTestData.getElementProvider1();
+        bu.setId(0);
+
+        bService.findOperationsByElementProvider(bu, ep);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenElementProviderIdInvalidFindOperationByElementProviderThrowException() {
+        Budget bu = ModelTestData.getBudget1();
+        ElementProvider ep = ModelTestData.getElementProvider1();
+        ep.setId(0);
+
+        bService.findOperationsByElementProvider(bu, ep);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementProviderInvalidFindOperationByElementProviderThrowException() {
+        Budget bu = ModelTestData.getBudget1();
+        ElementProvider ep = ModelTestData.getElementProvider1();
+        bu.setId(1);
+        ep.setId(1);
+        ep.setName("");
+
+        bService.findOperationsByElementProvider(bu, ep);
+    }
 }

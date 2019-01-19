@@ -338,8 +338,18 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Set<Operation> findOperationByElementProvider(Budget budget, ElementProvider provider) {
-        throw new NotImplementedException();
+    public Set<Operation> findOperationsByElementProvider(Budget budget, ElementProvider provider) {
+        bValidation.verifyPositiveId(budget.getId());
+        epValidation.verifyValidation(provider);
+        epValidation.verifyPositiveId(provider.getId());
+        Set<Operation> result = new HashSet<>();
+
+        findAllOperations(budget)
+                .stream()
+                .filter(operation -> provider.equals(operation.getElementProvider()))
+                .forEach(result::add);
+
+        return result;
     }
 
     @Override
