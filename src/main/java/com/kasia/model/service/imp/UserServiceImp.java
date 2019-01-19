@@ -159,7 +159,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isLocaleAvailable(Locale locale) {
-        throw new NotImplementedException();
+        return getCorrectAvailableLocales().contains(locale);
     }
 
     @Override
