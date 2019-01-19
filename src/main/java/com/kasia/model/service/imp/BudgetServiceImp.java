@@ -64,9 +64,29 @@ public class BudgetServiceImp implements BudgetService {
     public boolean deleteBudget(Budget model) {
         bValidation.verifyValidation(model);
         bValidation.verifyPositiveId(model.getId());
+
+        warningDeleteAllInBudget(model);
+
         bRepository.delete(model);
-        //need to deleteUser elements, providers, operations
+        //need to deleteUser
         return true;
+    }
+
+    private void warningDeleteAllInBudget(Budget budget) {
+        bValidation.verifyPositiveId(budget.getId());
+
+        Set<Operation> operations = findAllOperations(budget);
+        boRepository.findByBudgetId(budget.getId()).ifPresent(boRepository::delete);
+        operations.forEach(oRepository::delete);
+
+        Set<Element> elements = findAllElements(budget);
+        beRepository.findByBudgetId(budget.getId()).ifPresent(beRepository::delete);
+        elements.forEach(eRepository::delete);
+
+        Set<ElementProvider> providers = findAllElementProviders(budget);
+        bepRepository.findByBudgetId(budget.getId()).ifPresent(bepRepository::delete);
+        providers.forEach(epRepository::delete);
+
     }
 
     @Override

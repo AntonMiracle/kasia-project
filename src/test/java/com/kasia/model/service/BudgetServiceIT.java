@@ -128,6 +128,31 @@ public class BudgetServiceIT {
         assertThat(bService.findBudgetById(expected.getId())).isNull();
     }
 
+    @Test
+    public void whenDeleteBudgetDeleteAllElementsOperationsElementProvidersInBudget() {
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eRepository.save(ModelTestData.getElement1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Operation operation = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+
+        bService.addElement(budget, element);
+        bService.addElementProvider(budget, provider);
+        bService.addOperation(budget, operation);
+
+        assertThat(bService.findBudgetById(budget.getId())).isEqualTo(budget);
+        assertThat(eRepository.findById(element.getId()).get()).isEqualTo(element);
+        assertThat(epRepository.findById(provider.getId()).get()).isEqualTo(provider);
+        assertThat(oRepository.findById(operation.getId()).get()).isEqualTo(operation);
+
+        bService.deleteBudget(budget);
+
+        assertThat(bService.findBudgetById(budget.getId())).isNull();
+        assertThat(eRepository.findById(element.getId()).isPresent()).isFalse();
+        assertThat(epRepository.findById(provider.getId()).isPresent()).isFalse();
+        assertThat(oRepository.findById(operation.getId()).isPresent()).isFalse();
+    }
+
     @Test(expected = ValidationException.class)
     public void deleteBudgetWithInvalidBudgetThrowException() {
         Budget expected = bService.saveBudget(ModelTestData.getBudget1());
