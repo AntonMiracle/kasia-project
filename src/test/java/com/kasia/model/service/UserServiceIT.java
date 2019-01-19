@@ -1,6 +1,7 @@
 package com.kasia.model.service;
 
 import com.kasia.ModelTestData;
+import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.User;
@@ -11,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -90,16 +90,25 @@ public class UserServiceIT {
         uService.save(expected);
     }
 
+    private User getSavedUserForTest() {
+        User savedUser = ModelTestData.getUser1();
+        return uService.save(savedUser);
+    }
+
     @Test(expected = UserNameExistRuntimeException.class)
     public void whenUserNameNotUniqueSaveNewUserThrowException() {
-        throw new NotImplementedException();
-//        User savedUser = ModelTestData.getUser1();
-//        uService.save(savedUser);
-//
-//        User notUniqueUsername = ModelTestData.getUser2();
-//        notUniqueUsername.setName(savedUser.getName());
-//
-//        uService.save(notUniqueUsername);
+        User notUniqueUsername = ModelTestData.getUser2();
+        notUniqueUsername.setName(getSavedUserForTest().getName());
+
+        uService.save(notUniqueUsername);
+    }
+
+    @Test(expected = EmailExistRuntimeException.class)
+    public void whenEmailNotUniqueSaveNewUserThrowException() {
+        User notUniqueEmail = ModelTestData.getUser2();
+        notUniqueEmail.setEmail(getSavedUserForTest().getEmail());
+
+        uService.save(notUniqueEmail);
     }
 
     @Test

@@ -1,5 +1,8 @@
 package com.kasia.model.service.imp;
 
+import com.kasia.exception.EmailExistRuntimeException;
+import com.kasia.exception.IdInvalidRuntimeException;
+import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.Budget;
 import com.kasia.model.Role;
 import com.kasia.model.User;
@@ -27,7 +30,16 @@ public class UserServiceImp implements UserService {
     @Override
     public User save(User model) {
         uValidation.verifyValidation(model);
-        return uRepository.save(model);
+        if (model.getId() == 0) {
+            if (!isUserNameUnique(model.getName())) throw new UserNameExistRuntimeException();
+            if (!isUserEmailUnique(model.getEmail())) throw new EmailExistRuntimeException();
+            return uRepository.save(model);
+        }
+        if (model.getId() > 0) {
+
+            return uRepository.save(model);
+        }
+        throw new IdInvalidRuntimeException();
     }
 
     @Override
