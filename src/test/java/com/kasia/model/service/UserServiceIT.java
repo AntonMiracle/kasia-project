@@ -218,4 +218,16 @@ public class UserServiceIT {
         assertThat(uService.findUserByName(null)).isNull();
         assertThat(uService.findUserByName("")).isNull();
     }
+
+    @Test
+    public void findUserByEmail() {
+        User expected = getSavedUserForTest();
+        assertThat(uService.findUserByEmail(expected.getEmail())).isEqualTo(expected);
+    }
+
+    @Test
+    public void whenEmailNotExistFindUserByEmailReturnNull() {
+        assertThat(uService.findUserByEmail(null)).isNull();
+        assertThat(uService.findUserByEmail("")).isNull();
+    }
 }

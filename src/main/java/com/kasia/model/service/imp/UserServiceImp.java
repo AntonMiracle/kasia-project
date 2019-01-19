@@ -110,7 +110,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User findUserByEmail(String email) {
-        throw new NotImplementedException();
+        return uRepository.findByEmail(email).orElse(null);
     }
 
     @Override
