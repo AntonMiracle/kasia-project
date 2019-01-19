@@ -147,18 +147,23 @@ public class BudgetServiceIT {
         bService.createBudget("", null);
     }
 
-    @Test
-    public void elementUnique() {
-        Element savedElement = eService.save(ModelTestData.getElement1());
+    private BudgetElement getSavedForTestCleanBudgetElement() {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         BudgetElement be = ModelTestData.getBudgetElement1();
         be.getElements().clear();
-        be.getElements().add(savedElement);
         be.setBudget(savedBudget);
+        return beRepository.save(be);
+    }
+
+    @Test
+    public void elementUnique() {
+        Element savedElement = eService.save(ModelTestData.getElement1());
+        BudgetElement be = getSavedForTestCleanBudgetElement();
+        be.getElements().add(savedElement);
         beRepository.save(be);
 
-        assertThat(bService.isElementUnique(savedBudget, savedElement)).isFalse();
-        assertThat(bService.isElementUnique(savedBudget, ModelTestData.getElement2())).isTrue();
+        assertThat(bService.isElementUnique(be.getBudget(), savedElement)).isFalse();
+        assertThat(bService.isElementUnique(be.getBudget(), ModelTestData.getElement2())).isTrue();
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
@@ -175,14 +180,6 @@ public class BudgetServiceIT {
         element.setName("");
 
         bService.isElementUnique(budget, element);
-    }
-
-    private BudgetElement getSavedForTestCleanBudgetElement() {
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        BudgetElement be = ModelTestData.getBudgetElement1();
-        be.getElements().clear();
-        be.setBudget(savedBudget);
-        return beRepository.save(be);
     }
 
     @Test
