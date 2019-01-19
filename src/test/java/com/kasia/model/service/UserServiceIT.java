@@ -252,7 +252,7 @@ public class UserServiceIT {
     }
 
     @Test
-    public void localeOfWithInvalidLangAndCountryReturnDefaultLocale() {
+    public void whenLocaleInvalidLocaleOfReturnDefaultLocale() {
         Locale locale1 = uService.localeOf("asdf", "Fsda");
         User user = ModelTestData.getUser1();
         Locale locale2 = uService.localeOf(user.getLocale().getLanguage(), user.getLocale().getCountry());
@@ -260,6 +260,7 @@ public class UserServiceIT {
         assertThat(locale1).isEqualTo(ModelTestData.getDefaultLocale());
         assertThat(uService.getCorrectAvailableLocales().contains(locale2)).isTrue();
     }
+
     @Test
     public void allCorrectAvailableLocalesHaveLangAndCountry() {
         Set<Locale> locales = uService.getCorrectAvailableLocales();
