@@ -1,10 +1,7 @@
 package com.kasia.model.service.imp;
 
 import com.kasia.model.*;
-import com.kasia.model.repository.BudgetElementProviderRepository;
-import com.kasia.model.repository.BudgetElementRepository;
-import com.kasia.model.repository.BudgetRepository;
-import com.kasia.model.repository.OperationRepository;
+import com.kasia.model.repository.*;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.ElementProviderService;
 import com.kasia.model.service.ElementService;
@@ -52,6 +49,10 @@ public class BudgetServiceImp implements BudgetService {
     private OperationRepository oRepository;
     @Autowired
     private OperationValidation oValidation;
+    @Autowired
+    private BudgetOperationRepository boRepository;
+    @Autowired
+    private BudgetOperationValidation boValidation;
 
     @Override
     public Budget saveBudget(Budget model) {
@@ -255,7 +256,13 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public Set<Operation> findAllOperations(Budget budget) {
-        throw new NotImplementedException();
+        Set<Operation> operations = new HashSet<>();
+        bValidation.verifyPositiveId(budget.getId());
+        Optional<BudgetOperation> bo = boRepository.findByBudgetId(budget.getId());
+        if (bo.isPresent() && bo.get().getOperations() != null) {
+            bo.get().getOperations().forEach(operations::add);
+        }
+        return operations;
     }
 
     @Override

@@ -45,7 +45,7 @@ public interface BudgetService {
 
     boolean removeOperation(Budget budget, Operation operation);
 
-    Set<Operation> findAllOperations(Budget budget);
+    Set<Operation> findAllOperations(Budget budget) throws IdInvalidRuntimeException;
 
     Set<Operation> findOperationsByElement(Budget budget, Element element);
 

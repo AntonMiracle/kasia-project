@@ -5,6 +5,8 @@ import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.*;
 import com.kasia.model.repository.BudgetElementProviderRepository;
 import com.kasia.model.repository.BudgetElementRepository;
+import com.kasia.model.repository.BudgetOperationRepository;
+import com.kasia.model.repository.OperationRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,12 +34,18 @@ public class BudgetServiceIT {
     private ElementProviderService epService;
     @Autowired
     private UserService uService;
+    @Autowired
+    private OperationRepository oRepository;
+    @Autowired
+    private BudgetOperationRepository boRepository;
 
     @After
     public void cleanData() {
         beRepository.findAll().forEach(beRepository::delete);
         bepRepository.findAll().forEach(bepRepository::delete);
+        boRepository.findAll().forEach(boRepository::delete);
 
+        oRepository.findAll().forEach(oRepository::delete);
         bService.findAllBudgets().forEach(bService::deleteBudget);
         eService.findAll().forEach(eService::delete);
         epService.findAll().forEach(epService::delete);
@@ -513,18 +521,6 @@ public class BudgetServiceIT {
         bService.findAllElementProviders(bep.getBudget()).size();
     }
 
-    //
-//    private Operation getSavedOperationWithPrice(Price price) {
-//        User user = uService.saveUser(ModelTestData.getUser1());
-//        Element element = ModelTestData.getElement1();
-//        ElementProvider provider = ModelTestData.getElementProvider1();
-//        Operation operation = ModelTestData.getOperation1();
-//        operation.setUser(user);
-//        operation.setElementProvider(provider);
-//        operation.setElement(element);
-//        operation.setPrice(price);
-//        return operation;
-//    }
     private Operation getValidOperationWithNestedPositiveId() {
         Operation operation = ModelTestData.getOperation1();
         operation.getElementProvider().setId(1);
@@ -591,6 +587,45 @@ public class BudgetServiceIT {
         op.getElementProvider().setName("");
 
         bService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+    }
+
+    private Operation getSavedOperation() {
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        Operation operation = ModelTestData.getOperation1();
+        operation.setUser(user);
+        operation.setElementProvider(provider);
+        operation.setElement(element);
+        oRepository.save(operation);
+        return operation;
+    }
+
+    private BudgetOperation getSaveBudgetOperationWithNoOperation() {
+        BudgetOperation bo = ModelTestData.getBudgetOperation1();
+        bService.saveBudget(bo.getBudget());
+        bo.getOperations().clear();
+        boRepository.save(bo);
+        return bo;
+    }
+
+    @Test
+    public void findAllOperation() {
+        BudgetOperation bo = getSaveBudgetOperationWithNoOperation();
+        bo.getOperations().add(getSavedOperation());
+        boRepository.save(bo);
+
+        assertThat(bService.findAllOperations(bo.getBudget()).size() == 1).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindAllOperationThrowException() {
+        BudgetOperation bo = getSaveBudgetOperationWithNoOperation();
+        bo.getOperations().add(getSavedOperation());
+        boRepository.save(bo);
+        bo.getBudget().setId(0);
+
+        bService.findAllOperations(bo.getBudget());
     }
 
 
