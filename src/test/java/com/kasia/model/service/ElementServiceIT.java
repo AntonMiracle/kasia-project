@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.ValidationException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +33,12 @@ public class ElementServiceIT {
         assertThat(create).isEqualTo(element);
     }
 
+    @Test(expected = ValidationException.class)
+    public void whenElementInvalidCreateThrowException() throws Exception {
+        Element element = ModelTestData.getElement1();
+        elementService.create("", element.getType(), element.getDefaultPrice());
+    }
+
     @Test
     public void saveNew() {
         Element expected = ModelTestData.getElement1();
@@ -44,6 +52,14 @@ public class ElementServiceIT {
         assertThat(actual.getDefaultPrice()).isEqualTo(expected.getDefaultPrice());
         assertThat(actual.getName()).isEqualTo(expected.getName());
         assertThat(actual.getType()).isEqualTo(expected.getType());
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementInvalidSaveThrowException() {
+        Element expected = ModelTestData.getElement1();
+        expected.setName("");
+
+        elementService.save(expected);
     }
 
     @Test
@@ -79,16 +95,23 @@ public class ElementServiceIT {
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
-    public void whenDeleteWithZeroIdThenException() {
+    public void whenIdZeroDeleteThrowException() {
         Element element = ModelTestData.getElement1();
         element.setId(0);
         elementService.delete(element);
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
-    public void whenDeleteWithNegativeIdThenException() {
+    public void whenIdNegativeDeleteThrowException() {
         Element element = ModelTestData.getElement1();
         element.setId(-1);
+        elementService.delete(element);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementInvalidDeleteThrowException() {
+        Element element = ModelTestData.getElement1();
+        element.setName("");
         elementService.delete(element);
     }
 
