@@ -800,44 +800,51 @@ public class BudgetServiceIT {
         assertThat(countException == 4).isTrue();
     }
 
-    @Test(expected = ValidationException.class)
-    public void whenBudgetInvalidRemoveOperationThrowException() {
-        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-        bService.addOperation(bu, op);
-        bu.setName("");
+    @Test
+    public void findOperationByElement() {
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element forSearch = eService.save(ModelTestData.getElement1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user, forSearch, provider, ModelTestData.getPrice1());
+        Operation op2 = bService.createOperation(user, forSearch, provider, ModelTestData.getPrice1());
+        Operation op3 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
 
-        bService.removeOperation(bu, op);
+        bService.addOperation(budget, op1);
+        bService.addOperation(budget, op2);
+        bService.addOperation(budget, op3);
+        System.out.println(bService.findOperationsByElement(budget, forSearch));
+        assertThat(bService.findOperationsByElement(budget, forSearch).size() == 2).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindOperationByElementThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        Element element = ModelTestData.getElement1();
+        element.setId(22);
+        budget.setId(0);
+
+        bService.findOperationsByElement(budget, element);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenElementIdInvalidFindOperationByElementThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        Element element = ModelTestData.getElement1();
+        element.setId(0);
+        budget.setId(10);
+
+        bService.findOperationsByElement(budget, element);
     }
 
     @Test(expected = ValidationException.class)
-    public void whenUserInvalidRemoveOperationThrowException() {
-        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-        bService.addOperation(bu, op);
-        op.getUser().setName("");
+    public void whenElementInvalidFindOperationByElementThrowException() {
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        Element element = eService.save(ModelTestData.getElement1());
+        element.setName("");
 
-        bService.removeOperation(bu, op);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenElementInvalidRemoveOperationThrowException() {
-        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-        bService.addOperation(bu, op);
-        op.getElement().setName("");
-
-        bService.removeOperation(bu, op);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenssUserInvalidRemoveOperationThrowException() {
-        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-        bService.addOperation(bu, op);
-        op.getElementProvider().setName("");
-
-        bService.removeOperation(bu, op);
+        bService.findOperationsByElement(budget, element);
     }
 
 }
