@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -272,5 +273,34 @@ public class UserServiceIT {
             }
         }
         assertThat(locales.size() == count).isTrue();
+    }
+
+    @Test
+    public void activatedUser() {
+        throw new NotImplementedException();
+//        User user = ModelTestData.getUser1();
+//        assertThat(uService.isActivated(user)).isFalse();
+//
+//        uService.activate(user);
+//
+//        assertThat(uService.isActivated(user)).isTrue();
+    }
+
+    @Test
+    public void isActivated() {
+        User user = ModelTestData.getUser1();
+        assertThat(uService.isActivated(user)).isFalse();
+
+        uService.saveUser(user);
+
+        assertThat(uService.isActivated(user)).isTrue();
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenUserInvalidActivatedUserThrowException() {
+        User user = ModelTestData.getUser1();
+        user.setName("");
+
+        uService.activate(user);
     }
 }

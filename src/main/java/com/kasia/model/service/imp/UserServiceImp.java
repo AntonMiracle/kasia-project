@@ -40,6 +40,7 @@ public class UserServiceImp implements UserService {
         if (model.getId() == 0) {
             if (!isUserNameUnique(model.getName())) throw new UserNameExistRuntimeException();
             if (!isUserEmailUnique(model.getEmail())) throw new EmailExistRuntimeException();
+            activate(model);
             return uRepository.save(model);
         }
         if (model.getId() > 0) {
@@ -134,12 +135,15 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isActivated(User user) {
-        throw new NotImplementedException();
+        uValidation.verifyValidation(user);
+        return user.isActivated();
     }
 
     @Override
     public boolean activate(User user) {
-        throw new NotImplementedException();
+        uValidation.verifyValidation(user);
+        user.setActivated(true);
+        return true;
     }
 
     @Override

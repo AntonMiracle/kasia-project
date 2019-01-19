@@ -39,7 +39,7 @@ public interface UserService {
 
     boolean isActivated(User user);
 
-    boolean activate(User user);
+    boolean activate(User user) throws ValidationException;
 
     boolean deactivate(User user);
 
