@@ -2,6 +2,7 @@ package com.kasia.model.service;
 
 import com.kasia.ModelTestData;
 import com.kasia.exception.IdInvalidRuntimeException;
+import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.User;
 import com.kasia.model.repository.UserRepository;
 import org.junit.After;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -22,10 +24,11 @@ public class UserServiceIT {
     @Autowired
     private UserService uService;
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository uRepository;
 
     @After
     public void cleanData() {
+        uRepository.findAll().forEach(uRepository::delete);
 //        uService.findAllUsers().forEach(uService::deleteUser);
     }
 
@@ -48,14 +51,14 @@ public class UserServiceIT {
 
     @Test
     public void deleteUser() {
-        User user = userRepository.save(ModelTestData.getUser1());
+        User user = uRepository.save(ModelTestData.getUser1());
 
         assertThat(uService.deleteUser(user)).isTrue();
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
     public void whenUserIdInvalidDeleteUserThrowException() {
-        User user = userRepository.save(ModelTestData.getUser1());
+        User user = uRepository.save(ModelTestData.getUser1());
         user.setId(0);
 
         uService.deleteUser(user);
@@ -63,9 +66,39 @@ public class UserServiceIT {
 
     @Test(expected = ValidationException.class)
     public void whenUserInvalidDeleteUserThrowException() {
-        User user = userRepository.save(ModelTestData.getUser1());
+        User user = uRepository.save(ModelTestData.getUser1());
         user.setName("");
 
         uService.deleteUser(user);
+    }
+
+    @Test
+    public void saveNewUser() {
+        User expected = ModelTestData.getUser1();
+
+        uService.save(expected);
+
+        User actual = uRepository.findById(expected.getId()).get();
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenUserInvalidSaveNewUserThrowException() {
+        User expected = ModelTestData.getUser1();
+        expected.setName("");
+
+        uService.save(expected);
+    }
+
+    @Test(expected = UserNameExistRuntimeException.class)
+    public void whenUserNameNotUniqueSaveNewUserThrowException() {
+        throw new NotImplementedException();
+//        User savedUser = ModelTestData.getUser1();
+//        uService.save(savedUser);
+//
+//        User notUniqueUsername = ModelTestData.getUser2();
+//        notUniqueUsername.setName(savedUser.getName());
+//
+//        uService.save(notUniqueUsername);
     }
 }

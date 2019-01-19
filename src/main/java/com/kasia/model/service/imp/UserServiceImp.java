@@ -26,7 +26,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User save(User model) {
-        throw new NotImplementedException();
+        uValidation.verifyValidation(model);
+        return uRepository.save(model);
     }
 
     @Override
