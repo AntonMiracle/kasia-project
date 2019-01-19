@@ -57,7 +57,7 @@ public interface UserService {
 
     Set<User> findAllConnectedUser(Budget budget);
 
-    boolean isUserOwnBudget(Budget budget, User user);
+    boolean isUserOwnBudget(Budget budget, User user) throws ValidationException, IdInvalidRuntimeException;
 
-    boolean isUserConnectToBudget(Budget budget, User user);
+    boolean isUserConnectToBudget(Budget budget, User user)throws ValidationException, IdInvalidRuntimeException;
 }

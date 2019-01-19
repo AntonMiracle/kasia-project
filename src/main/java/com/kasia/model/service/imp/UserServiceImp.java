@@ -4,10 +4,7 @@ import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.exception.LocaleFormatRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
-import com.kasia.model.Budget;
-import com.kasia.model.Role;
-import com.kasia.model.User;
-import com.kasia.model.UserBudget;
+import com.kasia.model.*;
 import com.kasia.model.repository.UserBudgetRepository;
 import com.kasia.model.repository.UserConnectBudgetRepository;
 import com.kasia.model.repository.UserRepository;
@@ -225,7 +222,13 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isUserConnectToBudget(Budget budget, User user) {
-        throw new NotImplementedException();
+        uValidation.verifyValidation(user);
+        uValidation.verifyPositiveId(user.getId());
+        bValidation.verifyValidation(budget);
+        bValidation.verifyPositiveId(budget.getId());
+
+        UserConnectBudget ucb = ucbRepository.findByUserId(user.getId()).orElse(null);
+        return !(ucb == null || ucb.getConnectBudgets() == null) && ucb.getConnectBudgets().contains(budget);
     }
 
 }
