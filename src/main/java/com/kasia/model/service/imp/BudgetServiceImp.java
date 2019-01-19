@@ -11,7 +11,6 @@ import com.kasia.model.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -180,7 +179,14 @@ public class BudgetServiceImp implements BudgetService {
 
         epValidation.verifyValidation(provider);
         if (!isElementProviderUnique(budget, provider)) return false;
-        throw new NotImplementedException();
+
+        epService.save(provider);
+        bep.getElementProviders().add(provider);
+
+        bepValidation.verifyValidation(bep);
+        bepRepository.save(bep);
+
+        return bep.getElementProviders().contains(provider);
     }
 
     @Override

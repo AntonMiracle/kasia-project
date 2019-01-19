@@ -316,7 +316,7 @@ public class BudgetServiceIT {
     }
 
     @Test
-    public void findAllElments() {
+    public void findAllElements() {
         BudgetElement be = getSavedForTestCleanBudgetElement();
         Element element1 = ModelTestData.getElement1();
         Element element2 = ModelTestData.getElement2();
@@ -368,5 +368,45 @@ public class BudgetServiceIT {
         savedElementProvider.setName("");
 
         bService.isElementProviderUnique(savedBudget, savedElementProvider);
+    }
+
+    private BudgetElementProvider getSavedForTestCleanBudgetElementProvider() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        BudgetElementProvider be = ModelTestData.getBudgetElementProvider1();
+        be.getElementProviders().clear();
+        be.setBudget(savedBudget);
+        return bepRepository.save(be);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidAddElementProviderThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+
+        bep.getBudget().setId(0);
+
+        bService.addElementProvider(bep.getBudget(), provider);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenProviderInvalidAddElementProviderThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+
+        provider.setName("");
+
+        bService.addElementProvider(bep.getBudget(), provider);
+    }
+
+    @Test
+    public void addElementProvider() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+        int providersBeforeAdd = bepRepository.findByBudgetId(bep.getBudget().getId()).get().getElementProviders().size();
+
+        assertThat(bService.addElementProvider(bep.getBudget(), provider)).isTrue();
+
+        int providersAfterAdd = bepRepository.findByBudgetId(bep.getBudget().getId()).get().getElementProviders().size();
+        assertThat(providersAfterAdd == (providersBeforeAdd + 1)).isTrue();
     }
 }

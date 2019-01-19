@@ -31,9 +31,9 @@ public interface BudgetService {
 
     ElementProvider findElementProviderByName(Budget budget, String name);
 
-    boolean isElementProviderUnique(Budget budget, ElementProvider provider);
+    boolean isElementProviderUnique(Budget budget, ElementProvider provider) throws ValidationException, IdInvalidRuntimeException;
 
-    boolean addElementProvider(Budget budget, ElementProvider provider);
+    boolean addElementProvider(Budget budget, ElementProvider provider) throws ValidationException, IdInvalidRuntimeException;
 
     boolean removeElementProvider(Budget budget, ElementProvider provider);
 
