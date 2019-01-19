@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.ValidationException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -31,6 +33,12 @@ public class ElementProviderServiceIT {
         assertThat(create).isEqualTo(provider);
     }
 
+    @Test(expected = ValidationException.class)
+    public void whenElementProviderInvalidCreateThrowException() throws Exception {
+        ElementProvider provider = ModelTestData.getElementProvider1();
+        elementProviderService.create("", provider.getDescription());
+    }
+
     @Test
     public void saveNew() {
         ElementProvider expected = ModelTestData.getElementProvider1();
@@ -43,6 +51,13 @@ public class ElementProviderServiceIT {
         assertThat(actual).isNotNull();
         assertThat(actual.getDescription()).isEqualTo(expected.getDescription());
         assertThat(actual.getName()).isEqualTo(expected.getName());
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementProviderInvalidSaveThrowException() {
+        ElementProvider expected = ModelTestData.getElementProvider1();
+        expected.setName("");
+        elementProviderService.save(expected);
     }
 
     @Test
@@ -78,16 +93,23 @@ public class ElementProviderServiceIT {
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
-    public void whenDeleteWithZeroIdThenException() {
+    public void whenIdZeroDeleteThrowException() {
         ElementProvider provider = ModelTestData.getElementProvider1();
         provider.setId(0);
         elementProviderService.delete(provider);
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
-    public void whenDeleteWithNegativeIdThenException() {
+    public void whenIdNegativeDeleteThrowException() {
         ElementProvider provider = ModelTestData.getElementProvider1();
         provider.setId(-1);
+        elementProviderService.delete(provider);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementProviderInvalidDeleteThrowException() {
+        ElementProvider provider = ModelTestData.getElementProvider1();
+        provider.setName("");
         elementProviderService.delete(provider);
     }
 
