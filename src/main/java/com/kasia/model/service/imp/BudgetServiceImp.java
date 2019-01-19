@@ -26,7 +26,7 @@ public class BudgetServiceImp implements BudgetService {
     @Autowired
     private BudgetRepository bRepository;
     @Autowired
-    private ElementService eService;
+    private ElementRepository eRepository;
     @Autowired
     private ElementValidation eValidation;
     @Autowired
@@ -138,7 +138,7 @@ public class BudgetServiceImp implements BudgetService {
         eValidation.verifyValidation(element);
         if (!isElementUnique(budget, element)) return false;
 
-        eService.save(element);
+        eRepository.save(element);
         be.getElements().add(element);
 
         beValidation.verifyValidation(be);
@@ -157,7 +157,7 @@ public class BudgetServiceImp implements BudgetService {
         if (!optional.isPresent() || !optional.get().getElements().contains(element)) return false;
 
         optional.get().getElements().remove(element);
-        eService.delete(element);
+        eRepository.delete(element);
 
         beValidation.verifyValidation(optional.get());
         beRepository.save(optional.get());
