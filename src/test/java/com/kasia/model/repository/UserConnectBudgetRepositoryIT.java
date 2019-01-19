@@ -54,7 +54,7 @@ public class UserConnectBudgetRepositoryIT {
         UserConnectBudget userConnectBudget = saveForTest(ModelTestData.getUserConnectBudget1());
         long id = userConnectBudget.getId();
 
-        userConnectBudget = repository.findById(id).get();
+        userConnectBudget = repository.findById(id).orElse(null);
 
         assertThat(userConnectBudget).isNotNull();
         assertThat(userConnectBudget.getId()).isEqualTo(id);
@@ -79,6 +79,7 @@ public class UserConnectBudgetRepositoryIT {
 
         assertThat(userConnectBudgets.size() == 2).isTrue();
     }
+
     @Test
     public void findByUserId() {
         UserConnectBudget expected = saveForTest(ModelTestData.getUserConnectBudget1());
