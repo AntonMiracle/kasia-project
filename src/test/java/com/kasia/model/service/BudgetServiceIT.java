@@ -326,56 +326,45 @@ public class BudgetServiceIT {
         assertThat(bService.findAllElements(be.getBudget()).size() == 2).isTrue();
     }
 
-    @Test
-    public void elementProviderUnique() {
-        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        BudgetElementProvider bep = ModelTestData.getBudgetElementProvider1();
-        bep.getElementProviders().clear();
-        bep.getElementProviders().add(savedElementProvider);
-        bep.setBudget(savedBudget);
-        bepRepository.save(bep);
-
-        assertThat(bService.isElementProviderUnique(savedBudget, savedElementProvider)).isFalse();
-        assertThat(bService.isElementProviderUnique(savedBudget, ModelTestData.getElementProvider2())).isTrue();
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenBudgetIdInvalidIsElementProviderUniqueThrowException() {
-        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        BudgetElementProvider bep = ModelTestData.getBudgetElementProvider1();
-        bep.getElementProviders().clear();
-        bep.getElementProviders().add(savedElementProvider);
-        bep.setBudget(savedBudget);
-        bepRepository.save(bep);
-
-        savedBudget.setId(0);
-
-        bService.isElementProviderUnique(savedBudget, savedElementProvider);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenElementProviderInvalidIsElementProviderUniqueThrowException() {
-        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        BudgetElementProvider bep = ModelTestData.getBudgetElementProvider1();
-        bep.getElementProviders().clear();
-        bep.getElementProviders().add(savedElementProvider);
-        bep.setBudget(savedBudget);
-        bepRepository.save(bep);
-
-        savedElementProvider.setName("");
-
-        bService.isElementProviderUnique(savedBudget, savedElementProvider);
-    }
-
     private BudgetElementProvider getSavedForTestCleanBudgetElementProvider() {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         BudgetElementProvider be = ModelTestData.getBudgetElementProvider1();
         be.getElementProviders().clear();
         be.setBudget(savedBudget);
         return bepRepository.save(be);
+    }
+
+    @Test
+    public void elementProviderUnique() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
+        bep.getElementProviders().add(savedElementProvider);
+        bepRepository.save(bep);
+
+        assertThat(bService.isElementProviderUnique(bep.getBudget(), savedElementProvider)).isFalse();
+        assertThat(bService.isElementProviderUnique(bep.getBudget(), ModelTestData.getElementProvider2())).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidIsElementProviderUniqueThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
+        bep.getElementProviders().add(savedElementProvider);
+
+        bep.getBudget().setId(0);
+
+        bService.isElementProviderUnique(bep.getBudget(), savedElementProvider);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementProviderInvalidIsElementProviderUniqueThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
+        bep.getElementProviders().add(savedElementProvider);
+
+        savedElementProvider.setName("");
+
+        bService.isElementProviderUnique(bep.getBudget(), savedElementProvider);
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
