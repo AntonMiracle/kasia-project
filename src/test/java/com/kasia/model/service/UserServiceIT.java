@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -237,5 +238,14 @@ public class UserServiceIT {
         String cryptPassword = "1be0222750aaf3889ab95b5d593ba12e4ff1046474702d6b4779f4b527305b230Aa";
 
         assertThat(uService.cryptPassword(nonCryptPassword)).isEqualTo(cryptPassword);
+    }
+
+    @Test
+    public void zoneIdOf() {
+        String validZone = "Pacific/Johnston";
+        String invalidZoneId = "SomeWrongZoneId";
+
+        assertThat(uService.zoneIdOf(validZone)).isEqualTo(ZoneId.of(validZone));
+        assertThat(uService.zoneIdOf(invalidZoneId)).isEqualTo(ZoneId.systemDefault());
     }
 }

@@ -17,6 +17,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
@@ -104,7 +105,11 @@ public class UserServiceImp implements UserService {
 
     @Override
     public ZoneId zoneIdOf(String zoneId) {
-        throw new NotImplementedException();
+        try {
+            return ZoneId.of(zoneId);
+        } catch (DateTimeException ex) {
+            return ZoneId.systemDefault();
+        }
     }
 
     @Override
