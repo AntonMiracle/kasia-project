@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -78,5 +79,14 @@ public class UserConnectBudgetRepositoryIT {
 
         assertThat(userConnectBudgets.size() == 2).isTrue();
     }
+    @Test
+    public void findByUserId() {
+        UserConnectBudget expected = saveForTest(ModelTestData.getUserConnectBudget1());
+        long userId = expected.getUser().getId();
 
+        Optional<UserConnectBudget> actual = repository.findByUserId(userId);
+
+        assertThat(actual.isPresent()).isTrue();
+        assertThat(actual.orElse(null)).isEqualTo(expected);
+    }
 }
