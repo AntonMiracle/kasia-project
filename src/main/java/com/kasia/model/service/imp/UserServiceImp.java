@@ -160,12 +160,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean isUserOwnerOfBudget(User user) {
+    public boolean isUserOwnerOfBudget(Budget budget, User user) {
         throw new NotImplementedException();
     }
 
     @Override
-    public boolean isUserConnectedToBudget(User user) {
+    public boolean isUserConnectedToBudget(Budget budget, User user) {
         throw new NotImplementedException();
     }
 
