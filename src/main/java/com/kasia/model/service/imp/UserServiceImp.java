@@ -30,8 +30,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean delete(User model) {
-        throw new NotImplementedException();
+    public boolean deleteUser(User model) {
+        uValidation.verifyValidation(model);
+        uValidation.verifyPositiveId(model.getId());
+        uRepository.delete(model);
+        return true;
     }
 
     @Override

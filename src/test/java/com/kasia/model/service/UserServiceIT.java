@@ -1,7 +1,9 @@
 package com.kasia.model.service;
 
 import com.kasia.ModelTestData;
+import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.User;
+import com.kasia.model.repository.UserRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,10 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserServiceIT {
     @Autowired
     private UserService uService;
+    @Autowired
+    private UserRepository userRepository;
 
     @After
     public void cleanData() {
-//        uService.findAllUsers().forEach(uService::delete);
+//        uService.findAllUsers().forEach(uService::deleteUser);
     }
 
     @Test
@@ -39,5 +44,28 @@ public class UserServiceIT {
         assertThat(actual.getZoneId()).isEqualTo(expected.getZoneId());
         assertThat(actual.getLocale()).isEqualTo(expected.getLocale());
         assertThat(actual.getCreateOn().compareTo(LocalDateTime.now().plusSeconds(2)) < 0).isTrue();
+    }
+
+    @Test
+    public void deleteUser() {
+        User user = userRepository.save(ModelTestData.getUser1());
+
+        assertThat(uService.deleteUser(user)).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenUserIdInvalidDeleteUserThrowException() {
+        User user = userRepository.save(ModelTestData.getUser1());
+        user.setId(0);
+
+        uService.deleteUser(user);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenUserInvalidDeleteUserThrowException() {
+        User user = userRepository.save(ModelTestData.getUser1());
+        user.setName("");
+
+        uService.deleteUser(user);
     }
 }

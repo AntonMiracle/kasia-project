@@ -1,8 +1,10 @@
 package com.kasia.model.service;
 
+import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.Budget;
 import com.kasia.model.User;
 
+import javax.validation.ValidationException;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Set;
@@ -11,13 +13,13 @@ public interface UserService {
 
     User save(User model);
 
-    boolean delete(User model);
+    boolean deleteUser(User model) throws ValidationException, IdInvalidRuntimeException;
 
     User findUserById(long id);
 
     Set<User> findAllUsers();
 
-    User createUser(String email, String name, String password, ZoneId zoneId, Locale locale);
+    User createUser(String email, String name, String password, ZoneId zoneId, Locale locale) throws ValidationException;
 
     boolean isUserEmailUnique(String email);
 
