@@ -111,6 +111,51 @@ public class UserServiceIT {
     }
 
     @Test
+    public void saveUserUpdate() {
+        User expected = getSavedUserForTest();
+        String expectedName = expected.getName() + expected.getName();
+        String expectedEmail = "new" + expected.getEmail();
+        expected.setName(expectedName);
+        expected.setEmail(expectedEmail);
+
+        uService.saveUser(expected);
+
+        User actual = uService.findUserById(expected.getId());
+        assertThat(actual.getName()).isEqualTo(expectedName);
+        assertThat(actual.getEmail()).isEqualTo(expectedEmail);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void whenUserNameNotUniqueSaveUserDoNotUpdateUser() {
+        User user1 = uService.saveUser(ModelTestData.getUser1());
+        User user2 = uService.saveUser(ModelTestData.getUser2());
+        user2.setName(user1.getName());
+
+        uService.saveUser(user2);
+
+        assertThat(uService.findUserById(user2.getId()).getName()).isNotEqualTo(user1.getName());
+    }
+
+    @Test
+    public void whenUserEmailNotUniqueSaveUserDoNotUpdateUser() {
+        User user1 = uService.saveUser(ModelTestData.getUser1());
+        User user2 = uService.saveUser(ModelTestData.getUser2());
+        user2.setEmail(user1.getEmail());
+
+        uService.saveUser(user2);
+
+        assertThat(uService.findUserById(user2.getId()).getEmail()).isNotEqualTo(user1.getEmail());
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenIdNegativeSaveUserThrowException() {
+        User user1 = uService.saveUser(ModelTestData.getUser1());
+        user1.setId(-1);
+        uService.saveUser(user1);
+    }
+
+    @Test
     public void userEmailUnique() {
         String notUniqueEmail = uRepository.save(ModelTestData.getUser1()).getEmail();
         String uniqueEmail = ModelTestData.getUser2().getEmail();

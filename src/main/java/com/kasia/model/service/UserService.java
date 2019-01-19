@@ -13,7 +13,7 @@ import java.util.Set;
 
 public interface UserService {
 
-    User saveUser(User model) throws EmailExistRuntimeException, UserNameExistRuntimeException, ValidationException;
+    User saveUser(User model) throws EmailExistRuntimeException, UserNameExistRuntimeException, ValidationException, IdInvalidRuntimeException;
 
     boolean deleteUser(User model) throws ValidationException, IdInvalidRuntimeException;
 

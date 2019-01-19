@@ -38,7 +38,11 @@ public class UserServiceImp implements UserService {
             return uRepository.save(model);
         }
         if (model.getId() > 0) {
-
+            User oldUser = findUserById(model.getId());
+            if (!oldUser.getName().equals(model.getName()) && !isUserNameUnique(model.getName()))
+                model.setName(oldUser.getName());
+            if (!oldUser.getEmail().equals(model.getEmail()) && !isUserEmailUnique(model.getEmail()))
+                model.setEmail(oldUser.getEmail());
             return uRepository.save(model);
         }
         throw new IdInvalidRuntimeException();
