@@ -79,13 +79,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isUserEmailUnique(String email) {
-        return !uRepository.findByEmail(email).isPresent();
-
+        return findUserByEmail(email) == null;
     }
 
     @Override
     public boolean isUserNameUnique(String name) {
-        return !uRepository.findByName(name).isPresent();
+        return findUserByName(name) == null;
     }
 
     @Override
