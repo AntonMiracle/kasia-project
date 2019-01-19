@@ -54,7 +54,7 @@ public class UserBudgetRepositoryIT {
         UserBudget userBudget = saveForTest(ModelTestData.getUserBudget1());
         long id = userBudget.getId();
 
-        userBudget = repository.findById(id).get();
+        userBudget = repository.findById(id).orElse(null);
 
         assertThat(userBudget).isNotNull();
         assertThat(userBudget.getId()).isEqualTo(id);
@@ -68,7 +68,7 @@ public class UserBudgetRepositoryIT {
         Optional<UserBudget> actual = repository.findByUserId(userId);
 
         assertThat(actual.isPresent()).isTrue();
-        assertThat(actual.get()).isEqualTo(expected);
+        assertThat(actual.orElse(null)).isEqualTo(expected);
     }
 
     @Test
