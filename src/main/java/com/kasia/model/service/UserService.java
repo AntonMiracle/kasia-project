@@ -57,7 +57,7 @@ public interface UserService {
 
     Set<User> findAllConnectedUser(Budget budget);
 
-    boolean isUserOwnerOfBudget(User user);
+    boolean isUserOwnerOfBudget(Budget budget, User user);
 
-    boolean isUserConnectedToBudget(User user);
+    boolean isUserConnectedToBudget(Budget budget, User user);
 }
