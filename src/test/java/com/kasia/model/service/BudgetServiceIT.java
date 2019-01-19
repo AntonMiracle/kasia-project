@@ -768,6 +768,47 @@ public class BudgetServiceIT {
         assertThat(bService.findAllOperations(savedBudget).size() == 0).isTrue();
     }
 
+    @Test
+    public void removeOperationUpdateBudgetBalance() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.getBalance().setCurrencies(Currencies.EUR);
+        budget.getBalance().setAmount(BigDecimal.ZERO);
+        budget = bService.saveBudget(budget);
+
+        Price incomePrice = ModelTestData.getPrice1();
+        incomePrice.setCurrencies(Currencies.EUR);
+        incomePrice.setAmount(BigDecimal.valueOf(0.5));
+
+        Price consumptionPrice = ModelTestData.getPrice1();
+        consumptionPrice.setCurrencies(Currencies.EUR);
+        consumptionPrice.setAmount(BigDecimal.valueOf(3));
+
+        Element incomeEl = ModelTestData.getElement1();
+        incomeEl.setType(ElementType.INCOME);
+        incomeEl = eService.save(incomeEl);
+
+        Element consumptionEl = ModelTestData.getElement1();
+        consumptionEl.setType(ElementType.CONSUMPTION);
+        consumptionEl = eService.save(consumptionEl);
+
+        User user = uService.saveUser(ModelTestData.getUser1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+
+        Operation incomeOp = bService.createOperation(user, incomeEl, provider, incomePrice);
+        Operation consumptionOp = bService.createOperation(user, consumptionEl, provider, consumptionPrice);
+
+        bService.addOperation(budget, incomeOp);
+        bService.addOperation(budget, consumptionOp);
+        assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(-2.5));
+
+        bService.removeOperation(budget,incomeOp);
+        assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(-3.0));
+
+        bService.removeOperation(budget,consumptionOp);
+        assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(0.0));
+
+    }
+
     @Test(expected = CurrenciesNotEqualsRuntimeException.class)
     public void whenCurrenciesNotEqualsRemoveOperationThrowException() {
         Budget budget = ModelTestData.getBudget1();

@@ -289,6 +289,18 @@ public class BudgetServiceImp implements BudgetService {
         Optional<BudgetOperation> optional = boRepository.findByBudgetId(budget.getId());
         if (!optional.isPresent() || !optional.get().getOperations().contains(operation)) return false;
 
+        switch (operation.getElement().getType()) {
+            case INCOME:
+                budget.setBalance(balanceService.subtract(budget.getBalance(), operation.getPrice()));
+                break;
+            case CONSUMPTION:
+                budget.setBalance(balanceService.add(budget.getBalance(), operation.getPrice()));
+                break;
+            default:
+                throw new RuntimeException();
+        }
+        saveBudget(budget);
+
         optional.get().getOperations().remove(operation);
 
         boValidation.verifyValidation(optional.get());
