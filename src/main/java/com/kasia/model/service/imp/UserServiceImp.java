@@ -148,7 +148,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean deactivate(User user) {
-        throw new NotImplementedException();
+        uValidation.verifyValidation(user);
+        user.setActivated(false);
+        return true;
     }
 
     @Override

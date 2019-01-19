@@ -295,10 +295,35 @@ public class UserServiceIT {
     }
 
     @Test(expected = ValidationException.class)
+    public void whenUserInvalidIsActivatedThrowException() {
+        User user = ModelTestData.getUser1();
+        user.setName("");
+        uService.isActivated(user);
+    }
+
+    @Test(expected = ValidationException.class)
     public void whenUserInvalidActivatedUserThrowException() {
         User user = ModelTestData.getUser1();
         user.setName("");
 
         uService.activate(user);
     }
+
+    @Test
+    public void deactivate() {
+        User user = ModelTestData.getUser1();
+        uService.saveUser(user);
+
+        uService.deactivate(user);
+
+        assertThat(uService.isActivated(user)).isFalse();
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenUserInvalidDeactivateThrowException() {
+        User user = ModelTestData.getUser1();
+        user.setName("");
+        uService.deactivate(user);
+    }
+
 }

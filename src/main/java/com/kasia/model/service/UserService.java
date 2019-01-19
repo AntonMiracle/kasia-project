@@ -37,11 +37,11 @@ public interface UserService {
 
     User findUserByEmail(String email);
 
-    boolean isActivated(User user);
+    boolean isActivated(User user) throws ValidationException;
 
     boolean activate(User user) throws ValidationException;
 
-    boolean deactivate(User user);
+    boolean deactivate(User user) throws ValidationException;
 
     Set<Locale> getCorrectAvailableLocales();
 
