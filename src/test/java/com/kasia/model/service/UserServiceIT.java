@@ -205,4 +205,17 @@ public class UserServiceIT {
 
         assertThat(uService.findAllUsers().size() == 1).isTrue();
     }
+
+    @Test
+    public void findUserByName() {
+        User expected = getSavedUserForTest();
+
+        assertThat(uService.findUserByName(expected.getName())).isEqualTo(expected);
+    }
+
+    @Test
+    public void whenNameNotExistFindUserByNameReturnNull() {
+        assertThat(uService.findUserByName(null)).isNull();
+        assertThat(uService.findUserByName("")).isNull();
+    }
 }

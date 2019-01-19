@@ -105,7 +105,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User findUserByName(String name) {
-        throw new NotImplementedException();
+        return uRepository.findByName(name).orElse(null);
     }
 
     @Override
