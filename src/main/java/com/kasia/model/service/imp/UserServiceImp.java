@@ -164,7 +164,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Locale getDefaultLocale() {
-        throw new NotImplementedException();
+        return new Locale("pl", "PL");
     }
 
     @Override

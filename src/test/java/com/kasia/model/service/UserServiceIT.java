@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
@@ -260,7 +259,6 @@ public class UserServiceIT {
 
         assertThat(locale1).isEqualTo(ModelTestData.getDefaultLocale());
         assertThat(uService.getCorrectAvailableLocales().contains(locale2)).isTrue();
-        throw new NotImplementedException();
     }
     @Test
     public void allCorrectAvailableLocalesHaveLangAndCountry() {
