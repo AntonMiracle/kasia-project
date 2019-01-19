@@ -375,6 +375,16 @@ public class BudgetServiceIT {
     }
 
     @Test(expected = ValidationException.class)
+    public void whenBudgetInvalidAddElementProviderThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+
+        bep.getBudget().setName("");
+
+        bService.addElementProvider(bep.getBudget(), provider);
+    }
+
+    @Test(expected = ValidationException.class)
     public void whenProviderInvalidAddElementProviderThrowException() {
         BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
         ElementProvider provider = ModelTestData.getElementProvider1();
@@ -394,5 +404,51 @@ public class BudgetServiceIT {
 
         int providersAfterAdd = bepRepository.findByBudgetId(bep.getBudget().getId()).get().getElementProviders().size();
         assertThat(providersAfterAdd == (providersBeforeAdd + 1)).isTrue();
+    }
+
+    @Test
+    public void removeElementProvider() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+        bService.addElementProvider(bep.getBudget(), provider);
+        int providersBeforeRemove = bepRepository.findByBudgetId(bep.getBudget().getId()).get().getElementProviders().size();
+
+        assertThat(bService.removeElementProvider(bep.getBudget(), provider)).isTrue();
+
+        int providersAfterRemove = bepRepository.findByBudgetId(bep.getBudget().getId()).get().getElementProviders().size();
+        assertThat(providersAfterRemove == (providersBeforeRemove - 1)).isTrue();
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenBudgetInvalidRemoveElementProviderThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+        bService.addElementProvider(bep.getBudget(), provider);
+
+        bep.getBudget().setName("");
+
+        bService.removeElementProvider(bep.getBudget(), provider);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidRemoveElementProviderThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+        bService.addElementProvider(bep.getBudget(), provider);
+
+        bep.getBudget().setId(0);
+
+        bService.removeElementProvider(bep.getBudget(), provider);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementProviderInvalidRemoveElementProviderThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+        bService.addElementProvider(bep.getBudget(), provider);
+
+        provider.setName("");
+
+        bService.removeElementProvider(bep.getBudget(), provider);
     }
 }

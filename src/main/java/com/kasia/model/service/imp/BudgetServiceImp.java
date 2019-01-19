@@ -172,6 +172,7 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean addElementProvider(Budget budget, ElementProvider provider) {
+        bValidation.verifyValidation(budget);
         bValidation.verifyPositiveId(budget.getId());
         Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
 
@@ -191,7 +192,19 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean removeElementProvider(Budget budget, ElementProvider provider) {
-        return false;
+        bValidation.verifyValidation(budget);
+        bValidation.verifyPositiveId(budget.getId());
+        epValidation.verifyValidation(provider);
+        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
+
+        if (!optional.isPresent() || !optional.get().getElementProviders().contains(provider)) return false;
+
+        optional.get().getElementProviders().remove(provider);
+
+        bepValidation.verifyValidation(optional.get());
+        bepRepository.save(optional.get());
+
+        return !optional.get().getElementProviders().contains(provider);
     }
 
     @Override
