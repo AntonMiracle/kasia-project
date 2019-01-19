@@ -190,8 +190,10 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Set<Budget> findAllOwnBudget(User user) {
-        throw new NotImplementedException();
+    public Set<Budget> findOwnBudgets(User user) {
+        uValidation.verifyPositiveId(user.getId());
+        Optional<UserBudget> optional = ubRepository.findByUserId(user.getId());
+        return optional.map(UserBudget::getBudgets).orElseGet(HashSet::new);
     }
 
     @Override

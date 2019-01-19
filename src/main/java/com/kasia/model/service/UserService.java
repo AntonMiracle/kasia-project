@@ -49,7 +49,7 @@ public interface UserService {
 
     Locale getDefaultLocale();
 
-    Set<Budget> findAllOwnBudget(User user);
+    Set<Budget> findOwnBudgets(User user) throws IdInvalidRuntimeException;
 
     boolean addBudget(User user, Budget budget);
 
@@ -59,5 +59,5 @@ public interface UserService {
 
     boolean isUserOwnBudget(Budget budget, User user) throws ValidationException, IdInvalidRuntimeException;
 
-    boolean isUserConnectToBudget(Budget budget, User user)throws ValidationException, IdInvalidRuntimeException;
+    boolean isUserConnectToBudget(Budget budget, User user) throws ValidationException, IdInvalidRuntimeException;
 }

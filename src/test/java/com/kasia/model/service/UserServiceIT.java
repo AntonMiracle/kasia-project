@@ -485,4 +485,27 @@ public class UserServiceIT {
 
         uService.findConnectUsers(budget);
     }
+
+    @Test
+    public void findOwnBudgets() {
+        User owner = uService.saveUser(ModelTestData.getUser1());
+        User user = uService.saveUser(ModelTestData.getUser2());
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+
+        UserBudget ub = ModelTestData.getUserBudget1();
+        ub.getBudgets().clear();
+        ub.getBudgets().add(budget);
+        ub.setUser(owner);
+        ubRepository.save(ub);
+
+        assertThat(uService.findOwnBudgets(owner).size() == 1).isTrue();
+        assertThat(uService.findOwnBudgets(owner).contains(budget)).isTrue();
+        assertThat(uService.findOwnBudgets(user).size() == 0).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenUserIdInvalidFindOwnBudgetsThrowException() {
+        User owner = ModelTestData.getUser1();
+        uService.findOwnBudgets(owner);
+    }
 }
