@@ -323,6 +323,15 @@ public class BudgetServiceIT {
         assertThat(bService.findAllElements(be.getBudget()).size() == 2).isTrue();
     }
 
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindAllElementsThrowException() {
+        BudgetElement be = getSavedForTestCleanBudgetElement();
+
+        be.getBudget().setId(0);
+
+        bService.findAllElements(be.getBudget());
+    }
+
     private BudgetElementProvider getSavedForTestCleanBudgetElementProvider() {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         BudgetElementProvider be = ModelTestData.getBudgetElementProvider1();
