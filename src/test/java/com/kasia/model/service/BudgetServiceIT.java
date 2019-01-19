@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ValidationException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -635,6 +636,42 @@ public class BudgetServiceIT {
 
         bService.addOperation(savedBudget, op2);
         assertThat(bService.findAllOperations(savedBudget).size() == 2).isTrue();
+    }
+
+    @Test
+    public void addOperationUpdateBudgetBalance() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.getBalance().setCurrencies(Currencies.EUR);
+        budget.getBalance().setAmount(BigDecimal.ZERO);
+        budget = bService.saveBudget(budget);
+
+        Price incomePrice = ModelTestData.getPrice1();
+        incomePrice.setCurrencies(Currencies.EUR);
+        incomePrice.setAmount(BigDecimal.valueOf(0.5));
+
+        Price consumptionPrice = ModelTestData.getPrice1();
+        consumptionPrice.setCurrencies(Currencies.EUR);
+        consumptionPrice.setAmount(BigDecimal.valueOf(3));
+
+        Element incomeEl = ModelTestData.getElement1();
+        incomeEl.setType(ElementType.INCOME);
+        incomeEl = eService.save(incomeEl);
+
+        Element consumptionEl = ModelTestData.getElement1();
+        consumptionEl.setType(ElementType.CONSUMPTION);
+        consumptionEl = eService.save(consumptionEl);
+
+        User user = uService.saveUser(ModelTestData.getUser1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+
+        Operation incomeOp = bService.createOperation(user, incomeEl, provider, incomePrice);
+        Operation consumptionOp = bService.createOperation(user, consumptionEl, provider, consumptionPrice);
+
+        bService.addOperation(budget, incomeOp);
+        assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(0.5));
+
+        bService.addOperation(budget, consumptionOp);
+        assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(-2.5));
     }
 
     @Test(expected = CurrenciesNotEqualsRuntimeException.class)

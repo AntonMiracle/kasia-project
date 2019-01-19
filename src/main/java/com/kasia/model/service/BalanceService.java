@@ -12,7 +12,7 @@ public interface BalanceService {
 
     Balance add(Balance balanceTo, Price... prices);
 
-    Balance subtract(Balance balanceTo, Price price);
+    Balance subtract(Balance balanceFrom, Price price);
 
     Balance subtract(Balance balanceFrom, Price... prices);
 

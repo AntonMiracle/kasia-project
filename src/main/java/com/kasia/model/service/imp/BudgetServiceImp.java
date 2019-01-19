@@ -3,10 +3,7 @@ package com.kasia.model.service.imp;
 import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.model.*;
 import com.kasia.model.repository.*;
-import com.kasia.model.service.BudgetService;
-import com.kasia.model.service.ElementProviderService;
-import com.kasia.model.service.ElementService;
-import com.kasia.model.service.UserService;
+import com.kasia.model.service.*;
 import com.kasia.model.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +19,8 @@ import java.util.Set;
 @Service
 @Transactional
 public class BudgetServiceImp implements BudgetService {
+    @Autowired
+    private BalanceService balanceService;
     @Autowired
     private BudgetValidation bValidation;
     @Autowired
@@ -257,8 +256,20 @@ public class BudgetServiceImp implements BudgetService {
         BudgetOperation bo = boRepository.findByBudgetId(budget.getId())
                 .orElse(new BudgetOperation(budget, new HashSet<>()));
         boValidation.verifyValidation(bo);
-
         oRepository.save(operation);
+
+        switch (operation.getElement().getType()) {
+            case INCOME:
+                budget.setBalance(balanceService.add(budget.getBalance(), operation.getPrice()));
+                break;
+            case CONSUMPTION:
+                budget.setBalance(balanceService.subtract(budget.getBalance(), operation.getPrice()));
+                break;
+            default:
+                throw new RuntimeException();
+        }
+        saveBudget(budget);
+
         bo.getOperations().add(operation);
         boRepository.save(bo);
 
