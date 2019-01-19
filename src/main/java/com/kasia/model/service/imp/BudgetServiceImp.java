@@ -157,6 +157,7 @@ public class BudgetServiceImp implements BudgetService {
         if (!optional.isPresent() || !optional.get().getElements().contains(element)) return false;
 
         optional.get().getElements().remove(element);
+        eService.delete(element);
 
         beValidation.verifyValidation(optional.get());
         beRepository.save(optional.get());
@@ -230,6 +231,7 @@ public class BudgetServiceImp implements BudgetService {
         if (!optional.isPresent() || !optional.get().getElementProviders().contains(provider)) return false;
 
         optional.get().getElementProviders().remove(provider);
+        epService.delete(provider);
 
         bepValidation.verifyValidation(optional.get());
         bepRepository.save(optional.get());
