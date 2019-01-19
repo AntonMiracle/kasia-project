@@ -221,7 +221,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isUserOwnBudget(Budget budget, User user) {
-        uValidation.verifyValidation(user);
         uValidation.verifyPositiveId(user.getId());
         bValidation.verifyValidation(budget);
         bValidation.verifyPositiveId(budget.getId());
@@ -232,7 +231,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isUserConnectToBudget(Budget budget, User user) {
-        uValidation.verifyValidation(user);
         uValidation.verifyPositiveId(user.getId());
         bValidation.verifyValidation(budget);
         bValidation.verifyPositiveId(budget.getId());

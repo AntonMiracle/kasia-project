@@ -361,17 +361,6 @@ public class UserServiceIT {
     }
 
     @Test(expected = ValidationException.class)
-    public void whenUserInvalidIsUserOwnBudgetThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setId(1);
-        user.setName("");
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-
-        uService.isUserOwnBudget(budget, user);
-    }
-
-    @Test(expected = ValidationException.class)
     public void whenBudgetInvalidIsUserOwnBudgetThrowException() {
         User user = ModelTestData.getUser1();
         user.setId(1);
@@ -414,17 +403,6 @@ public class UserServiceIT {
 
         assertThat(uService.isUserConnectToBudget(withBudget, haveConnect)).isTrue();
         assertThat(uService.isUserConnectToBudget(withBudget, noConnect)).isFalse();
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenUserInvalidIsUserConnectToBudgetThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setId(1);
-        user.setName("");
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-
-        uService.isUserConnectToBudget(budget, user);
     }
 
     @Test(expected = ValidationException.class)
