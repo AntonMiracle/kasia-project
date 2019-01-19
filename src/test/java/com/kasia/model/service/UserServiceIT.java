@@ -12,10 +12,13 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Locale;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -247,5 +250,28 @@ public class UserServiceIT {
 
         assertThat(uService.zoneIdOf(validZone)).isEqualTo(ZoneId.of(validZone));
         assertThat(uService.zoneIdOf(invalidZoneId)).isEqualTo(ZoneId.systemDefault());
+    }
+
+    @Test
+    public void localeOfWithInvalidLangAndCountryReturnDefaultLocale() {
+        Locale locale1 = uService.localeOf("asdf", "Fsda");
+        User user = ModelTestData.getUser1();
+        Locale locale2 = uService.localeOf(user.getLocale().getLanguage(), user.getLocale().getCountry());
+
+        assertThat(locale1).isEqualTo(ModelTestData.getDefaultLocale());
+        assertThat(uService.getCorrectAvailableLocales().contains(locale2)).isTrue();
+        throw new NotImplementedException();
+    }
+    @Test
+    public void allCorrectAvailableLocalesHaveLangAndCountry() {
+        Set<Locale> locales = uService.getCorrectAvailableLocales();
+        int count = 0;
+        for (Locale locale : Locale.getAvailableLocales()) {
+            if (locale.getLanguage().length() > 0 && locale.getCountry().length() > 0) {
+                count++;
+                assertThat(locales.contains(locale)).isTrue();
+            }
+        }
+        assertThat(locales.size() == count).isTrue();
     }
 }

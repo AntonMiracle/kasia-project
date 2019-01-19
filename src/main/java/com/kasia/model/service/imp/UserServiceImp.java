@@ -2,6 +2,7 @@ package com.kasia.model.service.imp;
 
 import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
+import com.kasia.exception.LocaleFormatRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.Budget;
 import com.kasia.model.Role;
@@ -114,7 +115,11 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Locale localeOf(String lang, String country) {
-        throw new NotImplementedException();
+        Locale locale = new Locale(lang, country);
+        if (getCorrectAvailableLocales().contains(locale)) return locale;
+        locale = getDefaultLocale();
+        if (getCorrectAvailableLocales().contains(locale)) return locale;
+        throw new LocaleFormatRuntimeException();
     }
 
     @Override
@@ -144,7 +149,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Set<Locale> getCorrectAvailableLocales() {
-        throw new NotImplementedException();
+        Set<Locale> locales = new HashSet<>();
+        for (Locale locale : Locale.getAvailableLocales()) {
+            if (locale.getLanguage().length() > 0 && locale.getCountry().length() > 0)
+                locales.add(locale);
+        }
+        return locales;
     }
 
     @Override
