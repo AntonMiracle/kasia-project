@@ -63,7 +63,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isUserNameUnique(String name) {
-        throw new NotImplementedException();
+        return !uRepository.findByName(name).isPresent();
     }
 
     @Override
