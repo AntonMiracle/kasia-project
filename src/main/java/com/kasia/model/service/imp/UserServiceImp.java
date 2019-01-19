@@ -7,8 +7,15 @@ import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.Budget;
 import com.kasia.model.Role;
 import com.kasia.model.User;
+import com.kasia.model.UserBudget;
+import com.kasia.model.repository.UserBudgetRepository;
+import com.kasia.model.repository.UserConnectBudgetRepository;
 import com.kasia.model.repository.UserRepository;
+import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
+import com.kasia.model.validation.BudgetValidation;
+import com.kasia.model.validation.UserBudgetValidation;
+import com.kasia.model.validation.UserConnectBudgetValidation;
 import com.kasia.model.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +40,18 @@ public class UserServiceImp implements UserService {
     private UserRepository uRepository;
     @Autowired
     private UserValidation uValidation;
+    @Autowired
+    private UserBudgetRepository ubRepository;
+    @Autowired
+    private UserBudgetValidation ubValidation;
+    @Autowired
+    private UserConnectBudgetRepository ucbRepository;
+    @Autowired
+    private UserConnectBudgetValidation ucbValidation;
+    @Autowired
+    private BudgetService bService;
+    @Autowired
+    private BudgetValidation bValidation;
 
     @Override
     public User saveUser(User model) {
@@ -194,12 +213,18 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean isUserOwnerOfBudget(Budget budget, User user) {
-        throw new NotImplementedException();
+    public boolean isUserOwnBudget(Budget budget, User user) {
+        uValidation.verifyValidation(user);
+        uValidation.verifyPositiveId(user.getId());
+        bValidation.verifyValidation(budget);
+        bValidation.verifyPositiveId(budget.getId());
+
+        UserBudget ub = ubRepository.findByUserId(user.getId()).orElse(null);
+        return !(ub == null || ub.getBudgets() == null) && ub.getBudgets().contains(budget);
     }
 
     @Override
-    public boolean isUserConnectedToBudget(Budget budget, User user) {
+    public boolean isUserConnectToBudget(Budget budget, User user) {
         throw new NotImplementedException();
     }
 

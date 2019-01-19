@@ -4,7 +4,10 @@ import com.kasia.ModelTestData;
 import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
+import com.kasia.model.Budget;
 import com.kasia.model.User;
+import com.kasia.model.UserBudget;
+import com.kasia.model.repository.UserBudgetRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,9 +28,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserServiceIT {
     @Autowired
     private UserService uService;
+    @Autowired
+    private BudgetService bService;
+    @Autowired
+    private UserBudgetRepository ubRepository;
 
     @After
     public void cleanData() {
+        ubRepository.findAll().forEach(ubRepository::delete);
+
+        bService.findAllBudgets().forEach(bService::deleteBudget);
         uService.findAllUsers().forEach(uService::deleteUser);
     }
 
@@ -327,5 +337,61 @@ public class UserServiceIT {
     public void isLocaleAvailable() {
         assertThat(uService.isLocaleAvailable(uService.getDefaultLocale())).isTrue();
         assertThat(uService.isLocaleAvailable(new Locale("", ""))).isFalse();
+    }
+
+    @Test
+    public void userOwnBudget() {
+        User owner = uService.saveUser(ModelTestData.getUser1());
+        User user = uService.saveUser(ModelTestData.getUser2());
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+
+        UserBudget ub = ModelTestData.getUserBudget1();
+        ub.getBudgets().clear();
+        ub.getBudgets().add(budget);
+        ub.setUser(owner);
+        ubRepository.save(ub);
+
+        assertThat(uService.isUserOwnBudget(budget, owner)).isTrue();
+        assertThat(uService.isUserOwnBudget(budget, user)).isFalse();
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenUserInvalidIsUserOwnBudgetThrowException() {
+        User user = ModelTestData.getUser1();
+        user.setId(1);
+        user.setName("");
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(1);
+
+        uService.isUserOwnBudget(budget, user);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenBudgetInvalidIsUserOwnBudgetThrowException() {
+        User user = ModelTestData.getUser1();
+        user.setId(1);
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(1);
+        budget.setName("");
+
+        uService.isUserOwnBudget(budget, user);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidIsUserOwnBudgetThrowException() {
+        User user = ModelTestData.getUser1();
+        user.setId(1);
+        Budget budget = ModelTestData.getBudget1();
+
+        uService.isUserOwnBudget(budget, user);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenUserIdInvalidIsUserOwnBudgetThrowException() {
+        User user = ModelTestData.getUser1();
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(1);
+
+        uService.isUserOwnBudget(budget, user);
     }
 }
