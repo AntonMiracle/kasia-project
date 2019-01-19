@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
@@ -89,7 +92,14 @@ public class UserServiceImp implements UserService {
 
     @Override
     public String cryptPassword(String nonCryptPassword) {
-        throw new NotImplementedException();
+        MessageDigest md5 = null;
+        try {
+            md5 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        md5.update(nonCryptPassword.getBytes(), 0, nonCryptPassword.length());
+        return new BigInteger(1, md5.digest()).toString(16) + "0Aa";
     }
 
     @Override

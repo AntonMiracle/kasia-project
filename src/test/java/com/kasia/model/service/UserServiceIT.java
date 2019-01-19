@@ -230,4 +230,12 @@ public class UserServiceIT {
         assertThat(uService.findUserByEmail(null)).isNull();
         assertThat(uService.findUserByEmail("")).isNull();
     }
+
+    @Test
+    public void cryptPassword() {
+        String nonCryptPassword = ModelTestData.getUser1().getPassword();
+        String cryptPassword = "1be0222750aaf3889ab95b5d593ba12e4ff1046474702d6b4779f4b527305b230Aa";
+
+        assertThat(uService.cryptPassword(nonCryptPassword)).isEqualTo(cryptPassword);
+    }
 }
