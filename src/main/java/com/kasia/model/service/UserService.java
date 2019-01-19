@@ -45,11 +45,15 @@ public interface UserService {
 
     Locale getDefaultLocale();
 
-    boolean addOwnBudget(User user, Budget budget);
+    Set<Budget> findAllOwnBudget(User user);
 
-    boolean removeOwnBudget(User user, Budget budget);
+    boolean addBudget(User user, Budget budget);
 
-    boolean addConnectBudget(User user, Budget budget);
+    boolean removeBudget(User user, Budget budget);
 
-    boolean removeConnectBudget(User user, Budget budget);
+    Set<User> findAllConnectedUser(Budget budget);
+
+    boolean isUserOwnerOfBudget(User user);
+
+    boolean isUserConnectedToBudget(User user);
 }
