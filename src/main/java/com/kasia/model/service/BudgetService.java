@@ -44,11 +44,11 @@ public interface BudgetService {
 
     boolean addOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException, CurrenciesNotEqualsRuntimeException;
 
-    boolean removeOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException;
+    boolean removeOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException, CurrenciesNotEqualsRuntimeException;
 
     Set<Operation> findAllOperations(Budget budget) throws IdInvalidRuntimeException;
 
-    Set<Operation> findOperationsByElement(Budget budget, Element element);
+    Set<Operation> findOperationsByElement(Budget budget, Element element) throws ValidationException, IdInvalidRuntimeException;
 
     Set<Operation> findOperationByElementProvider(Budget budget, ElementProvider provider);
 

@@ -246,28 +246,14 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean addOperation(Budget budget, Operation operation) {
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
-        oValidation.verifyValidation(operation);
-        oValidation.verifyPositiveIdInside(operation);
-        if (budget.getBalance().getCurrencies() != operation.getPrice().getCurrencies())
-            throw new CurrenciesNotEqualsRuntimeException();
+        verifyBeforeAddRemoveOperation(budget, operation);
 
         BudgetOperation bo = boRepository.findByBudgetId(budget.getId())
                 .orElse(new BudgetOperation(budget, new HashSet<>()));
         boValidation.verifyValidation(bo);
         oRepository.save(operation);
 
-        switch (operation.getElement().getType()) {
-            case INCOME:
-                budget.setBalance(balanceService.add(budget.getBalance(), operation.getPrice()));
-                break;
-            case CONSUMPTION:
-                budget.setBalance(balanceService.subtract(budget.getBalance(), operation.getPrice()));
-                break;
-            default:
-                throw new RuntimeException();
-        }
+        updateBudgetBalanceRemoveAddOperation(true, budget, operation);
         saveBudget(budget);
 
         bo.getOperations().add(operation);
@@ -276,29 +262,45 @@ public class BudgetServiceImp implements BudgetService {
         return bo.getOperations().contains(operation);
     }
 
-    @Override
-    public boolean removeOperation(Budget budget, Operation operation) {
+    private void verifyBeforeAddRemoveOperation(Budget budget, Operation operation) {
         bValidation.verifyValidation(budget);
         bValidation.verifyPositiveId(budget.getId());
         oValidation.verifyValidation(operation);
         oValidation.verifyPositiveIdInside(operation);
-        oValidation.verifyPositiveId(operation.getId());
         if (budget.getBalance().getCurrencies() != operation.getPrice().getCurrencies())
             throw new CurrenciesNotEqualsRuntimeException();
+    }
 
-        Optional<BudgetOperation> optional = boRepository.findByBudgetId(budget.getId());
-        if (!optional.isPresent() || !optional.get().getOperations().contains(operation)) return false;
-
+    private void updateBudgetBalanceRemoveAddOperation(boolean isAddOperation, Budget budget, Operation operation) {
         switch (operation.getElement().getType()) {
             case INCOME:
-                budget.setBalance(balanceService.subtract(budget.getBalance(), operation.getPrice()));
+                if (isAddOperation) {
+                    budget.setBalance(balanceService.add(budget.getBalance(), operation.getPrice()));
+                } else {
+                    budget.setBalance(balanceService.subtract(budget.getBalance(), operation.getPrice()));
+                }
                 break;
             case CONSUMPTION:
-                budget.setBalance(balanceService.add(budget.getBalance(), operation.getPrice()));
+                if (isAddOperation) {
+                    budget.setBalance(balanceService.subtract(budget.getBalance(), operation.getPrice()));
+                } else {
+                    budget.setBalance(balanceService.add(budget.getBalance(), operation.getPrice()));
+                }
                 break;
             default:
                 throw new RuntimeException();
         }
+    }
+
+    @Override
+    public boolean removeOperation(Budget budget, Operation operation) {
+        verifyBeforeAddRemoveOperation(budget, operation);
+        oValidation.verifyPositiveId(operation.getId());
+
+        Optional<BudgetOperation> optional = boRepository.findByBudgetId(budget.getId());
+        if (!optional.isPresent() || !optional.get().getOperations().contains(operation)) return false;
+
+        updateBudgetBalanceRemoveAddOperation(false, budget, operation);
         saveBudget(budget);
 
         optional.get().getOperations().remove(operation);
