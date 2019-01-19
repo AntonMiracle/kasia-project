@@ -246,7 +246,20 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean addOperation(Budget budget, Operation operation) {
-        throw new NotImplementedException();
+        bValidation.verifyValidation(budget);
+        bValidation.verifyPositiveId(budget.getId());
+        oValidation.verifyValidation(operation);
+        oValidation.verifyPositiveIdInside(operation);
+
+        BudgetOperation bo = boRepository.findByBudgetId(budget.getId())
+                .orElse(new BudgetOperation(budget, new HashSet<>()));
+        boValidation.verifyValidation(bo);
+
+        oRepository.save(operation);
+        bo.getOperations().add(operation);
+        boRepository.save(bo);
+
+        return bo.getOperations().contains(operation);
     }
 
     @Override

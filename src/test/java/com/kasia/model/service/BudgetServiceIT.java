@@ -589,44 +589,117 @@ public class BudgetServiceIT {
         bService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
     }
 
-    private Operation getSavedOperation() {
+    @Test
+    public void findAllOperation() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eService.save(ModelTestData.getElement1());
         ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
-        Operation operation = ModelTestData.getOperation1();
-        operation.setUser(user);
-        operation.setElementProvider(provider);
-        operation.setElement(element);
-        oRepository.save(operation);
-        return operation;
-    }
+        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
 
-    private BudgetOperation getSaveBudgetOperationWithNoOperation() {
-        BudgetOperation bo = ModelTestData.getBudgetOperation1();
-        bService.saveBudget(bo.getBudget());
-        bo.getOperations().clear();
-        boRepository.save(bo);
-        return bo;
-    }
+        bService.addOperation(savedBudget, op1);
 
-    @Test
-    public void findAllOperation() {
-        BudgetOperation bo = getSaveBudgetOperationWithNoOperation();
-        bo.getOperations().add(getSavedOperation());
-        boRepository.save(bo);
-
-        assertThat(bService.findAllOperations(bo.getBudget()).size() == 1).isTrue();
+        assertThat(bService.findAllOperations(savedBudget).size() == 1).isTrue();
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
     public void whenBudgetIdInvalidFindAllOperationThrowException() {
-        BudgetOperation bo = getSaveBudgetOperationWithNoOperation();
-        bo.getOperations().add(getSavedOperation());
-        boRepository.save(bo);
-        bo.getBudget().setId(0);
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
 
-        bService.findAllOperations(bo.getBudget());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+
+        bService.addOperation(savedBudget, op1);
+        savedBudget.setId(0);
+
+        bService.findAllOperations(savedBudget);
     }
 
+    @Test
+    public void addOperation() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        Operation op2 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
 
+        assertThat(bService.findAllOperations(savedBudget).size() == 0).isTrue();
+
+        bService.addOperation(savedBudget, op1);
+        assertThat(bService.findAllOperations(savedBudget).size() == 1).isTrue();
+
+        bService.addOperation(savedBudget, op2);
+        assertThat(bService.findAllOperations(savedBudget).size() == 2).isTrue();
+    }
+
+    private Operation getSavedOperationForCheckRuntimeException() {
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        return bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenUserInvalidAddOperationThrowException() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+
+        op.getUser().setName("");
+
+        bService.addOperation(savedBudget, op);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementInvalidAddOperationThrowException() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+
+        op.getElement().setName("");
+
+        bService.addOperation(savedBudget, op);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementProviderInvalidAddOperationThrowException() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+
+        op.getElementProvider().setName("");
+
+        bService.addOperation(savedBudget, op);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenUserIdInvalidAddOperationThrowException() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+
+        op.getUser().setId(0);
+
+        bService.addOperation(savedBudget, op);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenElementIdInvalidAddOperationThrowException() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+
+        op.getElement().setId(0);
+
+        bService.addOperation(savedBudget, op);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenElementProviderIdInvalidAddOperationThrowException() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+
+        op.getElementProvider().setId(0);
+
+        bService.addOperation(savedBudget, op);
+    }
 }

@@ -41,7 +41,7 @@ public interface BudgetService {
 
     Set<ElementProvider> findAllElementProviders(Budget budget) throws IdInvalidRuntimeException;
 
-    boolean addOperation(Budget budget, Operation operation);
+    boolean addOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException;
 
     boolean removeOperation(Budget budget, Operation operation);
 
