@@ -702,4 +702,142 @@ public class BudgetServiceIT {
 
         bService.addOperation(savedBudget, op);
     }
+
+    @Test
+    public void removeOperation() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        bService.addOperation(savedBudget, op1);
+        assertThat(bService.findAllOperations(savedBudget).size() == 1).isTrue();
+
+        bService.removeOperation(savedBudget, op1);
+        assertThat(bService.findAllOperations(savedBudget).size() == 0).isTrue();
+    }
+
+    private boolean isWasIdInvalidRuntimeExceptionWhenRemoveOperation(Budget budget, Operation operation) {
+        try {
+            bService.removeOperation(budget, operation);
+        } catch (IdInvalidRuntimeException ex) {
+            return true;
+        }
+        return false;
+    }
+
+    @Test
+    public void whenIdInvalidRemoveOperationThrowException() {
+        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+        bService.addOperation(bu, op);
+        int countException = 0;
+
+        long idTemp = bu.getId();
+        bu.setId(0);
+        if (isWasIdInvalidRuntimeExceptionWhenRemoveOperation(bu, op)) countException++;
+        bu.setId(idTemp);
+
+        idTemp = op.getUser().getId();
+        op.getUser().setId(0);
+        if (isWasIdInvalidRuntimeExceptionWhenRemoveOperation(bu, op)) countException++;
+        op.getUser().setId(idTemp);
+
+        idTemp = op.getElement().getId();
+        op.getElement().setId(0);
+        if (isWasIdInvalidRuntimeExceptionWhenRemoveOperation(bu, op)) countException++;
+        op.getElement().setId(idTemp);
+
+        idTemp = op.getElementProvider().getId();
+        op.getElementProvider().setId(0);
+        if (isWasIdInvalidRuntimeExceptionWhenRemoveOperation(bu, op)) countException++;
+        op.getElementProvider().setId(idTemp);
+
+        idTemp = op.getId();
+        op.setId(0);
+        if (isWasIdInvalidRuntimeExceptionWhenRemoveOperation(bu, op)) countException++;
+        op.setId(idTemp);
+
+        assertThat(countException == 5).isTrue();
+    }
+
+    private boolean isWasValidationExceptionWhenRemoveOperation(Budget budget, Operation operation) {
+        try {
+            bService.removeOperation(budget, operation);
+        } catch (ValidationException ex) {
+            return true;
+        }
+        return false;
+    }
+
+    @Test
+    public void whenInvalidRemoveOperationThrowException() {
+        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+        bService.addOperation(bu, op);
+        int countException = 0;
+
+        String temp = bu.getName();
+        bu.setName("");
+        if (isWasValidationExceptionWhenRemoveOperation(bu, op)) countException++;
+        bu.setName(temp);
+
+        temp = op.getUser().getName();
+        op.getUser().setName("");
+        if (isWasValidationExceptionWhenRemoveOperation(bu, op)) countException++;
+        op.getUser().setName(temp);
+
+        temp = op.getElement().getName();
+        op.getElement().setName("");
+        if (isWasValidationExceptionWhenRemoveOperation(bu, op)) countException++;
+        op.getElement().setName(temp);
+
+        temp = op.getElementProvider().getName();
+        op.getElementProvider().setName("");
+        if (isWasValidationExceptionWhenRemoveOperation(bu, op)) countException++;
+        op.getElementProvider().setName(temp);
+
+        assertThat(countException == 4).isTrue();
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenBudgetInvalidRemoveOperationThrowException() {
+        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+        bService.addOperation(bu, op);
+        bu.setName("");
+
+        bService.removeOperation(bu, op);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenUserInvalidRemoveOperationThrowException() {
+        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+        bService.addOperation(bu, op);
+        op.getUser().setName("");
+
+        bService.removeOperation(bu, op);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementInvalidRemoveOperationThrowException() {
+        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+        bService.addOperation(bu, op);
+        op.getElement().setName("");
+
+        bService.removeOperation(bu, op);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenssUserInvalidRemoveOperationThrowException() {
+        Budget bu = bService.saveBudget(ModelTestData.getBudget1());
+        Operation op = getSavedOperationForCheckRuntimeException();
+        bService.addOperation(bu, op);
+        op.getElementProvider().setName("");
+
+        bService.removeOperation(bu, op);
+    }
+
 }

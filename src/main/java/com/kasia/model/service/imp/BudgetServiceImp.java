@@ -264,7 +264,21 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean removeOperation(Budget budget, Operation operation) {
-        throw new NotImplementedException();
+        bValidation.verifyValidation(budget);
+        bValidation.verifyPositiveId(budget.getId());
+        oValidation.verifyValidation(operation);
+        oValidation.verifyPositiveIdInside(operation);
+        oValidation.verifyPositiveId(operation.getId());
+
+        Optional<BudgetOperation> optional = boRepository.findByBudgetId(budget.getId());
+        if (!optional.isPresent() || !optional.get().getOperations().contains(operation)) return false;
+
+        optional.get().getOperations().remove(operation);
+
+        boValidation.verifyValidation(optional.get());
+        boRepository.save(optional.get());
+
+        return !optional.get().getOperations().contains(operation);
     }
 
     @Override

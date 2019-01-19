@@ -43,7 +43,7 @@ public interface BudgetService {
 
     boolean addOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException;
 
-    boolean removeOperation(Budget budget, Operation operation);
+    boolean removeOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException;
 
     Set<Operation> findAllOperations(Budget budget) throws IdInvalidRuntimeException;
 
