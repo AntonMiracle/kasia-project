@@ -16,6 +16,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
@@ -60,7 +61,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Set<User> findAllUsers() {
-        throw new NotImplementedException();
+        Set<User> users = new HashSet<>();
+        uRepository.findAll().forEach(users::add);
+        return users;
     }
 
     @Override

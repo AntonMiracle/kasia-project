@@ -28,8 +28,7 @@ public class UserServiceIT {
 
     @After
     public void cleanData() {
-        uRepository.findAll().forEach(uRepository::delete);
-//        uService.findAllUsers().forEach(uService::deleteUser);
+        uService.findAllUsers().forEach(uService::deleteUser);
     }
 
     @Test
@@ -153,5 +152,12 @@ public class UserServiceIT {
     @Test(expected = IdInvalidRuntimeException.class)
     public void whenIdNegativeFindUserByIdThrowException() {
         assertThat(uService.findUserById(-1)).isNull();
+    }
+
+    @Test
+    public void findAllUsers() {
+        getSavedUserForTest();
+
+        assertThat(uService.findAllUsers().size() == 1).isTrue();
     }
 }
