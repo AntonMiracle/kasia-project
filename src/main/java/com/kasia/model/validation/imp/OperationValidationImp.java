@@ -1,5 +1,6 @@
 package com.kasia.model.validation.imp;
 
+import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.Model;
 import com.kasia.model.Operation;
 import com.kasia.model.validation.*;
@@ -36,5 +37,12 @@ public class OperationValidationImp implements OperationValidation {
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<Model>> violations = validator.validate(model);
         return violations.size() == 0;
+    }
+
+    @Override
+    public void verifyPositiveIdInside(Operation operation) throws IdInvalidRuntimeException {
+        if (operation.getElementProvider().getId() <= 0) throw new IdInvalidRuntimeException();
+        if (operation.getElement().getId() <= 0) throw new IdInvalidRuntimeException();
+        if (operation.getUser().getId() <= 0) throw new IdInvalidRuntimeException();
     }
 }

@@ -1,6 +1,7 @@
 package com.kasia.model.validation;
 
 import com.kasia.ModelTestData;
+import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.Operation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +52,38 @@ public class OperationValidationIT {
         operation1.setCreateOn(ModelTestData.getNow().plusDays(2));
 
         assertThat(validationService.isValid(operation1)).isFalse();
+    }
+
+    private Operation getOperationWithValidIdInside() {
+        Operation operation1 = ModelTestData.getOperation1();
+        operation1.getUser().setId(2);
+        operation1.getElement().setId(2);
+        operation1.getElementProvider().setId(2);
+        return operation1;
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenUserIdInvalidVerifyPositiveIdInsideThrowException() {
+        Operation operation1 = getOperationWithValidIdInside();
+        operation1.getUser().setId(0);
+
+        validationService.verifyPositiveIdInside(operation1);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenElementIdInvalidVerifyPositiveIdInsideThrowException() {
+        Operation operation1 = getOperationWithValidIdInside();
+        operation1.getElement().setId(0);
+
+        validationService.verifyPositiveIdInside(operation1);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenElementProviderIdInvalidVerifyPositiveIdInsideThrowException() {
+        Operation operation1 = getOperationWithValidIdInside();
+        operation1.getElementProvider().setId(0);
+
+        validationService.verifyPositiveIdInside(operation1);
     }
 
 }
