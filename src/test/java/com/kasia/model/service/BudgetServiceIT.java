@@ -30,6 +30,8 @@ public class BudgetServiceIT {
     private ElementService eService;
     @Autowired
     private ElementProviderService epService;
+    @Autowired
+    private UserService uService;
 
     @After
     public void cleanData() {
@@ -39,6 +41,7 @@ public class BudgetServiceIT {
         bService.findAllBudgets().forEach(bService::deleteBudget);
         eService.findAll().forEach(eService::delete);
         epService.findAll().forEach(epService::delete);
+        uService.findAllUsers().forEach(uService::deleteUser);
     }
 
     @Test
@@ -509,4 +512,86 @@ public class BudgetServiceIT {
 
         bService.findAllElementProviders(bep.getBudget()).size();
     }
+
+    //
+//    private Operation getSavedOperationWithPrice(Price price) {
+//        User user = uService.saveUser(ModelTestData.getUser1());
+//        Element element = ModelTestData.getElement1();
+//        ElementProvider provider = ModelTestData.getElementProvider1();
+//        Operation operation = ModelTestData.getOperation1();
+//        operation.setUser(user);
+//        operation.setElementProvider(provider);
+//        operation.setElement(element);
+//        operation.setPrice(price);
+//        return operation;
+//    }
+    private Operation getValidOperationWithNestedPositiveId() {
+        Operation operation = ModelTestData.getOperation1();
+        operation.getElementProvider().setId(1);
+        operation.getElement().setId(1);
+        operation.getUser().setId(1);
+        return operation;
+    }
+
+    @Test
+    public void createOperation() {
+        Operation op = getValidOperationWithNestedPositiveId();
+        Operation actual = bService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+
+        assertThat(actual.getUser()).isEqualTo(op.getUser());
+        assertThat(actual.getPrice()).isEqualTo(op.getPrice());
+        assertThat(actual.getElement()).isEqualTo(op.getElement());
+        assertThat(actual.getElementProvider()).isEqualTo(op.getElementProvider());
+        assertThat(actual.getCreateOn().compareTo(LocalDateTime.now().plusSeconds(3)) < 0).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenUserIdInvalidCreateOperationThrowException() {
+        Operation op = getValidOperationWithNestedPositiveId();
+        op.getUser().setId(0);
+
+        bService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenElementIdInvalidCreateOperationThrowException() {
+        Operation op = getValidOperationWithNestedPositiveId();
+        op.getElement().setId(0);
+
+        bService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenElementProviderIdInvalidCreateOperationThrowException() {
+        Operation op = getValidOperationWithNestedPositiveId();
+        op.getElementProvider().setId(0);
+
+        bService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenUserInvalidCreateOperationThrowException() {
+        Operation op = getValidOperationWithNestedPositiveId();
+        op.getUser().setName("");
+
+        bService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementInvalidCreateOperationThrowException() {
+        Operation op = getValidOperationWithNestedPositiveId();
+        op.getElement().setName("");
+
+        bService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementProviderInvalidCreateOperationThrowException() {
+        Operation op = getValidOperationWithNestedPositiveId();
+        op.getElementProvider().setName("");
+
+        bService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+    }
+
+
 }

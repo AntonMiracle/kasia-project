@@ -19,6 +19,8 @@ public interface BudgetService {
 
     Budget createBudget(String name, Balance balance) throws ValidationException;
 
+    Operation createOperation(User user, Element element, ElementProvider provider, Price price) throws ValidationException, IdInvalidRuntimeException;
+
     Element findElementByName(Budget budget, String name) throws IdInvalidRuntimeException;
 
     boolean isElementUnique(Budget budget, Element element) throws ValidationException, IdInvalidRuntimeException;

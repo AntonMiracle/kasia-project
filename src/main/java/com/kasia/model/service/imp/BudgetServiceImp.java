@@ -4,15 +4,18 @@ import com.kasia.model.*;
 import com.kasia.model.repository.BudgetElementProviderRepository;
 import com.kasia.model.repository.BudgetElementRepository;
 import com.kasia.model.repository.BudgetRepository;
+import com.kasia.model.repository.OperationRepository;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.ElementProviderService;
 import com.kasia.model.service.ElementService;
+import com.kasia.model.service.UserService;
 import com.kasia.model.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
@@ -41,6 +44,14 @@ public class BudgetServiceImp implements BudgetService {
     private BudgetElementProviderRepository bepRepository;
     @Autowired
     private BudgetElementProviderValidation bepValidation;
+    @Autowired
+    private UserService uService;
+    @Autowired
+    private UserValidation uValidation;
+    @Autowired
+    private OperationRepository oRepository;
+    @Autowired
+    private OperationValidation oValidation;
 
     @Override
     public Budget saveBudget(Budget model) {
@@ -76,6 +87,14 @@ public class BudgetServiceImp implements BudgetService {
         Budget b = new Budget(name, balance, LocalDateTime.now().withNano(0));
         bValidation.verifyValidation(b);
         return b;
+    }
+
+    @Override
+    public Operation createOperation(User user, Element element, ElementProvider provider, Price price) throws ValidationException {
+        Operation operation = new Operation(user, element, provider, price, LocalDateTime.now().withNano(0));
+        oValidation.verifyPositiveIdInside(operation);
+        oValidation.verifyValidation(operation);
+        return operation;
     }
 
     @Override
