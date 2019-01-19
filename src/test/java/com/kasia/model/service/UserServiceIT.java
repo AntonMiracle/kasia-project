@@ -130,4 +130,28 @@ public class UserServiceIT {
         assertThat(uService.isUserNameUnique(uniqueName)).isTrue();
         assertThat(uService.isUserNameUnique(notUniqueName)).isFalse();
     }
+
+    @Test
+    public void findUserById() {
+        User expected = getSavedUserForTest();
+
+        User actual = uService.findUserById(expected.getId());
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void whenIdNotExistFindUserByIdReturnNull() {
+        assertThat(uService.findUserById(22)).isNull();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenIdZeroFindUserByIdThrowException() {
+        assertThat(uService.findUserById(0)).isNull();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenIdNegativeFindUserByIdThrowException() {
+        assertThat(uService.findUserById(-1)).isNull();
+    }
 }

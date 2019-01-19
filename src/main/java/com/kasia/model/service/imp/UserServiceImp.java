@@ -17,6 +17,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -52,7 +53,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User findUserById(long id) {
-        throw new NotImplementedException();
+        uValidation.verifyPositiveId(id);
+        Optional<User> user = uRepository.findById(id);
+        return user.orElse(null);
     }
 
     @Override

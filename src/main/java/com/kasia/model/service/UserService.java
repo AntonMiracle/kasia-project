@@ -17,7 +17,7 @@ public interface UserService {
 
     boolean deleteUser(User model) throws ValidationException, IdInvalidRuntimeException;
 
-    User findUserById(long id);
+    User findUserById(long id) throws IdInvalidRuntimeException;
 
     Set<User> findAllUsers();
 
