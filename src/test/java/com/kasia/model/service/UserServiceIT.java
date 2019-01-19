@@ -5,7 +5,6 @@ import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.User;
-import com.kasia.model.repository.UserRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,8 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserServiceIT {
     @Autowired
     private UserService uService;
-    @Autowired
-    private UserRepository uRepository;
 
     @After
     public void cleanData() {
@@ -53,14 +50,14 @@ public class UserServiceIT {
 
     @Test
     public void deleteUser() {
-        User user = uRepository.save(ModelTestData.getUser1());
+        User user = uService.saveUser(ModelTestData.getUser1());
 
         assertThat(uService.deleteUser(user)).isTrue();
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
     public void whenUserIdInvalidDeleteUserThrowException() {
-        User user = uRepository.save(ModelTestData.getUser1());
+        User user = uService.saveUser(ModelTestData.getUser1());
         user.setId(0);
 
         uService.deleteUser(user);
@@ -68,7 +65,7 @@ public class UserServiceIT {
 
     @Test(expected = ValidationException.class)
     public void whenUserInvalidDeleteUserThrowException() {
-        User user = uRepository.save(ModelTestData.getUser1());
+        User user = uService.saveUser(ModelTestData.getUser1());
         user.setName("");
 
         uService.deleteUser(user);
@@ -80,7 +77,7 @@ public class UserServiceIT {
 
         uService.saveUser(expected);
 
-        User actual = uRepository.findById(expected.getId()).get();
+        User actual = uService.findUserById(expected.getId());
         assertThat(actual).isEqualTo(expected);
     }
 
@@ -160,7 +157,7 @@ public class UserServiceIT {
 
     @Test
     public void userEmailUnique() {
-        String notUniqueEmail = uRepository.save(ModelTestData.getUser1()).getEmail();
+        String notUniqueEmail = uService.saveUser(ModelTestData.getUser1()).getEmail();
         String uniqueEmail = ModelTestData.getUser2().getEmail();
 
         assertThat(notUniqueEmail).isNotEqualTo(uniqueEmail);
@@ -170,7 +167,7 @@ public class UserServiceIT {
 
     @Test
     public void userNameUnique() {
-        String notUniqueName = uRepository.save(ModelTestData.getUser1()).getName();
+        String notUniqueName = uService.saveUser(ModelTestData.getUser1()).getName();
         String uniqueName = ModelTestData.getUser2().getName();
 
         assertThat(notUniqueName).isNotEqualTo(uniqueName);
