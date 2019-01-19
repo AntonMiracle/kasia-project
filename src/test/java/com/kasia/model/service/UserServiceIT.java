@@ -323,4 +323,9 @@ public class UserServiceIT {
         uService.deactivate(user);
     }
 
+    @Test
+    public void isLocaleAvailable() {
+        assertThat(uService.isLocaleAvailable(uService.getDefaultLocale())).isTrue();
+        assertThat(uService.isLocaleAvailable(new Locale("", ""))).isFalse();
+    }
 }
