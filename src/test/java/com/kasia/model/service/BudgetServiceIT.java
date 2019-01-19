@@ -2,9 +2,8 @@ package com.kasia.model.service;
 
 import com.kasia.ModelTestData;
 import com.kasia.exception.IdInvalidRuntimeException;
-import com.kasia.model.Budget;
-import com.kasia.model.BudgetElement;
-import com.kasia.model.Element;
+import com.kasia.model.*;
+import com.kasia.model.repository.BudgetElementProviderRepository;
 import com.kasia.model.repository.BudgetElementRepository;
 import org.junit.After;
 import org.junit.Test;
@@ -26,14 +25,20 @@ public class BudgetServiceIT {
     @Autowired
     private BudgetElementRepository beRepository;
     @Autowired
+    private BudgetElementProviderRepository bepRepository;
+    @Autowired
     private ElementService eService;
+    @Autowired
+    private ElementProviderService epService;
 
     @After
     public void cleanData() {
         beRepository.findAll().forEach(beRepository::delete);
+        bepRepository.findAll().forEach(bepRepository::delete);
 
         bService.findAllBudgets().forEach(bService::deleteBudget);
         eService.findAll().forEach(eService::delete);
+        epService.findAll().forEach(epService::delete);
     }
 
     @Test
@@ -143,7 +148,7 @@ public class BudgetServiceIT {
     }
 
     @Test
-    public void isElementUnique() {
+    public void elementUnique() {
         Element savedElement = eService.save(ModelTestData.getElement1());
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         BudgetElement be = ModelTestData.getBudgetElement1();
@@ -319,5 +324,49 @@ public class BudgetServiceIT {
         bService.addElement(be.getBudget(), element2);
 
         assertThat(bService.findAllElements(be.getBudget()).size() == 2).isTrue();
+    }
+
+    @Test
+    public void elementProviderUnique() {
+        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        BudgetElementProvider bep = ModelTestData.getBudgetElementProvider1();
+        bep.getElementProviders().clear();
+        bep.getElementProviders().add(savedElementProvider);
+        bep.setBudget(savedBudget);
+        bepRepository.save(bep);
+
+        assertThat(bService.isElementProviderUnique(savedBudget, savedElementProvider)).isFalse();
+        assertThat(bService.isElementProviderUnique(savedBudget, ModelTestData.getElementProvider2())).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidIsElementProviderUniqueThrowException() {
+        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        BudgetElementProvider bep = ModelTestData.getBudgetElementProvider1();
+        bep.getElementProviders().clear();
+        bep.getElementProviders().add(savedElementProvider);
+        bep.setBudget(savedBudget);
+        bepRepository.save(bep);
+
+        savedBudget.setId(0);
+
+        bService.isElementProviderUnique(savedBudget, savedElementProvider);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenElementProviderInvalidIsElementProviderUniqueThrowException() {
+        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        BudgetElementProvider bep = ModelTestData.getBudgetElementProvider1();
+        bep.getElementProviders().clear();
+        bep.getElementProviders().add(savedElementProvider);
+        bep.setBudget(savedBudget);
+        bepRepository.save(bep);
+
+        savedElementProvider.setName("");
+
+        bService.isElementProviderUnique(savedBudget, savedElementProvider);
     }
 }

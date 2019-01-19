@@ -1,16 +1,17 @@
 package com.kasia.model.service.imp;
 
 import com.kasia.model.*;
+import com.kasia.model.repository.BudgetElementProviderRepository;
 import com.kasia.model.repository.BudgetElementRepository;
 import com.kasia.model.repository.BudgetRepository;
 import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.ElementProviderService;
 import com.kasia.model.service.ElementService;
-import com.kasia.model.validation.BudgetElementValidation;
-import com.kasia.model.validation.BudgetValidation;
-import com.kasia.model.validation.ElementValidation;
+import com.kasia.model.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -29,9 +30,17 @@ public class BudgetServiceImp implements BudgetService {
     @Autowired
     private ElementValidation eValidation;
     @Autowired
+    private ElementProviderService epService;
+    @Autowired
+    private ElementProviderValidation epValidation;
+    @Autowired
     private BudgetElementRepository beRepository;
     @Autowired
     private BudgetElementValidation beValidation;
+    @Autowired
+    private BudgetElementProviderRepository bepRepository;
+    @Autowired
+    private BudgetElementProviderValidation bepValidation;
 
     @Override
     public Budget saveBudget(Budget model) {
@@ -149,12 +158,29 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean isElementProviderUnique(Budget budget, ElementProvider provider) {
-        return false;
+        bValidation.verifyPositiveId(budget.getId());
+        epValidation.verifyValidation(provider);
+
+        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
+
+        if (!optional.isPresent() || optional.get().getElementProviders().size() == 0) return true;
+        long countExist = optional.get().getElementProviders()
+                .stream()
+                .filter(element1 -> provider.getName().equals(element1.getName()))
+                .count();
+        return countExist == 0;
     }
 
     @Override
     public boolean addElementProvider(Budget budget, ElementProvider provider) {
-        return false;
+        bValidation.verifyPositiveId(budget.getId());
+        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
+
+        BudgetElementProvider bep = optional.orElseGet(() -> new BudgetElementProvider(budget, new HashSet<>()));
+
+        epValidation.verifyValidation(provider);
+        if (!isElementProviderUnique(budget, provider)) return false;
+        throw new NotImplementedException();
     }
 
     @Override
