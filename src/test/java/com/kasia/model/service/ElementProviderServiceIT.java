@@ -1,7 +1,7 @@
 package com.kasia.model.service;
 
 import com.kasia.ModelTestData;
-import com.kasia.exception.IdRuntimeException;
+import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.ElementProvider;
 import org.junit.After;
 import org.junit.Test;
@@ -77,14 +77,14 @@ public class ElementProviderServiceIT {
         assertThat(elementProviderService.findById(provider.getId())).isNull();
     }
 
-    @Test(expected = IdRuntimeException.class)
+    @Test(expected = IdInvalidRuntimeException.class)
     public void whenDeleteWithZeroIdThenException() {
         ElementProvider provider = ModelTestData.getElementProvider1();
         provider.setId(0);
         elementProviderService.delete(provider);
     }
 
-    @Test(expected = IdRuntimeException.class)
+    @Test(expected = IdInvalidRuntimeException.class)
     public void whenDeleteWithNegativeIdThenException() {
         ElementProvider provider = ModelTestData.getElementProvider1();
         provider.setId(-1);
@@ -101,12 +101,12 @@ public class ElementProviderServiceIT {
         assertThat(elementProviderService.findById(provider.getId() + 1)).isNull();
     }
 
-    @Test(expected = IdRuntimeException.class)
+    @Test(expected = IdInvalidRuntimeException.class)
     public void whenFindByIdWithZeroIdThenException() {
         assertThat(elementProviderService.findById(0)).isNotNull();
     }
 
-    @Test(expected = IdRuntimeException.class)
+    @Test(expected = IdInvalidRuntimeException.class)
     public void whenFindByIdWithNegativeIdThenException() {
         assertThat(elementProviderService.findById(-1)).isNotNull();
     }

@@ -1,7 +1,7 @@
 package com.kasia.model.service;
 
 import com.kasia.ModelTestData;
-import com.kasia.exception.IdRuntimeException;
+import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.model.Element;
 import org.junit.After;
 import org.junit.Test;
@@ -78,14 +78,14 @@ public class ElementServiceIT {
         assertThat(elementService.findById(element.getId())).isNull();
     }
 
-    @Test(expected = IdRuntimeException.class)
+    @Test(expected = IdInvalidRuntimeException.class)
     public void whenDeleteWithZeroIdThenException() {
         Element element = ModelTestData.getElement1();
         element.setId(0);
         elementService.delete(element);
     }
 
-    @Test(expected = IdRuntimeException.class)
+    @Test(expected = IdInvalidRuntimeException.class)
     public void whenDeleteWithNegativeIdThenException() {
         Element element = ModelTestData.getElement1();
         element.setId(-1);
@@ -102,12 +102,12 @@ public class ElementServiceIT {
         assertThat(elementService.findById(element.getId() + 1)).isNull();
     }
 
-    @Test(expected = IdRuntimeException.class)
+    @Test(expected = IdInvalidRuntimeException.class)
     public void whenFindByIdWithZeroIdThenException() {
         assertThat(elementService.findById(0)).isNotNull();
     }
 
-    @Test(expected = IdRuntimeException.class)
+    @Test(expected = IdInvalidRuntimeException.class)
     public void whenFindByIdWithNegativeIdThenException() {
         assertThat(elementService.findById(-1)).isNotNull();
     }
