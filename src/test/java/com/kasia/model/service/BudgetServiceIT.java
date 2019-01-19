@@ -801,10 +801,10 @@ public class BudgetServiceIT {
         bService.addOperation(budget, consumptionOp);
         assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(-2.5));
 
-        bService.removeOperation(budget,incomeOp);
+        bService.removeOperation(budget, incomeOp);
         assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(-3.0));
 
-        bService.removeOperation(budget,consumptionOp);
+        bService.removeOperation(budget, consumptionOp);
         assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(0.0));
 
     }
@@ -921,7 +921,7 @@ public class BudgetServiceIT {
         bService.addOperation(budget, op1);
         bService.addOperation(budget, op2);
         bService.addOperation(budget, op3);
-        System.out.println(bService.findOperationsByElement(budget, forSearch));
+
         assertThat(bService.findOperationsByElement(budget, forSearch).size() == 2).isTrue();
     }
 
