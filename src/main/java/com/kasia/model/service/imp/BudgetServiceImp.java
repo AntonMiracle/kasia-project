@@ -11,6 +11,7 @@ import com.kasia.model.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -225,41 +226,41 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean addOperation(Budget budget, Operation operation) {
-        return false;
+        throw new NotImplementedException();
     }
 
     @Override
     public boolean removeOperation(Budget budget, Operation operation) {
-        return false;
+        throw new NotImplementedException();
     }
 
     @Override
     public Set<Operation> findAllOperations(Budget budget) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Set<Operation> findOperationsByElement(Budget budget, Element element) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Set<Operation> findOperationByElementProvider(Budget budget, ElementProvider provider) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Set<Operation> findOperationsBetweenDates(Budget budget, LocalDateTime from, LocalDateTime to) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Set<Operation> findOperationsBetweenPrices(Budget budget, Price from, Price to) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Set<Operation> findUserOperations(Budget budget, User user) {
-        return null;
+        throw new NotImplementedException();
     }
 }
