@@ -33,7 +33,7 @@ public class BudgetServiceIT {
     @Autowired
     private ElementRepository eRepository;
     @Autowired
-    private ElementProviderService epService;
+    private ElementProviderRepository epRepository;
     @Autowired
     private UserService uService;
     @Autowired
@@ -50,7 +50,7 @@ public class BudgetServiceIT {
         oRepository.findAll().forEach(oRepository::delete);
         bService.findAllBudgets().forEach(bService::deleteBudget);
         eRepository.findAll().forEach(eRepository::delete);
-        epService.findAll().forEach(epService::delete);
+        epRepository.findAll().forEach(epRepository::delete);
         uService.findAllUsers().forEach(uService::deleteUser);
     }
 
@@ -286,7 +286,7 @@ public class BudgetServiceIT {
         Set<Element> elementsBefore = new HashSet<>();
         eRepository.findAll().forEach(elementsBefore::add);
 
-        bService.removeElement(be.getBudget(),element);
+        bService.removeElement(be.getBudget(), element);
 
         Set<Element> elementsAfter = new HashSet<>();
         eRepository.findAll().forEach(elementsAfter::add);
@@ -388,7 +388,7 @@ public class BudgetServiceIT {
     @Test
     public void elementProviderUnique() {
         BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
-        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider savedElementProvider = epRepository.save(ModelTestData.getElementProvider1());
         bep.getElementProviders().add(savedElementProvider);
         bepRepository.save(bep);
 
@@ -399,7 +399,7 @@ public class BudgetServiceIT {
     @Test(expected = IdInvalidRuntimeException.class)
     public void whenBudgetIdInvalidIsElementProviderUniqueThrowException() {
         BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
-        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider savedElementProvider = epRepository.save(ModelTestData.getElementProvider1());
         bep.getElementProviders().add(savedElementProvider);
 
         bep.getBudget().setId(0);
@@ -410,7 +410,7 @@ public class BudgetServiceIT {
     @Test(expected = ValidationException.class)
     public void whenElementProviderInvalidIsElementProviderUniqueThrowException() {
         BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
-        ElementProvider savedElementProvider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider savedElementProvider = epRepository.save(ModelTestData.getElementProvider1());
         bep.getElementProviders().add(savedElementProvider);
 
         savedElementProvider.setName("");
@@ -461,6 +461,22 @@ public class BudgetServiceIT {
     }
 
     @Test
+    public void addElementProviderAddItToElementProviderRepository() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+
+        Set<ElementProvider> elementsBefore = new HashSet<>();
+        epRepository.findAll().forEach(elementsBefore::add);
+
+        bService.addElementProvider(bep.getBudget(), provider);
+
+        Set<ElementProvider> elementsAfter = new HashSet<>();
+        epRepository.findAll().forEach(elementsAfter::add);
+
+        assertThat(elementsAfter.size() == (elementsBefore.size() + 1)).isTrue();
+    }
+
+    @Test
     public void removeElementProvider() {
         BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
         ElementProvider provider = ModelTestData.getElementProvider1();
@@ -471,6 +487,23 @@ public class BudgetServiceIT {
 
         int providersAfterRemove = bepRepository.findByBudgetId(bep.getBudget().getId()).get().getElementProviders().size();
         assertThat(providersAfterRemove == (providersBeforeRemove - 1)).isTrue();
+    }
+
+    @Test
+    public void removeElementProviderRemoveItFromElementProviderRepository() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+        bService.addElementProvider(bep.getBudget(), provider);
+
+        Set<ElementProvider> elementsBefore = new HashSet<>();
+        epRepository.findAll().forEach(elementsBefore::add);
+
+        bService.removeElementProvider(bep.getBudget(), provider);
+
+        Set<ElementProvider> elementsAfter = new HashSet<>();
+        epRepository.findAll().forEach(elementsAfter::add);
+
+        assertThat(elementsAfter.size() == (elementsBefore.size() - 1)).isTrue();
     }
 
     @Test(expected = ValidationException.class)
@@ -629,7 +662,7 @@ public class BudgetServiceIT {
 
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
 
         bService.addOperation(savedBudget, op1);
@@ -643,7 +676,7 @@ public class BudgetServiceIT {
 
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
 
         bService.addOperation(savedBudget, op1);
@@ -657,7 +690,7 @@ public class BudgetServiceIT {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
         Operation op2 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
 
@@ -694,7 +727,7 @@ public class BudgetServiceIT {
         consumptionEl = eRepository.save(consumptionEl);
 
         User user = uService.saveUser(ModelTestData.getUser1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
 
         Operation incomeOp = bService.createOperation(user, incomeEl, provider, incomePrice);
         Operation consumptionOp = bService.createOperation(user, consumptionEl, provider, consumptionPrice);
@@ -711,7 +744,7 @@ public class BudgetServiceIT {
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
         op1.getPrice().setCurrencies(Currencies.EUR);
         budget.getBalance().setCurrencies(Currencies.PLN);
@@ -722,7 +755,7 @@ public class BudgetServiceIT {
     private Operation getSavedOperationForCheckRuntimeException() {
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         return bService.createOperation(user, element, provider, ModelTestData.getPrice1());
     }
 
@@ -791,7 +824,7 @@ public class BudgetServiceIT {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
         bService.addOperation(savedBudget, op1);
         assertThat(bService.findAllOperations(savedBudget).size() == 1).isTrue();
@@ -824,7 +857,7 @@ public class BudgetServiceIT {
         consumptionEl = eRepository.save(consumptionEl);
 
         User user = uService.saveUser(ModelTestData.getUser1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
 
         Operation incomeOp = bService.createOperation(user, incomeEl, provider, incomePrice);
         Operation consumptionOp = bService.createOperation(user, consumptionEl, provider, consumptionPrice);
@@ -848,7 +881,7 @@ public class BudgetServiceIT {
         Budget savedBudget = bService.saveBudget(budget);
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
         bService.addOperation(savedBudget, op1);
         op1.getPrice().setCurrencies(Currencies.EUR);
@@ -945,7 +978,7 @@ public class BudgetServiceIT {
         User user = uService.saveUser(ModelTestData.getUser1());
         Element forSearch = eRepository.save(ModelTestData.getElement1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = bService.createOperation(user, forSearch, provider, ModelTestData.getPrice1());
         Operation op2 = bService.createOperation(user, forSearch, provider, ModelTestData.getPrice1());
         Operation op3 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
@@ -991,8 +1024,8 @@ public class BudgetServiceIT {
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider1 = epService.save(ModelTestData.getElementProvider1());
-        ElementProvider provider2 = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider1 = epRepository.save(ModelTestData.getElementProvider1());
+        ElementProvider provider2 = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = bService.createOperation(user, element, provider1, ModelTestData.getPrice1());
         Operation op2 = bService.createOperation(user, element, provider1, ModelTestData.getPrice1());
         Operation op3 = bService.createOperation(user, element, provider2, ModelTestData.getPrice1());
@@ -1039,7 +1072,7 @@ public class BudgetServiceIT {
         User user1 = uService.saveUser(ModelTestData.getUser1());
         User user2 = uService.saveUser(ModelTestData.getUser2());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = bService.createOperation(user1, element, provider, ModelTestData.getPrice1());
         Operation op2 = bService.createOperation(user1, element, provider, ModelTestData.getPrice1());
         Operation op3 = bService.createOperation(user2, element, provider, ModelTestData.getPrice1());
@@ -1085,7 +1118,7 @@ public class BudgetServiceIT {
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         LocalDateTime from = LocalDateTime.now().minusDays(1);
         LocalDateTime to = LocalDateTime.now().plusDays(1);
 
@@ -1127,7 +1160,7 @@ public class BudgetServiceIT {
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
         Price from = ModelTestData.getPrice1();
         from.setAmount(BigDecimal.TEN);
         Price to = ModelTestData.getPrice1();

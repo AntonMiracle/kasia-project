@@ -30,7 +30,7 @@ public class BudgetServiceImp implements BudgetService {
     @Autowired
     private ElementValidation eValidation;
     @Autowired
-    private ElementProviderService epService;
+    private ElementProviderRepository epRepository;
     @Autowired
     private ElementProviderValidation epValidation;
     @Autowired
@@ -212,7 +212,7 @@ public class BudgetServiceImp implements BudgetService {
         epValidation.verifyValidation(provider);
         if (!isElementProviderUnique(budget, provider)) return false;
 
-        epService.save(provider);
+        epRepository.save(provider);
         bep.getElementProviders().add(provider);
 
         bepValidation.verifyValidation(bep);
@@ -231,7 +231,7 @@ public class BudgetServiceImp implements BudgetService {
         if (!optional.isPresent() || !optional.get().getElementProviders().contains(provider)) return false;
 
         optional.get().getElementProviders().remove(provider);
-        epService.delete(provider);
+        epRepository.delete(provider);
 
         bepValidation.verifyValidation(optional.get());
         bepRepository.save(optional.get());
