@@ -489,4 +489,24 @@ public class BudgetServiceIT {
 
         bService.findElementProviderByName(bep.getBudget(), ModelTestData.getElementProvider1().getName());
     }
+
+    @Test
+    public void findAllElementProviders() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider1 = ModelTestData.getElementProvider1();
+        ElementProvider provider2 = ModelTestData.getElementProvider2();
+        bService.addElementProvider(bep.getBudget(), provider1);
+        bService.addElementProvider(bep.getBudget(), provider2);
+
+        assertThat(bService.findAllElementProviders(bep.getBudget()).size() == 2).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindAllElementProvidersThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+
+        bep.getBudget().setId(0);
+
+        bService.findAllElementProviders(bep.getBudget()).size();
+    }
 }

@@ -27,7 +27,7 @@ public interface BudgetService {
 
     boolean removeElement(Budget budget, Element element) throws ValidationException, IdInvalidRuntimeException;
 
-    Set<Element> findAllElements(Budget budget);
+    Set<Element> findAllElements(Budget budget) throws IdInvalidRuntimeException;
 
     ElementProvider findElementProviderByName(Budget budget, String name) throws IdInvalidRuntimeException;
 
@@ -37,7 +37,7 @@ public interface BudgetService {
 
     boolean removeElementProvider(Budget budget, ElementProvider provider) throws ValidationException, IdInvalidRuntimeException;
 
-    Set<ElementProvider> findAllElementProviders(Budget budget);
+    Set<ElementProvider> findAllElementProviders(Budget budget) throws IdInvalidRuntimeException;
 
     boolean addOperation(Budget budget, Operation operation);
 
