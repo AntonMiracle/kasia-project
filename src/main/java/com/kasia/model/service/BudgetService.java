@@ -56,7 +56,7 @@ public interface BudgetService {
 
     Set<Operation> findOperationsBetweenPrices(Budget budget, Price from, Price to);
 
-    Set<Operation> findUserOperations(Budget budget, User user);
+    Set<Operation> findOperationsByUser(Budget budget, User user) throws ValidationException, IdInvalidRuntimeException;
 
 
 }

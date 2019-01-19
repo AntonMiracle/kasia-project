@@ -976,7 +976,7 @@ public class BudgetServiceIT {
     public void whenBudgetIdInvalidFindOperationByElementProviderThrowException() {
         Budget bu = ModelTestData.getBudget1();
         ElementProvider ep = ModelTestData.getElementProvider1();
-        bu.setId(0);
+        ep.setId(1);
 
         bService.findOperationsByElementProvider(bu, ep);
     }
@@ -985,7 +985,7 @@ public class BudgetServiceIT {
     public void whenElementProviderIdInvalidFindOperationByElementProviderThrowException() {
         Budget bu = ModelTestData.getBudget1();
         ElementProvider ep = ModelTestData.getElementProvider1();
-        ep.setId(0);
+        bu.setId(1);
 
         bService.findOperationsByElementProvider(bu, ep);
     }
@@ -999,5 +999,52 @@ public class BudgetServiceIT {
         ep.setName("");
 
         bService.findOperationsByElementProvider(bu, ep);
+    }
+
+    @Test
+    public void findOperationsByUser() {
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        User user1 = uService.saveUser(ModelTestData.getUser1());
+        User user2 = uService.saveUser(ModelTestData.getUser2());
+        Element element = eService.save(ModelTestData.getElement1());
+        ElementProvider provider = epService.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user1, element, provider, ModelTestData.getPrice1());
+        Operation op2 = bService.createOperation(user1, element, provider, ModelTestData.getPrice1());
+        Operation op3 = bService.createOperation(user2, element, provider, ModelTestData.getPrice1());
+
+        bService.addOperation(budget, op1);
+        bService.addOperation(budget, op2);
+        bService.addOperation(budget, op3);
+
+        assertThat(bService.findOperationsByUser(budget, user1).size() == 2).isTrue();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenUserIdInvalidFindOperationsByUserThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        User user = ModelTestData.getUser1();
+        budget.setId(1);
+
+        bService.findOperationsByUser(budget, user);
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindOperationsByUserThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        User user = ModelTestData.getUser1();
+        user.setId(1);
+
+        bService.findOperationsByUser(budget, user);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenUserInvalidFindOperationsByUserThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        User user = ModelTestData.getUser1();
+        user.setId(1);
+        user.setName("");
+        budget.setId(1);
+
+        bService.findOperationsByUser(budget, user);
     }
 }
