@@ -1,6 +1,8 @@
 package com.kasia.model.service;
 
+import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
+import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.Budget;
 import com.kasia.model.User;
 
@@ -11,7 +13,7 @@ import java.util.Set;
 
 public interface UserService {
 
-    User save(User model);
+    User saveUser(User model) throws EmailExistRuntimeException, UserNameExistRuntimeException, ValidationException;
 
     boolean deleteUser(User model) throws ValidationException, IdInvalidRuntimeException;
 

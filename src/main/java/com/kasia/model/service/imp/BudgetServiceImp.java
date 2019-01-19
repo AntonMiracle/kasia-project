@@ -53,7 +53,7 @@ public class BudgetServiceImp implements BudgetService {
         bValidation.verifyValidation(model);
         bValidation.verifyPositiveId(model.getId());
         bRepository.delete(model);
-        //need to delete elements, providers, operations, from owner user, from connect user
+        //need to deleteUser elements, providers, operations
         return true;
     }
 

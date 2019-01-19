@@ -28,7 +28,7 @@ public class UserServiceImp implements UserService {
     private UserValidation uValidation;
 
     @Override
-    public User save(User model) {
+    public User saveUser(User model) {
         uValidation.verifyValidation(model);
         if (model.getId() == 0) {
             if (!isUserNameUnique(model.getName())) throw new UserNameExistRuntimeException();

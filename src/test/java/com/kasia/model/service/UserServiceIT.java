@@ -76,7 +76,7 @@ public class UserServiceIT {
     public void saveNewUser() {
         User expected = ModelTestData.getUser1();
 
-        uService.save(expected);
+        uService.saveUser(expected);
 
         User actual = uRepository.findById(expected.getId()).get();
         assertThat(actual).isEqualTo(expected);
@@ -87,12 +87,12 @@ public class UserServiceIT {
         User expected = ModelTestData.getUser1();
         expected.setName("");
 
-        uService.save(expected);
+        uService.saveUser(expected);
     }
 
     private User getSavedUserForTest() {
         User savedUser = ModelTestData.getUser1();
-        return uService.save(savedUser);
+        return uService.saveUser(savedUser);
     }
 
     @Test(expected = UserNameExistRuntimeException.class)
@@ -100,7 +100,7 @@ public class UserServiceIT {
         User notUniqueUsername = ModelTestData.getUser2();
         notUniqueUsername.setName(getSavedUserForTest().getName());
 
-        uService.save(notUniqueUsername);
+        uService.saveUser(notUniqueUsername);
     }
 
     @Test(expected = EmailExistRuntimeException.class)
@@ -108,7 +108,7 @@ public class UserServiceIT {
         User notUniqueEmail = ModelTestData.getUser2();
         notUniqueEmail.setEmail(getSavedUserForTest().getEmail());
 
-        uService.save(notUniqueEmail);
+        uService.saveUser(notUniqueEmail);
     }
 
     @Test
