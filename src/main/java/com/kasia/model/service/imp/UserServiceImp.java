@@ -57,7 +57,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isUserEmailUnique(String email) {
-        throw new NotImplementedException();
+        return !uRepository.findByEmail(email).isPresent();
+
     }
 
     @Override

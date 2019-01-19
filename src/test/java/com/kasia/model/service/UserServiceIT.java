@@ -101,4 +101,14 @@ public class UserServiceIT {
 //
 //        uService.save(notUniqueUsername);
     }
+
+    @Test
+    public void userEmailUnique() {
+        String notUniqueEmail = uRepository.save(ModelTestData.getUser1()).getEmail();
+        String uniqueEmail = ModelTestData.getUser2().getEmail();
+
+        assertThat(notUniqueEmail).isNotEqualTo(uniqueEmail);
+        assertThat(uService.isUserEmailUnique(uniqueEmail)).isTrue();
+        assertThat(uService.isUserEmailUnique(notUniqueEmail)).isFalse();
+    }
 }
