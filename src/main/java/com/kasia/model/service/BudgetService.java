@@ -29,7 +29,7 @@ public interface BudgetService {
 
     Set<Element> findAllElements(Budget budget);
 
-    ElementProvider findElementProviderByName(Budget budget, String name);
+    ElementProvider findElementProviderByName(Budget budget, String name) throws IdInvalidRuntimeException;
 
     boolean isElementProviderUnique(Budget budget, ElementProvider provider) throws ValidationException, IdInvalidRuntimeException;
 

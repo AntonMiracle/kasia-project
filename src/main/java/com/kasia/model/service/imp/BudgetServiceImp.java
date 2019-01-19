@@ -152,6 +152,15 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public ElementProvider findElementProviderByName(Budget budget, String name) {
+        bValidation.verifyPositiveId(budget.getId());
+        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
+
+        if (optional.isPresent()) {
+            for (ElementProvider provider : optional.get().getElementProviders()) {
+                if (provider.getName().equals(name)) return provider;
+            }
+        }
+
         return null;
     }
 

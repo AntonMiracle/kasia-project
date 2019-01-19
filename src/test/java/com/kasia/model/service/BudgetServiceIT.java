@@ -451,4 +451,33 @@ public class BudgetServiceIT {
 
         bService.removeElementProvider(bep.getBudget(), provider);
     }
+
+    @Test
+    public void findElementProviderByName() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider expected = ModelTestData.getElementProvider1();
+        bService.addElementProvider(bep.getBudget(), expected);
+
+        ElementProvider actual = bService.findElementProviderByName(bep.getBudget(), expected.getName());
+
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    public void whenNameNotExistFindElementProviderByNameReturnNull() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+
+        ElementProvider actual = bService.findElementProviderByName(bep.getBudget(), ModelTestData.getElementProvider1().getName());
+
+        assertThat(actual).isNull();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindElementProviderByNameThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+
+        bep.getBudget().setId(0);
+
+        bService.findElementProviderByName(bep.getBudget(), ModelTestData.getElementProvider1().getName());
+    }
 }
