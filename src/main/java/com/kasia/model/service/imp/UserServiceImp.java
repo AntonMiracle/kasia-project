@@ -265,7 +265,7 @@ public class UserServiceImp implements UserService {
                 UserBudget ub = optionalUB.get();
                 ub.getBudgets().remove(budget);
                 ubValidation.verifyValidation(ub);
-                bService.deleteBudget(budget);
+                bService.deleteBudget(budget.getId());
                 ubRepository.save(ub);
                 return true;
             }

@@ -4,13 +4,14 @@ import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.exception.IntervalRuntimeException;
 import com.kasia.model.*;
 import com.kasia.model.repository.*;
-import com.kasia.model.service.*;
+import com.kasia.model.service.BalanceService;
+import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.UserService;
 import com.kasia.model.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
@@ -61,10 +62,9 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean deleteBudget(Budget model) {
-        bValidation.verifyValidation(model);
-        bValidation.verifyPositiveId(model.getId());
-
+    public boolean deleteBudget(long id) {
+        Budget model = findBudgetById(id);
+        if (model == null) return false;
         warningDeleteAllInBudget(model);
 
         bRepository.delete(model);
@@ -72,17 +72,15 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     private void warningDeleteAllInBudget(Budget budget) {
-        bValidation.verifyPositiveId(budget.getId());
-
-        Set<Operation> operations = findAllOperations(budget);
+        Set<Operation> operations = findAllOperations(budget.getId());
         boRepository.findByBudgetId(budget.getId()).ifPresent(boRepository::delete);
         operations.forEach(oRepository::delete);
 
-        Set<Element> elements = findAllElements(budget);
+        Set<Element> elements = findAllElements(budget.getId());
         beRepository.findByBudgetId(budget.getId()).ifPresent(beRepository::delete);
         elements.forEach(eRepository::delete);
 
-        Set<ElementProvider> providers = findAllElementProviders(budget);
+        Set<ElementProvider> providers = findAllElementProviders(budget.getId());
         bepRepository.findByBudgetId(budget.getId()).ifPresent(bepRepository::delete);
         providers.forEach(epRepository::delete);
 
@@ -93,7 +91,7 @@ public class BudgetServiceImp implements BudgetService {
     public Budget findBudgetById(long id) {
         if (id <= 0) return null;
         Optional<Budget> budget = bRepository.findById(id);
-        return budget.isPresent() ? budget.get() : null;
+        return budget.orElse(null);
     }
 
     @Override
@@ -111,7 +109,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Operation createOperation(User user, Element element, ElementProvider provider, Price price) throws ValidationException {
+    public Operation createOperation(User user, Element element, ElementProvider provider, Price price) {
         Operation operation = new Operation(user, element, provider, price, LocalDateTime.now().withNano(0));
         oValidation.verifyPositiveIdInside(operation);
         oValidation.verifyValidation(operation);
@@ -119,11 +117,10 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Element findElementByName(Budget budget, String name) {
-        bValidation.verifyPositiveId(budget.getId());
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
+    public Element findElementByName(long budgetId, String name) {
+        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
 
-        if (optional.isPresent()) {
+        if (budgetId > 0 && optional.isPresent()) {
             for (Element element : optional.get().getElements()) {
                 if (element.getName().equals(name)) return element;
             }
@@ -133,30 +130,29 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean isElementUnique(Budget budget, Element element) {
-        bValidation.verifyPositiveId(budget.getId());
-        eValidation.verifyValidation(element);
+    public boolean isElementUnique(long budgetId, String elementName) {
+        if (budgetId <= 0 || elementName == null) return false;
 
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
+        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
 
         if (!optional.isPresent() || optional.get().getElements().size() == 0) return true;
         long countExist = optional.get().getElements()
                 .stream()
-                .filter(element1 -> element.getName().equals(element1.getName()))
+                .filter(element -> element.getName().equals(elementName))
                 .count();
         return countExist == 0;
     }
 
     @Override
-    public boolean addElement(Budget budget, Element element) {
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
+    public boolean addElement(long budgetId, Element element) {
+        Budget budget = findBudgetById(budgetId);
+
         Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
 
         BudgetElement be = optional.orElseGet(() -> new BudgetElement(budget, new HashSet<>()));
 
         eValidation.verifyValidation(element);
-        if (!isElementUnique(budget, element)) return false;
+        if (!isElementUnique(budget.getId(), element.getName())) return false;
 
         eRepository.save(element);
         be.getElements().add(element);
@@ -168,11 +164,12 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean removeElement(Budget budget, Element element) {
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
-        eValidation.verifyValidation(element);
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
+    public boolean removeElement(long budgetId, long elementId) {
+        Element element = eRepository.findById(elementId).orElse(null);
+
+        if (element == null) return false;
+
+        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
 
         if (!optional.isPresent() || !optional.get().getElements().contains(element)) return false;
 
@@ -186,16 +183,14 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Set<Element> findAllElements(Budget budget) {
-        bValidation.verifyPositiveId(budget.getId());
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
+    public Set<Element> findAllElements(long budgetId) {
+        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
         return optional.map(BudgetElement::getElements).orElseGet(HashSet::new);
     }
 
     @Override
-    public ElementProvider findElementProviderByName(Budget budget, String name) {
-        bValidation.verifyPositiveId(budget.getId());
-        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
+    public ElementProvider findElementProviderByName(long budgetId, String name) {
+        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budgetId);
 
         if (optional.isPresent()) {
             for (ElementProvider provider : optional.get().getElementProviders()) {
@@ -207,30 +202,31 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean isElementProviderUnique(Budget budget, ElementProvider provider) {
-        bValidation.verifyPositiveId(budget.getId());
-        epValidation.verifyValidation(provider);
+    public boolean isElementProviderUnique(long budgetId, String providerName) {
+        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budgetId);
 
-        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
+        if (providerName == null) return false;
 
         if (!optional.isPresent() || optional.get().getElementProviders().size() == 0) return true;
         long countExist = optional.get().getElementProviders()
                 .stream()
-                .filter(element1 -> provider.getName().equals(element1.getName()))
+                .filter(provider -> provider.getName().equals(providerName))
                 .count();
         return countExist == 0;
     }
 
     @Override
-    public boolean addElementProvider(Budget budget, ElementProvider provider) {
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
-        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
+    public boolean addElementProvider(long budgetId, ElementProvider provider) {
+        if(budgetId <=0) return false;
 
-        BudgetElementProvider bep = optional.orElseGet(() -> new BudgetElementProvider(budget, new HashSet<>()));
+        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budgetId);
+
+        BudgetElementProvider bep = optional
+                .orElseGet(() ->
+                        new BudgetElementProvider(findBudgetById(budgetId), new HashSet<>()));
 
         epValidation.verifyValidation(provider);
-        if (!isElementProviderUnique(budget, provider)) return false;
+        if (!isElementProviderUnique(budgetId, provider.getName())) return false;
 
         epRepository.save(provider);
         bep.getElementProviders().add(provider);
@@ -242,32 +238,30 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean removeElementProvider(Budget budget, ElementProvider provider) {
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
-        epValidation.verifyValidation(provider);
-        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
+    public boolean removeElementProvider(long budgetId, long providerId) {
+        Optional<BudgetElementProvider> optionalBEP = bepRepository.findByBudgetId(budgetId);
+        ElementProvider provider = epRepository.findById(providerId).orElse(null);
 
-        if (!optional.isPresent() || !optional.get().getElementProviders().contains(provider)) return false;
+        if (!optionalBEP.isPresent() || !optionalBEP.get().getElementProviders().contains(provider)) return false;
 
-        optional.get().getElementProviders().remove(provider);
+        optionalBEP.get().getElementProviders().remove(provider);
         epRepository.delete(provider);
 
-        bepValidation.verifyValidation(optional.get());
-        bepRepository.save(optional.get());
+        bepValidation.verifyValidation(optionalBEP.get());
+        bepRepository.save(optionalBEP.get());
 
-        return !optional.get().getElementProviders().contains(provider);
+        return !optionalBEP.get().getElementProviders().contains(provider);
     }
 
     @Override
-    public Set<ElementProvider> findAllElementProviders(Budget budget) {
-        bValidation.verifyPositiveId(budget.getId());
-        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budget.getId());
+    public Set<ElementProvider> findAllElementProviders(long budgetId) {
+        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budgetId);
         return optional.map(BudgetElementProvider::getElementProviders).orElseGet(HashSet::new);
     }
 
     @Override
-    public boolean addOperation(Budget budget, Operation operation) {
+    public boolean addOperation(long budgetId, Operation operation) {
+        Budget budget = findBudgetById(budgetId);
         verifyBeforeAddRemoveOperation(budget, operation);
 
         BudgetOperation bo = boRepository.findByBudgetId(budget.getId())
@@ -285,8 +279,6 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     private void verifyBeforeAddRemoveOperation(Budget budget, Operation operation) {
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
         oValidation.verifyValidation(operation);
         oValidation.verifyPositiveIdInside(operation);
         if (budget.getBalance().getCurrencies() != operation.getPrice().getCurrencies())
@@ -315,9 +307,12 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean removeOperation(Budget budget, Operation operation) {
+    public boolean removeOperation(long budgetId, long operationId) {
+        Operation operation = oRepository.findById(operationId).orElse(null);
+        Budget budget = findBudgetById(budgetId);
+        if (operation == null || budget == null) return false;
+
         verifyBeforeAddRemoveOperation(budget, operation);
-        oValidation.verifyPositiveId(operation.getId());
 
         Optional<BudgetOperation> optional = boRepository.findByBudgetId(budget.getId());
         if (!optional.isPresent() || !optional.get().getOperations().contains(operation)) return false;
@@ -334,24 +329,22 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Set<Operation> findAllOperations(Budget budget) {
+    public Set<Operation> findAllOperations(long budgetId) {
         Set<Operation> operations = new HashSet<>();
-        bValidation.verifyPositiveId(budget.getId());
-        Optional<BudgetOperation> bo = boRepository.findByBudgetId(budget.getId());
+        Optional<BudgetOperation> bo = boRepository.findByBudgetId(budgetId);
         if (bo.isPresent() && bo.get().getOperations() != null) {
-            bo.get().getOperations().forEach(operations::add);
+            operations.addAll(bo.get().getOperations());
         }
         return operations;
     }
 
     @Override
-    public Set<Operation> findOperationsByElement(Budget budget, Element element) {
-        bValidation.verifyPositiveId(budget.getId());
-        eValidation.verifyValidation(element);
-        eValidation.verifyPositiveId(element.getId());
+    public Set<Operation> findOperationsByElement(long budgetId, long elementId) {
+        Element element = eRepository.findById(elementId).orElse(null);
         Set<Operation> result = new HashSet<>();
+        if (element == null) return result;
 
-        findAllOperations(budget)
+        findAllOperations(budgetId)
                 .stream()
                 .filter(operation -> element.equals(operation.getElement()))
                 .forEach(result::add);
@@ -360,13 +353,12 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Set<Operation> findOperationsByElementProvider(Budget budget, ElementProvider provider) {
-        bValidation.verifyPositiveId(budget.getId());
-        epValidation.verifyValidation(provider);
-        epValidation.verifyPositiveId(provider.getId());
+    public Set<Operation> findOperationsByElementProvider(long budgetId, long providerId) {
+        ElementProvider provider = epRepository.findById(providerId).orElse(null);
         Set<Operation> result = new HashSet<>();
+        if (provider == null) return result;
 
-        findAllOperations(budget)
+        findAllOperations(budgetId)
                 .stream()
                 .filter(operation -> provider.equals(operation.getElementProvider()))
                 .forEach(result::add);
@@ -375,13 +367,12 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Set<Operation> findOperationsBetweenDates(Budget budget, LocalDateTime from, LocalDateTime to) {
-        bValidation.verifyPositiveId(budget.getId());
+    public Set<Operation> findOperationsBetweenDates(long budgetId, LocalDateTime from, LocalDateTime to) {
         if (from.compareTo(to) > 0) throw new IntervalRuntimeException();
 
         Set<Operation> result = new HashSet<>();
 
-        findAllOperations(budget)
+        findAllOperations(budgetId)
                 .stream()
                 .filter(operation -> (operation.getCreateOn().compareTo(from) >= 0)
                         && (operation.getCreateOn().compareTo(to) <= 0))
@@ -391,13 +382,12 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Set<Operation> findOperationsBetweenPrices(Budget budget, Price from, Price to) {
-        bValidation.verifyPositiveId(budget.getId());
+    public Set<Operation> findOperationsBetweenPrices(long budgetId, Price from, Price to) {
         if (from.compareTo(to) > 0) throw new IntervalRuntimeException();
 
         Set<Operation> result = new HashSet<>();
 
-        findAllOperations(budget)
+        findAllOperations(budgetId)
                 .stream()
                 .filter(operation -> (operation.getPrice().compareTo(from) >= 0)
                         && (operation.getPrice().compareTo(to) <= 0))
@@ -407,13 +397,12 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Set<Operation> findOperationsByUser(Budget budget, User user) {
-        bValidation.verifyPositiveId(budget.getId());
-        uValidation.verifyValidation(user);
-        uValidation.verifyPositiveId(user.getId());
+    public Set<Operation> findOperationsByUser(long budgetId, long userId) {
+        User user = uService.findUserById(userId);
         Set<Operation> result = new HashSet<>();
+        if (user == null) return result;
 
-        findAllOperations(budget)
+        findAllOperations(budgetId)
                 .stream()
                 .filter(operation -> user.equals(operation.getUser()))
                 .forEach(result::add);

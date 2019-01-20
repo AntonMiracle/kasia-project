@@ -13,9 +13,9 @@ public interface BudgetService {
 
     Budget saveBudget(Budget model) throws ValidationException;
 
-    boolean deleteBudget(Budget model) throws ValidationException, IdInvalidRuntimeException;
+    boolean deleteBudget(long budgetId);
 
-    Budget findBudgetById(long id) throws IdInvalidRuntimeException;
+    Budget findBudgetById(long id);
 
     Set<Budget> findAllBudgets();
 
@@ -23,41 +23,41 @@ public interface BudgetService {
 
     Operation createOperation(User user, Element element, ElementProvider provider, Price price) throws ValidationException, IdInvalidRuntimeException;
 
-    Element findElementByName(Budget budget, String name) throws IdInvalidRuntimeException;
+    Element findElementByName(long budgetId, String name);
 
-    boolean isElementUnique(Budget budget, Element element) throws ValidationException, IdInvalidRuntimeException;
+    boolean isElementUnique(long budgetId, String elementName);
 
-    boolean addElement(Budget budget, Element element) throws ValidationException, IdInvalidRuntimeException;
+    boolean addElement(long budgetId, Element element) throws ValidationException;
 
-    boolean removeElement(Budget budget, Element element) throws ValidationException, IdInvalidRuntimeException;
+    boolean removeElement(long budgetId, long elementId) throws ValidationException;
 
-    Set<Element> findAllElements(Budget budget) throws IdInvalidRuntimeException;
+    Set<Element> findAllElements(long budgetId);
 
-    ElementProvider findElementProviderByName(Budget budget, String name) throws IdInvalidRuntimeException;
+    ElementProvider findElementProviderByName(long budgetId, String name);
 
-    boolean isElementProviderUnique(Budget budget, ElementProvider provider) throws ValidationException, IdInvalidRuntimeException;
+    boolean isElementProviderUnique(long budgetId, String providerName);
 
-    boolean addElementProvider(Budget budget, ElementProvider provider) throws ValidationException, IdInvalidRuntimeException;
+    boolean addElementProvider(long budgetId, ElementProvider provider) throws ValidationException;
 
-    boolean removeElementProvider(Budget budget, ElementProvider provider) throws ValidationException, IdInvalidRuntimeException;
+    boolean removeElementProvider(long budgetId, long providerId) throws ValidationException;
 
-    Set<ElementProvider> findAllElementProviders(Budget budget) throws IdInvalidRuntimeException;
+    Set<ElementProvider> findAllElementProviders(long budgetId);
 
-    boolean addOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException, CurrenciesNotEqualsRuntimeException;
+    boolean addOperation(long budgetId, Operation operation) throws ValidationException, CurrenciesNotEqualsRuntimeException;
 
-    boolean removeOperation(Budget budget, Operation operation) throws ValidationException, IdInvalidRuntimeException, CurrenciesNotEqualsRuntimeException;
+    boolean removeOperation(long budgetId, long operationId) throws ValidationException, CurrenciesNotEqualsRuntimeException;
 
-    Set<Operation> findAllOperations(Budget budget) throws IdInvalidRuntimeException;
+    Set<Operation> findAllOperations(long budgetId);
 
-    Set<Operation> findOperationsByElement(Budget budget, Element element) throws ValidationException, IdInvalidRuntimeException;
+    Set<Operation> findOperationsByElement(long budgetId, long elementId);
 
-    Set<Operation> findOperationsByElementProvider(Budget budget, ElementProvider provider);
+    Set<Operation> findOperationsByElementProvider(long budgetId, long providerId);
 
-    Set<Operation> findOperationsBetweenDates(Budget budget, LocalDateTime from, LocalDateTime to) throws IdInvalidRuntimeException, IntervalRuntimeException;
+    Set<Operation> findOperationsBetweenDates(long budgetId, LocalDateTime from, LocalDateTime to) throws IntervalRuntimeException;
 
-    Set<Operation> findOperationsBetweenPrices(Budget budget, Price from, Price to) throws IdInvalidRuntimeException, IntervalRuntimeException;
+    Set<Operation> findOperationsBetweenPrices(long budgetId, Price from, Price to) throws IntervalRuntimeException;
 
-    Set<Operation> findOperationsByUser(Budget budget, User user) throws ValidationException, IdInvalidRuntimeException;
+    Set<Operation> findOperationsByUser(long budgetId, long userId);
 
 
 }

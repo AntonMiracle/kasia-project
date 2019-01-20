@@ -42,7 +42,7 @@ public class UserServiceIT {
         ubRepository.findAll().forEach(ubRepository::delete);
         ucbRepository.findAll().forEach(ucbRepository::delete);
 
-        bService.findAllBudgets().forEach(bService::deleteBudget);
+        bService.findAllBudgets().forEach(budget -> bService.deleteBudget(budget.getId()));
         uService.findAllUsers().forEach(user -> uService.deleteUser(user.getId()));
     }
 
