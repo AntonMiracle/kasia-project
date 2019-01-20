@@ -230,12 +230,18 @@ public class BudgetServiceIT {
     public void addElement() {
         BudgetElement be = getSavedForTestCleanBudgetElement();
         int elementsBeforeAdd = countElementsInBudget(be.getBudget());
-        Element element = ModelTestData.getElement1();
+        Element element1 = ModelTestData.getElement1();
+        Element element2 = ModelTestData.getElement1();
+        Element element3 = ModelTestData.getElement1();
+        element2.setName(element1.getName() + "new");
 
-        assertThat(bService.addElement(be.getBudget(), element)).isTrue();
+        assertThat(element1.getName().equals(element3.getName())).isTrue();
+        assertThat(bService.addElement(be.getBudget(), element1)).isTrue();
+        assertThat(bService.addElement(be.getBudget(), element2)).isTrue();
+        assertThat(bService.addElement(be.getBudget(), element3)).isFalse();
 
         int elementsAfterAdd = countElementsInBudget(be.getBudget());
-        assertThat(elementsAfterAdd == (elementsBeforeAdd + 1)).isTrue();
+        assertThat(elementsAfterAdd == (elementsBeforeAdd + 2)).isTrue();
     }
 
     @Test
@@ -488,13 +494,19 @@ public class BudgetServiceIT {
     @Test
     public void addElementProvider() {
         BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
-        ElementProvider provider = ModelTestData.getElementProvider1();
+        ElementProvider provider1 = ModelTestData.getElementProvider1();
+        ElementProvider provider2 = ModelTestData.getElementProvider1();
+        provider2.setName(provider1.getName() + "new");
+        ElementProvider provider3 = ModelTestData.getElementProvider1();
         int providersBeforeAdd = countElementProvidersInBudget(bep.getBudget());
 
-        assertThat(bService.addElementProvider(bep.getBudget(), provider)).isTrue();
+        assertThat(provider1.getName()).isEqualTo(provider3.getName());
+        assertThat(bService.addElementProvider(bep.getBudget(), provider1)).isTrue();
+        assertThat(bService.addElementProvider(bep.getBudget(), provider2)).isTrue();
+        assertThat(bService.addElementProvider(bep.getBudget(), provider3)).isFalse();
 
         int providersAfterAdd = countElementProvidersInBudget(bep.getBudget());
-        assertThat(providersAfterAdd == (providersBeforeAdd + 1)).isTrue();
+        assertThat(providersAfterAdd == (providersBeforeAdd + 2)).isTrue();
     }
 
     @Test
