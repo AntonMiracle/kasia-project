@@ -91,7 +91,7 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public Budget findBudgetById(long id) {
-        bValidation.verifyPositiveId(id);
+        if (id <= 0) return null;
         Optional<Budget> budget = bRepository.findById(id);
         return budget.isPresent() ? budget.get() : null;
     }

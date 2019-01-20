@@ -66,24 +66,14 @@ public class UserServiceIT {
     @Test
     public void deleteUser() {
         User user = uService.saveUser(ModelTestData.getUser1());
+        User u1 = ModelTestData.getUser1();
+        User u2 = ModelTestData.getUser1();
+        u1.setId(0);
+        u2.setId(-1);
 
         assertThat(uService.deleteUser(user)).isTrue();
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenUserIdInvalidDeleteUserThrowException() {
-        User user = uService.saveUser(ModelTestData.getUser1());
-        user.setId(0);
-
-        uService.deleteUser(user);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenUserInvalidDeleteUserThrowException() {
-        User user = uService.saveUser(ModelTestData.getUser1());
-        user.setName("");
-
-        uService.deleteUser(user);
+        assertThat(uService.deleteUser(u1)).isFalse();
+        assertThat(uService.deleteUser(u2)).isFalse();
     }
 
     @Test
@@ -178,6 +168,7 @@ public class UserServiceIT {
         assertThat(notUniqueEmail).isNotEqualTo(uniqueEmail);
         assertThat(uService.isUserEmailUnique(uniqueEmail)).isTrue();
         assertThat(uService.isUserEmailUnique(notUniqueEmail)).isFalse();
+        assertThat(uService.isUserEmailUnique(null)).isFalse();
     }
 
     @Test
@@ -188,6 +179,7 @@ public class UserServiceIT {
         assertThat(notUniqueName).isNotEqualTo(uniqueName);
         assertThat(uService.isUserNameUnique(uniqueName)).isTrue();
         assertThat(uService.isUserNameUnique(notUniqueName)).isFalse();
+        assertThat(uService.isUserNameUnique(null)).isFalse();
     }
 
     @Test
@@ -197,25 +189,20 @@ public class UserServiceIT {
         User actual = uService.findUserById(expected.getId());
 
         assertThat(actual).isEqualTo(expected);
+        assertThat(uService.findUserById(0)).isNull();
+        assertThat(uService.findUserById(-1)).isNull();
     }
 
     @Test
     public void whenIdNotExistFindUserByIdReturnNull() {
         assertThat(uService.findUserById(22)).isNull();
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenIdZeroFindUserByIdThrowException() {
+        assertThat(uService.findUserById(-22)).isNull();
         assertThat(uService.findUserById(0)).isNull();
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenIdNegativeFindUserByIdThrowException() {
-        assertThat(uService.findUserById(-1)).isNull();
     }
 
     @Test
     public void findAllUsers() {
+        assertThat(uService.findAllUsers().size() == 0).isTrue();
         getSavedUserForTest();
 
         assertThat(uService.findAllUsers().size() == 1).isTrue();
@@ -226,6 +213,7 @@ public class UserServiceIT {
         User expected = getSavedUserForTest();
 
         assertThat(uService.findUserByName(expected.getName())).isEqualTo(expected);
+        assertThat(uService.findUserByName(null)).isNull();
     }
 
     @Test
@@ -237,7 +225,9 @@ public class UserServiceIT {
     @Test
     public void findUserByEmail() {
         User expected = getSavedUserForTest();
+
         assertThat(uService.findUserByEmail(expected.getEmail())).isEqualTo(expected);
+        assertThat(uService.findUserByEmail(null)).isNull();
     }
 
     @Test
@@ -252,6 +242,7 @@ public class UserServiceIT {
         String cryptPassword = "1be0222750aaf3889ab95b5d593ba12e4ff1046474702d6b4779f4b527305b230Aa";
 
         assertThat(uService.cryptPassword(nonCryptPassword)).isEqualTo(cryptPassword);
+        assertThat(uService.cryptPassword(null)).isEqualTo("");
     }
 
     @Test
@@ -261,6 +252,7 @@ public class UserServiceIT {
 
         assertThat(uService.zoneIdOf(validZone)).isEqualTo(ZoneId.of(validZone));
         assertThat(uService.zoneIdOf(invalidZoneId)).isEqualTo(ZoneId.systemDefault());
+        assertThat(uService.zoneIdOf(null)).isEqualTo(ZoneId.systemDefault());
     }
 
     @Test
@@ -268,9 +260,15 @@ public class UserServiceIT {
         Locale locale1 = uService.localeOf("asdf", "Fsda");
         User user = ModelTestData.getUser1();
         Locale locale2 = uService.localeOf(user.getLocale().getLanguage(), user.getLocale().getCountry());
+        Locale localeNullC = uService.localeOf("pl", null);
+        Locale localeNullL = uService.localeOf(null, "PL");
 
-        assertThat(locale1).isEqualTo(ModelTestData.getDefaultLocale());
+        assertThat(locale1).isEqualTo(uService.getDefaultLocale());
+        assertThat(localeNullC).isEqualTo(uService.getDefaultLocale());
+        assertThat(localeNullL).isEqualTo(uService.getDefaultLocale());
         assertThat(uService.getCorrectAvailableLocales().contains(locale2)).isTrue();
+        assertThat(uService.getCorrectAvailableLocales().contains(localeNullC)).isTrue();
+        assertThat(uService.getCorrectAvailableLocales().contains(localeNullL)).isTrue();
     }
 
     @Test
@@ -291,9 +289,10 @@ public class UserServiceIT {
         User user = ModelTestData.getUser1();
         assertThat(uService.isActivated(user)).isFalse();
 
-        uService.activate(user);
+        assertThat(uService.activate(user)).isTrue();
 
         assertThat(uService.isActivated(user)).isTrue();
+        assertThat(uService.activate(null)).isFalse();
     }
 
     @Test
@@ -304,21 +303,7 @@ public class UserServiceIT {
         uService.saveUser(user);
 
         assertThat(uService.isActivated(user)).isTrue();
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenUserInvalidIsActivatedThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setName("");
-        uService.isActivated(user);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenUserInvalidActivatedUserThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setName("");
-
-        uService.activate(user);
+        assertThat(uService.isActivated(null)).isFalse();
     }
 
     @Test
@@ -326,22 +311,16 @@ public class UserServiceIT {
         User user = ModelTestData.getUser1();
         uService.saveUser(user);
 
-        uService.deactivate(user);
-
+        assertThat(uService.deactivate(user)).isTrue();
+        assertThat(uService.deactivate(null)).isFalse();
         assertThat(uService.isActivated(user)).isFalse();
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenUserInvalidDeactivateThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setName("");
-        uService.deactivate(user);
     }
 
     @Test
     public void isLocaleAvailable() {
         assertThat(uService.isLocaleAvailable(uService.getDefaultLocale())).isTrue();
         assertThat(uService.isLocaleAvailable(new Locale("", ""))).isFalse();
+        assertThat(uService.isLocaleAvailable(null)).isFalse();
     }
 
     @Test
@@ -360,33 +339,21 @@ public class UserServiceIT {
         assertThat(uService.isUserOwnBudget(budget, user)).isFalse();
     }
 
-    @Test(expected = ValidationException.class)
-    public void whenBudgetInvalidIsUserOwnBudgetThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setId(1);
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-        budget.setName("");
+    @Test
+    public void userOwnBudgetWithInvalidIdReturnFalse() {
+        User u1 = ModelTestData.getUser1();
+        User u2 = ModelTestData.getUser2();
+        u1.setId(0);
+        u2.setId(-1);
+        Budget b1 = ModelTestData.getBudget1();
+        Budget b2 = ModelTestData.getBudget2();
+        b1.setId(0);
+        b2.setId(-1);
 
-        uService.isUserOwnBudget(budget, user);
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenBudgetIdInvalidIsUserOwnBudgetThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setId(1);
-        Budget budget = ModelTestData.getBudget1();
-
-        uService.isUserOwnBudget(budget, user);
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenUserIdInvalidIsUserOwnBudgetThrowException() {
-        User user = ModelTestData.getUser1();
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-
-        uService.isUserOwnBudget(budget, user);
+        assertThat(uService.isUserOwnBudget(b1, u1)).isFalse();
+        assertThat(uService.isUserOwnBudget(b1, u2)).isFalse();
+        assertThat(uService.isUserOwnBudget(b2, u1)).isFalse();
+        assertThat(uService.isUserOwnBudget(b2, u2)).isFalse();
     }
 
     @Test
@@ -405,39 +372,31 @@ public class UserServiceIT {
         assertThat(uService.isUserConnectToBudget(withBudget, noConnect)).isFalse();
     }
 
-    @Test(expected = ValidationException.class)
-    public void whenBudgetInvalidIsUserConnectToBudgetThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setId(1);
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-        budget.setName("");
+    @Test
+    public void userConnectToBudgetWithInvalidIdReturnFalse() {
+        User u1 = ModelTestData.getUser1();
+        User u2 = ModelTestData.getUser2();
+        u1.setId(0);
+        u2.setId(-1);
+        Budget b1 = ModelTestData.getBudget1();
+        Budget b2 = ModelTestData.getBudget2();
+        b1.setId(0);
+        b2.setId(-1);
 
-        uService.isUserConnectToBudget(budget, user);
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenBudgetIdInvalidIsUserConnectToBudgetThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setId(1);
-        Budget budget = ModelTestData.getBudget1();
-
-        uService.isUserConnectToBudget(budget, user);
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenUserIdInvalidIsUserConnectToBudgetThrowException() {
-        User user = ModelTestData.getUser1();
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-
-        uService.isUserConnectToBudget(budget, user);
+        assertThat(uService.isUserConnectToBudget(b1, u1)).isFalse();
+        assertThat(uService.isUserConnectToBudget(b1, u2)).isFalse();
+        assertThat(uService.isUserConnectToBudget(b2, u1)).isFalse();
+        assertThat(uService.isUserConnectToBudget(b2, u2)).isFalse();
     }
 
     @Test
     public void findConnectUsers() {
         User haveConnect = uService.saveUser(ModelTestData.getUser1());
         Budget withBudget = bService.saveBudget(ModelTestData.getBudget1());
+        Budget b1 = ModelTestData.getBudget1();
+        Budget b2 = ModelTestData.getBudget2();
+        b1.setId(0);
+        b2.setId(-1);
 
         UserConnectBudget ucb = ModelTestData.getUserConnectBudget1();
         ucb.getConnectBudgets().clear();
@@ -446,19 +405,19 @@ public class UserServiceIT {
         ucbRepository.save(ucb);
 
         assertThat(uService.findConnectUsers(withBudget).size() == 1).isTrue();
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenBudgetIdInvalidFindConnectUsersThrowException() {
-        Budget budget = ModelTestData.getBudget1();
-
-        uService.findConnectUsers(budget);
+        assertThat(uService.findConnectUsers(b1).size() == 0).isTrue();
+        assertThat(uService.findConnectUsers(b2).size() == 0).isTrue();
     }
 
     @Test
     public void findOwnBudgets() {
         User owner = uService.saveUser(ModelTestData.getUser1());
         User user = uService.saveUser(ModelTestData.getUser2());
+        User owner2 = ModelTestData.getUser1();
+        owner2.setId(0);
+        User owner3 = ModelTestData.getUser2();
+        owner3.setId(-1);
+
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
 
         UserBudget ub = ModelTestData.getUserBudget1();
@@ -470,34 +429,32 @@ public class UserServiceIT {
         assertThat(uService.findOwnBudgets(owner).size() == 1).isTrue();
         assertThat(uService.findOwnBudgets(owner).contains(budget)).isTrue();
         assertThat(uService.findOwnBudgets(user).size() == 0).isTrue();
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenUserIdInvalidFindOwnBudgetsThrowException() {
-        User owner = ModelTestData.getUser1();
-        uService.findOwnBudgets(owner);
+        assertThat(uService.findOwnBudgets(owner2).size() == 0).isTrue();
+        assertThat(uService.findOwnBudgets(owner3).size() == 0).isTrue();
     }
 
     @Test
     public void findOwner() {
-        User owner = uService.saveUser(ModelTestData.getUser1());
+        User owner1 = uService.saveUser(ModelTestData.getUser1());
+
         Budget budget1 = bService.saveBudget(ModelTestData.getBudget1());
         Budget budget2 = bService.saveBudget(ModelTestData.getBudget2());
+        Budget budget3 = ModelTestData.getBudget1();
+        budget3.setId(0);
+        Budget budget4 = ModelTestData.getBudget1();
+        budget4.setId(-1);
 
         UserBudget ub = ModelTestData.getUserBudget1();
         ub.getBudgets().clear();
         ub.getBudgets().add(budget1);
-        ub.setUser(owner);
+        ub.setUser(owner1);
         ubRepository.save(ub);
 
-        assertThat(uService.findOwner(budget1)).isEqualTo(owner);
+        assertThat(uService.findOwner(budget1)).isEqualTo(owner1);
         assertThat(uService.findOwner(budget2)).isNull();
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenBudgetIdInvalidFindOwnerThrowException() {
-        Budget budget = ModelTestData.getBudget1();
-        uService.findOwner(budget);
+        assertThat(uService.findOwner(budget3)).isNull();
+        assertThat(uService.findOwner(budget4)).isNull();
+        assertThat(uService.findOwnBudgets(owner1).size() == 1).isTrue();
     }
 
     @Test
@@ -536,20 +493,22 @@ public class UserServiceIT {
         assertThat(uService.findConnectUsers(budget2).size() == 3).isTrue();
     }
 
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenBudgetIdInvalidAddBudgetThrowException() {
-        User user = ModelTestData.getUser1();
-        user.setId(1);
+    @Test
+    public void addBudgetWithInvalidIdReturnFalse() {
+        User u1 = ModelTestData.getUser1();
+        User u2 = ModelTestData.getUser2();
+        u1.setId(0);
+        u2.setId(-1);
 
-        uService.addBudget(user, ModelTestData.getBudget1());
-    }
+        Budget b1 = ModelTestData.getBudget1();
+        Budget b2 = ModelTestData.getBudget2();
+        b1.setId(0);
+        b2.setId(-1);
 
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenUserIdInvalidAddBudgetThrowException() {
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-
-        uService.addBudget(ModelTestData.getUser1(), budget);
+        assertThat(uService.addBudget(u1, b1)).isFalse();
+        assertThat(uService.addBudget(u1, b2)).isFalse();
+        assertThat(uService.addBudget(u2, b1)).isFalse();
+        assertThat(uService.addBudget(u2, b2)).isFalse();
     }
 
     @Test
@@ -560,7 +519,7 @@ public class UserServiceIT {
         uService.addBudget(ownerUser, budget);
         uService.addBudget(connectUser, budget);
         assertThat(uService.findOwner(budget)).isEqualTo(ownerUser);
-        assertThat(uService.findConnectUsers(budget).size()==1).isTrue();
+        assertThat(uService.findConnectUsers(budget).size() == 1).isTrue();
         assertThat(uService.findConnectUsers(budget).contains(connectUser)).isTrue();
 
         uService.removeBudget(ownerUser, budget);
@@ -568,7 +527,25 @@ public class UserServiceIT {
         assertThat(uService.findOwner(budget)).isNull();
         assertThat(bService.findBudgetById(budget.getId())).isNull();
         assertThat(uService.findOwnBudgets(ownerUser).contains(budget)).isFalse();
-        assertThat(uService.findConnectUsers(budget).size()==0).isTrue();
+        assertThat(uService.findConnectUsers(budget).size() == 0).isTrue();
         assertThat(uService.findConnectUsers(budget).contains(connectUser)).isFalse();
+    }
+
+    @Test
+    public void removeBudgetWithInvalidIdReturnFalse() {
+        User u1 = ModelTestData.getUser1();
+        User u2 = ModelTestData.getUser2();
+        u1.setId(0);
+        u2.setId(-1);
+
+        Budget b1 = ModelTestData.getBudget1();
+        Budget b2 = ModelTestData.getBudget2();
+        b1.setId(0);
+        b2.setId(-1);
+
+        assertThat(uService.removeBudget(u1, b1)).isFalse();
+        assertThat(uService.removeBudget(u1, b2)).isFalse();
+        assertThat(uService.removeBudget(u2, b1)).isFalse();
+        assertThat(uService.removeBudget(u2, b2)).isFalse();
     }
 }

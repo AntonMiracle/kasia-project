@@ -71,15 +71,15 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean deleteUser(User model) {
-        uValidation.verifyValidation(model);
-        uValidation.verifyPositiveId(model.getId());
+        model = findUserById(model.getId());
+        if (model == null) return false;
         uRepository.delete(model);
         return true;
     }
 
     @Override
     public User findUserById(long id) {
-        uValidation.verifyPositiveId(id);
+        if (id <= 0) return null;
         Optional<User> user = uRepository.findById(id);
         return user.orElse(null);
     }
@@ -100,16 +100,18 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isUserEmailUnique(String email) {
-        return findUserByEmail(email) == null;
+        return email != null && findUserByEmail(email) == null;
     }
 
     @Override
     public boolean isUserNameUnique(String name) {
-        return findUserByName(name) == null;
+        return name != null && findUserByName(name) == null;
     }
 
     @Override
     public String cryptPassword(String nonCryptPassword) {
+        if (nonCryptPassword == null) return "";
+
         MessageDigest md5 = null;
         try {
             md5 = MessageDigest.getInstance("SHA-256");
@@ -122,6 +124,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public ZoneId zoneIdOf(String zoneId) {
+        if (zoneId == null) return ZoneId.systemDefault();
         try {
             return ZoneId.of(zoneId);
         } catch (DateTimeException ex) {
@@ -131,6 +134,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Locale localeOf(String lang, String country) {
+        if (lang == null || country == null) return getDefaultLocale();
+
         Locale locale = new Locale(lang, country);
         if (getCorrectAvailableLocales().contains(locale)) return locale;
         locale = getDefaultLocale();
@@ -150,20 +155,19 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isActivated(User user) {
-        uValidation.verifyValidation(user);
-        return user.isActivated();
+        return user != null && user.isActivated();
     }
 
     @Override
     public boolean activate(User user) {
-        uValidation.verifyValidation(user);
+        if (user == null) return false;
         user.setActivated(true);
         return true;
     }
 
     @Override
     public boolean deactivate(User user) {
-        uValidation.verifyValidation(user);
+        if (user == null) return false;
         user.setActivated(false);
         return true;
     }
@@ -190,7 +194,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Set<Budget> findOwnBudgets(User user) {
-        uValidation.verifyPositiveId(user.getId());
         Optional<UserBudget> optional = ubRepository.findByUserId(user.getId());
         return optional.map(UserBudget::getBudgets).orElseGet(HashSet::new);
     }
@@ -214,6 +217,9 @@ public class UserServiceImp implements UserService {
     public boolean addBudget(User user, Budget budget) {
         user = findUserById(user.getId());
         budget = bService.findBudgetById(budget.getId());
+
+        if (user == null || budget == null) return false;
+
         User owner = findOwner(budget);
 
         if (owner == null) {
@@ -248,6 +254,9 @@ public class UserServiceImp implements UserService {
     public boolean removeBudget(User user, Budget budget) {
         user = findUserById(user.getId());
         budget = bService.findBudgetById(budget.getId());
+
+        if (user == null || budget == null) return false;
+
         User owner = findOwner(budget);
 
         if (owner != null && owner.equals(user)) {
@@ -271,7 +280,6 @@ public class UserServiceImp implements UserService {
             ucbRepository.save(ucb);
             return true;
         }
-
         return false;
     }
 
@@ -292,9 +300,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isUserOwnBudget(Budget budget, User user) {
-        uValidation.verifyPositiveId(user.getId());
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
+        budget = bService.findBudgetById(budget.getId());
+        if (budget == null || user.getId() <= 0) return false;
 
         UserBudget ub = ubRepository.findByUserId(user.getId()).orElse(null);
         return !(ub == null || ub.getBudgets() == null) && ub.getBudgets().contains(budget);
@@ -302,9 +309,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean isUserConnectToBudget(Budget budget, User user) {
-        uValidation.verifyPositiveId(user.getId());
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
+        budget = bService.findBudgetById(budget.getId());
+        if (budget == null || user.getId() <= 0) return false;
 
         UserConnectBudget ucb = ucbRepository.findByUserId(user.getId()).orElse(null);
         return !(ucb == null || ucb.getConnectBudgets() == null) && ucb.getConnectBudgets().contains(budget);
