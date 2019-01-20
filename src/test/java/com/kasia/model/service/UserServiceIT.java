@@ -435,7 +435,7 @@ public class UserServiceIT {
     }
 
     @Test
-    public void findAllConnectedUser() {
+    public void findConnectUsers() {
         User haveConnect = uService.saveUser(ModelTestData.getUser1());
         Budget withBudget = bService.saveBudget(ModelTestData.getBudget1());
 
@@ -448,17 +448,8 @@ public class UserServiceIT {
         assertThat(uService.findConnectUsers(withBudget).size() == 1).isTrue();
     }
 
-    @Test(expected = ValidationException.class)
-    public void whenBudgetInvalidFindAllConnectedUserThrowException() {
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-        budget.setName("");
-
-        uService.findConnectUsers(budget);
-    }
-
     @Test(expected = IdInvalidRuntimeException.class)
-    public void whenBudgetIdInvalidFindAllConnectedUserThrowException() {
+    public void whenBudgetIdInvalidFindConnectUsersThrowException() {
         Budget budget = ModelTestData.getBudget1();
 
         uService.findConnectUsers(budget);
@@ -509,12 +500,39 @@ public class UserServiceIT {
         uService.findOwner(budget);
     }
 
-    @Test(expected = ValidationException.class)
-    public void whenBudgetInvalidFindOwnerThrowException() {
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-        budget.setName("");
+    @Test
+    public void addBudget() {
+        User owner1 = uService.saveUser(ModelTestData.getUser1());
+        User owner2 = uService.saveUser(ModelTestData.getUser2());
 
-        uService.findOwner(budget);
+        User connect1 = ModelTestData.getUser1();
+        User connect2 = ModelTestData.getUser1();
+        User connect3 = ModelTestData.getUser1();
+        connect1.setName("new1" + connect1.getName());
+        connect1.setEmail("new1" + connect1.getEmail());
+        connect2.setName("new2" + connect2.getName());
+        connect2.setEmail("new2" + connect2.getEmail());
+        connect3.setName("new3" + connect3.getName());
+        connect3.setEmail("new3" + connect3.getEmail());
+        uService.saveUser(connect1);
+        uService.saveUser(connect2);
+        uService.saveUser(connect3);
+
+        Budget budget1 = bService.saveBudget(ModelTestData.getBudget1());
+        Budget budget2 = bService.saveBudget(ModelTestData.getBudget2());
+
+        uService.addBudget(owner1, budget1);
+        uService.addBudget(owner2, budget1);
+        uService.addBudget(connect1, budget1);
+
+        uService.addBudget(owner2, budget2);
+        uService.addBudget(owner1, budget2);
+        uService.addBudget(connect2, budget2);
+        uService.addBudget(connect3, budget2);
+
+        assertThat(uService.findOwner(budget1)).isEqualTo(owner1);
+        assertThat(uService.findOwner(budget2)).isEqualTo(owner2);
+        assertThat(uService.findConnectUsers(budget1).size() == 2).isTrue();
+        assertThat(uService.findConnectUsers(budget2).size() == 3).isTrue();
     }
 }

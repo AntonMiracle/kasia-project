@@ -198,8 +198,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User findOwner(Budget budget) {
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
+        budget = bService.findBudgetById(budget.getId());
 
         Set<UserBudget> ub = new HashSet<>();
         ubRepository.findAll().forEach(ub::add);
@@ -214,13 +213,36 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean addBudget(User user, Budget budget) {
-        uValidation.verifyValidation(user);
-        uValidation.verifyPositiveId(user.getId());
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
-// implement this
-        throw new NotImplementedException();
+        user = findUserById(user.getId());
+        budget = bService.findBudgetById(budget.getId());
+        User owner = findOwner(budget);
 
+        if (owner == null) {
+            UserBudget ub = new UserBudget();
+            ub.setUser(user);
+            ub.setBudgets(new HashSet<>());
+            ub.getBudgets().add(budget);
+            ubValidation.verifyValidation(ub);
+            ubRepository.save(ub);
+            return true;
+        }
+        if (owner.equals(user)) return false;
+
+        Optional<UserConnectBudget> optionalUCB = ucbRepository.findByUserId(user.getId());
+        if (optionalUCB.isPresent()) {
+            UserConnectBudget ucb = optionalUCB.get();
+            if (ucb.getConnectBudgets().contains(budget)) return false;
+            ucb.getConnectBudgets().add(budget);
+            ucbValidation.verifyValidation(ucb);
+            ucbRepository.save(ucb);
+            return true;
+        } else {
+            UserConnectBudget newUCB = new UserConnectBudget(user, new HashSet<>());
+            newUCB.getConnectBudgets().add(budget);
+            ucbValidation.verifyValidation(newUCB);
+            ucbRepository.save(newUCB);
+            return true;
+        }
     }
 
     @Override
@@ -230,14 +252,16 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Set<User> findConnectUsers(Budget budget) {
-        bValidation.verifyValidation(budget);
-        bValidation.verifyPositiveId(budget.getId());
+        budget = bService.findBudgetById(budget.getId());
+
+        Set<UserConnectBudget> ucb = new HashSet<>();
+        ucbRepository.findAll().forEach(ucb::add);
 
         Set<User> users = new HashSet<>();
-        ucbRepository.findAll()
-                .forEach(ucb -> {
-                    if (ucb.getConnectBudgets().contains(budget)) users.add(ucb.getUser());
-                });
+        for (UserConnectBudget userConnectBudget : ucb) {
+            if (userConnectBudget.getConnectBudgets().contains(budget)) users.add(userConnectBudget.getUser());
+        }
+
         return users;
     }
 
