@@ -10,7 +10,6 @@ import com.kasia.model.repository.UserConnectBudgetRepository;
 import com.kasia.model.repository.UserRepository;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
-import com.kasia.model.validation.BudgetValidation;
 import com.kasia.model.validation.UserBudgetValidation;
 import com.kasia.model.validation.UserConnectBudgetValidation;
 import com.kasia.model.validation.UserValidation;
@@ -46,8 +45,6 @@ public class UserServiceImp implements UserService {
     private UserConnectBudgetValidation ucbValidation;
     @Autowired
     private BudgetService bService;
-    @Autowired
-    private BudgetValidation bValidation;
 
     @Override
     public User saveUser(User model) {
