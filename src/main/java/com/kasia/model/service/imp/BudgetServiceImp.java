@@ -68,7 +68,6 @@ public class BudgetServiceImp implements BudgetService {
         warningDeleteAllInBudget(model);
 
         bRepository.delete(model);
-        //need to deleteUser who connect and from own user
         return true;
     }
 
@@ -87,6 +86,7 @@ public class BudgetServiceImp implements BudgetService {
         bepRepository.findByBudgetId(budget.getId()).ifPresent(bepRepository::delete);
         providers.forEach(epRepository::delete);
 
+        uService.findConnectUsers(budget).forEach(user -> uService.removeBudget(user, budget));
     }
 
     @Override

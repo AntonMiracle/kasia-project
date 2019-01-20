@@ -250,7 +250,7 @@ public class UserServiceImp implements UserService {
         budget = bService.findBudgetById(budget.getId());
         User owner = findOwner(budget);
 
-        if (owner.equals(user)) {
+        if (owner != null && owner.equals(user)) {
             Optional<UserBudget> optionalUB = ubRepository.findByUserId(user.getId());
             if (optionalUB.isPresent() && optionalUB.get().getBudgets().contains(budget)) {
                 UserBudget ub = optionalUB.get();

@@ -40,12 +40,15 @@ public class BudgetServiceIT {
     private OperationRepository oRepository;
     @Autowired
     private BudgetOperationRepository boRepository;
+    @Autowired
+    private UserConnectBudgetRepository ucbRepository;
 
     @After
     public void cleanData() {
         beRepository.findAll().forEach(beRepository::delete);
         bepRepository.findAll().forEach(bepRepository::delete);
         boRepository.findAll().forEach(boRepository::delete);
+        ucbRepository.findAll().forEach(ucbRepository::delete);
 
         oRepository.findAll().forEach(oRepository::delete);
         bService.findAllBudgets().forEach(bService::deleteBudget);
@@ -126,6 +129,29 @@ public class BudgetServiceIT {
         bService.deleteBudget(expected);
 
         assertThat(bService.findBudgetById(expected.getId())).isNull();
+    }
+
+    @Test
+    public void deleteBudgetDeleteAllConnectionWithUsers() {
+        User connect1 = uService.saveUser(ModelTestData.getUser1());
+        User connect2 = uService.saveUser(ModelTestData.getUser2());
+
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+
+        UserConnectBudget ucb1 = new UserConnectBudget(connect1, new HashSet<>());
+        UserConnectBudget ucb2 = new UserConnectBudget(connect2, new HashSet<>());
+        ucb1.getConnectBudgets().add(budget);
+        ucb2.getConnectBudgets().add(budget);
+        ucbRepository.save(ucb1);
+        ucbRepository.save(ucb2);
+
+        assertThat(ucbRepository.findByUserId(connect1.getId()).get().getConnectBudgets().size() == 1).isTrue();
+        assertThat(ucbRepository.findByUserId(connect2.getId()).get().getConnectBudgets().size() == 1).isTrue();
+
+        bService.deleteBudget(budget);
+
+        assertThat(ucbRepository.findByUserId(connect1.getId()).get().getConnectBudgets().size() == 0).isTrue();
+        assertThat(ucbRepository.findByUserId(connect2.getId()).get().getConnectBudgets().size() == 0).isTrue();
     }
 
     @Test
