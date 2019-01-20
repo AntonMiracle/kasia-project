@@ -1,6 +1,7 @@
 package com.kasia.model.repository;
 
 import com.kasia.ModelTestData;
+import com.kasia.model.Budget;
 import com.kasia.model.UserConnectBudget;
 import org.junit.After;
 import org.junit.Test;
@@ -19,17 +20,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class UserConnectBudgetRepositoryIT {
     @Autowired
-    private UserConnectBudgetRepository repository;
+    private UserConnectBudgetRepository ucbRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository uRepository;
     @Autowired
-    private BudgetRepository budgetRepository;
+    private BudgetRepository bRepository;
 
     @After
     public void cleanData() {
-        repository.findAll().forEach(model -> repository.delete(model));
-        budgetRepository.findAll().forEach(model -> budgetRepository.delete(model));
-        userRepository.findAll().forEach(model -> userRepository.delete(model));
+        ucbRepository.findAll().forEach(model -> ucbRepository.delete(model));
+        bRepository.findAll().forEach(model -> bRepository.delete(model));
+        uRepository.findAll().forEach(model -> uRepository.delete(model));
     }
 
     @Test
@@ -42,10 +43,35 @@ public class UserConnectBudgetRepositoryIT {
         assertThat(userConnectBudget.getId() > 0).isTrue();
     }
 
+    @Test
+    public void saveWithSameBudget() {
+        Budget budget1 = bRepository.save(ModelTestData.getBudget1());
+
+        UserConnectBudget ucb1 = ModelTestData.getUserConnectBudget1();
+        UserConnectBudget ucb2 = ModelTestData.getUserConnectBudget1();
+
+        ucb1.getConnectBudgets().clear();
+        ucb2.getConnectBudgets().clear();
+        ucb1.getConnectBudgets().add(budget1);
+        ucb2.getConnectBudgets().add(budget1);
+
+        ucb1.setUser(uRepository.save(ModelTestData.getUser1()));
+        ucb2.setUser(uRepository.save(ModelTestData.getUser2()));
+
+        assertThat(ucb1.getId() == 0).isTrue();
+        assertThat(ucb2.getId() == 0).isTrue();
+
+        ucbRepository.save(ucb1);
+        ucbRepository.save(ucb2);
+
+        assertThat(ucb1.getId() > 0).isTrue();
+        assertThat(ucb2.getId() > 0).isTrue();
+    }
+
     private UserConnectBudget saveForTest(UserConnectBudget userConnectBudget) {
-        userConnectBudget.getConnectBudgets().forEach(budgetRepository::save);
-        userRepository.save(userConnectBudget.getUser());
-        repository.save(userConnectBudget);
+        userConnectBudget.getConnectBudgets().forEach(bRepository::save);
+        uRepository.save(userConnectBudget.getUser());
+        ucbRepository.save(userConnectBudget);
         return userConnectBudget;
     }
 
@@ -54,7 +80,7 @@ public class UserConnectBudgetRepositoryIT {
         UserConnectBudget userConnectBudget = saveForTest(ModelTestData.getUserConnectBudget1());
         long id = userConnectBudget.getId();
 
-        userConnectBudget = repository.findById(id).orElse(null);
+        userConnectBudget = ucbRepository.findById(id).orElse(null);
 
         assertThat(userConnectBudget).isNotNull();
         assertThat(userConnectBudget.getId()).isEqualTo(id);
@@ -64,9 +90,9 @@ public class UserConnectBudgetRepositoryIT {
     public void delete() throws Exception {
         UserConnectBudget userConnectBudget = saveForTest(ModelTestData.getUserConnectBudget1());
 
-        repository.delete(userConnectBudget);
+        ucbRepository.delete(userConnectBudget);
 
-        assertThat(repository.findById(userConnectBudget.getId()).isPresent()).isFalse();
+        assertThat(ucbRepository.findById(userConnectBudget.getId()).isPresent()).isFalse();
     }
 
     @Test
@@ -75,7 +101,7 @@ public class UserConnectBudgetRepositoryIT {
         saveForTest(ModelTestData.getUserConnectBudget2());
         Set<UserConnectBudget> userConnectBudgets = new HashSet<>();
 
-        repository.findAll().forEach(userConnectBudgets::add);
+        ucbRepository.findAll().forEach(userConnectBudgets::add);
 
         assertThat(userConnectBudgets.size() == 2).isTrue();
     }
@@ -85,7 +111,7 @@ public class UserConnectBudgetRepositoryIT {
         UserConnectBudget expected = saveForTest(ModelTestData.getUserConnectBudget1());
         long userId = expected.getUser().getId();
 
-        Optional<UserConnectBudget> actual = repository.findByUserId(userId);
+        Optional<UserConnectBudget> actual = ucbRepository.findByUserId(userId);
 
         assertThat(actual.isPresent()).isTrue();
         assertThat(actual.orElse(null)).isEqualTo(expected);

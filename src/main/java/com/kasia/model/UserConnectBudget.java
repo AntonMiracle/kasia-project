@@ -13,7 +13,7 @@ public class UserConnectBudget implements Model {
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
     @NotNull
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Budget> connectBudgets;
 
     public UserConnectBudget(User user, Set<Budget> connectBudgets) {
