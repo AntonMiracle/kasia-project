@@ -553,15 +553,22 @@ public class UserServiceIT {
     }
 
     @Test
-    public void removeBudgetOnlyWithOwner() {
-        User user = uService.saveUser(ModelTestData.getUser1());
+    public void removeBudget() {
+        User ownerUser = uService.saveUser(ModelTestData.getUser1());
+        User connectUser = uService.saveUser(ModelTestData.getUser2());
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
-        uService.addBudget(user, budget);
-        assertThat(uService.findOwner(budget)).isEqualTo(user);
+        uService.addBudget(ownerUser, budget);
+        uService.addBudget(connectUser, budget);
+        assertThat(uService.findOwner(budget)).isEqualTo(ownerUser);
+        assertThat(uService.findConnectUsers(budget).size()==1).isTrue();
+        assertThat(uService.findConnectUsers(budget).contains(connectUser)).isTrue();
 
-        uService.removeBudget(user, budget);
+        uService.removeBudget(ownerUser, budget);
 
         assertThat(uService.findOwner(budget)).isNull();
         assertThat(bService.findBudgetById(budget.getId())).isNull();
+        assertThat(uService.findOwnBudgets(ownerUser).contains(budget)).isFalse();
+        assertThat(uService.findConnectUsers(budget).size()==0).isTrue();
+        assertThat(uService.findConnectUsers(budget).contains(connectUser)).isFalse();
     }
 }
