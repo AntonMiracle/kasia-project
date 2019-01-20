@@ -535,4 +535,20 @@ public class UserServiceIT {
         assertThat(uService.findConnectUsers(budget1).size() == 2).isTrue();
         assertThat(uService.findConnectUsers(budget2).size() == 3).isTrue();
     }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidAddBudgetThrowException() {
+        User user = ModelTestData.getUser1();
+        user.setId(1);
+
+        uService.addBudget(user, ModelTestData.getBudget1());
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenUserIdInvalidAddBudgetThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(1);
+
+        uService.addBudget(ModelTestData.getUser1(), budget);
+    }
 }
