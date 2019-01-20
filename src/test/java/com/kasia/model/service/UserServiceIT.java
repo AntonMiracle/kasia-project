@@ -486,4 +486,35 @@ public class UserServiceIT {
         User owner = ModelTestData.getUser1();
         uService.findOwnBudgets(owner);
     }
+
+    @Test
+    public void findOwner() {
+        User owner = uService.saveUser(ModelTestData.getUser1());
+        Budget budget1 = bService.saveBudget(ModelTestData.getBudget1());
+        Budget budget2 = bService.saveBudget(ModelTestData.getBudget2());
+
+        UserBudget ub = ModelTestData.getUserBudget1();
+        ub.getBudgets().clear();
+        ub.getBudgets().add(budget1);
+        ub.setUser(owner);
+        ubRepository.save(ub);
+
+        assertThat(uService.findOwner(budget1)).isEqualTo(owner);
+        assertThat(uService.findOwner(budget2)).isNull();
+    }
+
+    @Test(expected = IdInvalidRuntimeException.class)
+    public void whenBudgetIdInvalidFindOwnerThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        uService.findOwner(budget);
+    }
+
+    @Test(expected = ValidationException.class)
+    public void whenBudgetInvalidFindOwnerThrowException() {
+        Budget budget = ModelTestData.getBudget1();
+        budget.setId(1);
+        budget.setName("");
+
+        uService.findOwner(budget);
+    }
 }

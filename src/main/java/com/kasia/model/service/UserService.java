@@ -51,6 +51,8 @@ public interface UserService {
 
     Set<Budget> findOwnBudgets(User user) throws IdInvalidRuntimeException;
 
+    User findOwner(Budget budget);
+
     boolean addBudget(User user, Budget budget);
 
     boolean removeBudget(User user, Budget budget);

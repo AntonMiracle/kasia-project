@@ -197,8 +197,30 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public User findOwner(Budget budget) {
+        bValidation.verifyValidation(budget);
+        bValidation.verifyPositiveId(budget.getId());
+
+        Set<UserBudget> ub = new HashSet<>();
+        ubRepository.findAll().forEach(ub::add);
+
+        for (UserBudget userBudget : ub) {
+            if (userBudget.getBudgets().contains(budget)) {
+                return userBudget.getUser();
+            }
+        }
+        return null;
+    }
+
+    @Override
     public boolean addBudget(User user, Budget budget) {
+        uValidation.verifyValidation(user);
+        uValidation.verifyPositiveId(user.getId());
+        bValidation.verifyValidation(budget);
+        bValidation.verifyPositiveId(budget.getId());
+// implement this
         throw new NotImplementedException();
+
     }
 
     @Override
