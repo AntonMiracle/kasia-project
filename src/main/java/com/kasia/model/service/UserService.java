@@ -15,7 +15,7 @@ public interface UserService {
 
     User saveUser(User model) throws EmailExistRuntimeException, UserNameExistRuntimeException, ValidationException, IdInvalidRuntimeException;
 
-    boolean deleteUser(User model);
+    boolean deleteUser(long id);
 
     User findUserById(long id);
 
@@ -49,17 +49,17 @@ public interface UserService {
 
     Locale getDefaultLocale();
 
-    Set<Budget> findOwnBudgets(User user);
+    Set<Budget> findOwnBudgets(long userId);
 
-    User findOwner(Budget budget);
+    User findOwner(long budgetId);
 
-    boolean addBudget(User user, Budget budget);
+    boolean addBudget(long userId, long budgetId);
 
-    boolean removeBudget(User user, Budget budget);
+    boolean removeBudget(long userId, long budgetId);
 
-    Set<User> findConnectUsers(Budget budget);
+    Set<User> findConnectUsers(long budgetId);
 
-    boolean isUserOwnBudget(Budget budget, User user);
+    boolean isUserOwnBudget(long budgetId, long userId);
 
-    boolean isUserConnectToBudget(Budget budget, User user);
+    boolean isUserConnectToBudget(long budgetId, long userId);
 }

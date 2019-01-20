@@ -43,7 +43,7 @@ public class UserServiceIT {
         ucbRepository.findAll().forEach(ucbRepository::delete);
 
         bService.findAllBudgets().forEach(bService::deleteBudget);
-        uService.findAllUsers().forEach(uService::deleteUser);
+        uService.findAllUsers().forEach(user -> uService.deleteUser(user.getId()));
     }
 
     @Test
@@ -71,9 +71,9 @@ public class UserServiceIT {
         u1.setId(0);
         u2.setId(-1);
 
-        assertThat(uService.deleteUser(user)).isTrue();
-        assertThat(uService.deleteUser(u1)).isFalse();
-        assertThat(uService.deleteUser(u2)).isFalse();
+        assertThat(uService.deleteUser(user.getId())).isTrue();
+        assertThat(uService.deleteUser(u1.getId())).isFalse();
+        assertThat(uService.deleteUser(u2.getId())).isFalse();
     }
 
     @Test
@@ -335,8 +335,8 @@ public class UserServiceIT {
         ub.setUser(owner);
         ubRepository.save(ub);
 
-        assertThat(uService.isUserOwnBudget(budget, owner)).isTrue();
-        assertThat(uService.isUserOwnBudget(budget, user)).isFalse();
+        assertThat(uService.isUserOwnBudget(budget.getId(), owner.getId())).isTrue();
+        assertThat(uService.isUserOwnBudget(budget.getId(), user.getId())).isFalse();
     }
 
     @Test
@@ -350,10 +350,10 @@ public class UserServiceIT {
         b1.setId(0);
         b2.setId(-1);
 
-        assertThat(uService.isUserOwnBudget(b1, u1)).isFalse();
-        assertThat(uService.isUserOwnBudget(b1, u2)).isFalse();
-        assertThat(uService.isUserOwnBudget(b2, u1)).isFalse();
-        assertThat(uService.isUserOwnBudget(b2, u2)).isFalse();
+        assertThat(uService.isUserOwnBudget(b1.getId(), u1.getId())).isFalse();
+        assertThat(uService.isUserOwnBudget(b1.getId(), u2.getId())).isFalse();
+        assertThat(uService.isUserOwnBudget(b2.getId(), u1.getId())).isFalse();
+        assertThat(uService.isUserOwnBudget(b2.getId(), u2.getId())).isFalse();
     }
 
     @Test
@@ -368,8 +368,8 @@ public class UserServiceIT {
         ucb.setUser(haveConnect);
         ucbRepository.save(ucb);
 
-        assertThat(uService.isUserConnectToBudget(withBudget, haveConnect)).isTrue();
-        assertThat(uService.isUserConnectToBudget(withBudget, noConnect)).isFalse();
+        assertThat(uService.isUserConnectToBudget(withBudget.getId(), haveConnect.getId())).isTrue();
+        assertThat(uService.isUserConnectToBudget(withBudget.getId(), noConnect.getId())).isFalse();
     }
 
     @Test
@@ -383,10 +383,10 @@ public class UserServiceIT {
         b1.setId(0);
         b2.setId(-1);
 
-        assertThat(uService.isUserConnectToBudget(b1, u1)).isFalse();
-        assertThat(uService.isUserConnectToBudget(b1, u2)).isFalse();
-        assertThat(uService.isUserConnectToBudget(b2, u1)).isFalse();
-        assertThat(uService.isUserConnectToBudget(b2, u2)).isFalse();
+        assertThat(uService.isUserConnectToBudget(b1.getId(), u1.getId())).isFalse();
+        assertThat(uService.isUserConnectToBudget(b1.getId(), u2.getId())).isFalse();
+        assertThat(uService.isUserConnectToBudget(b2.getId(), u1.getId())).isFalse();
+        assertThat(uService.isUserConnectToBudget(b2.getId(), u2.getId())).isFalse();
     }
 
     @Test
@@ -404,9 +404,9 @@ public class UserServiceIT {
         ucb.setUser(haveConnect);
         ucbRepository.save(ucb);
 
-        assertThat(uService.findConnectUsers(withBudget).size() == 1).isTrue();
-        assertThat(uService.findConnectUsers(b1).size() == 0).isTrue();
-        assertThat(uService.findConnectUsers(b2).size() == 0).isTrue();
+        assertThat(uService.findConnectUsers(withBudget.getId()).size() == 1).isTrue();
+        assertThat(uService.findConnectUsers(b1.getId()).size() == 0).isTrue();
+        assertThat(uService.findConnectUsers(b2.getId()).size() == 0).isTrue();
     }
 
     @Test
@@ -426,11 +426,11 @@ public class UserServiceIT {
         ub.setUser(owner);
         ubRepository.save(ub);
 
-        assertThat(uService.findOwnBudgets(owner).size() == 1).isTrue();
-        assertThat(uService.findOwnBudgets(owner).contains(budget)).isTrue();
-        assertThat(uService.findOwnBudgets(user).size() == 0).isTrue();
-        assertThat(uService.findOwnBudgets(owner2).size() == 0).isTrue();
-        assertThat(uService.findOwnBudgets(owner3).size() == 0).isTrue();
+        assertThat(uService.findOwnBudgets(owner.getId()).size() == 1).isTrue();
+        assertThat(uService.findOwnBudgets(owner.getId()).contains(budget)).isTrue();
+        assertThat(uService.findOwnBudgets(user.getId()).size() == 0).isTrue();
+        assertThat(uService.findOwnBudgets(owner2.getId()).size() == 0).isTrue();
+        assertThat(uService.findOwnBudgets(owner3.getId()).size() == 0).isTrue();
     }
 
     @Test
@@ -450,11 +450,11 @@ public class UserServiceIT {
         ub.setUser(owner1);
         ubRepository.save(ub);
 
-        assertThat(uService.findOwner(budget1)).isEqualTo(owner1);
-        assertThat(uService.findOwner(budget2)).isNull();
-        assertThat(uService.findOwner(budget3)).isNull();
-        assertThat(uService.findOwner(budget4)).isNull();
-        assertThat(uService.findOwnBudgets(owner1).size() == 1).isTrue();
+        assertThat(uService.findOwner(budget1.getId())).isEqualTo(owner1);
+        assertThat(uService.findOwner(budget2.getId())).isNull();
+        assertThat(uService.findOwner(budget3.getId())).isNull();
+        assertThat(uService.findOwner(budget4.getId())).isNull();
+        assertThat(uService.findOwnBudgets(owner1.getId()).size() == 1).isTrue();
     }
 
     @Test
@@ -478,19 +478,19 @@ public class UserServiceIT {
         Budget budget1 = bService.saveBudget(ModelTestData.getBudget1());
         Budget budget2 = bService.saveBudget(ModelTestData.getBudget2());
 
-        uService.addBudget(owner1, budget1);
-        uService.addBudget(owner2, budget1);
-        uService.addBudget(connect1, budget1);
+        uService.addBudget(owner1.getId(), budget1.getId());
+        uService.addBudget(owner2.getId(), budget1.getId());
+        uService.addBudget(connect1.getId(), budget1.getId());
 
-        uService.addBudget(owner2, budget2);
-        uService.addBudget(owner1, budget2);
-        uService.addBudget(connect2, budget2);
-        uService.addBudget(connect3, budget2);
+        uService.addBudget(owner2.getId(), budget2.getId());
+        uService.addBudget(owner1.getId(), budget2.getId());
+        uService.addBudget(connect2.getId(), budget2.getId());
+        uService.addBudget(connect3.getId(), budget2.getId());
 
-        assertThat(uService.findOwner(budget1)).isEqualTo(owner1);
-        assertThat(uService.findOwner(budget2)).isEqualTo(owner2);
-        assertThat(uService.findConnectUsers(budget1).size() == 2).isTrue();
-        assertThat(uService.findConnectUsers(budget2).size() == 3).isTrue();
+        assertThat(uService.findOwner(budget1.getId())).isEqualTo(owner1);
+        assertThat(uService.findOwner(budget2.getId())).isEqualTo(owner2);
+        assertThat(uService.findConnectUsers(budget1.getId()).size() == 2).isTrue();
+        assertThat(uService.findConnectUsers(budget2.getId()).size() == 3).isTrue();
     }
 
     @Test
@@ -505,10 +505,10 @@ public class UserServiceIT {
         b1.setId(0);
         b2.setId(-1);
 
-        assertThat(uService.addBudget(u1, b1)).isFalse();
-        assertThat(uService.addBudget(u1, b2)).isFalse();
-        assertThat(uService.addBudget(u2, b1)).isFalse();
-        assertThat(uService.addBudget(u2, b2)).isFalse();
+        assertThat(uService.addBudget(u1.getId(), b1.getId())).isFalse();
+        assertThat(uService.addBudget(u1.getId(), b2.getId())).isFalse();
+        assertThat(uService.addBudget(u2.getId(), b1.getId())).isFalse();
+        assertThat(uService.addBudget(u2.getId(), b2.getId())).isFalse();
     }
 
     @Test
@@ -516,19 +516,19 @@ public class UserServiceIT {
         User ownerUser = uService.saveUser(ModelTestData.getUser1());
         User connectUser = uService.saveUser(ModelTestData.getUser2());
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
-        uService.addBudget(ownerUser, budget);
-        uService.addBudget(connectUser, budget);
-        assertThat(uService.findOwner(budget)).isEqualTo(ownerUser);
-        assertThat(uService.findConnectUsers(budget).size() == 1).isTrue();
-        assertThat(uService.findConnectUsers(budget).contains(connectUser)).isTrue();
+        uService.addBudget(ownerUser.getId(), budget.getId());
+        uService.addBudget(connectUser.getId(), budget.getId());
+        assertThat(uService.findOwner(budget.getId())).isEqualTo(ownerUser);
+        assertThat(uService.findConnectUsers(budget.getId()).size() == 1).isTrue();
+        assertThat(uService.findConnectUsers(budget.getId()).contains(connectUser)).isTrue();
 
-        uService.removeBudget(ownerUser, budget);
+        uService.removeBudget(ownerUser.getId(), budget.getId());
 
-        assertThat(uService.findOwner(budget)).isNull();
+        assertThat(uService.findOwner(budget.getId())).isNull();
         assertThat(bService.findBudgetById(budget.getId())).isNull();
-        assertThat(uService.findOwnBudgets(ownerUser).contains(budget)).isFalse();
-        assertThat(uService.findConnectUsers(budget).size() == 0).isTrue();
-        assertThat(uService.findConnectUsers(budget).contains(connectUser)).isFalse();
+        assertThat(uService.findOwnBudgets(ownerUser.getId()).contains(budget)).isFalse();
+        assertThat(uService.findConnectUsers(budget.getId()).size() == 0).isTrue();
+        assertThat(uService.findConnectUsers(budget.getId()).contains(connectUser)).isFalse();
     }
 
     @Test
@@ -543,9 +543,9 @@ public class UserServiceIT {
         b1.setId(0);
         b2.setId(-1);
 
-        assertThat(uService.removeBudget(u1, b1)).isFalse();
-        assertThat(uService.removeBudget(u1, b2)).isFalse();
-        assertThat(uService.removeBudget(u2, b1)).isFalse();
-        assertThat(uService.removeBudget(u2, b2)).isFalse();
+        assertThat(uService.removeBudget(u1.getId(), b1.getId())).isFalse();
+        assertThat(uService.removeBudget(u1.getId(), b2.getId())).isFalse();
+        assertThat(uService.removeBudget(u2.getId(), b1.getId())).isFalse();
+        assertThat(uService.removeBudget(u2.getId(), b2.getId())).isFalse();
     }
 }

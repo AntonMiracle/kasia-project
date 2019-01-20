@@ -86,7 +86,7 @@ public class BudgetServiceImp implements BudgetService {
         bepRepository.findByBudgetId(budget.getId()).ifPresent(bepRepository::delete);
         providers.forEach(epRepository::delete);
 
-        uService.findConnectUsers(budget).forEach(user -> uService.removeBudget(user, budget));
+        uService.findConnectUsers(budget.getId()).forEach(user -> uService.removeBudget(user.getId(), budget.getId()));
     }
 
     @Override

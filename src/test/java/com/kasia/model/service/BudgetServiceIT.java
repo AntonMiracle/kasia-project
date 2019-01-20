@@ -54,7 +54,7 @@ public class BudgetServiceIT {
         bService.findAllBudgets().forEach(bService::deleteBudget);
         eRepository.findAll().forEach(eRepository::delete);
         epRepository.findAll().forEach(epRepository::delete);
-        uService.findAllUsers().forEach(uService::deleteUser);
+        uService.findAllUsers().forEach(user -> uService.deleteUser(user.getId()));
     }
 
     @Test
@@ -100,16 +100,6 @@ public class BudgetServiceIT {
         Budget actual = bService.findBudgetById(123);
 
         assertThat(actual).isNull();
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenIdZeroThenFindBudgetByIdThrowException() {
-        bService.findBudgetById(0);
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenIdNegativeThenFindBudgetByIdThrowException() {
-        bService.findBudgetById(-1);
     }
 
     @Test

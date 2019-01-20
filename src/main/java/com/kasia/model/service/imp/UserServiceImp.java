@@ -70,8 +70,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean deleteUser(User model) {
-        model = findUserById(model.getId());
+    public boolean deleteUser(long id) {
+        User model = findUserById(id);
         if (model == null) return false;
         uRepository.delete(model);
         return true;
@@ -193,14 +193,14 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Set<Budget> findOwnBudgets(User user) {
-        Optional<UserBudget> optional = ubRepository.findByUserId(user.getId());
+    public Set<Budget> findOwnBudgets(long userId) {
+        Optional<UserBudget> optional = ubRepository.findByUserId(userId);
         return optional.map(UserBudget::getBudgets).orElseGet(HashSet::new);
     }
 
     @Override
-    public User findOwner(Budget budget) {
-        budget = bService.findBudgetById(budget.getId());
+    public User findOwner(long budgetId) {
+        Budget budget = bService.findBudgetById(budgetId);
 
         Set<UserBudget> ub = new HashSet<>();
         ubRepository.findAll().forEach(ub::add);
@@ -214,13 +214,13 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean addBudget(User user, Budget budget) {
-        user = findUserById(user.getId());
-        budget = bService.findBudgetById(budget.getId());
+    public boolean addBudget(long userId, long budgetId) {
+        User user = findUserById(userId);
+        Budget budget = bService.findBudgetById(budgetId);
 
         if (user == null || budget == null) return false;
 
-        User owner = findOwner(budget);
+        User owner = findOwner(budget.getId());
 
         if (owner == null) {
             UserBudget ub = new UserBudget();
@@ -251,13 +251,13 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean removeBudget(User user, Budget budget) {
-        user = findUserById(user.getId());
-        budget = bService.findBudgetById(budget.getId());
+    public boolean removeBudget(long userId, long budgetId) {
+        User user = findUserById(userId);
+        Budget budget = bService.findBudgetById(budgetId);
 
         if (user == null || budget == null) return false;
 
-        User owner = findOwner(budget);
+        User owner = findOwner(budget.getId());
 
         if (owner != null && owner.equals(user)) {
             Optional<UserBudget> optionalUB = ubRepository.findByUserId(user.getId());
@@ -284,8 +284,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Set<User> findConnectUsers(Budget budget) {
-        budget = bService.findBudgetById(budget.getId());
+    public Set<User> findConnectUsers(long budgetId) {
+        Budget budget = bService.findBudgetById(budgetId);
 
         Set<UserConnectBudget> ucb = new HashSet<>();
         ucbRepository.findAll().forEach(ucb::add);
@@ -299,20 +299,20 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean isUserOwnBudget(Budget budget, User user) {
-        budget = bService.findBudgetById(budget.getId());
-        if (budget == null || user.getId() <= 0) return false;
+    public boolean isUserOwnBudget(long budgetId, long userId) {
+        Budget budget = bService.findBudgetById(budgetId);
+        if (budget == null || userId <= 0) return false;
 
-        UserBudget ub = ubRepository.findByUserId(user.getId()).orElse(null);
+        UserBudget ub = ubRepository.findByUserId(userId).orElse(null);
         return !(ub == null || ub.getBudgets() == null) && ub.getBudgets().contains(budget);
     }
 
     @Override
-    public boolean isUserConnectToBudget(Budget budget, User user) {
-        budget = bService.findBudgetById(budget.getId());
-        if (budget == null || user.getId() <= 0) return false;
+    public boolean isUserConnectToBudget(long budgetId, long userId) {
+        Budget budget = bService.findBudgetById(budgetId);
+        if (budget == null || userId <= 0) return false;
 
-        UserConnectBudget ucb = ucbRepository.findByUserId(user.getId()).orElse(null);
+        UserConnectBudget ucb = ucbRepository.findByUserId(userId).orElse(null);
         return !(ucb == null || ucb.getConnectBudgets() == null) && ucb.getConnectBudgets().contains(budget);
     }
 
