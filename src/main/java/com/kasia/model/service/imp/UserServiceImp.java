@@ -17,7 +17,6 @@ import com.kasia.model.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -247,7 +246,32 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean removeBudget(User user, Budget budget) {
-        throw new NotImplementedException();
+        user = findUserById(user.getId());
+        budget = bService.findBudgetById(budget.getId());
+        User owner = findOwner(budget);
+
+        if (owner.equals(user)) {
+            Optional<UserBudget> optionalUB = ubRepository.findByUserId(user.getId());
+            if (optionalUB.isPresent() && optionalUB.get().getBudgets().contains(budget)) {
+                UserBudget ub = optionalUB.get();
+                ub.getBudgets().remove(budget);
+                ubValidation.verifyValidation(ub);
+                bService.deleteBudget(budget);
+                ubRepository.save(ub);
+                return true;
+            }
+            return false;
+        }
+
+        Optional<UserConnectBudget> optionalUCB = ucbRepository.findByUserId(user.getId());
+        if (optionalUCB.isPresent() && optionalUCB.get().getConnectBudgets().contains(budget)) {
+            UserConnectBudget ucb = optionalUCB.get();
+            ucb.getConnectBudgets().remove(budget);
+            ucbValidation.verifyValidation(ucb);
+            ucbRepository.save(ucb);
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -551,4 +551,17 @@ public class UserServiceIT {
 
         uService.addBudget(ModelTestData.getUser1(), budget);
     }
+
+    @Test
+    public void removeBudgetOnlyWithOwner() {
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        uService.addBudget(user, budget);
+        assertThat(uService.findOwner(budget)).isEqualTo(user);
+
+        uService.removeBudget(user, budget);
+
+        assertThat(uService.findOwner(budget)).isNull();
+        assertThat(bService.findBudgetById(budget.getId())).isNull();
+    }
 }
