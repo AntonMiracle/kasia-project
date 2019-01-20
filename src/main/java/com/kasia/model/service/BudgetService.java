@@ -21,8 +21,6 @@ public interface BudgetService {
 
     Budget createBudget(String name, Balance balance) throws ValidationException;
 
-    Operation createOperation(User user, Element element, ElementProvider provider, Price price) throws ValidationException, IdInvalidRuntimeException;
-
     Element findElementByName(long budgetId, String name);
 
     boolean isElementUnique(long budgetId, String elementName);
@@ -42,6 +40,8 @@ public interface BudgetService {
     boolean removeElementProvider(long budgetId, long providerId) throws ValidationException;
 
     Set<ElementProvider> findAllElementProviders(long budgetId);
+
+    Operation createOperation(User user, Element element, ElementProvider provider, Price price) throws ValidationException, IdInvalidRuntimeException;
 
     boolean addOperation(long budgetId, Operation operation) throws ValidationException, CurrenciesNotEqualsRuntimeException;
 

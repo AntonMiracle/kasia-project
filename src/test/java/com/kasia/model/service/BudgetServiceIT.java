@@ -85,35 +85,6 @@ public class BudgetServiceIT {
     }
 
     @Test
-    public void findBudgetById() {
-        Budget expected = ModelTestData.getBudget1();
-        bService.saveBudget(expected);
-
-        Budget actual = bService.findBudgetById(expected.getId());
-
-        assertThat(actual).isEqualTo(expected);
-        assertThat(bService.findBudgetById(0)).isNull();
-        assertThat(bService.findBudgetById(-1)).isNull();
-    }
-
-    @Test
-    public void whenIdNotExistFindBudgetByIdReturnNull() {
-        Budget actual = bService.findBudgetById(123);
-
-        assertThat(actual).isNull();
-    }
-
-    @Test
-    public void findAllBudgets() {
-        assertThat(bService.findAllBudgets().size() == 0).isTrue();
-
-        bService.saveBudget(ModelTestData.getBudget1());
-        bService.saveBudget(ModelTestData.getBudget1());
-
-        assertThat(bService.findAllBudgets().size() == 2).isTrue();
-    }
-
-    @Test
     public void deleteBudget() {
         Budget expected = bService.saveBudget(ModelTestData.getBudget1());
 
@@ -172,6 +143,28 @@ public class BudgetServiceIT {
     }
 
     @Test
+    public void findBudgetById() {
+        Budget expected = ModelTestData.getBudget1();
+        bService.saveBudget(expected);
+
+        Budget actual = bService.findBudgetById(expected.getId());
+
+        assertThat(actual).isEqualTo(expected);
+        assertThat(bService.findBudgetById(0)).isNull();
+        assertThat(bService.findBudgetById(-1)).isNull();
+    }
+
+    @Test
+    public void findAllBudgets() {
+        assertThat(bService.findAllBudgets().size() == 0).isTrue();
+
+        bService.saveBudget(ModelTestData.getBudget1());
+        bService.saveBudget(ModelTestData.getBudget1());
+
+        assertThat(bService.findAllBudgets().size() == 2).isTrue();
+    }
+
+    @Test
     public void createBudget() {
         Budget expected = ModelTestData.getBudget1();
         Budget actual = bService.createBudget(expected.getName(), expected.getBalance());
@@ -185,6 +178,21 @@ public class BudgetServiceIT {
     @Test(expected = ValidationException.class)
     public void whenCreateInvalidBudgetThenThrowException() {
         bService.createBudget("", null);
+    }
+
+    @Test
+    public void findElementByName() {
+        BudgetElement be = getSavedForTestCleanBudgetElement();
+        Element expected = ModelTestData.getElement1();
+        bService.addElement(be.getBudget().getId(), expected);
+
+        Element actual = bService.findElementByName(be.getBudget().getId(), expected.getName());
+
+        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).isEqualTo(expected);
+        assertThat(bService.findElementByName(0, "name")).isNull();
+        assertThat(bService.findElementByName(-1, "name")).isNull();
+        assertThat(bService.findElementByName(0, null)).isNull();
     }
 
     private BudgetElement getSavedForTestCleanBudgetElement() {
@@ -209,12 +217,6 @@ public class BudgetServiceIT {
         assertThat(bService.isElementUnique(-1, null)).isFalse();
     }
 
-    private int countElementsInBudget(Budget budget) {
-        return beRepository.findByBudgetId(budget.getId())
-                .map(budgetElement -> budgetElement.getElements().size())
-                .orElse(0);
-    }
-
     @Test
     public void addElement() {
         BudgetElement be = getSavedForTestCleanBudgetElement();
@@ -228,6 +230,9 @@ public class BudgetServiceIT {
         assertThat(bService.addElement(be.getBudget().getId(), element1)).isTrue();
         assertThat(bService.addElement(be.getBudget().getId(), element2)).isTrue();
         assertThat(bService.addElement(be.getBudget().getId(), element3)).isFalse();
+        assertThat(bService.addElement(0, null)).isFalse();
+        assertThat(bService.addElement(-1, null)).isFalse();
+        assertThat(bService.addElement(0, element1)).isFalse();
 
         int elementsAfterAdd = countElementsInBudget(be.getBudget());
         assertThat(elementsAfterAdd == (elementsBeforeAdd + 2)).isTrue();
@@ -263,6 +268,11 @@ public class BudgetServiceIT {
         assertThat(elementsAfterAdd == (elementsBeforeAdd + 1)).isTrue();
     }
 
+    private int countElementsInBudget(Budget budget) {
+        return beRepository.findByBudgetId(budget.getId())
+                .map(budgetElement -> budgetElement.getElements().size())
+                .orElse(0);
+    }
 
     @Test(expected = ValidationException.class)
     public void whenElementInvalidAddElementThrowException() {
@@ -303,33 +313,6 @@ public class BudgetServiceIT {
         assertThat(elementsAfter.size() == (elementsBefore.size() - 1)).isTrue();
     }
 
-
-    @Test
-    public void findElementByName() {
-        BudgetElement be = getSavedForTestCleanBudgetElement();
-        Element expected = ModelTestData.getElement1();
-        bService.addElement(be.getBudget().getId(), expected);
-
-        Element actual = bService.findElementByName(be.getBudget().getId(), expected.getName());
-
-        assertThat(actual).isEqualTo(expected);
-        assertThat(actual).isEqualTo(expected);
-        assertThat(bService.findElementByName(0, "name")).isNull();
-        assertThat(bService.findElementByName(-1, "name")).isNull();
-        assertThat(bService.findElementByName(0, null)).isNull();
-    }
-
-    @Test
-    public void whenElementNotExistFindElementByNameReturnNull() {
-        BudgetElement be = getSavedForTestCleanBudgetElement();
-        Element expected = ModelTestData.getElement1();
-        bService.addElement(be.getBudget().getId(), expected);
-
-        Element actual = bService.findElementByName(be.getBudget().getId(), expected.getName() + expected.getName());
-
-        assertThat(actual).isNull();
-    }
-
     @Test
     public void findAllElements() {
         BudgetElement be = getSavedForTestCleanBudgetElement();
@@ -339,6 +322,8 @@ public class BudgetServiceIT {
         bService.addElement(be.getBudget().getId(), element2);
 
         assertThat(bService.findAllElements(be.getBudget().getId()).size() == 2).isTrue();
+        assertThat(bService.findAllElements(0).size() == 0).isTrue();
+        assertThat(bService.findAllElements(-1).size() == 0).isTrue();
     }
 
     private BudgetElementProvider getSavedForTestCleanBudgetElementProvider() {
@@ -358,23 +343,21 @@ public class BudgetServiceIT {
 
         assertThat(bService.isElementProviderUnique(bep.getBudget().getId(), savedElementProvider.getName())).isFalse();
         assertThat(bService.isElementProviderUnique(bep.getBudget().getId(), ModelTestData.getElementProvider2().getName())).isTrue();
+        assertThat(bService.isElementProviderUnique(0, null)).isFalse();
+        assertThat(bService.isElementProviderUnique(-1, null)).isFalse();
     }
 
-
-    @Test(expected = ValidationException.class)
-    public void whenProviderInvalidAddElementProviderThrowException() {
+    @Test
+    public void findElementProviderByName() {
         BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
-        ElementProvider provider = ModelTestData.getElementProvider1();
+        ElementProvider expected = ModelTestData.getElementProvider1();
+        bService.addElementProvider(bep.getBudget().getId(), expected);
 
-        provider.setName("");
+        ElementProvider actual = bService.findElementProviderByName(bep.getBudget().getId(), expected.getName());
 
-        bService.addElementProvider(bep.getBudget().getId(), provider);
-    }
-
-    private int countElementProvidersInBudget(Budget budget) {
-        return bepRepository.findByBudgetId(budget.getId())
-                .map(bep -> bep.getElementProviders().size())
-                .orElse(0);
+        assertThat(actual).isEqualTo(expected);
+        assertThat(bService.findElementProviderByName(0, null)).isNull();
+        assertThat(bService.findElementProviderByName(-1, null)).isNull();
     }
 
     @Test
@@ -390,6 +373,9 @@ public class BudgetServiceIT {
         assertThat(bService.addElementProvider(bep.getBudget().getId(), provider1)).isTrue();
         assertThat(bService.addElementProvider(bep.getBudget().getId(), provider2)).isTrue();
         assertThat(bService.addElementProvider(bep.getBudget().getId(), provider3)).isFalse();
+        assertThat(bService.addElementProvider(0, provider3)).isFalse();
+        assertThat(bService.addElementProvider(-1, null)).isFalse();
+        assertThat(bService.addElementProvider(1, null)).isFalse();
 
         int providersAfterAdd = countElementProvidersInBudget(bep.getBudget());
         assertThat(providersAfterAdd == (providersBeforeAdd + 2)).isTrue();
@@ -411,6 +397,16 @@ public class BudgetServiceIT {
         assertThat(elementsAfter.size() == (elementsBefore.size() + 1)).isTrue();
     }
 
+    @Test(expected = ValidationException.class)
+    public void whenProviderInvalidAddElementProviderThrowException() {
+        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
+        ElementProvider provider = ModelTestData.getElementProvider1();
+
+        provider.setName("");
+
+        bService.addElementProvider(bep.getBudget().getId(), provider);
+    }
+
     @Test
     public void removeElementProvider() {
         BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
@@ -419,6 +415,8 @@ public class BudgetServiceIT {
         int providersBeforeRemove = countElementProvidersInBudget(bep.getBudget());
 
         assertThat(bService.removeElementProvider(bep.getBudget().getId(), provider.getId())).isTrue();
+        assertThat(bService.removeElementProvider(0, 0)).isFalse();
+        assertThat(bService.removeElementProvider(-1, -1)).isFalse();
 
         int providersAfterRemove = countElementProvidersInBudget(bep.getBudget());
         assertThat(providersAfterRemove == (providersBeforeRemove - 1)).isTrue();
@@ -441,24 +439,10 @@ public class BudgetServiceIT {
         assertThat(elementsAfter.size() == (elementsBefore.size() - 1)).isTrue();
     }
 
-    @Test
-    public void findElementProviderByName() {
-        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
-        ElementProvider expected = ModelTestData.getElementProvider1();
-        bService.addElementProvider(bep.getBudget().getId(), expected);
-
-        ElementProvider actual = bService.findElementProviderByName(bep.getBudget().getId(), expected.getName());
-
-        assertThat(actual).isEqualTo(expected);
-    }
-
-    @Test
-    public void whenNameNotExistFindElementProviderByNameReturnNull() {
-        BudgetElementProvider bep = getSavedForTestCleanBudgetElementProvider();
-
-        ElementProvider actual = bService.findElementProviderByName(bep.getBudget().getId(), ModelTestData.getElementProvider1().getName());
-
-        assertThat(actual).isNull();
+    private int countElementProvidersInBudget(Budget budget) {
+        return bepRepository.findByBudgetId(budget.getId())
+                .map(bep -> bep.getElementProviders().size())
+                .orElse(0);
     }
 
     @Test
@@ -470,6 +454,8 @@ public class BudgetServiceIT {
         bService.addElementProvider(bep.getBudget().getId(), provider2);
 
         assertThat(bService.findAllElementProviders(bep.getBudget().getId()).size() == 2).isTrue();
+        assertThat(bService.findAllElementProviders(0).size() == 0).isTrue();
+        assertThat(bService.findAllElementProviders(-1).size() == 0).isTrue();
     }
 
     private Operation getValidOperationWithNestedPositiveId() {
@@ -541,20 +527,6 @@ public class BudgetServiceIT {
     }
 
     @Test
-    public void findAllOperation() {
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-
-        User user = uService.saveUser(ModelTestData.getUser1());
-        Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
-        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
-
-        bService.addOperation(savedBudget.getId(), op1);
-
-        assertThat(bService.findAllOperations(savedBudget.getId()).size() == 1).isTrue();
-    }
-
-    @Test
     public void addOperation() {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
@@ -570,6 +542,9 @@ public class BudgetServiceIT {
 
         bService.addOperation(savedBudget.getId(), op2);
         assertThat(bService.findAllOperations(savedBudget.getId()).size() == 2).isTrue();
+
+        assertThat(bService.addOperation(0, null)).isFalse();
+        assertThat(bService.addOperation(-1, null)).isFalse();
     }
 
     @Test
@@ -704,6 +679,8 @@ public class BudgetServiceIT {
 
         bService.removeOperation(savedBudget.getId(), op1.getId());
         assertThat(bService.findAllOperations(savedBudget.getId()).size() == 0).isTrue();
+        assertThat(bService.removeOperation(0, 0)).isFalse();
+        assertThat(bService.removeOperation(-1, -1)).isFalse();
     }
 
     @Test
@@ -765,7 +742,23 @@ public class BudgetServiceIT {
     }
 
     @Test
-    public void findOperationByElement() {
+    public void findAllOperations() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eRepository.save(ModelTestData.getElement1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user, element, provider, ModelTestData.getPrice1());
+
+        bService.addOperation(savedBudget.getId(), op1);
+
+        assertThat(bService.findAllOperations(savedBudget.getId()).size() == 1).isTrue();
+        assertThat(bService.findAllOperations(0).size() == 0).isTrue();
+        assertThat(bService.findAllOperations(-1).size() == 0).isTrue();
+    }
+
+    @Test
+    public void findOperationsByElement() {
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element forSearch = eRepository.save(ModelTestData.getElement1());
@@ -780,6 +773,8 @@ public class BudgetServiceIT {
         bService.addOperation(budget.getId(), op3);
 
         assertThat(bService.findOperationsByElement(budget.getId(), forSearch.getId()).size() == 2).isTrue();
+        assertThat(bService.findOperationsByElement(0, 0).size() == 0).isTrue();
+        assertThat(bService.findOperationsByElement(-1, -1).size() == 0).isTrue();
     }
 
     @Test
@@ -798,24 +793,9 @@ public class BudgetServiceIT {
         bService.addOperation(budget.getId(), op3);
 
         assertThat(bService.findOperationsByElementProvider(budget.getId(), provider1.getId()).size() == 2).isTrue();
-    }
+        assertThat(bService.findOperationsByElementProvider(0, 0).size() == 0).isTrue();
+        assertThat(bService.findOperationsByElementProvider(-1, -1).size() == 0).isTrue();
 
-    @Test
-    public void findOperationsByUser() {
-        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
-        User user1 = uService.saveUser(ModelTestData.getUser1());
-        User user2 = uService.saveUser(ModelTestData.getUser2());
-        Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
-        Operation op1 = bService.createOperation(user1, element, provider, ModelTestData.getPrice1());
-        Operation op2 = bService.createOperation(user1, element, provider, ModelTestData.getPrice1());
-        Operation op3 = bService.createOperation(user2, element, provider, ModelTestData.getPrice1());
-
-        bService.addOperation(budget.getId(), op1);
-        bService.addOperation(budget.getId(), op2);
-        bService.addOperation(budget.getId(), op3);
-
-        assertThat(bService.findOperationsByUser(budget.getId(), user1.getId()).size() == 2).isTrue();
     }
 
     @Test
@@ -839,6 +819,10 @@ public class BudgetServiceIT {
         bService.addOperation(budget.getId(), op3);
 
         assertThat(bService.findOperationsBetweenDates(budget.getId(), from, to).size() == 2).isTrue();
+        assertThat(bService.findOperationsBetweenDates(budget.getId(), null, to).size() == 0).isTrue();
+        assertThat(bService.findOperationsBetweenDates(budget.getId(), from, null).size() == 0).isTrue();
+        assertThat(bService.findOperationsBetweenDates(0, from, to).size() == 0).isTrue();
+        assertThat(bService.findOperationsBetweenDates(-1, from, to).size() == 0).isTrue();
     }
 
     @Test(expected = IntervalRuntimeException.class)
@@ -874,6 +858,10 @@ public class BudgetServiceIT {
         bService.addOperation(budget.getId(), op3);
 
         assertThat(bService.findOperationsBetweenPrices(budget.getId(), from, to).size() == 2).isTrue();
+        assertThat(bService.findOperationsBetweenPrices(budget.getId(), null, to).size() == 0).isTrue();
+        assertThat(bService.findOperationsBetweenPrices(budget.getId(), from, null).size() == 0).isTrue();
+        assertThat(bService.findOperationsBetweenPrices(0, from, to).size() == 0).isTrue();
+        assertThat(bService.findOperationsBetweenPrices(-1, from, to).size() == 0).isTrue();
     }
 
     @Test(expected = IntervalRuntimeException.class)
@@ -886,5 +874,25 @@ public class BudgetServiceIT {
         to.setAmount(BigDecimal.ZERO);
 
         bService.findOperationsBetweenPrices(budget.getId(), from, to);
+    }
+
+    @Test
+    public void findOperationsByUser() {
+        Budget budget = bService.saveBudget(ModelTestData.getBudget1());
+        User user1 = uService.saveUser(ModelTestData.getUser1());
+        User user2 = uService.saveUser(ModelTestData.getUser2());
+        Element element = eRepository.save(ModelTestData.getElement1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Operation op1 = bService.createOperation(user1, element, provider, ModelTestData.getPrice1());
+        Operation op2 = bService.createOperation(user1, element, provider, ModelTestData.getPrice1());
+        Operation op3 = bService.createOperation(user2, element, provider, ModelTestData.getPrice1());
+
+        bService.addOperation(budget.getId(), op1);
+        bService.addOperation(budget.getId(), op2);
+        bService.addOperation(budget.getId(), op3);
+
+        assertThat(bService.findOperationsByUser(budget.getId(), user1.getId()).size() == 2).isTrue();
+        assertThat(bService.findOperationsByUser(0, 0).size() == 0).isTrue();
+        assertThat(bService.findOperationsByUser(-1, 0 - 1).size() == 0).isTrue();
     }
 }
