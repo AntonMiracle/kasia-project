@@ -111,7 +111,7 @@ public class OperationServiceImp implements OperationService {
         bService.saveBudget(budget);
 
         optional.get().getOperations().remove(operation);
-
+        oRepository.delete(operation);
         boValidation.verifyValidation(optional.get());
         boRepository.save(optional.get());
 

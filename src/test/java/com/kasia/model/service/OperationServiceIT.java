@@ -275,6 +275,21 @@ public class OperationServiceIT {
     }
 
     @Test
+    public void removeOperationDeleteItFromRepository() {
+        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
+        User user = uService.saveUser(ModelTestData.getUser1());
+        Element element = eRepository.save(ModelTestData.getElement1());
+        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Operation op1 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
+        oService.addOperation(savedBudget.getId(), op1);
+        assertThat(oService.findAllOperations(savedBudget.getId()).size() == 1).isTrue();
+
+        assertThat(oRepository.findById(op1.getId()).orElse(null)).isEqualTo(op1);
+        assertThat(oService.removeOperation(savedBudget.getId(), op1.getId())).isTrue();
+        assertThat(oRepository.findById(op1.getId()).orElse(null)).isNull();
+    }
+
+    @Test
     public void removeOperationUpdateBudgetBalance() {
         Budget budget = ModelTestData.getBudget1();
         budget.getBalance().setCurrencies(Currencies.EUR);
