@@ -89,7 +89,9 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User createUser(String email, String name, String password, ZoneId zoneId, Locale locale) {
+    public User createUser(String email, String name, String password, String zoneIdString, String localeLang, String localeCountry) {
+        Locale locale = localeOf(localeLang, localeCountry);
+        ZoneId zoneId = zoneIdOf(zoneIdString);
         User user = new User(email, name, password, zoneId, LocalDateTime.now().withNano(0), Role.USER, false, locale);
         uValidation.verifyValidation(user);
         return user;

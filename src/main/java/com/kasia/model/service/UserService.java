@@ -21,7 +21,7 @@ public interface UserService {
 
     Set<User> findAllUsers();
 
-    User createUser(String email, String name, String password, ZoneId zoneId, Locale locale) throws ValidationException;
+    User createUser(String email, String name, String password, String zoneId, String localeLang, String localeCountry) throws ValidationException;
 
     boolean isUserEmailUnique(String email);
 
