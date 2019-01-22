@@ -61,24 +61,24 @@ public class FieldNameTest {
 
     @Test
     public void userDTOFieldNameCorrect() {
-        Set<String> currentFieldsName = Arrays.stream(UserDTO.class.getDeclaredFields())
+        Set<String> expectedFieldsName = Arrays.stream(UserDTO.class.getDeclaredFields())
                 .map(field -> field.getName())
                 .collect(Collectors.toCollection(HashSet<String>::new));
-        String email = FieldName.USER_DTO_EMAIL.getName();
-        String name = FieldName.USER_DTO_NAME.getName();
-        String password = FieldName.USER_DTO_PASSWORD.getName();
-        String confirm = FieldName.USER_DTO_CONFIRM.getName();
-        String zoneid = FieldName.USER_DTO_ZONEID.getName();
-        String lang = FieldName.USER_DTO_LANG.getName();
-        String country = FieldName.USER_DTO_COUNTRY.getName();
+        Set<String> currentFieldName = new HashSet<>();
+        currentFieldName.add(FieldName.USER_DTO_EMAIL.getName());
+        currentFieldName.add(FieldName.USER_DTO_NAME.getName());
+        currentFieldName.add(FieldName.USER_DTO_PASSWORD.getName());
+        currentFieldName.add(FieldName.USER_DTO_CONFIRM.getName());
+        currentFieldName.add(FieldName.USER_DTO_ZONEID.getName());
+        currentFieldName.add(FieldName.USER_DTO_LANG.getName());
+        currentFieldName.add(FieldName.USER_DTO_COUNTRY.getName());
 
-        assertThat(currentFieldsName.contains(email)).isTrue();
-        assertThat(currentFieldsName.contains(name)).isTrue();
-        assertThat(currentFieldsName.contains(password)).isTrue();
-        assertThat(currentFieldsName.contains(confirm)).isTrue();
-        assertThat(currentFieldsName.contains(zoneid)).isTrue();
-        assertThat(currentFieldsName.contains(lang)).isTrue();
-        assertThat(currentFieldsName.contains(country)).isTrue();
+        assertThat(currentFieldName.size()).isEqualTo(expectedFieldsName.size());
+        for (String name : currentFieldName) {
+            if (expectedFieldsName.contains(name)) {
+                expectedFieldsName.remove(name);
+            }
+        }
     }
 
 }
