@@ -11,15 +11,15 @@
 <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
 <form action="#" th:action="@{/registration}" th:object="${userDTO}" method="post">
     <table>
-        <th><h1>REGISTRATION</h1></th>
+        <th><h1 th:text="#{label.registration}"></h1></th>
         <tr>
             <td th:text="#{email}"></td>
-            <td><input type="text" th:field="*{email}" placeholder="Between 1 and 32 characters"/></td>
+            <td><input type="text" th:field="*{email}" th:placeholder="#{tip.email}"/></td>
             <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
         </tr>
         <tr>
             <td th:text="#{password}"></td>
-            <td><input type="password" th:field="*{password}"/></td>
+            <td><input type="password" th:field="*{password}" th:placeholder="#{tip.password}"/></td>
             <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</td>
         </tr>
         <tr>
@@ -29,14 +29,21 @@
         </tr>
         <tr>
             <td th:text="#{name}"></td>
-            <td><input type="text" th:field="*{name}"/></td>
+            <td><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
             <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">password Error</td>
         </tr>
         <tr>
-            <td colspan="2"><input type="submit" th:value="#{confirm}"/></td>
+            <input id="inputZoneId" type="hidden" name="zoneId"/>
+            <input type="hidden" th:value="${#locale.language}" name="lang"/>
+            <input type="hidden" th:value="${#locale.country}" name="country"/>
+            <td colspan="2"><input type="submit" th:value="#{complete}"/></td>
+            <td colspan="2"><input type="submit" name="back" th:value="#{back}"/></td>
         </tr>
     </table>
 </form>
 
+<script th:inline="javascript">
+    document.getElementById("inputZoneId").value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+</script>
 </body>
 </html>
