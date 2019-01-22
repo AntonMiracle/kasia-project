@@ -1,5 +1,6 @@
 package com.kasia;
 
+import com.kasia.controller.dto.UserDTO;
 import com.kasia.model.*;
 
 import java.math.BigDecimal;
@@ -142,4 +143,18 @@ final public class ModelTestData {
     public static Locale getDefaultLocale() {
         return new Locale("pl", "PL");
     }
+
+    public static UserDTO getUserDto1() {
+        UserDTO dto = new UserDTO();
+        User u = ModelTestData.getUser1();
+        dto.setConfirm(u.getPassword());
+        dto.setCountry(u.getLocale().getCountry());
+        dto.setEmail(u.getEmail());
+        dto.setLang(u.getLocale().getLanguage());
+        dto.setName(u.getName());
+        dto.setPassword(u.getPassword());
+        dto.setZoneId(u.getZoneId().toString());
+        return dto;
+    }
+
 }

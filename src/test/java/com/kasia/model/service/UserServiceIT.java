@@ -51,7 +51,8 @@ public class UserServiceIT {
         User expected = ModelTestData.getUser1();
 
         User actual = uService.createUser(expected.getEmail(), expected.getName()
-                , expected.getPassword(), expected.getZoneId(), expected.getLocale());
+                , expected.getPassword(), expected.getZoneId().toString()
+                , expected.getLocale().getLanguage(),expected.getLocale().getCountry());
 
         assertThat(actual.getId() == 0).isTrue();
         assertThat(actual.getName()).isEqualTo(expected.getName());
