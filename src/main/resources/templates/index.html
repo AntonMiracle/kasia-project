@@ -3,10 +3,26 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link content="text/html" th:href="@{/css/style.css}" rel="stylesheet" />
+    <title th:text="#{label.kasia}"></title>
+    <link content="text/html" th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
-Index html
+<h1>KASIA</h1>
+<form th:action="@{/login}" method="post">
+    <table>
+        <tr>
+            <td th:text="#{email}"></td>
+            <td><input type="text" name="username"/></td>
+        </tr>
+        <tr>
+            <td th:text="#{password}"></td>
+            <td><input type="password" name="password"/></td>
+        </tr>
+        <tr>
+            <td><input type="submit" th:value="#{button.login}"/></td>
+            <td><input type="submit" th:value="#{button.registration}" name="registration"/></td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>

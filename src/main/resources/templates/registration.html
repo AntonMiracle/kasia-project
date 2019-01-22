@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title th:text="#{label.registration}"></title>
     <link content="text/html" th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
@@ -36,8 +36,8 @@
             <input id="inputZoneId" type="hidden" name="zoneId"/>
             <input type="hidden" th:value="${#locale.language}" name="lang"/>
             <input type="hidden" th:value="${#locale.country}" name="country"/>
-            <td colspan="2"><input type="submit" th:value="#{complete}"/></td>
-            <td colspan="2"><input type="submit" name="back" th:value="#{back}"/></td>
+            <td colspan="2"><input type="submit" th:value="#{button.complete}"/></td>
+            <td colspan="2"><input type="submit" th:value="#{button.back}" name="back"/></td>
         </tr>
     </table>
 </form>
