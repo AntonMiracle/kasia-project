@@ -53,6 +53,7 @@ public class UserServiceImp implements UserService {
             if (!isUserNameUnique(model.getName())) throw new UserNameExistRuntimeException();
             if (!isUserEmailUnique(model.getEmail())) throw new EmailExistRuntimeException();
             activate(model);
+            model.setPassword(cryptPassword(model.getPassword()));
             return uRepository.save(model);
         }
         if (model.getId() > 0) {

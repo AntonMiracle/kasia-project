@@ -52,7 +52,7 @@ public class UserServiceIT {
 
         User actual = uService.createUser(expected.getEmail(), expected.getName()
                 , expected.getPassword(), expected.getZoneId().toString()
-                , expected.getLocale().getLanguage(),expected.getLocale().getCountry());
+                , expected.getLocale().getLanguage(), expected.getLocale().getCountry());
 
         assertThat(actual.getId() == 0).isTrue();
         assertThat(actual.getName()).isEqualTo(expected.getName());
@@ -80,11 +80,13 @@ public class UserServiceIT {
     @Test
     public void saveNewUser() {
         User expected = ModelTestData.getUser1();
+        String cryptPass = uService.cryptPassword(expected.getPassword());
 
         uService.saveUser(expected);
 
         User actual = uService.findUserById(expected.getId());
         assertThat(actual).isEqualTo(expected);
+        assertThat(actual.getPassword()).isEqualTo(cryptPass);
     }
 
     @Test(expected = ValidationException.class)
