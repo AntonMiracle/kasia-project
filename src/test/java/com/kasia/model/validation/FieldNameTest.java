@@ -1,5 +1,6 @@
 package com.kasia.model.validation;
 
+import com.kasia.controller.dto.UserDTO;
 import com.kasia.model.Budget;
 import com.kasia.model.ElementProvider;
 import com.kasia.model.User;
@@ -56,6 +57,28 @@ public class FieldNameTest {
         String name = FieldName.ELEMENT_NAME.getName();
 
         assertThat(currentFieldsName.contains(name)).isTrue();
+    }
+
+    @Test
+    public void userDTOFieldNameCorrect() {
+        Set<String> currentFieldsName = Arrays.stream(UserDTO.class.getDeclaredFields())
+                .map(field -> field.getName())
+                .collect(Collectors.toCollection(HashSet<String>::new));
+        String email = FieldName.USER_DTO_EMAIL.getName();
+        String name = FieldName.USER_DTO_NAME.getName();
+        String password = FieldName.USER_DTO_PASSWORD.getName();
+        String confirm = FieldName.USER_DTO_CONFIRM.getName();
+        String zoneid = FieldName.USER_DTO_ZONEID.getName();
+        String lang = FieldName.USER_DTO_LANG.getName();
+        String country = FieldName.USER_DTO_COUNTRY.getName();
+
+        assertThat(currentFieldsName.contains(email)).isTrue();
+        assertThat(currentFieldsName.contains(name)).isTrue();
+        assertThat(currentFieldsName.contains(password)).isTrue();
+        assertThat(currentFieldsName.contains(confirm)).isTrue();
+        assertThat(currentFieldsName.contains(zoneid)).isTrue();
+        assertThat(currentFieldsName.contains(lang)).isTrue();
+        assertThat(currentFieldsName.contains(country)).isTrue();
     }
 
 }

@@ -7,6 +7,15 @@ public enum FieldName {
     , BUDGET_NAME("name")
     , ELEMENT_PROVIDER_NAME("name")
     , ELEMENT_NAME("name")
+
+    , USER_DTO_EMAIL("email")
+    , USER_DTO_NAME("name")
+    , USER_DTO_PASSWORD("password")
+    , USER_DTO_CONFIRM("password")
+    , USER_DTO_ZONEID("zoneId")
+    , USER_DTO_LANG("zoneId")
+    , USER_DTO_COUNTRY("country")
+
     ;
 
     private final String name;
