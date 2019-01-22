@@ -1,8 +1,8 @@
 package com.kasia.controller.dto.validator;
 
+import com.kasia.controller.dto.validator.constraint.UserDTOPasswordIsValid;
 import com.kasia.model.validation.FieldName;
 import com.kasia.model.validation.UserValidation;
-import com.kasia.controller.dto.validator.constraint.UserDTOPasswordIsValid;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
