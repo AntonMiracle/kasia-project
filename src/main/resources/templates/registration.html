@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link content="text/html" th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
+<form action="#" th:action="@{/registration}" th:object="${userDTO}" method="post">
+<table>
+    <tr>
+        <td th:text="#{email}"></td>
+        <td><input type="text" th:field="*{email}" placeholder="Between 1 and 32 characters"/></td>
+        <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
+    </tr>
+    <tr>
+        <td th:text="#{password}"></td>
+        <td><input type="password" th:field="*{password}"/></td>
+        <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</td>
+    </tr>
+    <tr>
+        <td th:text="#{confirm}"></td>
+        <td><input type="password" th:field="*{confirm}"/></td>
+        <td th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">confirm Error</td>
+    </tr>
+    <tr>
+        <td th:text="#{name}"></td>
+        <td><input type="text" th:field="*{name}"/></td>
+        <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">password Error</td>
+    </tr>
+    <tr><td colspan="2"><input type="submit" th:value="#{confirm}"/></td></tr>
+</table>
+</form>
+
+</body>
+</html>

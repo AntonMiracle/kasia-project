@@ -32,4 +32,5 @@ public interface Validation<T extends Model> {
     default void verifyPositiveId(long id) throws IdInvalidRuntimeException {
         if (id <= 0) throw new IdInvalidRuntimeException();
     }
+
 }
