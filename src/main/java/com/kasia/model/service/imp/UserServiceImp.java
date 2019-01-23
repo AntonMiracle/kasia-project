@@ -318,6 +318,10 @@ public class UserServiceImp implements UserService {
         return !(ucb == null || ucb.getConnectBudgets() == null) && ucb.getConnectBudgets().contains(budget);
     }
 
+    /*====================================
+    Configuration for spring sec
+     ====================================*/
+
     @Override/*method to work with Spring security from UserDetailsService*/
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = findUserByEmail(s);
@@ -339,4 +343,8 @@ public class UserServiceImp implements UserService {
         String actual = cryptPassword(charSequence.toString());
         return actual.equals(expected);
     }
+
+    /*====================================
+    END
+     ====================================*/
 }
