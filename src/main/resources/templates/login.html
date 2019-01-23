@@ -4,35 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{label.kasia}"></title>
-    <link content="text/html" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Cinzel Decorative" rel='stylesheet'/>
+    <link href="https://fonts.googleapis.com/css?family=Cutive" rel='stylesheet'/>
 </head>
-<h1>KASIA</h1>
-<div th:if="${param.error}" th:text="#{text.login.error}"></div>
-<div th:if="${param.logout}" th:text="#{text.logout}"></div>
-<div th:if="${param.registration}" th:text="#{text.registration.success}"></div>
-<form th:action="@{/login}" method="post">
-    <table>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<h1 th:class="kasiaClass">KASIA</h1>
+
+<div th:class="errorClass" th:if="${param.error}" th:text="#{text.login.error}"></div>
+<div th:class="successClass" th:if="${param.logout}" th:text="#{text.logout}"></div>
+<div th:class="successClass" th:if="${param.registration}" th:text="#{text.registration.success}"></div>
+
+<table th:class="loginTable">
+    <form th:action="@{/login}" method="post">
         <tr>
             <td th:text="#{email}"></td>
+        </tr>
+        <tr>
             <td><input type="text" name="username"/></td>
         </tr>
         <tr>
             <td th:text="#{password}"></td>
+        </tr>
+        <tr>
             <td><input type="password" name="password"/></td>
         </tr>
         <tr>
-            <td>
-                <button type="submit" th:text="#{button.login}"></button>
-            </td>
-            <td>
-
+            <td colspan="2">
+                <button class="button" type="submit" th:text="#{button.login}"></button>
             </td>
         </tr>
-    </table>
-</form>
-<form th:action="@{/registration}" method="get">
-    <button type="submit" th:text="#{button.registration}"></button>
-</form>
-
+    </form>
+</table>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

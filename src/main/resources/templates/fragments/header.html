@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="header" th:fragment="header">
+    <div>
+        <form th:action="@{/registration}" method="get">
+            <button class="button" type="submit" th:text="#{button.registration}"></button>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>
