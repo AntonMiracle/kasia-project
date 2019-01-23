@@ -18,7 +18,6 @@ public class RegistrationController {
     @Autowired
     private UserService uService;
 
-
     @GetMapping
     public String injectUserDTO(UserDTO dto) {
         return "registration";
@@ -31,40 +30,11 @@ public class RegistrationController {
         User user = uService.createUser(dto.getEmail(), dto.getName(), dto.getPassword()
                 , dto.getZoneId(), dto.getLang(), dto.getCountry());
         user = uService.saveUser(user);
-        System.out.println(user);
-        return "redirect:index";
+        return "redirect:login";
     }
 
     @PostMapping(params = "back")
     public String back() {
-        return "redirect:index";
+        return "redirect:login";
     }
-//
-//    @GetMapping(value = "/users/{user}")
-//    public User findUserById(@PathVariable Long user) {
-//        return uService.findUserById(user);
-//    }
-//
-//    @GetMapping(value = "/users/name/{name}")
-//    public User findUserByName(@PathVariable String name) {
-//        return uService.findUserByName(name);
-//    }
-//
-//    @GetMapping(value = "/users/email/{email}")
-//    public User findUserByEmail(@PathVariable String email) {
-//        return uService.findUserByEmail(email);
-//    }
-//
-//    @DeleteMapping(value = "/users/{user}")
-//    public boolean deleteUser(@PathVariable Long user) {
-//        return uService.deleteUser(user);
-//    }
-
-    @PutMapping(value = "/users/new")
-    public User saveNew(@RequestBody UserDTO dto) {
-        User user = uService.createUser(dto.getEmail(), dto.getName(), dto.getPassword()
-                , dto.getZoneId(), dto.getLang(), dto.getCountry());
-        return uService.saveUser(user);
-    }
-
 }
