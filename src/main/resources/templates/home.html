@@ -10,7 +10,7 @@
 <h1>HOME html</h1>
 
 <form th:action="@{/logout}" method="post">
-    <td><input type="submit" th:value="#{button.logout}"/></td>
+    <td><button type="submit" th:text="#{button.logout}"></button></td>
 </form>
 
 </body>

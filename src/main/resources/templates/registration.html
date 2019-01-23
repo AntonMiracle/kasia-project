@@ -36,8 +36,8 @@
             <input id="inputZoneId" type="hidden" name="zoneId"/>
             <input type="hidden" th:value="${#locale.language}" name="lang"/>
             <input type="hidden" th:value="${#locale.country}" name="country"/>
-            <td colspan="2"><input type="submit" th:value="#{button.complete}"/></td>
-            <td colspan="2"><input type="submit" th:value="#{button.back}" name="back"/></td>
+            <td colspan="2"><button type="submit" th:text="#{button.complete}"></button></td>
+            <td colspan="2"><button type="submit" th:text="#{button.back}" name="back"></button></td>
         </tr>
     </table>
 </form>

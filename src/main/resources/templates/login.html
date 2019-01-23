@@ -6,14 +6,10 @@
     <title th:text="#{label.kasia}"></title>
     <link content="text/html" th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
-<body>
 <h1>KASIA</h1>
-<!--<div th:if="${param.error}">-->
-    <!--Invalid username and password.-->
-<!--</div>-->
-<!--<div th:if="${param.logout}">-->
-    <!--You have been logged out.-->
-<!--</div>-->
+<div th:if="${param.error}" th:text="#{text.login.error}"></div>
+<div th:if="${param.logout}" th:text="#{text.logout}"></div>
+<div th:if="${param.registration}" th:text="#{text.registration.success}"></div>
 <form th:action="@{/login}" method="post">
     <table>
         <tr>
@@ -25,10 +21,17 @@
             <td><input type="password" name="password"/></td>
         </tr>
         <tr>
-            <td><input type="submit" th:value="#{button.login}"/></td>
-            <td><input type="submit" th:value="#{button.registration}" name="registration"/></td>
+            <td>
+                <button type="submit" th:text="#{button.login}"></button>
+            </td>
+            <td>
+
+            </td>
         </tr>
     </table>
+</form>
+<form th:action="@{/registration}" method="get">
+    <button type="submit" th:text="#{button.registration}"></button>
 </form>
 
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
