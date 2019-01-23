@@ -9,20 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @EnableAutoConfiguration
 @RequestMapping("/login")
-public class LoginController  {
+public class LoginController {
 
-    @PostMapping(params = "registration")
+    @PostMapping(params = "registration=registration")
     public String registration() {
+        System.out.println("=========== LoginController#registration");
         return "registration";
-    }
-
-    @PostMapping
-    public String login() {
-        return "home";
     }
 
     @GetMapping
     public String enter() {
+        System.out.println("=========== LoginController#enter");
         return "login";
     }
 }

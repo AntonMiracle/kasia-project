@@ -20,7 +20,7 @@ public class RegistrationController {
 
     @GetMapping
     public String injectUserDTO(UserDTO dto) {
-        return "registration";
+        return "sregistration";
     }
 
     @PostMapping
@@ -29,8 +29,8 @@ public class RegistrationController {
 
         User user = uService.createUser(dto.getEmail(), dto.getName(), dto.getPassword()
                 , dto.getZoneId(), dto.getLang(), dto.getCountry());
-        user = uService.saveUser(user);
-        return "redirect:login";
+        uService.saveUser(user);
+        return "redirect:login?registration";
     }
 
     @PostMapping(params = "back")

@@ -17,7 +17,10 @@ public class MyUserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority(user.getRole().toString()));
+        System.out.println("=========== MyUserDetail#getAuthorities");
+        String necessarilyAdd = "ROLE_"; /*to correct representation roles in spring sec*/
+        SimpleGrantedAuthority sga = new SimpleGrantedAuthority(necessarilyAdd + user.getRole().toString());
+        return Arrays.asList(sga);
     }
 
     @Override

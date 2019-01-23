@@ -21,10 +21,12 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @PostConstruct
     public void init() {
-        System.out.println(uService.getClass().toString());
         User user = uService.createUser("anton@gmail.com", "Anton", "Password2",
                 "Warszawa", "ru", "RU");
         uService.saveUser(user);
+
+        System.out.println("=============== user for manual testing : anton@gmail.com  Password2");
+        System.out.println("===this is in MvcConfig#init");
         System.out.println(user);
     }
 

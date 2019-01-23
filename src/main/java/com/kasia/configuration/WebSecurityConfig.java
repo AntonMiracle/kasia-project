@@ -22,9 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/", "/login", "/registration", "/css/**").permitAll()
-                .anyRequest()
-                .authenticated()
-//                .antMatchers("/home").hasRole(Role.USER.toString())
+                .antMatchers("/**").hasRole(Role.USER.toString())
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -33,18 +31,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll();
-    }
 
-    @Bean/* controlling authentication with setting up own UserDetailsService and passwordEncoder implementation in my UserService*/
-    public DaoAuthenticationProvider authProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(uService);
-        authProvider.setPasswordEncoder(uService);
-        return authProvider;
-    }
+        http.csrf();
 
-    @Override/* setting up in Spring our configuration of authentication*/
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authProvider());
+        http.sessionManagement();
+
+        http.userDetailsService(uService); /*add class which implement UserDetails, PasswordEncoder*/
     }
 }
