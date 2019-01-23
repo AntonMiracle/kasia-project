@@ -4,8 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{label.home}"></title>
+    <link content="text/html" th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
 <h1>HOME html</h1>
+
+<form th:action="@{/logout}" method="post">
+    <td><input type="submit" th:value="#{button.logout}"/></td>
+</form>
+
 </body>
 </html>
