@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Arrays;
 import java.util.Collection;
 
-/*Class to hold data for spring security*/
+/*Class to hold user data for spring security*/
 public class MyUserDetail implements UserDetails {
     private User user;
 
@@ -18,8 +18,8 @@ public class MyUserDetail implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         System.out.println("=========== MyUserDetail#getAuthorities");
-        String necessarilyAdd = "ROLE_"; /*to correct representation roles in spring sec*/
-        SimpleGrantedAuthority sga = new SimpleGrantedAuthority(necessarilyAdd + user.getRole().toString());
+        String necessaryToAddForSpringSecurity = "ROLE_"; /*to correct representation roles in spring sec*/
+        SimpleGrantedAuthority sga = new SimpleGrantedAuthority(necessaryToAddForSpringSecurity + user.getRole().toString());
         return Arrays.asList(sga);
     }
 
