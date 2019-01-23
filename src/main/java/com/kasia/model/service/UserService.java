@@ -5,13 +5,15 @@ import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.exception.UserNameExistRuntimeException;
 import com.kasia.model.Budget;
 import com.kasia.model.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.ValidationException;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.Set;
 
-public interface UserService {
+public interface UserService extends UserDetailsService, PasswordEncoder {
 
     User saveUser(User model) throws EmailExistRuntimeException, UserNameExistRuntimeException, ValidationException, IdInvalidRuntimeException;
 

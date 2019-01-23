@@ -14,6 +14,8 @@ import com.kasia.model.validation.UserBudgetValidation;
 import com.kasia.model.validation.UserConnectBudgetValidation;
 import com.kasia.model.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -316,4 +318,25 @@ public class UserServiceImp implements UserService {
         return !(ucb == null || ucb.getConnectBudgets() == null) && ucb.getConnectBudgets().contains(budget);
     }
 
+    @Override/*method to work with Spring security from UserDetailsService*/
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User user = findUserByEmail(s);
+        System.out.println("===================== load use by username");
+        System.out.println(user != null ? user : "null");
+        if (user != null) {
+            return new MyUserDetail(user);
+        }
+        throw new UsernameNotFoundException("need login");
+    }
+
+    @Override/*to customized encoding from PasswordEncoder*/
+    public String encode(CharSequence charSequence) {
+        return cryptPassword(charSequence.toString());
+    }
+
+    @Override/*to compare crypt pass with non crypt from PasswordEncoder*/
+    public boolean matches(CharSequence charSequence, String expected) {
+        String actual = cryptPassword(charSequence.toString());
+        return actual.equals(expected);
+    }
 }
