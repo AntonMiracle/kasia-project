@@ -338,8 +338,6 @@ public class UserServiceImp implements UserService {
     @Override/*method to work with Spring security from UserDetailsService*/
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = findUserByEmail(s);
-        System.out.println("===================== load use by username");
-        System.out.println(user != null ? user : "null");
         if (user != null) {
             return convertMyUserToSpringUserDetails(user);
         }

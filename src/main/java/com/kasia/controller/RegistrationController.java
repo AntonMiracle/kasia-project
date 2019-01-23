@@ -20,7 +20,7 @@ public class RegistrationController {
 
     @GetMapping
     public String injectUserDTO(UserDTO dto) {
-        return "sregistration";
+        return "registration";
     }
 
     @PostMapping
