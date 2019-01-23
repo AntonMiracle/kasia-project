@@ -14,6 +14,7 @@ import com.kasia.model.validation.UserBudgetValidation;
 import com.kasia.model.validation.UserConnectBudgetValidation;
 import com.kasia.model.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -322,13 +320,28 @@ public class UserServiceImp implements UserService {
     Configuration for spring sec
      ====================================*/
 
+    private UserDetails convertMyUserToSpringUserDetails(User myUser) {
+
+        String necessaryToAddForSpringSecurity = "ROLE_"; /*to correct representation roles in spring sec*/
+        SimpleGrantedAuthority sga = new SimpleGrantedAuthority(necessaryToAddForSpringSecurity + myUser.getRole().toString());
+
+        /*create UserDetails from spring User which implement UserDetails*/
+        org.springframework.security.core.userdetails.User springUserAndUserDetails =
+                new org.springframework.security.core.userdetails.User(
+                        myUser.getEmail(), myUser.getPassword()
+                        , myUser.isActivated(), true, true, true
+                        , Arrays.asList(sga));
+
+        return springUserAndUserDetails;
+    }
+
     @Override/*method to work with Spring security from UserDetailsService*/
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = findUserByEmail(s);
         System.out.println("===================== load use by username");
         System.out.println(user != null ? user : "null");
         if (user != null) {
-            return new MyUserDetail(user);
+            return convertMyUserToSpringUserDetails(user);
         }
         throw new UsernameNotFoundException("need login");
     }

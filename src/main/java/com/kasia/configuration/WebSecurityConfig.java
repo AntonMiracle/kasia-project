@@ -33,9 +33,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
 
         http.csrf();
-
-        http.sessionManagement();
-
-        http.userDetailsService(uService); /*add class which implement UserDetails, PasswordEncoder*/
     }
 }
