@@ -25,8 +25,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 "Warszawa", "ru", "RU");
         uService.saveUser(user);
 
-        System.out.println("=============== user for manual testing : anton@gmail.com  Password2");
-        System.out.println("===this is in MvcConfig#init");
+        System.out.println("=============== MvcConfig#init");
         System.out.println(user);
     }
 
