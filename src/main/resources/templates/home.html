@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{label.home}"></title>
-    <link content="text/html" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Cinzel Decorative" rel='stylesheet'/>
+    <link href="https://fonts.googleapis.com/css?family=Cutive" rel='stylesheet'/>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
 <h1>HOME html</h1>
 
-<form th:action="@{/logout}" method="post">
-    <td><button type="submit" th:text="#{button.logout}"></button></td>
-</form>
+
 
 </body>
 </html>

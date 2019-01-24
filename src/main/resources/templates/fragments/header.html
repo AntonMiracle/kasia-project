@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
 <div class="header" th:fragment="header">
-    <div>
+    <div sec:authorize="isAnonymous()">
         <form th:action="@{/registration}" method="get">
             <button class="button" type="submit" th:text="#{button.registration}"></button>
+        </form>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <form th:action="@{/logout}" method="post">
+            <button class="button" type="submit" th:text="#{button.logout}"></button>
         </form>
     </div>
 
