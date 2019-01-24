@@ -23,6 +23,7 @@ public class UserDTONameValidator implements ConstraintValidator<UserDTONameIsVa
 
         if (fieldValue == null || fieldValue.length() == 0
                 || !uValidation.isNameValid(fieldValue)
+                || fieldValue.equals("anonymousUser")
                 || !uService.isUserNameUnique(fieldValue)) {
             vUtil.addConstraintViolation(fieldName, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
             return false;
