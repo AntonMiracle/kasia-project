@@ -30,6 +30,8 @@ public class RegistrationController {
         User user = uService.createUser(dto.getEmail(), dto.getName(), dto.getPassword()
                 , dto.getZoneId(), dto.getLang(), dto.getCountry());
         uService.saveUser(user);
+        System.out.println("================== RegistrationController#getRegistrationData ");
+        System.out.println(user);
         return "redirect:login?registration";
     }
 
