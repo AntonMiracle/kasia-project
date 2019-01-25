@@ -20,13 +20,13 @@
 <table th:class="loginTable">
     <form th:action="@{/login}" method="post">
         <tr>
-            <td th:text="#{email}"></td>
+            <td th:id="loginInputName" th:text="#{email}"></td>
         </tr>
         <tr>
-            <td><input type="text" name="username"/></td>
+            <td><input type="text" name="username" th:autofocus="autofocus"/></td>
         </tr>
         <tr>
-            <td th:text="#{password}"></td>
+            <td th:id="loginInputName" th:text="#{password}"></td>
         </tr>
         <tr>
             <td><input type="password" name="password"/></td>

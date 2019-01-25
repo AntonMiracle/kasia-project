@@ -27,8 +27,8 @@ body {
 .button {
     margin: 3px;
     padding: 3px;
-    width: 120px;
-    height: 40px;
+    width: 150px;
+    height: 50px;
     border: 0px solid darkgreen;
     border-radius: 0px;
     background-color: rgba(255, 255, 255, 0.1);
@@ -45,7 +45,7 @@ body {
 
 .header {
     width: 100%;
-    height: 40px;
+    height: 50px;
     background-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -61,10 +61,10 @@ body {
 .footer {
     width: 100%;
     height: auto;
-    background-color: rgba(255, 255, 255, 0.4);
     text-align: center;
 }
 
+/*LOGIN*/
 .loginTable {
     margin: 15px;
     padding: 20px;
@@ -73,6 +73,19 @@ body {
     box-shadow: 0px 0px 10px 10px rgba(0, 100, 0, 0.1);
     display: inline-block;
     border-radius: 1px;
+}
+
+.loginTable td {
+    height: 40px;
+}
+
+.loginTable input {
+    width: 400px;
+    height: 30px;
+}
+
+#loginInputName {
+    vertical-align: bottom;
 }
 
 /*REGISTRATION*/
@@ -88,7 +101,7 @@ body {
 
 .registrationTable td {
     text-align: left;
-    height: 45px;
+    height: 40px;
 }
 
 .registrationTable input {
