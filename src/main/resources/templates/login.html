@@ -11,36 +11,41 @@
 <body>
 <div th:replace="fragments/header :: loginMenu"></div>
 
-<table style="display: inline-block">
-    <tr><td th:class="kasiaClass">KASIA</td></tr>
-    <tr><td id="kasiaBudget" th:text="#{text.kasia.budget}"></td></tr>
-</table>
 
 <div th:class="errorClass" th:if="${param.error}" th:text="#{text.login.error}"></div>
 <div th:class="successClass" th:if="${param.logout}" th:text="#{text.logout}"></div>
 <div th:class="successClass" th:if="${param.registration}" th:text="#{text.registration.success}"></div>
 
-<table th:class="loginTable">
-    <form th:action="@{/login}" method="post">
-        <tr>
-            <td th:id="loginInputName" th:text="#{email}"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="username" th:autofocus="autofocus"/></td>
-        </tr>
-        <tr>
-            <td th:id="loginInputName" th:text="#{password}"></td>
-        </tr>
-        <tr>
-            <td><input type="password" name="password"/></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button class="button" type="submit" th:text="#{button.login}"></button>
-            </td>
-        </tr>
-    </form>
+<table style="display: inline-block">
+    <tr><td th:class="kasiaClass">KASIA</td></tr>
+    <tr><td id="kasiaBudget" th:text="#{text.kasia.budget}"></td></tr>
+    <tr>
+        <td>
+            <table th:class="loginTable">
+                <form th:action="@{/login}" method="post">
+                    <tr>
+                        <td th:id="loginInputName" th:text="#{email}"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="username" th:autofocus="autofocus"/></td>
+                    </tr>
+                    <tr>
+                        <td th:id="loginInputName" th:text="#{password}"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="password" name="password"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button class="button" type="submit" th:text="#{button.login}"></button>
+                        </td>
+                    </tr>
+                </form>
+            </table>
+        </td>
+    </tr>
 </table>
+
 <div th:replace="fragments/footer :: loginFooter"></div>
 </body>
 </html>
