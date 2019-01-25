@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Cutive" rel='stylesheet'/>
 </head>
 <body>
+<div th:replace="fragments/header :: registrationMenuMenu"></div>
 
 <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
 <form action="#" th:action="@{/registration}" th:object="${userDTO}" method="post">
@@ -52,7 +53,6 @@
             <input type="hidden" th:value="${#locale.country}" name="country"/>
             <td th:id="registrationTdWithButton" th:colspan="2">
                 <button class="button" type="submit" th:text="#{button.complete}"></button>
-                <button class="button" type="submit" th:text="#{button.back}" name="back"></button>
             </td>
         </tr>
     </table>

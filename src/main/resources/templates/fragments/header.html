@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
 <body>
-<div class="header" th:fragment="header">
+<div class="header" th:fragment="loginMenu">
     <div sec:authorize="isAnonymous()">
         <form th:action="@{/registration}" method="get">
             <button class="button" type="submit" th:text="#{button.registration}"></button>
@@ -11,6 +11,13 @@
     <div sec:authorize="isAuthenticated()">
         <form th:action="@{/logout}" method="post">
             <button class="button" type="submit" th:text="#{button.logout}"></button>
+        </form>
+    </div>
+</div>
+<div class="header" th:fragment="registrationMenuMenu">
+    <div>
+        <form th:action="@{/registration}" method="post">
+            <button class="button" type="submit" th:text="#{button.back}" name="back"></button>
         </form>
     </div>
 
