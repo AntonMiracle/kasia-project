@@ -4,40 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="#{label.registration}"></title>
-    <link content="text/css" th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Cinzel Decorative" rel='stylesheet'/>
+    <link href="https://fonts.googleapis.com/css?family=Cutive" rel='stylesheet'/>
 </head>
 <body>
 
 <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
 <form action="#" th:action="@{/registration}" th:object="${userDTO}" method="post">
-    <table>
-        <th><h1 th:text="#{label.registration}"></h1></th>
+    <table th:class="registrationTable">
+        <th th:colspan="3"></td><h1 th:text="#{label.registration}"></h1></th>
         <tr>
-            <td th:text="#{email}"></td>
-            <td><input type="text" th:field="*{email}" th:placeholder="#{tip.email}"/></td>
-            <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
+            <td th:id="registrationInputName" th:text="#{email}"></td>
+            <td th:id="registrationInputError" th:class="errorClass" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
         </tr>
         <tr>
-            <td th:text="#{password}"></td>
-            <td><input type="password" th:field="*{password}" th:placeholder="#{tip.password}"/></td>
-            <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</td>
+            <td th:colspan="2"><input type="text" th:field="*{email}" th:placeholder="#{tip.email}"/></td>
+        </tr>
+
+        <tr>
+            <td th:id="registrationInputName" th:text="#{password}"></td>
+            <td th:id="registrationInputError" th:class="errorClass" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password Error</td>
         </tr>
         <tr>
-            <td th:text="#{confirm}"></td>
-            <td><input type="password" th:field="*{confirm}"/></td>
-            <td th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">confirm Error</td>
+            <td th:colspan="2"><input type="password" th:field="*{password}" th:placeholder="#{tip.password}"/></td>
+        </tr>
+
+        <tr>
+            <td th:id="registrationInputName" th:text="#{confirm}"></td>
+            <td th:id="registrationInputError" th:class="errorClass" th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">confirm Error</td>
         </tr>
         <tr>
-            <td th:text="#{name}"></td>
-            <td><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
-            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">password Error</td>
+            <td th:colspan="2"><input type="password" th:field="*{confirm}"/></td>
         </tr>
+
+        <tr>
+            <td th:id="registrationInputName" th:text="#{name}"></td>
+            <td th:id="registrationInputError" th:class="errorClass" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">password Error</td>
+        </tr>
+        <tr>
+            <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
+        </tr>
+
         <tr>
             <input id="inputZoneId" type="hidden" name="zoneId"/>
             <input type="hidden" th:value="${#locale.language}" name="lang"/>
             <input type="hidden" th:value="${#locale.country}" name="country"/>
-            <td colspan="2"><button type="submit" th:text="#{button.complete}"></button></td>
-            <td colspan="2"><button type="submit" th:text="#{button.back}" name="back"></button></td>
+            <td th:id="registrationTdWithButton" th:colspan="2">
+                <button class="button" type="submit" th:text="#{button.complete}"></button>
+                <button class="button" type="submit" th:text="#{button.back}" name="back"></button>
+            </td>
         </tr>
     </table>
 </form>
