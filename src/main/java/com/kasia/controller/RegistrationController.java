@@ -5,6 +5,8 @@ import com.kasia.model.User;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,9 @@ public class RegistrationController {
 
     @GetMapping
     public String injectUserDTO(UserDTO dto) {
-        return "registration";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getName().equals("anonymousUser")) return "registration";
+        return "home";
     }
 
     @GetMapping("/back")
