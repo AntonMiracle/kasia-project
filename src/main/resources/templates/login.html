@@ -11,7 +11,10 @@
 <body>
 <div th:replace="fragments/header :: loginMenu"></div>
 
-<h1 th:class="kasiaClass">KASIA</h1>
+<table style="display: inline-block">
+    <tr><td th:class="kasiaClass">KASIA</td></tr>
+    <tr><td id="kasiaBudget" th:text="#{text.kasia.budget}"></td></tr>
+</table>
 
 <div th:class="errorClass" th:if="${param.error}" th:text="#{text.login.error}"></div>
 <div th:class="successClass" th:if="${param.logout}" th:text="#{text.logout}"></div>

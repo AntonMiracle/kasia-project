@@ -24,6 +24,13 @@ body {
     color: black;
 }
 
+#kasiaBudget {
+    text-align: right;
+    vertical-align: text-top;
+    font-family: "Cinzel Decorative";
+    font-weight: bold;
+}
+
 .button {
     margin: 3px;
     padding: 3px;
