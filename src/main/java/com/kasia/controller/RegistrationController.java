@@ -23,6 +23,11 @@ public class RegistrationController {
         return "registration";
     }
 
+    @GetMapping("/back")
+    public String injectUserDTO() {
+        return "redirect:login";
+    }
+
     @PostMapping
     public String getRegistrationData(@Valid @ModelAttribute UserDTO dto, BindingResult bResult) {
         if (bResult.hasErrors()) return "registration";
