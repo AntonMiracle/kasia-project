@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Cutive" rel='stylesheet'/>
 </head>
 <body>
-<div th:replace="fragments/header :: registrationMenuMenu"></div>
+<div th:replace="fragments/header :: registrationMenu"></div>
 
 <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
 <form action="#" th:action="@{/registration}" th:object="${userDTO}" method="post">
