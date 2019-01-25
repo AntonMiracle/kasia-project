@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
 
     @GetMapping({"/login", "/"})
-    public String enter() {
+    public String openLogin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName().equals("anonymousUser")) return "login";
         return "home";

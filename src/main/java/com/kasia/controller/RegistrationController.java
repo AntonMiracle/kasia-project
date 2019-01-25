@@ -21,14 +21,14 @@ public class RegistrationController {
     private UserService uService;
 
     @GetMapping
-    public String injectUserDTO(UserDTO dto) {
+    public String openRegistration(UserDTO dto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName().equals("anonymousUser")) return "registration";
         return "home";
     }
 
     @GetMapping("/back")
-    public String injectUserDTO() {
+    public String backToLogin() {
         return "redirect:login";
     }
 
@@ -39,13 +39,6 @@ public class RegistrationController {
         User user = uService.createUser(dto.getEmail(), dto.getName(), dto.getPassword()
                 , dto.getZoneId(), dto.getLang(), dto.getCountry());
         uService.saveUser(user);
-        System.out.println("================== RegistrationController#getRegistrationData ");
-        System.out.println(user);
         return "redirect:login?registration";
-    }
-
-    @PostMapping(params = "back")
-    public String back() {
-        return "redirect:login";
     }
 }
