@@ -9,10 +9,15 @@
     <link href="https://fonts.googleapis.com/css?family=Cutive" rel='stylesheet'/>
 </head>
 <body>
-<div th:replace="fragments/header :: loginMenu"></div>
-<h1>HOME html</h1>
+<div th:replace="fragments/header :: homeMenu"></div>
 
+<div id="mainContentWithoutMenu">
+    <h1>HOME html</h1>
 
+    <div th:if="${addBudget}">
+        this is visible when click "add"
+    </div>
 
+</div>
 </body>
 </html>
