@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="#{label.registration}"></title>
+    <title th:text="#{title.registration}"></title>
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Cinzel Decorative" rel='stylesheet'/>
     <link href="https://fonts.googleapis.com/css?family=Cutive" rel='stylesheet'/>
@@ -14,7 +14,7 @@
 <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
 <form action="#" th:action="@{/registration}" th:object="${userDTO}" method="post">
     <table th:class="registrationTable">
-        <th th:colspan="3"></td><h1 th:text="#{label.registration}"></h1></th>
+        <th th:colspan="3"></td><h1 th:text="#{title.registration}"></h1></th>
         <tr>
             <td th:id="registrationInputName" th:text="#{email}"></td>
             <td th:id="registrationInputError" th:class="errorClass" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
