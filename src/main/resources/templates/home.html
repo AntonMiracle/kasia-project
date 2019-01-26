@@ -12,7 +12,7 @@
     <h1>HOME html</h1>
 
     <div th:if="${profileAtt}">
-        this profile div
+        <div th:replace="fragments/tables :: profileTable"></div>
     </div>
 
 </div>

@@ -49,7 +49,7 @@
     <table th:class="registrationTable">
         <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
         <form action="#" th:action="@{/registration}" th:object="${userDTO}" method="post">
-            <th th:colspan="3"></td><h1 th:text="#{title.registration}"></h1></th>
+            <th th:colspan="3"><h1 th:text="#{title.registration}"></h1></th>
             <tr>
                 <td th:id="registrationInputName" th:text="#{email}"></td>
                 <td th:id="registrationInputError" th:class="errorClass" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error</td>
@@ -94,7 +94,14 @@
     </table>
 </div>
 
-
+<div th:fragment="profileTable">
+    <table>
+        <th th:colspan="2" th:text="#{title.profile}"></th>
+<tr>
+    <td th:text="#{email}"></td><td th:text="${user.email}"></td>
+</tr>
+    </table>
+</div>
 
 
 
