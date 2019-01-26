@@ -1,14 +1,14 @@
 package com.kasia.controller.dto;
 
-import com.kasia.controller.dto.validator.constraint.UserDTOConfirmIsValid;
+import com.kasia.controller.dto.validator.constraint.UserConfirmPasswordIsValid;
 import com.kasia.controller.dto.validator.constraint.UserDTOEmailIsValid;
 import com.kasia.controller.dto.validator.constraint.UserDTONameIsValid;
-import com.kasia.controller.dto.validator.constraint.UserDTOPasswordIsValid;
+import com.kasia.controller.dto.validator.constraint.UserPasswordIsValid;
 
-@UserDTOEmailIsValid(message = "{email.error}")
-@UserDTONameIsValid(message = "{name.error}")
-@UserDTOPasswordIsValid(message = "{password.error}")
-@UserDTOConfirmIsValid(message = "{password.confirm.error}")
+@UserDTOEmailIsValid(message = "{validation.email.error}")
+@UserDTONameIsValid(message = "{validation.name.error}")
+@UserPasswordIsValid(fieldName = "password", message = "{validation.password.error}")
+@UserConfirmPasswordIsValid(passwordFN = "password", confirmFN = "confirm", message = "{validation.password.confirm.error}")
 public class UserDTO {
     private String email;
     private String name;

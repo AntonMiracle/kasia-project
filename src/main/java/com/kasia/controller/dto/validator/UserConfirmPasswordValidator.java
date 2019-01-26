@@ -1,15 +1,20 @@
 package com.kasia.controller.dto.validator;
 
-import com.kasia.model.validation.FieldName;
-import com.kasia.controller.dto.validator.constraint.UserDTOConfirmIsValid;
+import com.kasia.controller.dto.validator.constraint.UserConfirmPasswordIsValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UserDTOConfirmValidator implements ConstraintValidator<UserDTOConfirmIsValid, Object> {
-    private String passwordFN = FieldName.USER_DTO_PASSWORD.getName();
-    private String confirmFN = FieldName.USER_DTO_CONFIRM.getName();
+public class UserConfirmPasswordValidator implements ConstraintValidator<UserConfirmPasswordIsValid, Object> {
+    private String passwordFN;
+    private String confirmFN;
     private ValidatorUtil vUtil = new ValidatorUtil();
+
+    @Override
+    public void initialize(UserConfirmPasswordIsValid constraintAnnotation) {
+        passwordFN = constraintAnnotation.passwordFN();
+        confirmFN = constraintAnnotation.confirmFN();
+    }
 
     @Override
     public boolean isValid(final Object object, ConstraintValidatorContext cvContext) {

@@ -1,6 +1,6 @@
 package com.kasia.controller.dto.validator.constraint;
 
-import com.kasia.controller.dto.validator.UserDTOPasswordValidator;
+import com.kasia.controller.dto.validator.UserPasswordValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,9 +11,13 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserDTOPasswordValidator.class)
-public @interface UserDTOPasswordIsValid {
+@Constraint(validatedBy = UserPasswordValidator.class)
+public @interface UserPasswordIsValid {
     String message() default "";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
+
+    String fieldName() default "";
 }
