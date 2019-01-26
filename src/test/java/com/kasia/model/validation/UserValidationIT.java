@@ -104,7 +104,7 @@ public class UserValidationIT {
     public void passwordValidation() {
         assertThat(validationService.isPasswordValid(ModelTestData.getUser1().getPassword())).isTrue();
         assertThat(validationService.isPasswordValid("")).isFalse();
-        assertThat(validationService.isPasswordValid("password")).isFalse();
+        assertThat(validationService.isPasswordValid("label.password")).isFalse();
         assertThat(validationService.isPasswordValid("password2")).isFalse();
         assertThat(validationService.isPasswordValid("passworD")).isFalse();
         assertThat(validationService.isPasswordValid("11111111")).isFalse();
@@ -118,7 +118,7 @@ public class UserValidationIT {
     public void emailValidation() {
         assertThat(validationService.isEmailValid(ModelTestData.getUser1().getEmail())).isTrue();
         assertThat(validationService.isEmailValid("")).isFalse();
-        assertThat(validationService.isEmailValid("email")).isFalse();
+        assertThat(validationService.isEmailValid("label.email")).isFalse();
         assertThat(validationService.isEmailValid("@gmail.com")).isFalse();
         assertThat(validationService.isEmailValid("email.gmail.com")).isFalse();
         assertThat(validationService.isEmailValid(null)).isFalse();

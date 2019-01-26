@@ -184,8 +184,8 @@ public class BudgetServiceIT {
 
         assertThat(actual).isEqualTo(expected);
         assertThat(actual).isEqualTo(expected);
-        assertThat(bService.findElementByName(0, "name")).isNull();
-        assertThat(bService.findElementByName(-1, "name")).isNull();
+        assertThat(bService.findElementByName(0, "label.name")).isNull();
+        assertThat(bService.findElementByName(-1, "label.name")).isNull();
         assertThat(bService.findElementByName(0, null)).isNull();
     }
 
