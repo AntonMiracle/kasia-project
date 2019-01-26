@@ -2,11 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <div th:replace="fragments/base_head :: base_head"></div>
     <title th:text="#{title.registration}"></title>
-    <link th:href="@{/css/style.css}" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css?family=Cinzel Decorative" rel='stylesheet'/>
-    <link href="https://fonts.googleapis.com/css?family=Cutive" rel='stylesheet'/>
 </head>
 <body>
 <div th:replace="fragments/header :: registrationMenu"></div>
