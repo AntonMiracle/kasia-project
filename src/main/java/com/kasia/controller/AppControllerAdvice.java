@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import java.security.Principal;
 
 @ControllerAdvice
-public class MyControllerAdvice {
+public class AppControllerAdvice {
     @Autowired
     private UserService userService;
 
@@ -17,6 +17,8 @@ public class MyControllerAdvice {
     public User getAuthenticationUser(Principal principal) {
         return principal == null ? null : userService.findUserByEmail(principal.getName());
     }
+
+
 
 
 }
