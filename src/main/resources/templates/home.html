@@ -11,7 +11,7 @@
 <div id="mainContentWithoutMenu">
     <h1>HOME html</h1>
 
-    <div th:if="${profileAtt}">
+    <div th:if="${openProfile}">
         <div th:replace="fragments/tables :: profileTable"></div>
     </div>
 
