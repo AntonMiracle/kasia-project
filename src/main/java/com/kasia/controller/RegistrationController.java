@@ -20,8 +20,13 @@ public class RegistrationController {
     @Autowired
     private UserService uService;
 
+    @ModelAttribute("userDTO")
+    public UserDTO getNewUserDTO() {
+        return new UserDTO();
+    }
+
     @GetMapping
-    public String openRegistration(UserDTO dto) {
+    public String openRegistration() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName().equals("anonymousUser")) return "registration";
         return "home";
@@ -33,7 +38,7 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String getRegistrationData(@Valid @ModelAttribute UserDTO dto, BindingResult bResult) {
+    public String finishRegistration(@Valid @ModelAttribute UserDTO dto, BindingResult bResult) {
         if (bResult.hasErrors()) return "registration";
 
         User user = uService.createUser(dto.getEmail(), dto.getName(), dto.getPassword()
