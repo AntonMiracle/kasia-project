@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="fragments/base_head :: base_head"></div>
+    <div th:insert="fragments/base_head :: base_head"></div>
     <title th:text="#{title.home}"></title>
 </head>
 <body>
@@ -11,7 +11,7 @@
 <div id="mainContentWithoutMenu">
     <h1>HOME html</h1>
 
-    <div th:replace="fragments/tables :: profileTable"></div>
+    <div th:insert="fragments/tables :: profileTable"></div>
 
 </div>
 </body>

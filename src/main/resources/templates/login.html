@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="fragments/base_head :: base_head"></div>
+    <div th:insert="fragments/base_head :: base_head"></div>
     <title th:text="#{title.kasia}"></title>
 </head>
 <body>
-<div th:replace="fragments/header :: loginMenu"></div>
+<div th:insert="fragments/header :: loginMenu"></div>
 <div id="mainContentWithoutMenu">
-    <div th:replace="fragments/tables :: loginTable"></div>
-    <div th:replace="fragments/footer :: loginFooter"></div>
+    <div th:insert="fragments/tables :: loginTable"></div>
+    <div th:insert="fragments/footer :: loginFooter"></div>
 </div>
 </body>
 </html>
