@@ -16,16 +16,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 import java.security.Principal;
 
+import static com.kasia.controller.ControllerUrl.*;
+
 @Controller
-@RequestMapping("profile")
+@RequestMapping(PROFILE)
 public class ProfileController {
 
     @Autowired
     private UserService uService;
     @Autowired
     private AppControllerAdvice appCA;
-    private final String OPEN_PROFILE_ATTRIBUTE_NAME = "openProfile";
-    private final String PROFILE_UPDATE_RESULT_ATTRIBUTE_NAME = "update";
+    private final String UPDATE_ATT = "update";
 
     @ModelAttribute("passwordUpdateDTO")
     public PasswordUpdateDTO getNewPasswordUpdateDTO() {
@@ -39,8 +40,8 @@ public class ProfileController {
 
     @GetMapping
     public String openProfile(Model model) {
-        model.addAttribute(OPEN_PROFILE_ATTRIBUTE_NAME, OPEN_PROFILE_ATTRIBUTE_NAME);
-        return "home";
+        model.addAttribute("openProfile", "openProfile");
+        return HOME;
     }
 
     @PostMapping("updatePassword")
@@ -48,13 +49,13 @@ public class ProfileController {
         openProfile(model);
         User user = appCA.getAuthenticationUser(principal);
 
-        if (bResult.hasErrors()) return "home";
+        if (bResult.hasErrors()) return HOME;
 
         user.setPassword(uService.cryptPassword(dto.getPassword()));
         uService.saveUser(user);
 
-        model.addAttribute(PROFILE_UPDATE_RESULT_ATTRIBUTE_NAME, "password");
-        return "home";
+        model.addAttribute(UPDATE_ATT, "password");
+        return HOME;
     }
 
     @PostMapping("updateZoneLocale")
@@ -75,9 +76,9 @@ public class ProfileController {
         }
         if (anyChanges) {
             uService.saveUser(user);
-            model.addAttribute(PROFILE_UPDATE_RESULT_ATTRIBUTE_NAME, "zoneLocal");
+            model.addAttribute(UPDATE_ATT, "zoneLocal");
         }
-        return "home";
+        return HOME;
     }
 
 }

@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static com.kasia.controller.ControllerUrl.*;
+
 @Controller
 @EnableAutoConfiguration
-@RequestMapping("/registration")
+@RequestMapping(REGISTRATION)
 public class RegistrationController {
     @Autowired
     private UserService uService;
@@ -28,22 +30,22 @@ public class RegistrationController {
     @GetMapping
     public String openRegistration() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth.getName().equals("anonymousUser")) return "registration";
-        return "home";
+        if (auth == null || auth.getName().equals("anonymousUser")) return REGISTRATION;
+        return HOME;
     }
 
     @GetMapping("/back")
     public String backToLogin() {
-        return "redirect:login";
+        return redirect(LOGIN);
     }
 
     @PostMapping
     public String finishRegistration(@Valid @ModelAttribute UserDTO dto, BindingResult bResult) {
-        if (bResult.hasErrors()) return "registration";
+        if (bResult.hasErrors()) return REGISTRATION;
 
         User user = uService.createUser(dto.getEmail(), dto.getName(), dto.getPassword()
                 , dto.getZoneId(), dto.getLang(), dto.getCountry());
         uService.saveUser(user);
-        return "redirect:login?registration";
+        return redirect(LOGIN + "?registration");
     }
 }
