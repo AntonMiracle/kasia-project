@@ -108,61 +108,58 @@
 <!--HOME - PROFILE TABLE-->
 <div th:fragment="profileTable" th:if="${openProfile}">
 
-    <table>
+    <table  th:class="profileTable">
         <th th:colspan="2" th:text="#{title.profile}"></th>
         <tr>
-            <td th:text="#{label.email}"></td>
-            <td th:text="${user.email}"></td>
+            <td th:id="profileInputName" th:text="#{label.email}+':'"></td>
+            <td th:id="profileInputName" th:text="${user.email}"></td>
         </tr>
         <tr>
-            <td th:text="#{label.name}"></td>
-            <td th:text="${user.name}"></td>
+            <td th:id="profileInputName" th:text="#{label.name}+':'"></td>
+            <td th:id="profileInputName" th:text="${user.name}"></td>
         </tr>
         <!--/*@thymesVar id="passwordUpdateDTO" type="com.kasia.controller.dto.PasswordUpdateDTO"*/-->
         <form th:action="@{/profile/updatePassword}" th:object="${passwordUpdateDTO}" method="post">
             <tr>
-                <td th:class="successClass" th:if="${update} eq 'password'" th:text="#{text.password.update}"></td>
+                <td th:id="profileUpdateResult" colspan="2" th:class="successClass" th:if="${update} eq 'password'" th:text="#{text.password.update}"></td>
             </tr>
             <tr>
-                <td th:text="#{label.password.new}"></td>
-                <td th:class="errorClass" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password
-                    Error
-                </td>
+                <td th:id="profileInputName" th:text="#{label.password.new}+':'"></td>
+                <td th:id="profileInputError" th:class="errorClass" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</td>
+            </tr>
+            <tr>
                 <td th:colspan="2"><input type="password" th:field="*{password}" th:placeholder="#{tip.password}"/></td>
             </tr>
 
             <tr>
-                <td th:text="#{label.confirm}"></td>
-                <td th:class="errorClass" th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">confirm Error
-                </td>
+                <td th:id="profileInputName" th:text="#{label.confirm}+':'"></td>
+                <td th:id="profileInputError" th:class="errorClass" th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">Error</td>
+            </tr>
+            <tr>
                 <td th:colspan="2"><input type="password" th:field="*{confirm}"/></td>
             </tr>
             <tr>
-                <td th:colspan="2">
-                    <button class="button" type="submit" th:text="#{button.complete}"></button>
-                </td>
+                <td th:id="profileTdWithButton" th:colspan="2"><button class="button" type="submit" th:text="#{button.complete}"></button></td>
             </tr>
         </form>
         <!--/*@thymesVar id="localeZoneIdDTO" type="com.kasia.controller.dto.LocaleZoneIdDTO"*/-->
         <form th:action="@{/profile/updateZoneLocale}" th:object="${localeZoneIdDTO}" method="post">
             <tr>
-                <td th:class="successClass" th:if="${update} eq 'zoneLocal'" th:text="#{text.zonelocal.update}"></td>
+                <td th:id="profileUpdateResult" colspan="2" th:class="successClass" th:if="${update} eq 'zoneLocal'" th:text="#{text.zonelocal.update}"></td>
             </tr>
             <tr>
-                <td th:text="#{label.locale.update}"></td>
-                <td><input type="checkbox" th:field="*{updateLocale}"/></td>
+                <td th:id="profileInputName" th:text="#{label.locale.update}+':'"></td>
+                <td th:id="profileTdCheckbox"><input type="checkbox" th:field="*{updateLocale}"/></td>
             </tr>
             <tr>
-                <td th:text="#{label.zoneid.update}"></td>
-                <td><input type="checkbox" th:field="*{updateZone}"/></td>
+                <td th:id="profileInputName" th:text="#{label.zoneid.update}+':'"></td>
+                <td th:id="profileTdCheckbox"><input type="checkbox" th:field="*{updateZone}"/></td>
             </tr>
             <tr>
                 <input id="inputUpdateZoneId" type="hidden" name="zoneId"/>
                 <input type="hidden" th:value="${#locale.language}" name="lang"/>
                 <input type="hidden" th:value="${#locale.country}" name="country"/>
-                <td th:colspan="2">
-                    <button class="button" type="submit" th:text="#{button.complete}"></button>
-                </td>
+                <td th:id="profileTdWithButton" th:colspan="2"><button class="button" type="submit" th:text="#{button.complete}"></button></td>
             </tr>
         </form>
     </table>

@@ -78,13 +78,13 @@ body {
     text-align: center;
 }
 
+/*=====================================*/
 /*LOGIN*/
+/*=====================================*/
 .loginTable {
     margin: 20px;
-    border: 0px solid darkgreen;
     background-color: rgba(255, 255, 255, 0.7);
     box-shadow: 0px 0px 10px 10px rgba(0, 100, 0, 0.1);
-    /*display: inline-block;*/
     border-radius: 1px;
 }
 
@@ -103,21 +103,26 @@ body {
     vertical-align: bottom;
 }
 
+.registrationTable th {
+    padding-top: 20px;
+}
+
+/*=====================================*/
 /*REGISTRATION*/
+/*=====================================*/
 .registrationTable {
     margin: 20px;
-    border: 0px solid #006400;
     background-color: rgba(255, 255, 255, 0.7);
     box-shadow: 0px 0px 10px 10px rgba(0, 100, 0, 0.1);
-    display: inline-block;
     border-radius: 1px;
+    display: inline-block;
 }
 
 .registrationTable td {
-    text-align: left;
     height: 35px;
     padding-right: 20px;
     padding-left: 20px;
+    text-align: left;
 }
 
 .registrationTable input {
@@ -139,7 +144,64 @@ body {
     text-align: center;
 }
 
+/*=====================================*/
+/*HOME-PROFILE*/
+/*=====================================*/
+.profileTable {
+    margin: 20px;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0px 0px 10px 10px rgba(0, 100, 0, 0.1);
+    border-radius: 1px;
+    display: inline-block;
+}
+
+.profileTable td {
+    height: 35px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.profileTable input {
+    width: 350px;
+    height: 30px;
+}
+
+.profileTable th {
+    padding-top: 20px;
+}
+
+#profileInputName {
+    text-align: left;
+    vertical-align: bottom;
+}
+
+#profileInputError {
+    text-align: right;
+    vertical-align: bottom;
+}
+
+#profileTdWithButton {
+    text-align: center;
+}
+
+#profileTdCheckbox {
+    text-align: left;
+    vertical-align: bottom;
+}
+
+#profileTdCheckbox input {
+    vertical-align: bottom;
+    height: 30px;
+    width: 30px;
+}
+
+#profileUpdateResult {
+    vertical-align: bottom;
+}
+
+/*=====================================*/
 /*OTHER*/
+/*=====================================*/
 .errorClass {
     color: red;
 }
