@@ -1,13 +1,14 @@
 package com.kasia.controller;
 
-public final class ControllerUrl {
-    protected static final String PROFILE = "profile";
-    protected static final String HOME = "home";
-    protected static final String LOGIN = "login";
-    protected static final String REGISTRATION = "registration";
-    protected static final String ROOT = "/";
+final class ControllerUrl {
+    static final String PROFILE = "profile";
+    static final String HOME = "home";
+    static final String LOGIN = "login";
+    static final String REGISTRATION = "registration";
+    static final String ROOT = "/";
+    static final String BUDGET = "budget";
 
-    protected static String redirect(String controllerUrl) {
+    static String redirect(String controllerUrl) {
         return "redirect:" + controllerUrl;
     }
 
