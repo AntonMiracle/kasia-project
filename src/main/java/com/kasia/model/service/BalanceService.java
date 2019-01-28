@@ -23,5 +23,7 @@ public interface BalanceService {
 
     Balance createBalance(BigDecimal amount, Currencies currencies);
 
+    Balance createBalance(String banknotesValue, String pennyValue, String currencies);
+
     BigDecimal createValue(BigInteger banknotes, BigInteger penny);
 }

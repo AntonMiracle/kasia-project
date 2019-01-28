@@ -161,13 +161,24 @@ public class BalanceServiceIT {
         BigInteger penny1 = new BigInteger("99");
         BigInteger penny2 = new BigInteger("00");
 
-        assertThat(bService.createValue(banknotes1,penny1)).isEqualTo(new BigDecimal("-100.99"));
-        assertThat(bService.createValue(banknotes1,penny2)).isEqualTo(new BigDecimal("-100.0"));
-        assertThat(bService.createValue(banknotes2,penny1)).isEqualTo(new BigDecimal("0.99"));
-        assertThat(bService.createValue(banknotes2,penny2)).isEqualTo(new BigDecimal("0.0"));
-        assertThat(bService.createValue(banknotes3,penny1)).isEqualTo(new BigDecimal("0.99"));
-        assertThat(bService.createValue(banknotes3,penny2)).isEqualTo(new BigDecimal("0.0"));
-        assertThat(bService.createValue(banknotes4,penny1)).isEqualTo(new BigDecimal("100.99"));
-        assertThat(bService.createValue(banknotes4,penny2)).isEqualTo(new BigDecimal("100.0"));
+        assertThat(bService.createValue(banknotes1, penny1)).isEqualTo(new BigDecimal("-100.99"));
+        assertThat(bService.createValue(banknotes1, penny2)).isEqualTo(new BigDecimal("-100.0"));
+        assertThat(bService.createValue(banknotes2, penny1)).isEqualTo(new BigDecimal("0.99"));
+        assertThat(bService.createValue(banknotes2, penny2)).isEqualTo(new BigDecimal("0.0"));
+        assertThat(bService.createValue(banknotes3, penny1)).isEqualTo(new BigDecimal("0.99"));
+        assertThat(bService.createValue(banknotes3, penny2)).isEqualTo(new BigDecimal("0.0"));
+        assertThat(bService.createValue(banknotes4, penny1)).isEqualTo(new BigDecimal("100.99"));
+        assertThat(bService.createValue(banknotes4, penny2)).isEqualTo(new BigDecimal("100.0"));
+    }
+
+    @Test
+    public void createBalanceFromStrings() {
+        BigDecimal expectedAmount = new BigDecimal("-100.99");
+        Currencies expectedCurrencies = Currencies.USD;
+
+        Balance actual = bService.createBalance("-100", "99", "USD");
+
+        assertThat(actual.getAmount()).isEqualTo(expectedAmount);
+        assertThat(actual.getCurrencies()).isEqualTo(expectedCurrencies);
     }
 }
