@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,11 +65,11 @@ public class BudgetController {
         }
 
         User user = appCA.getAuthenticationUser(principal);
-        BigDecimal balanceValue = balanceService.createValue(new BigInteger(dto.getBanknotes()), new BigInteger(dto.getPenny()));
         Budget budget = budgetService.createBudget(dto.getName()
-                , balanceService.createBalance(balanceValue, Currencies.valueOf(dto.getCurrency())));
+                , balanceService.createBalance(dto.getBanknotes(), dto.getPenny(), dto.getCurrency()));
+
         budgetService.saveBudget(budget);
-        uService.addBudget(user.getId(),budget.getId());
+        uService.addBudget(user.getId(), budget.getId());
 
         System.out.println(budget);
         return HOME;
