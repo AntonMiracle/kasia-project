@@ -223,9 +223,9 @@ public class UserServiceImp implements UserService {
         User owner = findOwner(budget.getId());
 
         if (owner == null) {
-            UserBudget ub = new UserBudget();
+            UserBudget ub = ubRepository.findByUserId(user.getId()).orElse(new UserBudget());
             ub.setUser(user);
-            ub.setBudgets(new HashSet<>());
+            if (ub.getBudgets() == null) ub.setBudgets(new HashSet<>());
             ub.getBudgets().add(budget);
             ubValidation.verifyValidation(ub);
             ubRepository.save(ub);
