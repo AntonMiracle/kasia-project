@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -39,6 +40,16 @@ public class BalanceServiceImp implements BalanceService {
         Balance balance = new Balance(amount, currencies, LocalDateTime.now().withNano(0));
         bValidation.verifyValidation(balance);
         return balance;
+    }
+
+    @Override
+    public BigDecimal createValue(BigInteger banknotesValue, BigInteger pennyValue) {
+        double penny = pennyValue.intValue() / 100.0;
+        if (banknotesValue.compareTo(BigInteger.ZERO) >= 0) {
+            return new BigDecimal(banknotesValue.toString()).add(BigDecimal.valueOf(penny));
+        } else {
+            return new BigDecimal(banknotesValue.toString()).subtract(BigDecimal.valueOf(penny));
+        }
     }
 
     @Override

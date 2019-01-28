@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
@@ -149,5 +150,24 @@ public class BalanceServiceIT {
         assertThat(bService.parseToString(balance1, locale2)).isEqualTo("-€ 110,01");
         assertThat(bService.parseToString(balance1, locale3)).isEqualTo("-EUR110.01");
         assertThat(bService.parseToString(balance1, locale4)).isEqualTo("-110,01 €");
+    }
+
+    @Test
+    public void createValue() {
+        BigInteger banknotes1 = new BigInteger("-100");
+        BigInteger banknotes2 = new BigInteger("-0");
+        BigInteger banknotes3 = new BigInteger("0");
+        BigInteger banknotes4 = new BigInteger("100");
+        BigInteger penny1 = new BigInteger("99");
+        BigInteger penny2 = new BigInteger("00");
+
+        assertThat(bService.createValue(banknotes1,penny1)).isEqualTo(new BigDecimal("-100.99"));
+        assertThat(bService.createValue(banknotes1,penny2)).isEqualTo(new BigDecimal("-100.0"));
+        assertThat(bService.createValue(banknotes2,penny1)).isEqualTo(new BigDecimal("0.99"));
+        assertThat(bService.createValue(banknotes2,penny2)).isEqualTo(new BigDecimal("0.0"));
+        assertThat(bService.createValue(banknotes3,penny1)).isEqualTo(new BigDecimal("0.99"));
+        assertThat(bService.createValue(banknotes3,penny2)).isEqualTo(new BigDecimal("0.0"));
+        assertThat(bService.createValue(banknotes4,penny1)).isEqualTo(new BigDecimal("100.99"));
+        assertThat(bService.createValue(banknotes4,penny2)).isEqualTo(new BigDecimal("100.0"));
     }
 }
