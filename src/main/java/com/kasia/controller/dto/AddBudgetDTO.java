@@ -1,11 +1,14 @@
 package com.kasia.controller.dto;
 
+import com.kasia.controller.dto.validator.constraint.BalanceValueIsValid;
 import com.kasia.controller.dto.validator.constraint.BudgetNameIsValid;
 
 @BudgetNameIsValid(nameFN = "name", message = "{validation.budget.name.error}")
+@BalanceValueIsValid(banknotesFN = "banknotes", pennyFN = "penny", message = "{validation.budget.balance.value.error}")
 public class AddBudgetDTO {
     private String name;
-    private String balance;
+    private String banknotes;
+    private String penny;
     private String currency;
     private String userEmail;
 
@@ -13,18 +16,11 @@ public class AddBudgetDTO {
     public String toString() {
         return "AddBudgetDTO{" +
                 "name='" + name + '\'' +
-                ", balance='" + balance + '\'' +
+                ", banknotes='" + banknotes + '\'' +
+                ", penny='" + penny + '\'' +
                 ", currency='" + currency + '\'' +
-                ", userEmail=" + userEmail +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
     }
 
     public String getName() {
@@ -35,12 +31,20 @@ public class AddBudgetDTO {
         this.name = name;
     }
 
-    public String getBalance() {
-        return balance;
+    public String getBanknotes() {
+        return banknotes;
     }
 
-    public void setBalance(String balance) {
-        this.balance = balance;
+    public void setBanknotes(String banknotes) {
+        this.banknotes = banknotes;
+    }
+
+    public String getPenny() {
+        return penny;
+    }
+
+    public void setPenny(String penny) {
+        this.penny = penny;
     }
 
     public String getCurrency() {
@@ -49,5 +53,13 @@ public class AddBudgetDTO {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

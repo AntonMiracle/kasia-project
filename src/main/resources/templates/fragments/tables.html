@@ -172,17 +172,41 @@
 <div th:fragment="addBudgetTable" th:if="${openAddBudget}">
 
     <table th:class="addBudgetTable">
-        <th th:text="#{title.addBudget}"></th>
+        <th colspan="2" th:text="#{title.addBudget}"></th>
 
         <!--/*@thymesVar id="addBudgetDTO" type="com.kasia.controller.dto.AddBudgetDTO"*/-->
         <form th:action="@{/budget/addNew}" th:object="${addBudgetDTO}" method="post">
             <tr>
                 <input type="hidden" th:value="${#authentication.name}" name="userEmail"/>
-                <td th:text="#{label.name}"></td>
+                <td th:id="addBudgetInputName" th:text="#{label.name}"></td>
                 <td th:id="addBudgetInputError" th:class="errorClass" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
+                <td th:colspan="2"><input th:id="addBudgetNameInput" type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
+            </tr>
+            <tr>
+                <td colspan="2" th:id="addBudgetInputError" th:class="errorClass" th:if="${#fields.hasErrors('banknotes')}"
+                    th:errors="*{banknotes}">Error
+                </td>
+            </tr>
+            <tr>
+                <td th:id="addBudgetInputName" th:text="#{label.balance}"></td>
+                <td th:id="addBudgetInputName">
+                    <input th:id="banknotesInput" type="text" th:field="*{banknotes}" th:placeholder="#{tip.banknotes}"/>
+                    .
+                    <input th:id="pennyInput" type="text" th:field="*{penny}" th:placeholder="#{tip.penny}"/>
+                </td>
+            </tr>
+            <tr>
+                <td th:id="addBudgetInputName" th:text="#{label.currency}"></td>
+                <td th:id="addBudgetInputName">
+                    <select th:field="*{currency}">
+                        <option th:each="type : ${currencies}"
+                                    th:value="${type}"
+                                th:text="${type}">Currency
+                        </option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td th:id="addBudgetTdWithButton" th:colspan="2"><button class="button" type="submit" th:text="#{button.complete}"></button></td>
