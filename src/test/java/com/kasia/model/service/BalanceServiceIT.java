@@ -160,6 +160,7 @@ public class BalanceServiceIT {
         BigInteger banknotes4 = new BigInteger("100");
         BigInteger penny1 = new BigInteger("99");
         BigInteger penny2 = new BigInteger("00");
+        BigInteger penny3 = new BigInteger("9");
 
         assertThat(bService.createValue(banknotes1, penny1)).isEqualTo(new BigDecimal("-100.99"));
         assertThat(bService.createValue(banknotes1, penny2)).isEqualTo(new BigDecimal("-100.0"));
@@ -169,6 +170,7 @@ public class BalanceServiceIT {
         assertThat(bService.createValue(banknotes3, penny2)).isEqualTo(new BigDecimal("0.0"));
         assertThat(bService.createValue(banknotes4, penny1)).isEqualTo(new BigDecimal("100.99"));
         assertThat(bService.createValue(banknotes4, penny2)).isEqualTo(new BigDecimal("100.0"));
+        assertThat(bService.createValue(banknotes1, penny3)).isEqualTo(new BigDecimal("-100.09"));
     }
 
     @Test
