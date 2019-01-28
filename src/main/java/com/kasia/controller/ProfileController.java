@@ -46,10 +46,10 @@ public class ProfileController {
 
     @PostMapping("updatePassword")
     public String updateProfilePassword(Model model, Principal principal, @Valid @ModelAttribute PasswordUpdateDTO dto, BindingResult bResult) {
-        openProfile(model);
+
         User user = appCA.getAuthenticationUser(principal);
 
-        if (bResult.hasErrors()) return HOME;
+        if (bResult.hasErrors()) return openProfile(model);
 
         user.setPassword(uService.cryptPassword(dto.getPassword()));
         uService.saveUser(user);

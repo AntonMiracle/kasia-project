@@ -21,8 +21,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kasia.controller.ControllerUrl.BUDGET;
-import static com.kasia.controller.ControllerUrl.HOME;
+import static com.kasia.controller.ControllerUrl.*;
 
 @Controller
 @RequestMapping(BUDGET)
@@ -69,6 +68,6 @@ public class BudgetController {
         budgetService.saveBudget(budget);
         uService.addBudget(user.getId(), budget.getId());
 
-        return HOME;
+        return redirect(ROOT + HOME);
     }
 }

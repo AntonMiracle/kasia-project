@@ -31,7 +31,7 @@ public class RegistrationController {
     public String openRegistration() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName().equals("anonymousUser")) return REGISTRATION;
-        return HOME;
+        return LOGIN;
     }
 
     @GetMapping("/back")
@@ -46,6 +46,6 @@ public class RegistrationController {
         User user = uService.createUser(dto.getEmail(), dto.getName(), dto.getPassword()
                 , dto.getZoneId(), dto.getLang(), dto.getCountry());
         uService.saveUser(user);
-        return redirect(LOGIN + "?registration");
+        return LOGIN + "?registration";
     }
 }
