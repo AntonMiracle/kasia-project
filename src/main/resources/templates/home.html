@@ -10,10 +10,15 @@
 
 <div id="mainContentWithoutMenu">
     <h1>HOME html</h1>
-
-    <div th:insert="fragments/tables :: profileTable"></div>
-    <div th:insert="fragments/tables :: addBudgetTable"></div>
-
+    <table>
+        <td>
+            <div th:insert="fragments/tables :: ownBudgetListTable"></div>
+        </td>
+        <td>
+            <div th:insert="fragments/tables :: profileTable"></div>
+            <div th:insert="fragments/tables :: addBudgetTable"></div>
+        </td>
+    </table>
 </div>
 </body>
 </html>

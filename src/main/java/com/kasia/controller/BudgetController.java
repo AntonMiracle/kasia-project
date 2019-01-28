@@ -58,8 +58,6 @@ public class BudgetController {
 
     @PostMapping("addNew")
     public String addNewBudget(Model model, Principal principal, @Valid @ModelAttribute AddBudgetDTO dto, BindingResult bResult) {
-        System.out.println(dto);
-
         if (bResult.hasErrors()) {
             return openAddBudget(model);
         }
@@ -71,7 +69,6 @@ public class BudgetController {
         budgetService.saveBudget(budget);
         uService.addBudget(user.getId(), budget.getId());
 
-        System.out.println(budget);
         return HOME;
     }
 }

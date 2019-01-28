@@ -215,6 +215,18 @@
     </table>
 </div>
 
+<!--HOME - OWN BUDGET LIST TABLE-->
+<div th:fragment="ownBudgetListTable">
+<table>
+    <th th:text="#{title.budget}"></th>
+    <!--/*@thymesVar id="allOwnBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+    <tr th:each="ownBudget : ${allOwnBudgets}">
+        <td th:text="${ownBudget.name}">Onions</td>
+    </tr>
+
+</table>
+
+</div>
 
 </body>
 </html>
