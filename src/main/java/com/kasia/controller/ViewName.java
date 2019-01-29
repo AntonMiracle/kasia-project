@@ -8,8 +8,8 @@ final class ViewName {
     static final String BUDGET = "budget";
     static final String BUDGET_ADD = "budgetAdd";
 
-    static String redirect(String controllerUrl) {
-        return "redirect:" + controllerUrl;
+    static String redirect(String view) {
+        return "redirect:" + view;
     }
 
 }
