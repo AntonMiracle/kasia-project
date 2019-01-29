@@ -9,7 +9,6 @@ import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,10 +20,10 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kasia.controller.ViewName.*;
+import static com.kasia.controller.ViewNameAndControllerURL.*;
 
 @Controller
-@RequestMapping(BUDGET)
+@RequestMapping(U_BUDGET)
 public class BudgetController {
     @Autowired
     private AppControllerAdvice appCA;
@@ -51,11 +50,11 @@ public class BudgetController {
 
     @GetMapping("add")
     public String openAddBudget() {
-        return BUDGET_ADD;
+        return V_BUDGET_ADD;
     }
 
     @PostMapping("save")
-    public String addNewBudget(Model model, Principal principal, @Valid @ModelAttribute AddBudgetDTO dto, BindingResult bResult) {
+    public String addNewBudget(Principal principal, @Valid @ModelAttribute AddBudgetDTO dto, BindingResult bResult) {
         if (bResult.hasErrors()) {
             return openAddBudget();
         }
@@ -67,6 +66,6 @@ public class BudgetController {
         budgetService.saveBudget(budget);
         uService.addBudget(user.getId(), budget.getId());
 
-        return redirect(ROOT + HOME);
+        return redirect(U_HOME);
     }
 }

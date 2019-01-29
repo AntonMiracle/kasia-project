@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 import java.security.Principal;
 
-import static com.kasia.controller.ViewName.*;
+import static com.kasia.controller.ViewNameAndControllerURL.*;
 
 @Controller
-@RequestMapping(PROFILE)
+@RequestMapping(U_PROFILE)
 public class ProfileController {
 
     @Autowired
@@ -40,7 +40,7 @@ public class ProfileController {
 
     @GetMapping
     public String openProfile() {
-        return PROFILE;
+        return V_PROFILE;
     }
 
     @PostMapping("updatePassword")
