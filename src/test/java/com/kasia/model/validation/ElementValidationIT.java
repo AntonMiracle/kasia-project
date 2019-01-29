@@ -54,8 +54,11 @@ public class ElementValidationIT {
 
     @Test
     public void nameValidation() {
-        assertThat(validationService.isNameValid(ModelTestData.getElement1().getName())).isTrue();
-        assertThat(validationService.isNameValid(ModelTestData.getElement1().getName() + " ")).isFalse();
+        String validName = ModelTestData.getElement1().getName();
+        assertThat(validationService.isNameValid(validName + " " + validName)).isTrue();
+        assertThat(validationService.isNameValid(validName)).isTrue();
+        assertThat(validationService.isNameValid(validName + " ")).isFalse();
+        assertThat(validationService.isNameValid(" " + validName)).isFalse();
         assertThat(validationService.isNameValid(" ")).isFalse();
         assertThat(validationService.isNameValid(null)).isFalse();
         assertThat(validationService.isNameValid("d")).isFalse();

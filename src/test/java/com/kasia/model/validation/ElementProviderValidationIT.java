@@ -79,6 +79,7 @@ public class ElementProviderValidationIT {
         ElementProvider provider = ModelTestData.getElementProvider1();
 
         assertThat(validationService.isNameValid(provider.getName())).isTrue();
+        assertThat(validationService.isNameValid(provider.getName() + " " + provider.getName())).isTrue();
         assertThat(validationService.isNameValid(" " + provider.getName() + " ")).isFalse();
         assertThat(validationService.isNameValid(" ")).isFalse();
         assertThat(validationService.isNameValid("")).isFalse();
