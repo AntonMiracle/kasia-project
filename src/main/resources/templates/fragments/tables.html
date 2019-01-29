@@ -172,7 +172,7 @@
 <div th:fragment="addBudgetTable">
 
     <table th:class="addBudgetTable">
-        <th colspan="2" th:text="#{title.addBudget}"></th>
+        <th colspan="2" th:text="#{title.budgetAdd}"></th>
 
         <!--/*@thymesVar id="addBudgetDTO" type="com.kasia.controller.dto.AddBudgetDTO"*/-->
         <form th:action="@{/budget/save}" th:object="${addBudgetDTO}" method="post">

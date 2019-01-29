@@ -23,7 +23,7 @@ import java.util.List;
 import static com.kasia.controller.ViewNameAndControllerURL.*;
 
 @Controller
-@RequestMapping(U_BUDGET)
+@RequestMapping
 public class BudgetController {
     @Autowired
     private AppControllerAdvice appCA;
@@ -48,12 +48,17 @@ public class BudgetController {
         return result;
     }
 
-    @GetMapping("add")
+    @GetMapping(U_BUDGET_ADD)
     public String openAddBudget() {
         return V_BUDGET_ADD;
     }
 
-    @PostMapping("save")
+    @GetMapping(U_BUDGET_ALL)
+    public String openHome() {
+        return V_BUDGET_ALL;
+    }
+
+    @PostMapping(U_BUDGET_SAVE)
     public String addNewBudget(Principal principal, @Valid @ModelAttribute AddBudgetDTO dto, BindingResult bResult) {
         if (bResult.hasErrors()) {
             return openAddBudget();
@@ -66,6 +71,6 @@ public class BudgetController {
         budgetService.saveBudget(budget);
         uService.addBudget(user.getId(), budget.getId());
 
-        return redirect(U_HOME);
+        return redirect(U_BUDGET_ALL);
     }
 }

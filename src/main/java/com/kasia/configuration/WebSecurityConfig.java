@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import static com.kasia.controller.ViewNameAndControllerURL.*;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -19,12 +21,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/login", "/registration", "/css/**","/images/**","/favicon.ico", "/js/**").permitAll()
+                .antMatchers(U_ROOT, U_LOGIN, U_REGISTRATION, "/css/**","/images/**","/favicon.ico", "/js/**").permitAll()
                 .antMatchers("/**").hasRole(Role.USER.toString())
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/home")
+                .loginPage(U_LOGIN)
+                .defaultSuccessUrl(U_BUDGET_ALL)
                 .permitAll()
                 .and()
                 .logout()
