@@ -13,6 +13,7 @@ final class ViewNameAndControllerURL {
     static final String U_HOME = "/home";
     static final String U_PROFILE = "/profile";
     static final String U_BUDGET = "/budget";
+    static final String U_REGISTRATION = "/registration";
 
     static String redirect(String url) {
         if (url.startsWith("/")) return "redirect:" + url;

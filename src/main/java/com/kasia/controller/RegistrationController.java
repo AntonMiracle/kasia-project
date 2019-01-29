@@ -17,7 +17,7 @@ import static com.kasia.controller.ViewNameAndControllerURL.*;
 
 @Controller
 @EnableAutoConfiguration
-@RequestMapping(V_REGISTRATION)
+@RequestMapping(U_REGISTRATION)
 public class RegistrationController {
     @Autowired
     private UserService uService;
@@ -31,7 +31,7 @@ public class RegistrationController {
     public String openRegistration() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName().equals("anonymousUser")) return V_REGISTRATION;
-        return V_LOGIN;
+        return redirect(U_LOGIN);
     }
 
     @GetMapping("/back")

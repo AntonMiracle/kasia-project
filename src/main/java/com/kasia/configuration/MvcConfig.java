@@ -30,16 +30,6 @@ public class MvcConfig implements WebMvcConfigurer {
         System.out.println(user);
     }
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("login");
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/home").setViewName("home");
-        registry.addViewController("/profile").setViewName("profile");
-        registry.addViewController("/budget/add").setViewName("budgetAdd");
-        registry.addViewController("/registration").setViewName("registration");
-    }
-
     @Bean/* config i18n to get error msg from messages.properties*/
     @Override
     public Validator getValidator() {
@@ -59,7 +49,7 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     @Bean/*Dialect of Thymleaf to enable - xmlns:sec="http://www.w3.org/1999/xhtml"*/
-    public SpringSecurityDialect springSecurityDialect(){
+    public SpringSecurityDialect springSecurityDialect() {
         return new SpringSecurityDialect();
     }
 }

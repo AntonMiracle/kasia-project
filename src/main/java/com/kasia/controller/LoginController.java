@@ -16,6 +16,6 @@ public class LoginController {
     public String openLogin() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || auth.getName().equals("anonymousUser")) return V_LOGIN;
-        return V_HOME;
+        return redirect(U_HOME);
     }
 }
