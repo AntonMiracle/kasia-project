@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.kasia.controller.ControllerUrl.*;
+import static com.kasia.controller.ViewName.*;
 
 @Controller
 @EnableAutoConfiguration

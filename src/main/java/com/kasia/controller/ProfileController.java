@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 import java.security.Principal;
 
-import static com.kasia.controller.ControllerUrl.*;
+import static com.kasia.controller.ViewName.*;
 
 @Controller
 @RequestMapping(PROFILE)

@@ -21,7 +21,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.kasia.controller.ControllerUrl.*;
+import static com.kasia.controller.ViewName.*;
 
 @Controller
 @RequestMapping(BUDGET)
