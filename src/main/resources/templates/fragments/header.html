@@ -21,7 +21,7 @@
 </div>
 
 <!--HOME-->
-<div class="header" th:fragment="homeMenu">
+<div class="header" th:fragment="mainMenu">
     <div sec:authorize="isAuthenticated()">
         <div>
             <form th:action="@{/logout}" method="post">

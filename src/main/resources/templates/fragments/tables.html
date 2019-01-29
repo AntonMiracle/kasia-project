@@ -216,15 +216,20 @@
 </div>
 
 <!--HOME - OWN BUDGET LIST TABLE-->
-<div th:fragment="ownBudgetListTable">
-<table>
-    <th th:text="#{title.budget}"></th>
-    <!--/*@thymesVar id="allOwnBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
-    <tr th:each="ownBudget : ${allOwnBudgets}">
-        <td th:text="${ownBudget.name}">Onions</td>
-    </tr>
+<div th:fragment="ownBudgetListTable" th:class="ownBudgetListTable">
+        <!--/*@thymesVar id="allOwnBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+        <div th:each="ownBudget : ${allOwnBudgets}">
+            <!--<form th:action="@{/registration/back}">-->
+                <!--<button class="button" type="submit"-->
+                        <!--th:text="${ownBudget.name}"></button>-->
+            <!--</form>-->
 
-</table>
+            <div th:text="${ownBudget.name}">Onions</div>
+            <div th:text="${ownBudget.balance.amount}">Onions</div>
+            <div th:text="${ownBudget.balance.currencies.currency.symbol}">Onions</div>
+        </div>
+
+    </table>
 
 </div>
 

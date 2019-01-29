@@ -6,12 +6,11 @@
     <title th:text="#{title.home}"></title>
 </head>
 <body>
-<div th:replace="fragments/header :: homeMenu"></div>
+<div th:replace="fragments/header :: mainMenu"></div>
 
 <div id="mainContentWithoutMenu">
-    <h1>HOME html</h1>
     <div th:insert="fragments/tables :: ownBudgetListTable"></div>
-
+<!--need separate profile and addbudget. home make table with own budgets-->
     <div th:insert="fragments/tables :: profileTable"></div>
     <div th:insert="fragments/tables :: addBudgetTable"></div>
 </div>
