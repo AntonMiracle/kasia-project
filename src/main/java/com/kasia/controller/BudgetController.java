@@ -35,12 +35,6 @@ public class BudgetController {
     @Autowired
     private BalanceService balanceService;
 
-    @GetMapping
-    public String openAddBudget(Model model) {
-        model.addAttribute("openAddBudget", "openAddBudget");
-        return HOME;
-    }
-
     @ModelAttribute("addBudgetDTO")
     public AddBudgetDTO getAddBudgetDTO() {
         return new AddBudgetDTO();
@@ -55,10 +49,15 @@ public class BudgetController {
         return result;
     }
 
-    @PostMapping("addNew")
+    @GetMapping("add")
+    public String openAddBudget() {
+        return BUDGET_ADD;
+    }
+
+    @PostMapping("save")
     public String addNewBudget(Model model, Principal principal, @Valid @ModelAttribute AddBudgetDTO dto, BindingResult bResult) {
         if (bResult.hasErrors()) {
-            return openAddBudget(model);
+            return openAddBudget();
         }
 
         User user = appCA.getAuthenticationUser(principal);

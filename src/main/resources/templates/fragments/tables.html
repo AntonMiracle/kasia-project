@@ -169,13 +169,13 @@
 </div>
 
 <!--HOME - ADD BUDGET TABLE-->
-<div th:fragment="addBudgetTable" th:if="${openAddBudget}">
+<div th:fragment="addBudgetTable">
 
     <table th:class="addBudgetTable">
         <th colspan="2" th:text="#{title.addBudget}"></th>
 
         <!--/*@thymesVar id="addBudgetDTO" type="com.kasia.controller.dto.AddBudgetDTO"*/-->
-        <form th:action="@{/budget/addNew}" th:object="${addBudgetDTO}" method="post">
+        <form th:action="@{/budget/save}" th:object="${addBudgetDTO}" method="post">
             <tr>
                 <input type="hidden" th:value="${#authentication.name}" name="userEmail"/>
                 <td th:id="addBudgetInputName" th:text="#{label.name}"></td>
