@@ -5,7 +5,6 @@ final class ViewNameAndControllerURL {
     static final String V_HOME = "home";
     static final String V_LOGIN = "login";
     static final String V_REGISTRATION = "registration";
-    static final String V_BUDGET = "budget";
     static final String V_BUDGET_ADD = "budgetAdd";
 
     static final String U_ROOT = "/";
