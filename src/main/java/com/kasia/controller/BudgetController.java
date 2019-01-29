@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.kasia.controller.ViewNameAndControllerURL.*;
 
@@ -46,6 +48,15 @@ public class BudgetController {
             result.add(c.name());
         }
         return result;
+    }
+
+    @ModelAttribute("allOwnBudgets")
+    public Set<Budget> getAllOwnBudget(Principal principal) {
+        User user = appCA.getAuthenticationUser(principal);
+        if (user != null) {
+            return uService.findOwnBudgets(user.getId());
+        }
+        return new HashSet<>();
     }
 
     @GetMapping(U_BUDGET_ADD)
