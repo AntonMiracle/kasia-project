@@ -39,9 +39,8 @@ public class ProfileController {
     }
 
     @GetMapping
-    public String openProfile(Model model) {
-        model.addAttribute("openProfile", "openProfile");
-        return HOME;
+    public String openProfile() {
+        return PROFILE;
     }
 
     @PostMapping("updatePassword")
@@ -49,18 +48,17 @@ public class ProfileController {
 
         User user = appCA.getAuthenticationUser(principal);
 
-        if (bResult.hasErrors()) return openProfile(model);
+        if (bResult.hasErrors()) return openProfile();
 
         user.setPassword(uService.cryptPassword(dto.getPassword()));
         uService.saveUser(user);
 
         model.addAttribute(UPDATE_ATT, "password");
-        return HOME;
+        return openProfile();
     }
 
     @PostMapping("updateZoneLocale")
     public String updateProfile(Model model, Principal principal, @ModelAttribute LocaleZoneIdDTO dto) {
-        openProfile(model);
         User user = appCA.getAuthenticationUser(principal);
         boolean anyChanges = false;
 
@@ -78,7 +76,7 @@ public class ProfileController {
             uService.saveUser(user);
             model.addAttribute(UPDATE_ATT, "zoneLocal");
         }
-        return HOME;
+        return openProfile();
     }
 
 }
