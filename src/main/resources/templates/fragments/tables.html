@@ -49,7 +49,7 @@
     <table th:class="myTable">
         <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
         <form action="#" th:action="@{/registration}" th:object="${userDTO}" method="post">
-            <th th:colspan="3"><h1 th:text="#{title.registration}"></h1></th>
+            <th th:colspan="3" th:text="#{title.registration}"></th>
             <tr>
                 <td th:id="registrationInputName" th:text="#{label.email}"></td>
                 <td th:id="registrationInputError" th:class="errorClass" th:if="${#fields.hasErrors('email')}"
@@ -107,7 +107,7 @@
 
 <!--HOME - PROFILE TABLE-->
 <div th:fragment="profileTable">
-    <table  th:class="myTable">
+    <table th:class="myTable">
         <th th:colspan="2" th:text="#{title.profile}"></th>
         <tr>
             <td th:id="profileInputName" th:text="#{label.email}+':'"></td>
@@ -120,11 +120,14 @@
         <!--/*@thymesVar id="profileDTO" type="com.kasia.controller.dto.ProfileDTO"*/-->
         <form th:action="@{/profile/updateProfile}" th:object="${profileDTO}" method="post">
             <tr>
-                <td th:id="profileUpdateResult" colspan="2" th:class="successClass" th:if="${updatePass} eq 'passUpdate'" th:text="#{text.password.update}"></td>
+                <td th:id="profileUpdateResult" colspan="2" th:class="successClass"
+                    th:if="${updatePass} eq 'passUpdate'" th:text="#{text.password.update}"></td>
             </tr>
             <tr>
                 <td th:id="profileInputName" th:text="#{label.password.new}+':'"></td>
-                <td th:id="profileInputError" th:class="errorClass" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</td>
+                <td th:id="profileInputError" th:class="errorClass" th:if="${#fields.hasErrors('password')}"
+                    th:errors="*{password}">Error
+                </td>
             </tr>
             <tr>
                 <td th:colspan="2"><input type="password" th:field="*{password}" th:placeholder="#{tip.password}"/></td>
@@ -132,16 +135,20 @@
 
             <tr>
                 <td th:id="profileInputName" th:text="#{label.confirm}+':'"></td>
-                <td th:id="profileInputError" th:class="errorClass" th:if="${#fields.hasErrors('confirm')}" th:errors="*{confirm}">Error</td>
+                <td th:id="profileInputError" th:class="errorClass" th:if="${#fields.hasErrors('confirm')}"
+                    th:errors="*{confirm}">Error
+                </td>
             </tr>
             <tr>
                 <td th:colspan="2"><input type="password" th:field="*{confirm}"/></td>
             </tr>
             <tr>
-                <td th:id="profileUpdateResult" colspan="2" th:class="successClass" th:if="${updateLocale} eq 'localeUpdate'" th:text="#{text.locale.update}"></td>
+                <td th:id="profileUpdateResult" colspan="2" th:class="successClass"
+                    th:if="${updateLocale} eq 'localeUpdate'" th:text="#{text.locale.update}"></td>
             </tr>
             <tr>
-                <td th:id="profileUpdateResult" colspan="2" th:class="successClass" th:if="${updateZoneId} eq 'zoneIdUpdate'" th:text="#{text.zone.update}"></td>
+                <td th:id="profileUpdateResult" colspan="2" th:class="successClass"
+                    th:if="${updateZoneId} eq 'zoneIdUpdate'" th:text="#{text.zone.update}"></td>
             </tr>
             <tr>
                 <td th:id="profileInputName" th:text="#{label.locale.update}+':'"></td>
@@ -155,7 +162,9 @@
                 <input id="inputUpdateZoneId" type="hidden" name="zoneId"/>
                 <input type="hidden" th:value="${#locale.language}" name="lang"/>
                 <input type="hidden" th:value="${#locale.country}" name="country"/>
-                <td th:id="profileTdWithButton" th:colspan="2"><button class="button" type="submit" th:text="#{button.complete}"></button></td>
+                <td th:id="profileTdWithButton" th:colspan="2">
+                    <button class="button" type="submit" th:text="#{button.complete}"></button>
+                </td>
             </tr>
         </form>
     </table>
@@ -174,20 +183,25 @@
             <tr>
                 <input type="hidden" th:value="${#authentication.name}" name="userEmail"/>
                 <td th:id="addBudgetInputName" th:text="#{label.name}"></td>
-                <td th:id="addBudgetInputError" th:class="errorClass" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</td>
+                <td th:id="addBudgetInputError" th:class="errorClass" th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}">Error
+                </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input th:id="addBudgetNameInput" type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
+                <td th:colspan="2"><input th:id="addBudgetNameInput" type="text" th:field="*{name}"
+                                          th:placeholder="#{tip.name}"/></td>
             </tr>
             <tr>
-                <td colspan="2" th:id="addBudgetInputError" th:class="errorClass" th:if="${#fields.hasErrors('banknotes')}"
+                <td colspan="2" th:id="addBudgetInputError" th:class="errorClass"
+                    th:if="${#fields.hasErrors('banknotes')}"
                     th:errors="*{banknotes}">Error
                 </td>
             </tr>
             <tr>
                 <td th:id="addBudgetInputName" th:text="#{label.balance}"></td>
                 <td th:id="addBudgetInputName">
-                    <input th:id="banknotesInput" type="text" th:field="*{banknotes}" th:placeholder="#{tip.banknotes}"/>
+                    <input th:id="banknotesInput" type="text" th:field="*{banknotes}"
+                           th:placeholder="#{tip.banknotes}"/>
                     .
                     <input th:id="pennyInput" type="text" th:field="*{penny}" th:placeholder="#{tip.penny}"/>
                 </td>
@@ -197,35 +211,39 @@
                 <td th:id="addBudgetInputName">
                     <select th:field="*{currency}">
                         <option th:each="type : ${currencies}"
-                                    th:value="${type}"
+                                th:value="${type}"
                                 th:text="${type}">Currency
                         </option>
                     </select>
                 </td>
             </tr>
             <tr>
-                <td th:id="addBudgetTdWithButton" th:colspan="2"><button class="button" type="submit" th:text="#{button.complete}"></button></td>
+                <td th:id="addBudgetTdWithButton" th:colspan="2">
+                    <button class="button" type="submit" th:text="#{button.complete}"></button>
+                </td>
             </tr>
         </form>
     </table>
 </div>
 
 <!--HOME - OWN BUDGET LIST TABLE-->
-<div th:fragment="ownBudgetListTable" th:class="myTable">
-        <!--/*@thymesVar id="allOwnBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
-        <div th:each="ownBudget : ${allOwnBudgets}">
-            <!--<form th:action="@{/registration/back}">-->
-                <!--<button class="button" type="submit"-->
-                        <!--th:text="${ownBudget.name}"></button>-->
-            <!--</form>-->
-
-            <div th:text="${ownBudget.name}">Onions</div>
-            <div th:text="${ownBudget.balance.amount}">Onions</div>
-            <div th:text="${ownBudget.balance.currencies.currency.symbol}">Onions</div>
-        </div>
-
+<div th:fragment="ownBudgetListTable">
+    <!--/*@thymesVar id="allOwnBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+    <table th:class="myTable">
+        <tr th:each="ownBudget : ${allOwnBudgets}"
+            th:id="existBudgetRow"
+            th:onclick="'javascript:rowClicked(\'' + ${ownBudget.id} + '\');'">
+            <td th:text="${ownBudget.name}">Name</td>
+            <td th:text="${ownBudget.balance.amount}">Amount</td>
+            <td th:text="${ownBudget.balance.currencies.currency.getCurrencyCode()}">Currency</td>
+        </tr>
     </table>
-
+    <script th:inline="javascript">
+        function rowClicked(value) {
+            location.href = "/budget/open/" + value;
+            console.log("ROW CLICKED");
+        }
+    </script>
 </div>
 
 </body>

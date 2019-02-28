@@ -10,10 +10,7 @@ import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
@@ -82,6 +79,13 @@ public class BudgetController {
         budgetService.saveBudget(budget);
         uService.addBudget(user.getId(), budget.getId());
 
+        return redirect(U_BUDGET_ALL);
+    }
+
+    @GetMapping(U_BUDGET_OPEN+"/{id}")
+    public String openBudget(@PathVariable long id) {
+        System.out.println("OPEN BUDGET");
+        System.out.println("id = " + id );
         return redirect(U_BUDGET_ALL);
     }
 }

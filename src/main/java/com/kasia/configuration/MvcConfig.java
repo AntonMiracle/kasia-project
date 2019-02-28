@@ -1,6 +1,10 @@
 package com.kasia.configuration;
 
+import com.kasia.model.Balance;
+import com.kasia.model.Budget;
+import com.kasia.model.Currencies;
 import com.kasia.model.User;
+import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -13,17 +17,30 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private UserService uService;
+    @Autowired
+    private BudgetService bService;
 
     @PostConstruct
     public void init() {
         User user = uService.createUser("anton@gmail.com", "Anton", "Password2",
                 "America/Atka", "pl", "PL");
         uService.saveUser(user);
+        Balance b1 = new Balance(BigDecimal.valueOf(12), Currencies.PLN, LocalDateTime.now());
+        Balance b2 = new Balance(BigDecimal.valueOf(-1200.99), Currencies.EUR, LocalDateTime.now());
+        Budget bu1 = new Budget("Семейный Бюджет", b1, LocalDateTime.now());
+        Budget bu2 = new Budget("Anton Bond", b2, LocalDateTime.now());
 
+        bService.saveBudget(bu1);
+        bService.saveBudget(bu2);
+        uService.addBudget(user.getId(), bu1.getId());
+        uService.addBudget(user.getId(), bu2.getId());
         System.out.println("=============== MvcConfig#init");
         System.out.println(user);
     }

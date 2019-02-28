@@ -2,18 +2,13 @@
 * {
     margin: 0;
     padding: 0;
-    font-size: 12px;
     text-align: center;
     font-family: "Cutive";
-    color: black;
 }
 
 html {
     background-size: cover;
     background: url('../images/login_bg.jpg') no-repeat fixed center center;
-}
-
-body {
 }
 
 .errorClass {
@@ -51,6 +46,7 @@ body {
     color: black;
     text-align: center;
     cursor: pointer;
+    font-size: 15px;
     font-weight: bold;
     transition: 0.3s;
 }
@@ -92,11 +88,12 @@ body {
     background-color: rgba(255, 255, 255, 0.7);
     box-shadow: 0px 0px 10px 10px rgba(0, 100, 0, 0.1);
     border-radius: 1px;
+    border-spacing: 0;
     display: inline-block;
 }
 
 .myTable td {
-    height: 35px;
+    height: 45px;
     padding-right: 20px;
     padding-left: 20px;
 }
@@ -107,6 +104,7 @@ body {
 }
 
 .myTable th {
+    font-size: 25px;
     padding-top: 20px;
 }
 
@@ -198,3 +196,18 @@ body {
 #addBudgetNameInput {
     width: 400px;
 }
+
+/*=====================================*/
+/*CHOOSE BUDGET*/
+/*=====================================*/
+
+#existBudgetRow {
+    font-size: 24px;
+    transition: 0.3s;
+}
+
+#existBudgetRow:hover {
+    color: #ffffff;
+    background-color: rgba(0, 100, 0, 0.9);
+}
+
