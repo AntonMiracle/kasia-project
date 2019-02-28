@@ -1,20 +1,29 @@
 package com.kasia.controller.dto;
 
-public class LocaleZoneIdDTO {
+import com.kasia.controller.dto.validator.constraint.UserConfirmPasswordIsValid;
+import com.kasia.controller.dto.validator.constraint.UserPasswordIsValid;
+
+@UserPasswordIsValid(fieldName = "password", message = "{validation.password.error}")
+@UserConfirmPasswordIsValid(passwordFN = "password", confirmFN = "confirm", message = "{validation.password.confirm.error}")
+public class ProfileDTO {
     private boolean updateZone;
     private boolean updateLocale;
     private String lang;
     private String country;
     private String zoneId;
+    private String password;
+    private String confirm;
 
     @Override
     public String toString() {
-        return "LocaleZoneIdDTO{" +
+        return "ProfileDTO{" +
                 "updateZone=" + updateZone +
                 ", updateLocale=" + updateLocale +
                 ", lang='" + lang + '\'' +
                 ", country='" + country + '\'' +
                 ", zoneId='" + zoneId + '\'' +
+                ", password='" + password + '\'' +
+                ", confirm='" + confirm + '\'' +
                 '}';
     }
 
@@ -56,5 +65,21 @@ public class LocaleZoneIdDTO {
 
     public void setZoneId(String zoneId) {
         this.zoneId = zoneId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirm() {
+        return confirm;
+    }
+
+    public void setConfirm(String confirm) {
+        this.confirm = confirm;
     }
 }

@@ -2,6 +2,7 @@ package com.kasia.controller;
 
 import com.kasia.controller.dto.LocaleZoneIdDTO;
 import com.kasia.controller.dto.PasswordUpdateDTO;
+import com.kasia.controller.dto.ProfileDTO;
 import com.kasia.model.User;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,6 @@ public class ProfileController {
     private UserService uService;
     @Autowired
     private AppControllerAdvice appCA;
-    private final String UPDATE_ATT = "update";
 
     @ModelAttribute("passwordUpdateDTO")
     public PasswordUpdateDTO getNewPasswordUpdateDTO() {
@@ -38,45 +38,41 @@ public class ProfileController {
         return new LocaleZoneIdDTO();
     }
 
+    @ModelAttribute("profileDTO")
+    public ProfileDTO getProfileDTO() {
+        return new ProfileDTO();
+    }
+
     @GetMapping
     public String openProfile() {
         return V_PROFILE;
     }
 
-    @PostMapping("updatePassword")
-    public String updateProfilePassword(Model model, Principal principal, @Valid @ModelAttribute PasswordUpdateDTO dto, BindingResult bResult) {
-
+    @PostMapping("updateProfile")
+    public String updateProfile(Model model, Principal principal, @Valid @ModelAttribute ProfileDTO dto, BindingResult bResult) {
         User user = appCA.getAuthenticationUser(principal);
-
-        if (bResult.hasErrors() || dto.getPassword() == null || dto.getPassword().length() == 0) return openProfile();
-
-        user.setPassword(uService.cryptPassword(dto.getPassword()));
-        uService.saveUser(user);
-
-        model.addAttribute(UPDATE_ATT, "password");
-        return openProfile();
-    }
-
-    @PostMapping("updateZoneLocale")
-    public String updateProfile(Model model, Principal principal, @ModelAttribute LocaleZoneIdDTO dto) {
-        User user = appCA.getAuthenticationUser(principal);
-        boolean anyChanges = false;
+        boolean isAnyChanges = false;
+        if (!bResult.hasErrors() && dto.getPassword() != null && dto.getPassword().length() > 0) {
+            user.setPassword(uService.cryptPassword(dto.getPassword()));
+            isAnyChanges = true;
+            model.addAttribute("updatePass", "passUpdate");
+        }
 
         if (dto.isUpdateZone() && dto.getZoneId().length() > 0) {
             user.setZoneId(uService.zoneIdOf(dto.getZoneId()));
-            anyChanges = true;
+            isAnyChanges = true;
             dto.setUpdateZone(false);
+            model.addAttribute("updateZoneId", "zoneIdUpdate");
         }
         if (dto.isUpdateLocale() && dto.getLang().length() > 0 && dto.getCountry().length() > 0) {
             user.setLocale(uService.localeOf(dto.getLang(), dto.getCountry()));
-            anyChanges = true;
+            isAnyChanges = true;
             dto.setUpdateLocale(false);
+            model.addAttribute("updateLocale", "localeUpdate");
         }
-        if (anyChanges) {
+        if (isAnyChanges) {
             uService.saveUser(user);
-            model.addAttribute(UPDATE_ATT, "zoneLocal");
         }
         return openProfile();
     }
-
 }
