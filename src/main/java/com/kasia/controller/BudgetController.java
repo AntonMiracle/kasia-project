@@ -56,6 +56,11 @@ public class BudgetController {
         return new HashSet<>();
     }
 
+    @GetMapping(U_BUDGET)
+    public String openBudget() {
+        return V_BUDGET;
+    }
+
     @GetMapping(U_BUDGET_ADD)
     public String openAddBudget() {
         return V_BUDGET_ADD;
@@ -82,10 +87,12 @@ public class BudgetController {
         return redirect(U_BUDGET_ALL);
     }
 
-    @GetMapping(U_BUDGET_OPEN+"/{id}")
+    @GetMapping(U_BUDGET_OPEN + "/{id}")
     public String openBudget(@PathVariable long id) {
         System.out.println("OPEN BUDGET");
-        System.out.println("id = " + id );
-        return redirect(U_BUDGET_ALL);
+        System.out.println("id = " + id);
+//        add data to model
+        // create in Controller advice property budget with current picked budget
+        return redirect(U_BUDGET);
     }
 }

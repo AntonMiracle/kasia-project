@@ -6,6 +6,7 @@ public final class ViewNameAndControllerURL {
     public static final String V_REGISTRATION = "registration";
     public static final String V_BUDGET_ADD = "budgetAdd";
     public static final String V_BUDGET_ALL = "budgetAll";
+    public static final String V_BUDGET = "budget";
 
     public static final String U_ROOT = "/";
     public static final String U_LOGIN = "/login";

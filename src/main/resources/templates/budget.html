@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/base_head :: base_head"></div>
+    <title th:text="#{title.budgetAll}"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: mainMenu"></div>
+<!--create menu for pucked budget need add rachod i dochod, add elements-->
+<div id="mainContentWithoutMenu">
+    This is budget
+</div>
+</body>
+</html>
