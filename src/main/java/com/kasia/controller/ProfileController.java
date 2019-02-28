@@ -1,7 +1,5 @@
 package com.kasia.controller;
 
-import com.kasia.controller.dto.LocaleZoneIdDTO;
-import com.kasia.controller.dto.PasswordUpdateDTO;
 import com.kasia.controller.dto.ProfileDTO;
 import com.kasia.model.User;
 import com.kasia.model.service.UserService;
@@ -17,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 import java.security.Principal;
 
-import static com.kasia.controller.ViewNameAndControllerURL.*;
+import static com.kasia.controller.ViewNameAndControllerURL.U_PROFILE;
+import static com.kasia.controller.ViewNameAndControllerURL.V_PROFILE;
 
 @Controller
 @RequestMapping(U_PROFILE)
@@ -27,16 +26,6 @@ public class ProfileController {
     private UserService uService;
     @Autowired
     private AppControllerAdvice appCA;
-
-    @ModelAttribute("passwordUpdateDTO")
-    public PasswordUpdateDTO getNewPasswordUpdateDTO() {
-        return new PasswordUpdateDTO();
-    }
-
-    @ModelAttribute("localeZoneIdDTO")
-    public LocaleZoneIdDTO getLocaleZoneIdDTO() {
-        return new LocaleZoneIdDTO();
-    }
 
     @ModelAttribute("profileDTO")
     public ProfileDTO getProfileDTO() {
