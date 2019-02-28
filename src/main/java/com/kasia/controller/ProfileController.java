@@ -48,7 +48,7 @@ public class ProfileController {
 
         User user = appCA.getAuthenticationUser(principal);
 
-        if (bResult.hasErrors()) return openProfile();
+        if (bResult.hasErrors() || dto.getPassword() == null || dto.getPassword().length() == 0) return openProfile();
 
         user.setPassword(uService.cryptPassword(dto.getPassword()));
         uService.saveUser(user);
