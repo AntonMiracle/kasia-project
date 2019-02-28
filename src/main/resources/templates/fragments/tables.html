@@ -18,7 +18,7 @@
         </tr>
         <tr>
             <td>
-                <table th:class="loginTable">
+                <table th:class="myTable">
                     <form th:action="@{/login}" method="post">
                         <tr>
                             <td th:id="loginInputName" th:text="#{label.email}"></td>
@@ -46,7 +46,7 @@
 
 <!--REGISTRATION TABLE-->
 <div th:fragment="registrationTable">
-    <table th:class="registrationTable">
+    <table th:class="myTable">
         <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
         <form action="#" th:action="@{/registration}" th:object="${userDTO}" method="post">
             <th th:colspan="3"><h1 th:text="#{title.registration}"></h1></th>
@@ -107,8 +107,7 @@
 
 <!--HOME - PROFILE TABLE-->
 <div th:fragment="profileTable">
-
-    <table  th:class="profileTable">
+    <table  th:class="myTable">
         <th th:colspan="2" th:text="#{title.profile}"></th>
         <tr>
             <td th:id="profileInputName" th:text="#{label.email}+':'"></td>
@@ -167,8 +166,7 @@
 
 <!--HOME - ADD BUDGET TABLE-->
 <div th:fragment="addBudgetTable">
-
-    <table th:class="addBudgetTable">
+    <table th:class="myTable">
         <th colspan="2" th:text="#{title.budgetAdd}"></th>
 
         <!--/*@thymesVar id="addBudgetDTO" type="com.kasia.controller.dto.AddBudgetDTO"*/-->
@@ -213,7 +211,7 @@
 </div>
 
 <!--HOME - OWN BUDGET LIST TABLE-->
-<div th:fragment="ownBudgetListTable" th:class="ownBudgetListTable">
+<div th:fragment="ownBudgetListTable" th:class="myTable">
         <!--/*@thymesVar id="allOwnBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
         <div th:each="ownBudget : ${allOwnBudgets}">
             <!--<form th:action="@{/registration/back}">-->

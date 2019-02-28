@@ -16,6 +16,14 @@ html {
 body {
 }
 
+.errorClass {
+    color: red;
+}
+
+.successClass {
+    color: darkgreen;
+}
+
 .kasiaClass {
     margin: 10px;
     text-align: center;
@@ -79,39 +87,7 @@ body {
     text-align: center;
 }
 
-/*=====================================*/
-/*LOGIN*/
-/*=====================================*/
-.loginTable {
-    margin: 20px;
-    background-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0px 0px 10px 10px rgba(0, 100, 0, 0.1);
-    border-radius: 1px;
-}
-
-.loginTable td {
-    height: 35px;
-    padding-right: 20px;
-    padding-left: 20px;
-}
-
-.loginTable input {
-    width: 320px;
-    height: 30px;
-}
-
-#loginInputName {
-    vertical-align: bottom;
-}
-
-.registrationTable th {
-    padding-top: 20px;
-}
-
-/*=====================================*/
-/*REGISTRATION*/
-/*=====================================*/
-.registrationTable {
+.myTable {
     margin: 20px;
     background-color: rgba(255, 255, 255, 0.7);
     box-shadow: 0px 0px 10px 10px rgba(0, 100, 0, 0.1);
@@ -119,17 +95,32 @@ body {
     display: inline-block;
 }
 
-.registrationTable td {
+.myTable td {
     height: 35px;
     padding-right: 20px;
     padding-left: 20px;
-    text-align: left;
 }
 
-.registrationTable input {
-    width: 400px;
+.myTable input {
+    width: 350px;
     height: 30px;
 }
+
+.myTable th {
+    padding-top: 20px;
+}
+
+/*=====================================*/
+/*LOGIN*/
+/*=====================================*/
+
+#loginInputName {
+    vertical-align: bottom;
+}
+
+/*=====================================*/
+/*REGISTRATION*/
+/*=====================================*/
 
 #registrationInputName {
     text-align: left;
@@ -148,28 +139,6 @@ body {
 /*=====================================*/
 /*HOME-PROFILE*/
 /*=====================================*/
-.profileTable {
-    margin: 20px;
-    background-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0px 0px 10px 10px rgba(0, 100, 0, 0.1);
-    border-radius: 1px;
-    display: inline-block;
-}
-
-.profileTable td {
-    height: 35px;
-    padding-right: 20px;
-    padding-left: 20px;
-}
-
-.profileTable input {
-    width: 350px;
-    height: 30px;
-}
-
-.profileTable th {
-    padding-top: 20px;
-}
 
 #profileInputName {
     text-align: left;
@@ -203,17 +172,6 @@ body {
 /*=====================================*/
 /*HOME ADD BUDGET*/
 /*=====================================*/
-.addBudgetTable {
-    margin: 20px;
-    background-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0px 0px 10px 10px rgba(0, 100, 0, 0.1);
-    border-radius: 1px;
-    display: inline-block;
-}
-
-.addBudgetTable th {
-    padding-top: 20px;
-}
 
 #addBudgetInputError {
     text-align: right;
@@ -224,15 +182,11 @@ body {
     text-align: center;
 }
 
-.addBudgetTable td {
-    height: 35px;
-    padding-right: 20px;
-    padding-left: 20px;
-}
 #addBudgetInputName {
     text-align: left;
     vertical-align: bottom;
 }
+
 #banknotesInput {
     width: 60px;
 }
@@ -241,29 +195,6 @@ body {
     width: 30px;
 }
 
-#addBudgetNameInput{
+#addBudgetNameInput {
     width: 400px;
-}
-
-/*=====================================*/
-/*HOME OWN BUDGET LIST*/
-/*=====================================*/
-.ownBudgetListTable{
-    /*left: 0px;*/
-    /*top: 50px;*/
-    width: 350px;
-    background-color: rgba(255, 255, 255, 0.4);
-    border-radius: 1px;
-    /*position: absolute;*/
-    display: inline;
-}
-/*=====================================*/
-/*OTHER*/
-/*=====================================*/
-.errorClass {
-    color: red;
-}
-
-.successClass {
-    color: darkgreen;
 }
