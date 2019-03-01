@@ -110,11 +110,11 @@
     <table th:class="myTable">
         <th th:colspan="2" th:text="#{title.profile}"></th>
         <tr>
-            <td th:id="profileInputName" th:text="#{label.email}+':'"></td>
+            <td th:id="profileInputName" th:text="#{label.email}"></td>
             <td th:id="profileInputName" th:text="${user.email}"></td>
         </tr>
         <tr>
-            <td th:id="profileInputName" th:text="#{label.name}+':'"></td>
+            <td th:id="profileInputName" th:text="#{label.name}"></td>
             <td th:id="profileInputName" th:text="${user.name}"></td>
         </tr>
         <!--/*@thymesVar id="profileDTO" type="com.kasia.controller.dto.ProfileDTO"*/-->
@@ -124,7 +124,7 @@
                     th:if="${updatePass} eq 'passUpdate'" th:text="#{text.password.update}"></td>
             </tr>
             <tr>
-                <td th:id="profileInputName" th:text="#{label.password.new}+':'"></td>
+                <td th:id="profileInputName" th:text="#{label.password.new}"></td>
                 <td th:id="profileInputError" th:class="errorClass"
                     th:if="${#fields.hasErrors('password')} and *{password!=null and #strings.length(password)&gt;0}"
                     th:errors="*{password}">Error
@@ -135,7 +135,7 @@
             </tr>
 
             <tr>
-                <td th:id="profileInputName" th:text="#{label.confirm}+':'"></td>
+                <td th:id="profileInputName" th:text="#{label.confirm}"></td>
                 <td th:id="profileInputError" th:class="errorClass" th:if="${#fields.hasErrors('confirm')}"
                     th:errors="*{confirm}">Error
                 </td>
@@ -152,11 +152,11 @@
                     th:if="${updateZoneId} eq 'zoneIdUpdate'" th:text="#{text.zone.update}"></td>
             </tr>
             <tr>
-                <td th:id="profileInputName" th:text="#{label.locale.update}+':'"></td>
+                <td th:id="profileInputName" th:text="#{label.locale.update}"></td>
                 <td th:id="profileTdCheckbox"><input type="checkbox" th:field="*{updateLocale}"/></td>
             </tr>
             <tr>
-                <td th:id="profileInputName" th:text="#{label.zoneid.update}+':'"></td>
+                <td th:id="profileInputName" th:text="#{label.zoneid.update}"></td>
                 <td th:id="profileTdCheckbox"><input type="checkbox" th:field="*{updateZone}"/></td>
             </tr>
             <tr>
