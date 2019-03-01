@@ -1,10 +1,10 @@
 package com.kasia.controller.dto;
 
-import com.kasia.controller.dto.validator.constraint.UserConfirmPasswordIsValid;
-import com.kasia.controller.dto.validator.constraint.UserPasswordIsValid;
+import com.kasia.controller.dto.validator.constraint.UserDTOConfirmPasswordIsValid;
+import com.kasia.controller.dto.validator.constraint.UserDTOPasswordIsValid;
 
-@UserPasswordIsValid(fieldName = "password", message = "{validation.password.error}")
-@UserConfirmPasswordIsValid(passwordFN = "password", confirmFN = "confirm", message = "{validation.password.confirm.error}")
+@UserDTOPasswordIsValid(passwordFN = "password", message = "{validation.password.error}")
+@UserDTOConfirmPasswordIsValid(passwordFN = "password", confirmFN = "confirm", message = "{validation.password.confirm.error}")
 public class ProfileDTO {
     private boolean updateZone;
     private boolean updateLocale;

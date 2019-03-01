@@ -1,17 +1,17 @@
 package com.kasia.controller.dto.validator;
 
-import com.kasia.controller.dto.validator.constraint.UserConfirmPasswordIsValid;
+import com.kasia.controller.dto.validator.constraint.UserDTOConfirmPasswordIsValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UserConfirmNewPasswordValidator implements ConstraintValidator<UserConfirmPasswordIsValid, Object> {
+public class UserDTOConfirmPasswordValidator implements ConstraintValidator<UserDTOConfirmPasswordIsValid, Object> {
     private String passwordFN;
     private String confirmFN;
     private ValidatorUtil vUtil = new ValidatorUtil();
 
     @Override
-    public void initialize(UserConfirmPasswordIsValid constraintAnnotation) {
+    public void initialize(UserDTOConfirmPasswordIsValid constraintAnnotation) {
         passwordFN = constraintAnnotation.passwordFN();
         confirmFN = constraintAnnotation.confirmFN();
     }

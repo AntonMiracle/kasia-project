@@ -125,7 +125,8 @@
             </tr>
             <tr>
                 <td th:id="profileInputName" th:text="#{label.password.new}+':'"></td>
-                <td th:id="profileInputError" th:class="errorClass" th:if="${#fields.hasErrors('password')}"
+                <td th:id="profileInputError" th:class="errorClass"
+                    th:if="${#fields.hasErrors('password')} and *{password!=null and #strings.length(password)&gt;0}"
                     th:errors="*{password}">Error
                 </td>
             </tr>
