@@ -6,10 +6,12 @@
     <title th:text="#{title.budgetAll}"></title>
 </head>
 <body>
-<div th:replace="fragments/header :: mainMenu"></div>
+<div th:replace="fragments/header :: budgetMenu"></div>
 <!--create menu for pucked budget need add rachod i dochod, add elements-->
 <div id="mainContentWithoutMenu">
     This is budget
+    <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
+    <div th:text="${budget.name}"></div>
 </div>
 </body>
 </html>

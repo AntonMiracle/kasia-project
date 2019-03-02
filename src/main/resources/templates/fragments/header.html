@@ -22,26 +22,49 @@
 
 <!--HOME-->
 <div class="header" th:fragment="mainMenu">
-    <div sec:authorize="isAuthenticated()">
-        <div>
-            <form th:action="@{/logout}" method="post">
-                <button class="button" type="submit" th:text="#{button.logout}"></button>
-            </form>
-        </div>
-        <div>
-            <form th:action="@{/profile}">
-                <button class="button" type="submit" th:text="#{button.profile}"></button>
-            </form>
-        </div>
-        <div>
-            <form th:action="@{/budget/all}">
-                <button class="button" type="submit" th:text="#{button.budgetAll}"></button>
-            </form>
-        </div><div>
-            <form th:action="@{/budget/add}">
-                <button class="button" type="submit" th:text="#{button.addBudget}"></button>
-            </form>
-        </div>
+    <div>
+        <form th:action="@{/logout}" method="post">
+            <button class="button" type="submit" th:text="#{button.logout}"></button>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/profile}">
+            <button class="button" type="submit" th:text="#{button.profile}"></button>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/budget/all}">
+            <button class="button" type="submit" th:text="#{button.allBudget}"></button>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/budget/add}">
+            <button class="button" type="submit" th:text="#{button.addBudget}"></button>
+        </form>
+    </div>
+</div>
+
+<!--BUDGET-->
+<div class="header" th:fragment="budgetMenu">
+    <div>
+        <form th:action="@{/budget/all}">
+            <button class="button" type="submit" th:text="#{button.back}"></button>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/operation}">
+            <button class="button" type="submit" th:text="#{button.operation}"></button>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/element}">
+            <button class="button" type="submit" th:text="#{button.element}"></button>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/provider}">
+            <button class="button" type="submit" th:text="#{button.provider}"></button>
+        </form>
     </div>
 </div>
 

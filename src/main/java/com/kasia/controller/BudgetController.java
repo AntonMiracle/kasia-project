@@ -9,6 +9,7 @@ import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,6 @@ import java.util.Set;
 import static com.kasia.controller.ViewNameAndControllerURL.*;
 
 @Controller
-@RequestMapping
 public class BudgetController {
     @Autowired
     private AppControllerAdvice appCA;
@@ -57,8 +57,10 @@ public class BudgetController {
     }
 
     @GetMapping(U_BUDGET)
-    public String openBudget() {
-        return V_BUDGET;
+    public String openBudget(@ModelAttribute Budget budget) {
+        System.out.println(budget == null ? "null" : budget);
+        if (budget != null && budget.getId() > 0) return V_BUDGET;
+        return redirect(U_BUDGET_ALL);
     }
 
     @GetMapping(U_BUDGET_ADD)
@@ -67,7 +69,7 @@ public class BudgetController {
     }
 
     @GetMapping(U_BUDGET_ALL)
-    public String openHome() {
+    public String openAllBudget() {
         return V_BUDGET_ALL;
     }
 
@@ -88,11 +90,15 @@ public class BudgetController {
     }
 
     @GetMapping(U_BUDGET_OPEN + "/{id}")
-    public String openBudget(@PathVariable long id) {
-        System.out.println("OPEN BUDGET");
-        System.out.println("id = " + id);
-//        add data to model
-        // create in Controller advice property budget with current picked budget
-        return redirect(U_BUDGET);
+    public String openBudget(Principal principal, Model model, @PathVariable long id) {
+        User user = appCA.getAuthenticationUser(principal);
+        Budget budget = budgetService.findBudgetById(id);
+        if (user != null && budget != null) {
+            if (uService.findOwnBudgets(user.getId()).contains(budget) || uService.findConnectUsers(budget.getId()).contains(user)) {
+                model.addAttribute("budget", budget);
+                return U_BUDGET;
+            }
+        }
+        return redirect(U_BUDGET_ALL);
     }
 }
