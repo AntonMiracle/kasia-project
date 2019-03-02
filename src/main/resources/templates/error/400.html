@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/base_head :: base_head"></div>
+    <title th:text="#{title.error}"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: errorPageMenu"></div>
+<div id="mainContentWithoutMenu">
+    <h1 th:class="kasiaClass">400</h1>
+    <img th:src="@{/images/romashka.png}" width="200" height="200"/>
+    <p th:text="#{text.request.error}"></p>
+</div>
+</body>
+</html>
