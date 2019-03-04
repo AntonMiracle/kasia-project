@@ -7,8 +7,47 @@
 </head>
 <body>
 <div th:insert="fragments/header :: loginMenu"></div>
+
 <div id="mainContentWithoutMenu">
-    <div th:insert="fragments/tables :: loginTable"></div>
+    <table style="display: inline-block">
+        <tr>
+            <td th:class="kasiaClass">KASIA</td>
+        </tr>
+        <tr>
+            <td id="kasiaBudget" th:text="#{text.kasia.budget}"></td>
+        </tr>
+        <tr>
+            <td th:class="errorClass" th:if="${param.error}" th:text="#{text.login.error}"></td>
+            <td th:class="successClass" th:if="${param.logout}" th:text="#{text.logout}"></td>
+            <td th:class="successClass" th:if="${param.registration}" th:text="#{text.registration.success}"></td>
+        </tr>
+        <tr>
+            <td>
+                <table th:class="myTable">
+                    <form th:action="@{/login}" method="post">
+                        <tr>
+                            <td th:id="loginInputName" th:text="#{label.email}"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="username" th:autofocus="autofocus"/></td>
+                        </tr>
+                        <tr>
+                            <td th:id="loginInputName" th:text="#{label.password}"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="password" name="password"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button class="button" type="submit" th:text="#{button.login}"></button>
+                            </td>
+                        </tr>
+                    </form>
+                </table>
+            </td>
+        </tr>
+    </table>
+
     <div th:insert="fragments/footer :: loginFooter"></div>
 </div>
 </body>

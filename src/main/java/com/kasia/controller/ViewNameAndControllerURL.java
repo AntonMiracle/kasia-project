@@ -23,6 +23,7 @@ public final class ViewNameAndControllerURL {
     public static final String U_OPERATION_ADD = U_OPERATION + "/add";
     public static final String U_ELEMENT = U_BUDGET + "/element";
     public static final String U_PROVIDER = U_BUDGET + "/provider";
+    public static final String U_PROVIDER_SAVE = U_PROVIDER + "/save";
 
     public static String redirect(String url) {
         if (url.startsWith("/")) return "redirect:" + url;
