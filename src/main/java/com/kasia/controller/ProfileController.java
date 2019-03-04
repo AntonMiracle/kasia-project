@@ -28,8 +28,7 @@ public class ProfileController {
     }
 
     @GetMapping(U_PROFILE)
-    public String openProfile(Model model) {
-        model.addAttribute("user", sessionController.getUser());
+    public String openProfile() {
         return V_PROFILE;
     }
 
@@ -58,6 +57,6 @@ public class ProfileController {
         if (isAnyChanges) {
             uService.saveUser(user);
         }
-        return openProfile(model);
+        return openProfile();
     }
 }
