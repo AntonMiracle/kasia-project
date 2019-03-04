@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,13 +27,13 @@ import static com.kasia.controller.ViewNameAndControllerURL.*;
 @Controller
 public class BudgetController {
     @Autowired
-    private AppControllerAdvice appCA;
-    @Autowired
     private UserService uService;
     @Autowired
     private BudgetService budgetService;
     @Autowired
     private BalanceService balanceService;
+    @Autowired
+    private MySessionController sessionController;
 
     @ModelAttribute("addBudgetDTO")
     public AddBudgetDTO getAddBudgetDTO() {
@@ -48,18 +50,19 @@ public class BudgetController {
     }
 
     @ModelAttribute("allOwnBudgets")
-    public Set<Budget> getAllOwnBudget(Principal principal) {
-        User user = appCA.getAuthenticationUser(principal);
-        if (user != null) {
-            return uService.findOwnBudgets(user.getId());
-        }
+    public Set<Budget> getAllOwnBudget() {
+        User user = sessionController.getUser();
+        if (user != null) return uService.findOwnBudgets(user.getId());
         return new HashSet<>();
     }
 
     @GetMapping(U_BUDGET)
-    public String openBudget(@ModelAttribute Budget budget) {
-        System.out.println(budget == null ? "null" : budget);
-        if (budget != null && budget.getId() > 0) return V_BUDGET;
+    public String openBudget(Model model) {
+        Budget budget = sessionController.getBudget();
+        if (budget != null && budget.getId() > 0) {
+            model.addAttribute("budget", budget);
+            return V_BUDGET;
+        }
         return redirect(U_BUDGET_ALL);
     }
 
@@ -74,12 +77,10 @@ public class BudgetController {
     }
 
     @PostMapping(U_BUDGET_SAVE)
-    public String addNewBudget(Principal principal, @Valid @ModelAttribute AddBudgetDTO dto, BindingResult bResult) {
-        if (bResult.hasErrors()) {
-            return openAddBudget();
-        }
+    public String addNewBudget(@Valid @ModelAttribute AddBudgetDTO dto, BindingResult bResult) {
+        if (bResult.hasErrors()) return openAddBudget();
 
-        User user = appCA.getAuthenticationUser(principal);
+        User user = sessionController.getUser();
         Budget budget = budgetService.createBudget(dto.getName()
                 , balanceService.createBalance(dto.getBanknotes(), dto.getPenny(), dto.getCurrency()));
 
@@ -90,13 +91,13 @@ public class BudgetController {
     }
 
     @GetMapping(U_BUDGET_OPEN + "/{id}")
-    public String openBudget(Principal principal, Model model, @PathVariable long id) {
-        User user = appCA.getAuthenticationUser(principal);
+    public String openBudget(@PathVariable long id) {
+        User user = sessionController.getUser();
         Budget budget = budgetService.findBudgetById(id);
         if (user != null && budget != null) {
             if (uService.findOwnBudgets(user.getId()).contains(budget) || uService.findConnectUsers(budget.getId()).contains(user)) {
-                model.addAttribute("budget", budget);
-                return U_BUDGET;
+                sessionController.setBudget(budget);
+                return redirect(U_BUDGET);
             }
         }
         return redirect(U_BUDGET_ALL);

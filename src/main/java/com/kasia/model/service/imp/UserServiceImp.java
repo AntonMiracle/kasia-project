@@ -1,5 +1,6 @@
 package com.kasia.model.service.imp;
 
+import com.kasia.controller.MySessionController;
 import com.kasia.exception.EmailExistRuntimeException;
 import com.kasia.exception.IdInvalidRuntimeException;
 import com.kasia.exception.LocaleFormatRuntimeException;
@@ -45,6 +46,8 @@ public class UserServiceImp implements UserService {
     private UserConnectBudgetValidation ucbValidation;
     @Autowired
     private BudgetService bService;
+    @Autowired
+    private MySessionController sessionController;
 
     @Override
     public User saveUser(User model) {
@@ -339,6 +342,7 @@ public class UserServiceImp implements UserService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = findUserByEmail(s);
         if (user != null) {
+            sessionController.setUser(user);
             return convertMyUserToSpringUserDetails(user);
         }
         throw new UsernameNotFoundException("need login");

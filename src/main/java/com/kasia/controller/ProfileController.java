@@ -10,36 +10,32 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
-import static com.kasia.controller.ViewNameAndControllerURL.U_PROFILE;
-import static com.kasia.controller.ViewNameAndControllerURL.V_PROFILE;
+import static com.kasia.controller.ViewNameAndControllerURL.*;
 
 @Controller
-@RequestMapping(U_PROFILE)
 public class ProfileController {
-
+    @Autowired
+    private MySessionController sessionController;
     @Autowired
     private UserService uService;
-    @Autowired
-    private AppControllerAdvice appCA;
 
     @ModelAttribute("profileDTO")
     public ProfileDTO getProfileDTO() {
         return new ProfileDTO();
     }
 
-    @GetMapping
-    public String openProfile() {
+    @GetMapping(U_PROFILE)
+    public String openProfile(Model model) {
+        model.addAttribute("user", sessionController.getUser());
         return V_PROFILE;
     }
 
-    @PostMapping("updateProfile")
-    public String updateProfile(Model model, Principal principal, @Valid @ModelAttribute ProfileDTO dto, BindingResult bResult) {
-        User user = appCA.getAuthenticationUser(principal);
+    @PostMapping(U_PROFILE_UPDATE)
+    public String updateProfile(Model model, @Valid @ModelAttribute ProfileDTO dto, BindingResult bResult) {
+        User user = sessionController.getUser();
         boolean isAnyChanges = false;
         if (!bResult.hasErrors() && dto.getPassword() != null && dto.getPassword().length() > 0) {
             user.setPassword(uService.cryptPassword(dto.getPassword()));
@@ -62,6 +58,6 @@ public class ProfileController {
         if (isAnyChanges) {
             uService.saveUser(user);
         }
-        return openProfile();
+        return openProfile(model);
     }
 }

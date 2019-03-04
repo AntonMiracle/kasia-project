@@ -227,10 +227,11 @@
     </table>
 </div>
 
-<!--HOME - OWN BUDGET LIST TABLE-->
+<!--OWN BUDGET LIST TABLE-->
 <div th:fragment="ownBudgetListTable">
     <!--/*@thymesVar id="allOwnBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
     <table th:class="myTable">
+        <th colspan="3" th:text="#{title.budgetAll}"></th>
         <tr th:each="ownBudget : ${allOwnBudgets}"
             th:id="existBudgetRow"
             th:onclick="'javascript:rowClicked(\'' + ${ownBudget.id} + '\');'">
@@ -245,6 +246,44 @@
             console.log("ROW CLICKED");
         }
     </script>
+</div>
+
+<!--BUDGET PROVIDER LIST TABLE-->
+<div th:fragment="budgetProviderListTable">
+    <table th:class="myTable">
+        <th colspan="3" th:text="#{title.provider}"></th>
+        <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.ElementProvider>"*/-->
+
+        <!--/*@thymesVar id="providerDTO" type="com.kasia.controller.dto.ProviderDTO"*/-->
+        <form th:action="@{/budget/provider/add}" th:object="${providerDTO}" method="post">
+            <tr>
+                <!--<td>-->
+                <!--<button class="button" type="submit" th:text="#{button.add}"></button>-->
+                <!--</td>-->
+                <td th:id="registrationInputName" th:text="#{label.name}"></td>
+                <td th:id="registrationInputError" th:class="errorClass" th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}">name Error
+                </td>
+            <tr>
+                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
+            </tr>
+
+            <td th:id="registrationInputName" th:text="#{label.description}"></td>
+            <td th:id="registrationInputError" th:class="errorClass" th:if="${#fields.hasErrors('description')}"
+                th:errors="*{description}">name Error
+            </td>
+
+            <tr>
+                <td th:colspan="2"><input type="text" th:field="*{description}" th:placeholder="#{tip.description}"/></td>
+            </tr>
+        </form>
+
+        <tr th:each="provider : ${providers}">
+            <td th:text="here 2 buttons remove 'and' edit"></td>
+            <td th:text="${provider.name}">Name</td>
+            <td th:text="${provider.description}">description</td>
+        </tr>
+    </table>
 </div>
 
 </body>
