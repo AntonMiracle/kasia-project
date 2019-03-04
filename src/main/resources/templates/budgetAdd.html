@@ -9,7 +9,7 @@
 <div th:replace="fragments/header :: mainMenu"></div>
 <div id="mainContentWithoutMenu">
     <table th:class="myTable">
-        <th colspan="2" th:text="#{title.budgetAdd}"></th>
+        <th colspan="2" th:text="#{title.budget}"></th>
 
         <!--/*@thymesVar id="addBudgetDTO" type="com.kasia.controller.dto.AddBudgetDTO"*/-->
         <form th:action="@{/budget/save}" th:object="${addBudgetDTO}" method="post">
