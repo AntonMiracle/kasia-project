@@ -9,7 +9,6 @@ import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -57,12 +56,8 @@ public class BudgetController {
     }
 
     @GetMapping(U_BUDGET)
-    public String openBudget(Model model) {
-        Budget budget = sessionController.getBudget();
-        if (budget != null && budget.getId() > 0) {
-            model.addAttribute("budget", budget);
-            return V_BUDGET;
-        }
+    public String openBudget() {
+        if (sessionController.getBudget() != null) return V_BUDGET;
         return redirect(U_BUDGET_ALL);
     }
 

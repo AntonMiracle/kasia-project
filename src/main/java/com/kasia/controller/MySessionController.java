@@ -31,7 +31,7 @@ public class MySessionController {
     }
 
     public void setBudget(Budget budget) {
-        if (user != null && budget.getId() > 0 && uService.findOwnBudgets(user.getId()).contains(budget))
+        if (user != null && budget != null && budget.getId() > 0 && uService.findOwnBudgets(user.getId()).contains(budget))
             this.budget = budget;
     }
 }
