@@ -1,10 +1,10 @@
 package com.kasia.controller.dto;
 
 import com.kasia.controller.dto.validator.constraint.ProviderNameValid;
-import com.kasia.controller.dto.validator.constraint.StringValid;
+import com.kasia.controller.dto.validator.constraint.DescriptionValid;
 
 @ProviderNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
-@StringValid(stringFN = "description", regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.description.error}")
+@DescriptionValid(stringFN = "description", regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.description.error}")
 public class ProviderDTO {
     private String name;
     private String description;

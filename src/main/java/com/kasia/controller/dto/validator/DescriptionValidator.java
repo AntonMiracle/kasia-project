@@ -1,11 +1,11 @@
 package com.kasia.controller.dto.validator;
 
-import com.kasia.controller.dto.validator.constraint.StringValid;
+import com.kasia.controller.dto.validator.constraint.DescriptionValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class StringValidator implements ConstraintValidator<StringValid, Object> {
+public class DescriptionValidator implements ConstraintValidator<DescriptionValid, Object> {
     private boolean nullable;
     private String stringFN;
     private int min;
@@ -15,7 +15,7 @@ public class StringValidator implements ConstraintValidator<StringValid, Object>
     private ValidatorUtil vUtil = new ValidatorUtil();
 
     @Override
-    public void initialize(StringValid ca) {
+    public void initialize(DescriptionValid ca) {
         stringFN = ca.stringFN();
         min = ca.min();
         max = ca.max();

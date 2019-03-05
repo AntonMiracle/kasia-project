@@ -33,7 +33,7 @@ public class ProviderDTOValidatorIT {
         String valid4 = "Name1 Name1";
         String valid5 = "m1 M1 M1";
         StringBuilder valid6 = new StringBuilder();
-        for(int i = 0; i < 32; ++i) valid6.append("s");
+        for(int i = 0; i < 64; ++i) valid6.append("s");
         String valid7 = "   m1    M1    M1    ";
         String valid8 = " M ";
 
