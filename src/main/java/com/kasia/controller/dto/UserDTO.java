@@ -1,6 +1,6 @@
 package com.kasia.controller.dto;
 
-import com.kasia.controller.dto.validator.constraint.UserDTOConfirmPassIsValid;
+import com.kasia.controller.dto.validator.constraint.ConfirmPasswordValid;
 import com.kasia.controller.dto.validator.constraint.UserEmailValid;
 import com.kasia.controller.dto.validator.constraint.UserNameValid;
 import com.kasia.controller.dto.validator.constraint.UserPasswordValid;
@@ -9,7 +9,9 @@ import com.kasia.controller.dto.validator.constraint.UserPasswordValid;
 @UserNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
 @UserPasswordValid(passwordFN = "password", regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,64}$"
         , message = "{validation.password.error}")
-@UserDTOConfirmPassIsValid(passwordFN = "password", confirmFN = "confirm", message = "{validation.password.confirm.error}")
+@ConfirmPasswordValid(passwordFN = "password", confirmFN = "confirm"
+        , regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,64}$"
+        , message = "{validation.password.confirm.error}")
 public class UserDTO {
     private String email;
     private String name;

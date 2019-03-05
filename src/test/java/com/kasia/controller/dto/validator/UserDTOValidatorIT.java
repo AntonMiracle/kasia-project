@@ -37,6 +37,7 @@ public class UserDTOValidatorIT {
         dto.setZoneId(user.getZoneId().toString());
         dto.setLang(user.getLocale().getLanguage());
         dto.setCountry(user.getLocale().getCountry());
+        assertThat(validator.validate(dto).size() == 0).isTrue();
     }
 
     @After
@@ -155,6 +156,27 @@ public class UserDTOValidatorIT {
         assertThat(validator.validate(dto).size() == 0).isFalse();
         dto.setPassword(invalid2);
         dto.setConfirm(invalid2);
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+    }
+
+    @Test
+    public void confirmPassValid() {
+        String valid1 = "Password2";
+
+        dto.setPassword(valid1);
+        dto.setConfirm(valid1);
+        assertThat(validator.validate(dto).size() == 0).isTrue();
+    }
+
+    @Test
+    public void confirmPassInvalid() {
+        String invalid1 = "Password2";
+
+        dto.setPassword(invalid1);
+        dto.setConfirm(invalid1 + invalid1);
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+        dto.setPassword(invalid1);
+        dto.setConfirm(null);
         assertThat(validator.validate(dto).size() == 0).isFalse();
     }
 }
