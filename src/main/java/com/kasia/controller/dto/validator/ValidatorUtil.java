@@ -6,13 +6,32 @@ import java.math.BigInteger;
 
 public class ValidatorUtil {
 
-    public String findStringValue(Object object, String fieldName) {
+    public String getStringValue(Object object, String fieldName) {
         try {
             Field f = object.getClass().getDeclaredField(fieldName);
             f.setAccessible(true);
             return (String) f.get(object);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             return null;
+        }
+    }
+
+    public void setStringValue(Object object, String fieldName, String value) {
+        try {
+            Field f = object.getClass().getDeclaredField(fieldName);
+            f.setAccessible(true);
+            f.set(object, value);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+        }
+    }
+
+    public long longValue(Object object, String fieldName) {
+        try {
+            Field f = object.getClass().getDeclaredField(fieldName);
+            f.setAccessible(true);
+            return (long) f.get(object);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return 0;
         }
     }
 

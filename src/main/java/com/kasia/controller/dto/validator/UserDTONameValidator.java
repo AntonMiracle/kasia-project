@@ -19,7 +19,7 @@ public class UserDTONameValidator implements ConstraintValidator<UserDTONameIsVa
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext cvContext) {
-        String fieldValue = vUtil.findStringValue(o, fieldName);
+        String fieldValue = vUtil.getStringValue(o, fieldName);
 
         if (fieldValue == null || fieldValue.length() == 0
                 || !uValidation.isNameValid(fieldValue)

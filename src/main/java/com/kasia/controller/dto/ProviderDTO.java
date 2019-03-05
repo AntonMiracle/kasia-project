@@ -1,12 +1,14 @@
 package com.kasia.controller.dto;
 
-import javax.validation.constraints.Size;
+import com.kasia.controller.dto.validator.constraint.ProviderNameValid;
+import com.kasia.controller.dto.validator.constraint.StringValid;
 
+@ProviderNameValid(nameFN = "name", min = 1, max = 64, makeTrim = true, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
+@StringValid(stringFN = "description", makeTrim = true, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.description.error}")
 public class ProviderDTO {
-    @Size(min = 4, max = 16,message = "{validation.name.error}")
     private String name;
-    @Size(min = 1, max = 256, message = "{validation.description.error}")
     private String description;
+    private long budgetId;
 
     @Override
     public boolean equals(Object o) {
@@ -15,6 +17,7 @@ public class ProviderDTO {
 
         ProviderDTO that = (ProviderDTO) o;
 
+        if (budgetId != that.budgetId) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         return description != null ? description.equals(that.description) : that.description == null;
     }
@@ -23,6 +26,7 @@ public class ProviderDTO {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (int) (budgetId ^ (budgetId >>> 32));
         return result;
     }
 
@@ -31,6 +35,7 @@ public class ProviderDTO {
         return "ProviderDTO{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", budgetId=" + budgetId +
                 '}';
     }
 
@@ -48,5 +53,13 @@ public class ProviderDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getBudgetId() {
+        return budgetId;
+    }
+
+    public void setBudgetId(long budgetId) {
+        this.budgetId = budgetId;
     }
 }

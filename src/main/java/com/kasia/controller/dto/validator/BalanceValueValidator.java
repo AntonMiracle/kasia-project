@@ -18,8 +18,8 @@ public class BalanceValueValidator implements ConstraintValidator<BalanceValueIs
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext constraintValidatorContext) {
-        String banknotes = vUtil.findStringValue(o, banknotesFN);
-        String penny = vUtil.findStringValue(o, pennyFN);
+        String banknotes = vUtil.getStringValue(o, banknotesFN);
+        String penny = vUtil.getStringValue(o, pennyFN);
 
         if (!vUtil.isBanknotesValueValid(banknotes) || !vUtil.isPennyValueValid(penny)) {
             vUtil.addConstraintViolation(banknotesFN, constraintValidatorContext.getDefaultConstraintMessageTemplate(), constraintValidatorContext);

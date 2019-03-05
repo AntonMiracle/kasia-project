@@ -29,8 +29,6 @@ public class BudgetServiceImp implements BudgetService {
     @Autowired
     private ElementProviderRepository epRepository;
     @Autowired
-    private ElementProviderValidation epValidation;
-    @Autowired
     private BudgetElementRepository beRepository;
     @Autowired
     private BudgetElementValidation beValidation;
@@ -210,7 +208,6 @@ public class BudgetServiceImp implements BudgetService {
                 .orElseGet(() ->
                         new BudgetElementProvider(findBudgetById(budgetId), new HashSet<>()));
 
-        epValidation.verifyValidation(provider);
         if (!isElementProviderUnique(budgetId, provider.getName())) return false;
 
         epRepository.save(provider);

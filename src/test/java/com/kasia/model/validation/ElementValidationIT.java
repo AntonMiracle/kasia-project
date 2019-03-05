@@ -57,6 +57,7 @@ public class ElementValidationIT {
         String validName = ModelTestData.getElement1().getName();
         assertThat(validationService.isNameValid(validName + " " + validName)).isTrue();
         assertThat(validationService.isNameValid(validName)).isTrue();
+        assertThat(validationService.isNameValid("M1")).isTrue();
         assertThat(validationService.isNameValid(validName + " ")).isFalse();
         assertThat(validationService.isNameValid(" " + validName)).isFalse();
         assertThat(validationService.isNameValid(" ")).isFalse();

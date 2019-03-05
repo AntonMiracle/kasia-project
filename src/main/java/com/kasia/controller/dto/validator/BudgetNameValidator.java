@@ -24,8 +24,8 @@ public class BudgetNameValidator implements ConstraintValidator<BudgetNameIsVali
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext cvContext) {
-        String value = vUtil.findStringValue(o, nameFN);
-        User user = uService.findUserByEmail(vUtil.findStringValue(o,"userEmail"));
+        String value = vUtil.getStringValue(o, nameFN);
+        User user = uService.findUserByEmail(vUtil.getStringValue(o,"userEmail"));
 
         if(user == null || value == null || value.length() ==0 || !bValidator.isNameValid(value)
                 || uService.findOwnBudgets(user.getId()).stream().filter(budget -> budget.getName().equals(value)).count() != 0 ){

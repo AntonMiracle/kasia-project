@@ -20,7 +20,7 @@ public class UserDTOPasswordValidator implements ConstraintValidator<UserDTOPass
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext cvContext) {
-        String passwordV = vUtil.findStringValue(o, passwordFN);
+        String passwordV = vUtil.getStringValue(o, passwordFN);
 
         if (passwordV == null || passwordV.length() == 0 || !uValidation.isPasswordValid(passwordV)) {
             vUtil.addConstraintViolation(passwordFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);

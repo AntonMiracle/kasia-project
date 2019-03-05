@@ -18,8 +18,6 @@ public class OperationValidationImp implements OperationValidation {
     @Autowired
     private UserValidation userValidationService;
     @Autowired
-    private ElementProviderValidation providerValidationService;
-    @Autowired
     private ElementValidation elementValidationService;
     @Autowired
     private PriceValidation priceValidationService;
@@ -29,7 +27,6 @@ public class OperationValidationImp implements OperationValidation {
         if (model == null) return false;
 
         if (!userValidationService.isValid(model.getUser())) return false;
-        if (!providerValidationService.isValid(model.getElementProvider())) return false;
         if (!elementValidationService.isValid(model.getElement())) return false;
         if (!priceValidationService.isValid(model.getPrice())) return false;
 

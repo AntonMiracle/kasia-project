@@ -5,7 +5,6 @@ import com.kasia.model.ElementProvider;
 import com.kasia.model.Model;
 import com.kasia.model.validation.BudgetElementProviderValidation;
 import com.kasia.model.validation.BudgetValidation;
-import com.kasia.model.validation.ElementProviderValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +18,6 @@ import java.util.Set;
 public class BudgetElementProviderValidationImp implements BudgetElementProviderValidation {
     @Autowired
     private BudgetValidation budgetValidationService;
-    @Autowired
-    private ElementProviderValidation providerValidationService;
 
     @Override
     public boolean isValid(BudgetElementProvider model) {
@@ -28,7 +25,6 @@ public class BudgetElementProviderValidationImp implements BudgetElementProvider
 
         if (!budgetValidationService.isValid(model.getBudget()) || model.getElementProviders() == null) return false;
         for (ElementProvider provider : model.getElementProviders()) {
-            if (!providerValidationService.isValid(provider)) return false;
         }
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

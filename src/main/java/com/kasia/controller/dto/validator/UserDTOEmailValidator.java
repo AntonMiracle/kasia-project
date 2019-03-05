@@ -16,7 +16,7 @@ public class UserDTOEmailValidator implements ConstraintValidator<UserDTOEmailIs
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext cvContext) {
-        String fieldValue = vUtil.findStringValue(o, fieldName);
+        String fieldValue = vUtil.getStringValue(o, fieldName);
 
         if (fieldValue == null || fieldValue.length() == 0  || !uValidation.isEmailValid(fieldValue)) {
             vUtil.addConstraintViolation(fieldName, cvContext.getDefaultConstraintMessageTemplate(), cvContext);

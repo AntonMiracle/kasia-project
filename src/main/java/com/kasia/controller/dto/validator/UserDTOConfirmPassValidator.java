@@ -18,8 +18,8 @@ public class UserDTOConfirmPassValidator implements ConstraintValidator<UserDTOC
 
     @Override
     public boolean isValid(final Object object, ConstraintValidatorContext cvContext) {
-        String passwordV = vUtil.findStringValue(object, passwordFN);
-        String confirmV = vUtil.findStringValue(object, confirmFN);
+        String passwordV = vUtil.getStringValue(object, passwordFN);
+        String confirmV = vUtil.getStringValue(object, confirmFN);
 
         if(passwordV == null || passwordV.length() == 0) {
             return true;
