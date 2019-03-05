@@ -34,16 +34,11 @@ public class BudgetNameValidator implements ConstraintValidator<BudgetNameValid,
         String value = vUtil.getStringValue(o, nameFN);
         User user = uService.findUserByEmail(vUtil.getStringValue(o, "userEmail"));
         if (user == null) return false;
-        System.out.println(1);
         if (nullable && value == null) return true;
-        System.out.println(2);
         if (!nullable && value == null) value = "";
-        System.out.println(3);
         if (makeTrim) value = value.trim().replaceAll("[ ]{2,}", " ");
-        System.out.println(4);
         vUtil.setStringValue(o, nameFN, value);
-        System.out.println(5);
-        System.out.println(value);
+
         String streamVal = value;
         if (!isNameValid(value)
                 || uService.findOwnBudgets(user.getId())

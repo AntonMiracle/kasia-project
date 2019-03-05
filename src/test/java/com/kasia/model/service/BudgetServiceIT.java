@@ -70,14 +70,6 @@ public class BudgetServiceIT {
         assertThat(bService.findBudgetById(expected.getId()).getName()).isEqualTo(newName);
     }
 
-    @Test(expected = ValidationException.class)
-    public void whenBudgetInvalidSaveNewBudgetThrowException() {
-        Budget expected = ModelTestData.getBudget1();
-        expected.setName("");
-
-        bService.saveBudget(expected);
-    }
-
     @Test
     public void deleteBudget() {
         Budget expected = bService.saveBudget(ModelTestData.getBudget1());
@@ -167,11 +159,6 @@ public class BudgetServiceIT {
         assertThat(actual.getCreateOn().compareTo(LocalDateTime.now().plusSeconds(2)) < 0).isTrue();
         assertThat(actual.getName()).isEqualTo(expected.getName());
         assertThat(actual.getBalance()).isEqualTo((expected.getBalance()));
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenCreateInvalidBudgetThenThrowException() {
-        bService.createBudget("", null);
     }
 
     @Test
@@ -389,16 +376,6 @@ public class BudgetServiceIT {
         epRepository.findAll().forEach(elementsAfter::add);
 
         assertThat(elementsAfter.size() == (elementsBefore.size() + 1)).isTrue();
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenProviderInvalidAddElementProviderThrowException() {
-        BudgetProvider bep = getSavedForTestCleanBudgetElementProvider();
-        Provider provider = ModelTestData.getElementProvider1();
-
-        provider.setName("");
-
-        bService.addElementProvider(bep.getBudget().getId(), provider);
     }
 
     @Test

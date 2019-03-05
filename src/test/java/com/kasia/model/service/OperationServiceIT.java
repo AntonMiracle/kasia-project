@@ -37,7 +37,6 @@ public class OperationServiceIT {
     @Autowired
     private OperationService oService;
 
-
     @After
     public void cleanData() {
         boRepository.findAll().forEach(boRepository::delete);
@@ -105,14 +104,6 @@ public class OperationServiceIT {
     public void whenElementInvalidCreateOperationThrowException() {
         Operation op = getValidOperationWithNestedPositiveId();
         op.getElement().setName("");
-
-        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenElementProviderInvalidCreateOperationThrowException() {
-        Operation op = getValidOperationWithNestedPositiveId();
-        op.getProvider().setName("");
 
         oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
     }
@@ -214,16 +205,6 @@ public class OperationServiceIT {
         Operation op = getSavedOperationForCheckRuntimeException();
 
         op.getElement().setName("");
-
-        oService.addOperation(savedBudget.getId(), op);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenElementProviderInvalidAddOperationThrowException() {
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-
-        op.getProvider().setName("");
 
         oService.addOperation(savedBudget.getId(), op);
     }
