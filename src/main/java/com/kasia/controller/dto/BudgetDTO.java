@@ -1,10 +1,11 @@
 package com.kasia.controller.dto;
 
 import com.kasia.controller.dto.validator.constraint.BalanceValueValid;
+import com.kasia.controller.dto.validator.constraint.BudgetNameValid;
 
-//@BudgetNameIsValid(nameFN = "name", message = "{validation.budget.name.error}")
+@BudgetNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.budget.name.error}")
 @BalanceValueValid(balanceFN = "balanceInit", message = "{validation.budget.balanceInit.value.error}")
-public class AddBudgetDTO {
+public class BudgetDTO {
     private String name;
     private String balanceInit;
     private String currency;
@@ -15,7 +16,7 @@ public class AddBudgetDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AddBudgetDTO that = (AddBudgetDTO) o;
+        BudgetDTO that = (BudgetDTO) o;
 
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (balanceInit != null ? !balanceInit.equals(that.balanceInit) : that.balanceInit != null) return false;
@@ -25,7 +26,7 @@ public class AddBudgetDTO {
 
     @Override
     public String toString() {
-        return "AddBudgetDTO{" +
+        return "BudgetDTO{" +
                 "name='" + name + '\'' +
                 ", balanceInit='" + balanceInit + '\'' +
                 ", currency='" + currency + '\'' +

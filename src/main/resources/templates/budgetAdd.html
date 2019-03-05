@@ -11,8 +11,8 @@
     <table th:class="myTable">
         <th colspan="2" th:text="#{title.budget}"></th>
 
-        <!--/*@thymesVar id="addBudgetDTO" type="com.kasia.controller.dto.AddBudgetDTO"*/-->
-        <form th:action="@{/budget/save}" th:object="${addBudgetDTO}" method="post">
+        <!--/*@thymesVar id="BudgetDTO" type="com.kasia.controller.dto.BudgetDTO"*/-->
+        <form th:action="@{/budget/save}" th:object="${BudgetDTO}" method="post">
             <tr>
                 <input type="hidden" th:value="${#authentication.name}" name="userEmail"/>
                 <td th:id="addBudgetInputName" th:text="#{label.name}"></td>

@@ -19,8 +19,6 @@ import java.util.Set;
 @Transactional
 public class BudgetServiceImp implements BudgetService {
     @Autowired
-    private BudgetValidation bValidation;
-    @Autowired
     private BudgetRepository bRepository;
     @Autowired
     private ElementRepository eRepository;
@@ -47,7 +45,6 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public Budget saveBudget(Budget model) {
-        bValidation.verifyValidation(model);
         return bRepository.save(model);
     }
 
@@ -94,7 +91,6 @@ public class BudgetServiceImp implements BudgetService {
     @Override
     public Budget createBudget(String name, Balance balance) {
         Budget b = new Budget(name, balance, LocalDateTime.now().withNano(0));
-        bValidation.verifyValidation(b);
         return b;
     }
 

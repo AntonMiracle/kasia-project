@@ -1,12 +1,6 @@
 package com.kasia.model;
 
-import com.kasia.model.validation.Validation;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,14 +8,9 @@ public class Budget implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @NotBlank
-    @Pattern(regexp = Validation.PATTERN_NAME)
     private String name;
-    @NotNull
     @Embedded
     private Balance balance;
-    @NotNull
-    @PastOrPresent
     private LocalDateTime createOn;
 
     public Budget(String name, Balance balance, LocalDateTime createOn) {

@@ -1,6 +1,6 @@
 package com.kasia.controller;
 
-import com.kasia.controller.dto.AddBudgetDTO;
+import com.kasia.controller.dto.BudgetDTO;
 import com.kasia.model.Budget;
 import com.kasia.model.Currencies;
 import com.kasia.model.User;
@@ -35,9 +35,9 @@ public class BudgetController {
     @Autowired
     private MySessionController sessionController;
 
-    @ModelAttribute("addBudgetDTO")
-    public AddBudgetDTO getAddBudgetDTO() {
-        return new AddBudgetDTO();
+    @ModelAttribute("BudgetDTO")
+    public BudgetDTO getBudgetDTO() {
+        return new BudgetDTO();
     }
 
     @ModelAttribute("currencies")
@@ -73,7 +73,7 @@ public class BudgetController {
     }
 
     @PostMapping(U_BUDGET_SAVE)
-    public String addNewBudget(@Valid @ModelAttribute AddBudgetDTO dto, BindingResult bResult) {
+    public String addNewBudget(@Valid @ModelAttribute BudgetDTO dto, BindingResult bResult) {
         if (bResult.hasErrors()) return openAddBudget();
 
         User user = sessionController.getUser();
