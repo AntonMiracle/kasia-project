@@ -4,8 +4,6 @@ import com.kasia.model.Budget;
 import com.kasia.model.Model;
 import com.kasia.model.UserBudget;
 import com.kasia.model.validation.UserBudgetValidation;
-import com.kasia.model.validation.UserValidation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -16,14 +14,12 @@ import java.util.Set;
 
 @Service
 public class UserBudgetValidationImp implements UserBudgetValidation {
-    @Autowired
-    private UserValidation userValidationService;
 
     @Override
     public boolean isValid(UserBudget model) {
         if (model == null) return false;
 
-        if (!userValidationService.isValid(model.getUser()) || model.getBudgets() == null) return false;
+        if ( model.getBudgets() == null) return false;
 
         for (Budget budget : model.getBudgets()) {
         }

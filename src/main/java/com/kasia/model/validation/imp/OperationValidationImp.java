@@ -16,8 +16,6 @@ import java.util.Set;
 @Service
 public class OperationValidationImp implements OperationValidation {
     @Autowired
-    private UserValidation userValidationService;
-    @Autowired
     private ElementValidation elementValidationService;
     @Autowired
     private PriceValidation priceValidationService;
@@ -26,7 +24,6 @@ public class OperationValidationImp implements OperationValidation {
     public boolean isValid(Operation model) {
         if (model == null) return false;
 
-        if (!userValidationService.isValid(model.getUser())) return false;
         if (!elementValidationService.isValid(model.getElement())) return false;
         if (!priceValidationService.isValid(model.getPrice())) return false;
 

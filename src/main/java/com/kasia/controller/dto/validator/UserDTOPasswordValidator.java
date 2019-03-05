@@ -1,15 +1,11 @@
 package com.kasia.controller.dto.validator;
 
 import com.kasia.controller.dto.validator.constraint.UserDTOPasswordIsValid;
-import com.kasia.model.validation.UserValidation;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class UserDTOPasswordValidator implements ConstraintValidator<UserDTOPasswordIsValid, Object> {
-    @Autowired
-    private UserValidation uValidation;
     private String passwordFN;
     private ValidatorUtil vUtil = new ValidatorUtil();
 
@@ -22,7 +18,7 @@ public class UserDTOPasswordValidator implements ConstraintValidator<UserDTOPass
     public boolean isValid(Object o, ConstraintValidatorContext cvContext) {
         String passwordV = vUtil.getStringValue(o, passwordFN);
 
-        if (passwordV == null || passwordV.length() == 0 || !uValidation.isPasswordValid(passwordV)) {
+        if (passwordV == null || passwordV.length() == 0 ) {
             vUtil.addConstraintViolation(passwordFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
             return false;
         }

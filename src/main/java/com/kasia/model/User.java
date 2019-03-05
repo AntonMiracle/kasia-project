@@ -19,8 +19,6 @@ public class User implements Model {
     @Pattern(regexp = Validation.PATTERN_EMAIL)
     @Column(unique = true)
     private String email;
-    @NotBlank
-    @Pattern(regexp = Validation.PATTERN_NAME)
     @Column(unique = true)
     private String name;
     @NotBlank

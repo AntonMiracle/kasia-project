@@ -13,7 +13,6 @@ import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
 import com.kasia.model.validation.UserBudgetValidation;
 import com.kasia.model.validation.UserConnectBudgetValidation;
-import com.kasia.model.validation.UserValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,8 +34,6 @@ public class UserServiceImp implements UserService {
     @Autowired
     private UserRepository uRepository;
     @Autowired
-    private UserValidation uValidation;
-    @Autowired
     private UserBudgetRepository ubRepository;
     @Autowired
     private UserBudgetValidation ubValidation;
@@ -51,7 +48,6 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User saveUser(User model) {
-        uValidation.verifyValidation(model);
         if (model.getId() == 0) {
             if (!isUserNameUnique(model.getName())) throw new UserNameExistRuntimeException();
             if (!isUserEmailUnique(model.getEmail())) throw new EmailExistRuntimeException();
@@ -97,7 +93,6 @@ public class UserServiceImp implements UserService {
         Locale locale = localeOf(localeLang, localeCountry);
         ZoneId zoneId = zoneIdOf(zoneIdString);
         User user = new User(email, name, password, zoneId, LocalDateTime.now().withNano(0), Role.USER, false, locale);
-        uValidation.verifyValidation(user);
         return user;
     }
 
