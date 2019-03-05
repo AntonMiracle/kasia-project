@@ -12,10 +12,7 @@ public class StringValidator implements ConstraintValidator<StringValid, Object>
     private int max;
     private String regex;
     private boolean makeTrim;
-
     private ValidatorUtil vUtil = new ValidatorUtil();
-    private final String REGEX = "^\\S+[[ ]?\\S+]+$";
-    private final int MAX = 32;
 
     @Override
     public void initialize(StringValid ca) {
@@ -36,7 +33,7 @@ public class StringValidator implements ConstraintValidator<StringValid, Object>
             value = "";
             vUtil.setStringValue(o, stringFN, value);
         }
-        if (makeTrim){
+        if (makeTrim) {
             value = value.trim().replaceAll("[ ]{2,}", " ");
             vUtil.setStringValue(o, stringFN, value);
         }
