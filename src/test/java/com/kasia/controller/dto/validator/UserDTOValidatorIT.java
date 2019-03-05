@@ -32,8 +32,8 @@ public class UserDTOValidatorIT {
 
         dto.setEmail("new" + user.getEmail());
         dto.setName(user.getName() + user.getName());
-        dto.setPassword(user.getPassword());
-        dto.setConfirm(user.getPassword());
+        dto.setPassword(ModelTestData.getUser1().getPassword());
+        dto.setConfirm(dto.getPassword());
         dto.setZoneId(user.getZoneId().toString());
         dto.setLang(user.getLocale().getLanguage());
         dto.setCountry(user.getLocale().getCountry());
@@ -47,7 +47,7 @@ public class UserDTOValidatorIT {
 
     @Test
     public void nameValid() {
-        String valid1 = "Name";
+        String valid1 = "Name1222";
         String valid2 = "M1";
         String valid3 = "M 1";
         String valid4 = "Name1 Name1";
@@ -125,6 +125,36 @@ public class UserDTOValidatorIT {
         dto.setEmail(invalid3);
         assertThat(validator.validate(dto).size() == 0).isFalse();
         dto.setEmail(invalid4);
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+    }
+
+    @Test
+    public void passwordValid() {
+        StringBuilder valid1 = new StringBuilder();
+        valid1.append("A2c");
+        while (valid1.length() < 64) valid1.append("s");
+        String valid2 = "Pas2";
+
+        dto.setPassword(valid1.toString());
+        dto.setConfirm(valid1.toString());
+        assertThat(validator.validate(dto).size() == 0).isTrue();
+        dto.setPassword(valid2);
+        dto.setConfirm(valid2);
+        assertThat(validator.validate(dto).size() == 0).isTrue();
+    }
+
+    @Test
+    public void passwordInvalid() {
+        StringBuilder invalid1 = new StringBuilder();
+        invalid1.append("A2c");
+        while (invalid1.length() < 65) invalid1.append("s");
+        String invalid2 = " Password2 ";
+
+        dto.setPassword(invalid1.toString());
+        dto.setConfirm(invalid1.toString());
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+        dto.setPassword(invalid2);
+        dto.setConfirm(invalid2);
         assertThat(validator.validate(dto).size() == 0).isFalse();
     }
 }
