@@ -9,17 +9,17 @@
 <div th:replace="fragments/header :: mainMenu"></div>
 <div id="mainContentWithoutMenu">
     <table th:class="myTable">
+        <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
         <th th:colspan="2" th:text="#{title.profile}"></th>
         <tr>
             <td th:id="profileInputName" th:text="#{label.email}"></td>
-            <td th:id="profileInputName" th:text="${user.email}"></td>
+            <td th:id="profileInputName" th:text="${userDTO.email}"></td>
         </tr>
         <tr>
             <td th:id="profileInputName" th:text="#{label.name}"></td>
-            <td th:id="profileInputName" th:text="${user.name}"></td>
+            <td th:id="profileInputName" th:text="${userDTO.name}"></td>
         </tr>
-        <!--/*@thymesVar id="profileDTO" type="com.kasia.controller.dto.ProfileDTO"*/-->
-        <form th:action="@{/profile/updateProfile}" th:object="${profileDTO}" method="post">
+        <form th:action="@{/profile/updateProfile}" th:object="${userDTO}" method="post">
             <tr>
                 <td th:id="profileUpdateResult" colspan="2" th:class="successClass"
                     th:if="${updatePass} eq 'passUpdate'" th:text="#{text.password.update}"></td>

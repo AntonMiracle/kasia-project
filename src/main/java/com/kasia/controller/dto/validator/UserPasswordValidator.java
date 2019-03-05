@@ -33,9 +33,9 @@ public class UserPasswordValidator implements ConstraintValidator<UserPasswordVa
     }
 
     private boolean isPasswordValid(String value) {
-        if (value == null) return false;
+        if (value == null || value.length() == 0) return false;
         if (value.length() < min) return false;
         if (value.length() > max) return false;
-        return !(value.length() > 0 && !value.matches(regex));
+        return value.matches(regex);
     }
 }

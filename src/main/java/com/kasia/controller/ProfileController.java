@@ -1,6 +1,6 @@
 package com.kasia.controller;
 
-import com.kasia.controller.dto.ProfileDTO;
+import com.kasia.controller.dto.UserDTO;
 import com.kasia.model.User;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import javax.validation.Validator;
 
 import static com.kasia.controller.ViewNameAndControllerURL.*;
 
@@ -22,9 +23,16 @@ public class ProfileController {
     @Autowired
     private UserService uService;
 
-    @ModelAttribute("profileDTO")
-    public ProfileDTO getProfileDTO() {
-        return new ProfileDTO();
+    @ModelAttribute("userDTO")
+    public UserDTO getUserDTO() {
+        User user = sessionController.getUser();
+        UserDTO dto = new UserDTO();
+        dto.setEmail(user.getEmail());
+        dto.setName(user.getName());
+        dto.setCountry(user.getLocale().getCountry());
+        dto.setLang(user.getLocale().getLanguage());
+        dto.setZoneId(user.getZoneId().toString());
+        return dto;
     }
 
     @GetMapping(U_PROFILE)
@@ -32,11 +40,15 @@ public class ProfileController {
         return V_PROFILE;
     }
 
+    @Autowired
+    private Validator validator;
+
     @PostMapping(U_PROFILE_UPDATE)
-    public String updateProfile(Model model, @Valid @ModelAttribute ProfileDTO dto, BindingResult bResult) {
+    public String updateProfile(Model model, @Valid @ModelAttribute UserDTO dto, BindingResult bResult) {
         User user = sessionController.getUser();
         boolean isAnyChanges = false;
-        if (!bResult.hasErrors() && dto.getPassword() != null && dto.getPassword().length() > 0) {
+        if (validator.validate(dto).stream().filter(cv -> cv.getPropertyPath().toString().equals("password")).count() == 0
+                && validator.validate(dto).stream().filter(cv -> cv.getPropertyPath().toString().equals("confirm")).count() == 0) {
             user.setPassword(uService.cryptPassword(dto.getPassword()));
             isAnyChanges = true;
             model.addAttribute("updatePass", "passUpdate");
@@ -56,6 +68,7 @@ public class ProfileController {
         }
         if (isAnyChanges) {
             uService.saveUser(user);
+            System.out.println("user save");
         }
         return openProfile();
     }

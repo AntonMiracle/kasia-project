@@ -1,7 +1,6 @@
 package com.kasia.configuration;
 
-import com.kasia.model.Budget;
-import com.kasia.model.User;
+import com.kasia.model.*;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
@@ -28,31 +29,31 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @PostConstruct
     public void init() {
-//        User user = uService.createUser("anton@gmail.com", "Anton", "Password2",
-//                "America/Atka", "pl", "PL");
-//        uService.saveUser(user);
-//        Balance ba1 = new Balance(BigDecimal.valueOf(12), Currencies.PLN, LocalDateTime.now());
-//        Balance ba2 = new Balance(BigDecimal.valueOf(-1200.99), Currencies.EUR, LocalDateTime.now());
-//        Budget bu1 = new Budget("Семейный Бюджет", ba1, LocalDateTime.now());
-//        Budget bu2 = new Budget("Anton Bond", ba2, LocalDateTime.now());
-//
-//        bService.saveBudget(bu1);
-//        bService.saveBudget(bu2);
-//        uService.addBudget(user.getId(), bu1.getId());
-//        uService.addBudget(user.getId(), bu2.getId());
-//
-//        Provider provider1 = new Provider("8minut", "some shop");
-//        Provider provider2 = new Provider("M111111", "supermarket");
-//
-//        bService.addElementProvider(bu1.getId(), provider1);
-//        bService.addElementProvider(bu1.getId(), provider2);
-//        provider1.setId(0);
-//        provider2.setId(0);
-//        bService.addElementProvider(bu2.getId(), provider1);
-//        bService.addElementProvider(bu2.getId(), provider2);
-//
-//        System.out.println("=============== MvcConfig#init");
-//        System.out.println(user);
+        User user = uService.createUser("anton@gmail.com", "Anton", "Password2",
+                "America/Atka", "pl", "PL");
+        uService.saveUser(user);
+        Balance ba1 = new Balance(BigDecimal.valueOf(12), Currencies.PLN, LocalDateTime.now());
+        Balance ba2 = new Balance(BigDecimal.valueOf(-1200.99), Currencies.EUR, LocalDateTime.now());
+        Budget bu1 = new Budget("Семейный Бюджет", ba1, LocalDateTime.now());
+        Budget bu2 = new Budget("Anton Bond", ba2, LocalDateTime.now());
+
+        bService.saveBudget(bu1);
+        bService.saveBudget(bu2);
+        uService.addBudget(user.getId(), bu1.getId());
+        uService.addBudget(user.getId(), bu2.getId());
+
+        Provider provider1 = new Provider("8minut", "some shop");
+        Provider provider2 = new Provider("M111111", "supermarket");
+
+        bService.addElementProvider(bu1.getId(), provider1);
+        bService.addElementProvider(bu1.getId(), provider2);
+        provider1.setId(0);
+        provider2.setId(0);
+        bService.addElementProvider(bu2.getId(), provider1);
+        bService.addElementProvider(bu2.getId(), provider2);
+
+        System.out.println("=============== MvcConfig#init");
+        System.out.println(user);
     }
 
     @Bean/* config i18n to get error msg from messages.properties*/

@@ -22,10 +22,4 @@ public @interface ConfirmPasswordValid {
     String confirmFN() default "";
 
     String passwordFN();
-
-    int min() default 0;
-
-    int max() default 250;
-
-    String regex() default "";
 }

@@ -57,6 +57,7 @@ public class UserDTOValidatorIT {
         for (int i = 0; i < 64; ++i) valid6.append("s");
         String valid7 = "   m1    M1    M1    ";
         String valid8 = " M ";
+        String valid9 = "Anton";
 
         dto.setName(valid1);
         assertThat(validator.validate(dto).size() == 0).isTrue();
@@ -73,6 +74,8 @@ public class UserDTOValidatorIT {
         dto.setName(valid7);
         assertThat(validator.validate(dto).size() == 0).isTrue();
         dto.setName(valid8);
+        assertThat(validator.validate(dto).size() == 0).isTrue();
+        dto.setName(valid9);
         assertThat(validator.validate(dto).size() == 0).isTrue();
     }
 
