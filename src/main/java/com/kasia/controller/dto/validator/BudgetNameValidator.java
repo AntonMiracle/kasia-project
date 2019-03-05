@@ -1,6 +1,6 @@
 package com.kasia.controller.dto.validator;
 
-import com.kasia.controller.dto.validator.constraint.BudgetNameIsValid;
+import com.kasia.controller.dto.validator.constraint.BudgetNameValid;
 import com.kasia.model.User;
 import com.kasia.model.service.UserService;
 import com.kasia.model.validation.BudgetValidation;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class BudgetNameValidator implements ConstraintValidator<BudgetNameIsValid, Object> {
+public class BudgetNameValidator implements ConstraintValidator<BudgetNameValid, Object> {
     @Autowired
     private UserService uService;
     @Autowired
@@ -18,7 +18,7 @@ public class BudgetNameValidator implements ConstraintValidator<BudgetNameIsVali
     private ValidatorUtil vUtil = new ValidatorUtil();
 
     @Override
-    public void initialize(BudgetNameIsValid constraintAnnotation) {
+    public void initialize(BudgetNameValid constraintAnnotation) {
         nameFN = constraintAnnotation.nameFN();
     }
 

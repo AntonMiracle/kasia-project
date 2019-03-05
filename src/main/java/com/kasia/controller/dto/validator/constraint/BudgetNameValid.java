@@ -1,6 +1,6 @@
 package com.kasia.controller.dto.validator.constraint;
 
-import com.kasia.controller.dto.validator.StringValidator;
+import com.kasia.controller.dto.validator.BudgetNameValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,16 +11,15 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = StringValidator.class)
-public @interface StringValid {
-
+@Constraint(validatedBy = BudgetNameValidator.class)
+public @interface BudgetNameValid {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
     String message() default "validation error message not exist";
 
-    String stringFN();
+    String nameFN();
 
     int min() default 0;
 
