@@ -43,13 +43,6 @@ public class BalanceServiceImp implements BalanceService {
     }
 
     @Override
-    public Balance createBalance(String banknotesValue, String pennyValue, String currenciesValue) {
-        BigDecimal amount = createValue(new BigInteger(banknotesValue), new BigInteger(pennyValue));
-        Currencies currencies = Currencies.valueOf(currenciesValue);
-        return createBalance(amount, currencies);
-    }
-
-    @Override
     public BigDecimal createValue(BigInteger banknotesValue, BigInteger pennyValue) {
         double penny = pennyValue.intValue() / 100.0;
         if (banknotesValue.compareTo(BigInteger.ZERO) >= 0) {

@@ -12,13 +12,20 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = BalanceValueValidator.class)
-public @interface BalanceValueIsValid {
+public @interface BalanceValueValid {
     String message() default "";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
 
-    String banknotesFN();
-    String pennyFN();
+    String balanceFN();
+
+    boolean nullable() default false;
+
+    boolean makeTrim() default true;
+
+    int minL() default 0;
+
+    int maxL() default 16;
 }

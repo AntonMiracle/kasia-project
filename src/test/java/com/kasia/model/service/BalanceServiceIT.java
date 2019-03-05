@@ -173,14 +173,4 @@ public class BalanceServiceIT {
         assertThat(bService.createValue(banknotes1, penny3)).isEqualTo(new BigDecimal("-100.09"));
     }
 
-    @Test
-    public void createBalanceFromStrings() {
-        BigDecimal expectedAmount = new BigDecimal("-100.99");
-        Currencies expectedCurrencies = Currencies.USD;
-
-        Balance actual = bService.createBalance("-100", "99", "USD");
-
-        assertThat(actual.getAmount()).isEqualTo(expectedAmount);
-        assertThat(actual.getCurrencies()).isEqualTo(expectedCurrencies);
-    }
 }

@@ -1,26 +1,45 @@
 package com.kasia.controller.dto;
 
-import com.kasia.controller.dto.validator.constraint.BalanceValueIsValid;
-import com.kasia.controller.dto.validator.constraint.BudgetNameIsValid;
+import com.kasia.controller.dto.validator.constraint.BalanceValueValid;
 
-@BudgetNameIsValid(nameFN = "name", message = "{validation.budget.name.error}")
-@BalanceValueIsValid(banknotesFN = "banknotes", pennyFN = "penny", message = "{validation.budget.balance.value.error}")
+//@BudgetNameIsValid(nameFN = "name", message = "{validation.budget.name.error}")
+@BalanceValueValid(balanceFN = "balanceInit", message = "{validation.budget.balanceInit.value.error}")
 public class AddBudgetDTO {
     private String name;
-    private String banknotes;
-    private String penny;
+    private String balanceInit;
     private String currency;
     private String userEmail;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AddBudgetDTO that = (AddBudgetDTO) o;
+
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (balanceInit != null ? !balanceInit.equals(that.balanceInit) : that.balanceInit != null) return false;
+        if (currency != null ? !currency.equals(that.currency) : that.currency != null) return false;
+        return userEmail != null ? userEmail.equals(that.userEmail) : that.userEmail == null;
+    }
 
     @Override
     public String toString() {
         return "AddBudgetDTO{" +
                 "name='" + name + '\'' +
-                ", banknotes='" + banknotes + '\'' +
-                ", penny='" + penny + '\'' +
+                ", balanceInit='" + balanceInit + '\'' +
                 ", currency='" + currency + '\'' +
                 ", userEmail='" + userEmail + '\'' +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (balanceInit != null ? balanceInit.hashCode() : 0);
+        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (userEmail != null ? userEmail.hashCode() : 0);
+        return result;
     }
 
     public String getName() {
@@ -29,22 +48,6 @@ public class AddBudgetDTO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getBanknotes() {
-        return banknotes;
-    }
-
-    public void setBanknotes(String banknotes) {
-        this.banknotes = banknotes;
-    }
-
-    public String getPenny() {
-        return penny;
-    }
-
-    public void setPenny(String penny) {
-        this.penny = penny;
     }
 
     public String getCurrency() {
@@ -61,5 +64,13 @@ public class AddBudgetDTO {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public String getBalanceInit() {
+        return balanceInit;
+    }
+
+    public void setBalanceInit(String balanceInit) {
+        this.balanceInit = balanceInit;
     }
 }

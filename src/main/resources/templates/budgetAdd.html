@@ -26,23 +26,23 @@
             </tr>
             <tr>
                 <td colspan="2" th:id="addBudgetInputError" th:class="errorClass"
-                    th:if="${#fields.hasErrors('banknotes')}"
-                    th:errors="*{banknotes}">Error
+                    th:if="${#fields.hasErrors('balanceInit')}"
+                    th:errors="*{balanceInit}">Error
                 </td>
             </tr>
             <tr>
-                <td th:id="addBudgetInputName" th:text="#{label.balance}"></td>
+                <td th:id="addBudgetInputName" th:text="#{label.balanceInit}"></td>
                 <td th:id="addBudgetInputName">
-                    <input th:id="banknotesInput" type="text" th:field="*{banknotes}"
-                           th:placeholder="#{tip.banknotes}"/>
-                    .
-                    <input th:id="pennyInput" type="text" th:field="*{penny}" th:placeholder="#{tip.penny}"/>
+                    <input th:id="banknotesInput" type="text" th:field="*{balanceInit}"
+                           th:placeholder="#{tip.balanceInit}"/>
+                    <!--make init number == 0-->
                 </td>
             </tr>
             <tr>
                 <td th:id="addBudgetInputName" th:text="#{label.currency}"></td>
                 <td th:id="addBudgetInputName">
                     <select th:field="*{currency}">
+                        <!--/*@thymesVar id="currencies" type="com.kasia.model.Currencies"*/-->
                         <option th:each="type : ${currencies}"
                                 th:value="${type}"
                                 th:text="${type}">Currency

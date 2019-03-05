@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -77,7 +78,10 @@ public class BudgetController {
 
         User user = sessionController.getUser();
         Budget budget = budgetService.createBudget(dto.getName()
-                , balanceService.createBalance(dto.getBanknotes(), dto.getPenny(), dto.getCurrency()));
+                , balanceService.createBalance(
+                        new BigDecimal(dto.getBalanceInit())
+                        , Currencies.valueOf(dto.getCurrency())
+                ));
 
         budgetService.saveBudget(budget);
         uService.addBudget(user.getId(), budget.getId());
