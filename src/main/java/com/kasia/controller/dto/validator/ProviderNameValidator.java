@@ -50,7 +50,6 @@ public class ProviderNameValidator implements ConstraintValidator<ProviderNameVa
     private boolean isNameValid(String value) {
         if (value.length() < min) return false;
         if (value.length() > max) return false;
-        if (value.length() > 0 && !value.matches(regex)) return false;
-        return true;
+        return !(value.length() > 0 && !value.matches(regex));
     }
 }

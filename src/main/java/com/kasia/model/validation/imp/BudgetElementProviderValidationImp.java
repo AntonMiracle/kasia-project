@@ -4,8 +4,6 @@ import com.kasia.model.BudgetElementProvider;
 import com.kasia.model.ElementProvider;
 import com.kasia.model.Model;
 import com.kasia.model.validation.BudgetElementProviderValidation;
-import com.kasia.model.validation.BudgetValidation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -16,14 +14,12 @@ import java.util.Set;
 
 @Service
 public class BudgetElementProviderValidationImp implements BudgetElementProviderValidation {
-    @Autowired
-    private BudgetValidation budgetValidationService;
 
     @Override
     public boolean isValid(BudgetElementProvider model) {
         if (model == null) return false;
 
-        if (!budgetValidationService.isValid(model.getBudget()) || model.getElementProviders() == null) return false;
+        if (model.getElementProviders() == null) return false;
         for (ElementProvider provider : model.getElementProviders()) {
         }
 

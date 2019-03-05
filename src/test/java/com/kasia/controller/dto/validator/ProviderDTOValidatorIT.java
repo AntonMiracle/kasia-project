@@ -1,6 +1,10 @@
 package com.kasia.controller.dto.validator;
 
+import com.kasia.ModelTestData;
 import com.kasia.controller.dto.ProviderDTO;
+import com.kasia.model.Budget;
+import com.kasia.model.ElementProvider;
+import com.kasia.model.service.BudgetService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ProviderDTOValidatorIT {
+    @Autowired
+    private BudgetService bService;
     @Autowired
     private Validator validator;
     private ProviderDTO dto = new ProviderDTO();
@@ -33,7 +39,7 @@ public class ProviderDTOValidatorIT {
         String valid4 = "Name1 Name1";
         String valid5 = "m1 M1 M1";
         StringBuilder valid6 = new StringBuilder();
-        for(int i = 0; i < 64; ++i) valid6.append("s");
+        for (int i = 0; i < 64; ++i) valid6.append("s");
         String valid7 = "   m1    M1    M1    ";
         String valid8 = " M ";
 
@@ -60,7 +66,7 @@ public class ProviderDTOValidatorIT {
         String invalid1 = "";
         String invalid2 = null;
         StringBuilder invalid3 = new StringBuilder();
-        for(int i = 0; i < 65;++i) invalid3.append("s");
+        for (int i = 0; i < 65; ++i) invalid3.append("s");
 
         dto.setName(invalid1);
         assertThat(validator.validate(dto).size() == 0).isFalse();
@@ -68,6 +74,24 @@ public class ProviderDTOValidatorIT {
         assertThat(validator.validate(dto).size() == 0).isFalse();
         dto.setName(invalid3.toString());
         assertThat(validator.validate(dto).size() == 0).isFalse();
+    }
+
+    @Test
+    public void ifNameNotUniqueNameInvalid() {
+        Budget budget = ModelTestData.getBudget1();
+        bService.saveBudget(budget);
+        ElementProvider provider = ModelTestData.getElementProvider1();
+        bService.addElementProvider(budget.getId(), provider);
+
+        assertThat(bService.isElementProviderUnique(budget.getId(), provider.getName())).isFalse();
+        dto.setBudgetId(budget.getId());
+        dto.setName(provider.getName());
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+
+        bService.removeElementProvider(budget.getId(),provider.getId());
+        assertThat(bService.isElementProviderUnique(budget.getId(), provider.getName())).isTrue();
+        bService.deleteBudget(budget.getId());
+        assertThat(bService.findAllBudgets().size()==0).isTrue();
     }
 
     @Test
