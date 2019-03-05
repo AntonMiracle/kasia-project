@@ -1,6 +1,6 @@
 package com.kasia.controller.dto.validator.constraint;
 
-import com.kasia.controller.dto.validator.UserDTOEmailValidator;
+import com.kasia.controller.dto.validator.UserEmailValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,9 +11,23 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserDTOEmailValidator.class)
-public @interface UserDTOEmailIsValid {
-    String message() default "";
+@Constraint(validatedBy = UserEmailValidator.class)
+public @interface UserEmailValid {
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
+
+    String message() default "validation error message not exist";
+
+    String emailFN();
+
+    int min() default 0;
+
+    int max() default 250;
+
+    String regex() default "";
+
+    boolean nullable() default false;
+
+    boolean makeTrim() default true;
 }

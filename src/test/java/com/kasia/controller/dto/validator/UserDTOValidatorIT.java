@@ -30,8 +30,8 @@ public class UserDTOValidatorIT {
     public void before() {
         user = uService.saveUser(ModelTestData.getUser1());
 
-        dto.setEmail(user.getEmail());
-        dto.setName(user.getName());
+        dto.setEmail("new" + user.getEmail());
+        dto.setName(user.getName() + user.getName());
         dto.setPassword(user.getPassword());
         dto.setConfirm(user.getPassword());
         dto.setZoneId(user.getZoneId().toString());
@@ -58,8 +58,6 @@ public class UserDTOValidatorIT {
         String valid8 = " M ";
 
         dto.setName(valid1);
-        System.out.println("getName : " + dto.getName());
-        System.out.println(validator.validate(dto));
         assertThat(validator.validate(dto).size() == 0).isTrue();
         dto.setName(valid2);
         assertThat(validator.validate(dto).size() == 0).isTrue();
@@ -92,4 +90,41 @@ public class UserDTOValidatorIT {
         assertThat(validator.validate(dto).size() == 0).isFalse();
     }
 
+    @Test
+    public void emailValid() {
+        StringBuilder valid1 = new StringBuilder();
+        valid1.append("anton@");
+        while (valid1.length() < 64) valid1.append("s");
+        String valid2 = "   naton@gmail.com   ";
+        String valid3 = "   n a t o n @ gm a i l   .     com   ";
+        String valid4 = "   n .a. t. o .n @ g.m. a .i l   .     com   ";
+
+        dto.setEmail(valid1.toString());
+        assertThat(validator.validate(dto).size() == 0).isTrue();
+        dto.setEmail(valid2);
+        assertThat(validator.validate(dto).size() == 0).isTrue();
+        dto.setEmail(valid3);
+        assertThat(validator.validate(dto).size() == 0).isTrue();
+        dto.setEmail(valid4);
+        assertThat(validator.validate(dto).size() == 0).isTrue();
+    }
+
+    @Test
+    public void emailInvalid() {
+        StringBuilder invalid1 = new StringBuilder();
+        invalid1.append("anton@");
+        while (invalid1.length() < 65) invalid1.append("s");
+        String invalid2 = "a@";
+        String invalid3 = "anton.gmail.com";
+        String invalid4 = null;
+
+        dto.setEmail(invalid1.toString());
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+        dto.setEmail(invalid2);
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+        dto.setEmail(invalid3);
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+        dto.setEmail(invalid4);
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+    }
 }

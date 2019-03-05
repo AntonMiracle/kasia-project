@@ -150,8 +150,6 @@ public class BudgetDTOValidationIT {
         String valid8 = " M ";
 
         dto.setName(valid1);
-        System.out.println("getName : " + dto.getName());
-        System.out.println(validator.validate(dto));
         assertThat(validator.validate(dto).size() == 0).isTrue();
         dto.setName(valid2);
         assertThat(validator.validate(dto).size() == 0).isTrue();

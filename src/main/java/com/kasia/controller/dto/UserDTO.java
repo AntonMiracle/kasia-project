@@ -1,11 +1,11 @@
 package com.kasia.controller.dto;
 
 import com.kasia.controller.dto.validator.constraint.UserDTOConfirmPassIsValid;
-import com.kasia.controller.dto.validator.constraint.UserDTOEmailIsValid;
+import com.kasia.controller.dto.validator.constraint.UserEmailValid;
 import com.kasia.controller.dto.validator.constraint.UserNameValid;
 import com.kasia.controller.dto.validator.constraint.UserDTOPasswordIsValid;
 
-@UserDTOEmailIsValid(message = "{validation.email.error}")
+@UserEmailValid(emailFN = "email", min = 3, max = 64, regex = "^\\S+@\\S+$",message = "{validation.email.error}")
 @UserNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$",message = "{validation.name.error}")
 @UserDTOPasswordIsValid(passwordFN = "password", message = "{validation.password.error}")
 @UserDTOConfirmPassIsValid(passwordFN = "password", confirmFN = "confirm", message = "{validation.password.confirm.error}")
