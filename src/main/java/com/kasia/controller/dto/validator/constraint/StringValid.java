@@ -30,5 +30,5 @@ public @interface StringValid {
 
     boolean nullable() default false;
 
-    boolean makeTrim() default false;
+    boolean makeTrim() default true;
 }

@@ -29,5 +29,5 @@ public @interface ProviderNameValid {
 
     boolean nullable() default false;
 
-    boolean makeTrim() default false;
+    boolean makeTrim() default true;
 }

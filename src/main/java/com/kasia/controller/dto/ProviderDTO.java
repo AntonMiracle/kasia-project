@@ -3,8 +3,8 @@ package com.kasia.controller.dto;
 import com.kasia.controller.dto.validator.constraint.ProviderNameValid;
 import com.kasia.controller.dto.validator.constraint.StringValid;
 
-@ProviderNameValid(nameFN = "name", min = 1, max = 64, makeTrim = true, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
-@StringValid(stringFN = "description", makeTrim = true, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.description.error}")
+@ProviderNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
+@StringValid(stringFN = "description", regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.description.error}")
 public class ProviderDTO {
     private String name;
     private String description;

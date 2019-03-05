@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ProviderNameValidatorIT {
+public class ProviderDTOValidatorIT {
     @Autowired
     private Validator validator;
     private ProviderDTO dto = new ProviderDTO();
