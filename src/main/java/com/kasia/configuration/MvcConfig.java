@@ -41,8 +41,8 @@ public class MvcConfig implements WebMvcConfigurer {
 //        uService.addBudget(user.getId(), bu1.getId());
 //        uService.addBudget(user.getId(), bu2.getId());
 //
-//        ElementProvider provider1 = new ElementProvider("8minut", "some shop");
-//        ElementProvider provider2 = new ElementProvider("M111111", "supermarket");
+//        Provider provider1 = new Provider("8minut", "some shop");
+//        Provider provider2 = new Provider("M111111", "supermarket");
 //
 //        bService.addElementProvider(bu1.getId(), provider1);
 //        bService.addElementProvider(bu1.getId(), provider2);

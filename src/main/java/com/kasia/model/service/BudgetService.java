@@ -3,7 +3,7 @@ package com.kasia.model.service;
 import com.kasia.model.Balance;
 import com.kasia.model.Budget;
 import com.kasia.model.Element;
-import com.kasia.model.ElementProvider;
+import com.kasia.model.Provider;
 
 import javax.validation.ValidationException;
 import java.util.Set;
@@ -30,13 +30,13 @@ public interface BudgetService {
 
     Set<Element> findAllElements(long budgetId);
 
-    ElementProvider findElementProviderByName(long budgetId, String name);
+    Provider findElementProviderByName(long budgetId, String name);
 
     boolean isElementProviderUnique(long budgetId, String providerName);
 
-    boolean addElementProvider(long budgetId, ElementProvider provider) throws ValidationException;
+    boolean addElementProvider(long budgetId, Provider provider) throws ValidationException;
 
     boolean removeElementProvider(long budgetId, long providerId) throws ValidationException;
 
-    Set<ElementProvider> findAllElementProviders(long budgetId);
+    Set<Provider> findAllElementProviders(long budgetId);
 }

@@ -51,7 +51,7 @@ public class OperationServiceIT {
 
     private Operation getValidOperationWithNestedPositiveId() {
         Operation operation = ModelTestData.getOperation1();
-        operation.getElementProvider().setId(1);
+        operation.getProvider().setId(1);
         operation.getElement().setId(1);
         operation.getUser().setId(1);
         return operation;
@@ -60,12 +60,12 @@ public class OperationServiceIT {
     @Test
     public void createOperation() {
         Operation op = getValidOperationWithNestedPositiveId();
-        Operation actual = oService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+        Operation actual = oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
 
         assertThat(actual.getUser()).isEqualTo(op.getUser());
         assertThat(actual.getPrice()).isEqualTo(op.getPrice());
         assertThat(actual.getElement()).isEqualTo(op.getElement());
-        assertThat(actual.getElementProvider()).isEqualTo(op.getElementProvider());
+        assertThat(actual.getProvider()).isEqualTo(op.getProvider());
         assertThat(actual.getCreateOn().compareTo(LocalDateTime.now().plusSeconds(3)) < 0).isTrue();
     }
 
@@ -74,7 +74,7 @@ public class OperationServiceIT {
         Operation op = getValidOperationWithNestedPositiveId();
         op.getUser().setId(0);
 
-        oService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
@@ -82,15 +82,15 @@ public class OperationServiceIT {
         Operation op = getValidOperationWithNestedPositiveId();
         op.getElement().setId(0);
 
-        oService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
     }
 
     @Test(expected = IdInvalidRuntimeException.class)
     public void whenElementProviderIdInvalidCreateOperationThrowException() {
         Operation op = getValidOperationWithNestedPositiveId();
-        op.getElementProvider().setId(0);
+        op.getProvider().setId(0);
 
-        oService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
     }
 
     @Test(expected = ValidationException.class)
@@ -98,7 +98,7 @@ public class OperationServiceIT {
         Operation op = getValidOperationWithNestedPositiveId();
         op.getUser().setName("");
 
-        oService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
     }
 
     @Test(expected = ValidationException.class)
@@ -106,15 +106,15 @@ public class OperationServiceIT {
         Operation op = getValidOperationWithNestedPositiveId();
         op.getElement().setName("");
 
-        oService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
     }
 
     @Test(expected = ValidationException.class)
     public void whenElementProviderInvalidCreateOperationThrowException() {
         Operation op = getValidOperationWithNestedPositiveId();
-        op.getElementProvider().setName("");
+        op.getProvider().setName("");
 
-        oService.createOperation(op.getUser(), op.getElement(), op.getElementProvider(), op.getPrice());
+        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
     }
 
     @Test
@@ -122,7 +122,7 @@ public class OperationServiceIT {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
         Operation op2 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
 
@@ -162,7 +162,7 @@ public class OperationServiceIT {
         consumptionEl = eRepository.save(consumptionEl);
 
         User user = uService.saveUser(ModelTestData.getUser1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
 
         Operation incomeOp = oService.createOperation(user, incomeEl, provider, incomePrice);
         Operation consumptionOp = oService.createOperation(user, consumptionEl, provider, consumptionPrice);
@@ -184,7 +184,7 @@ public class OperationServiceIT {
 
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
         op1.getPrice().setCurrencies(Currencies.EUR);
 
@@ -194,7 +194,7 @@ public class OperationServiceIT {
     private Operation getSavedOperationForCheckRuntimeException() {
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         return oService.createOperation(user, element, provider, ModelTestData.getPrice1());
     }
 
@@ -223,7 +223,7 @@ public class OperationServiceIT {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         Operation op = getSavedOperationForCheckRuntimeException();
 
-        op.getElementProvider().setName("");
+        op.getProvider().setName("");
 
         oService.addOperation(savedBudget.getId(), op);
     }
@@ -253,7 +253,7 @@ public class OperationServiceIT {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         Operation op = getSavedOperationForCheckRuntimeException();
 
-        op.getElementProvider().setId(0);
+        op.getProvider().setId(0);
 
         oService.addOperation(savedBudget.getId(), op);
     }
@@ -263,7 +263,7 @@ public class OperationServiceIT {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
         oService.addOperation(savedBudget.getId(), op1);
         assertThat(oService.findAllOperations(savedBudget.getId()).size() == 1).isTrue();
@@ -279,7 +279,7 @@ public class OperationServiceIT {
         Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
         oService.addOperation(savedBudget.getId(), op1);
         assertThat(oService.findAllOperations(savedBudget.getId()).size() == 1).isTrue();
@@ -313,7 +313,7 @@ public class OperationServiceIT {
         consumptionEl = eRepository.save(consumptionEl);
 
         User user = uService.saveUser(ModelTestData.getUser1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
 
         Operation incomeOp = oService.createOperation(user, incomeEl, provider, incomePrice);
         Operation consumptionOp = oService.createOperation(user, consumptionEl, provider, consumptionPrice);
@@ -339,7 +339,7 @@ public class OperationServiceIT {
         Budget savedBudget = bService.saveBudget(budget);
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
         oService.addOperation(savedBudget.getId(), op1);
         op1.getPrice().setCurrencies(Currencies.EUR);
@@ -353,7 +353,7 @@ public class OperationServiceIT {
 
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
 
         oService.addOperation(savedBudget.getId(), op1);
@@ -369,7 +369,7 @@ public class OperationServiceIT {
         User user = uService.saveUser(ModelTestData.getUser1());
         Element forSearch = eRepository.save(ModelTestData.getElement1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = oService.createOperation(user, forSearch, provider, ModelTestData.getPrice1());
         Operation op2 = oService.createOperation(user, forSearch, provider, ModelTestData.getPrice1());
         Operation op3 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
@@ -388,8 +388,8 @@ public class OperationServiceIT {
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider1 = epRepository.save(ModelTestData.getElementProvider1());
-        ElementProvider provider2 = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider1 = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider2 = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = oService.createOperation(user, element, provider1, ModelTestData.getPrice1());
         Operation op2 = oService.createOperation(user, element, provider1, ModelTestData.getPrice1());
         Operation op3 = oService.createOperation(user, element, provider2, ModelTestData.getPrice1());
@@ -409,7 +409,7 @@ public class OperationServiceIT {
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         LocalDateTime from = LocalDateTime.now().minusDays(1);
         LocalDateTime to = LocalDateTime.now().plusDays(1);
 
@@ -446,7 +446,7 @@ public class OperationServiceIT {
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         Price from = ModelTestData.getPrice1();
         from.setAmount(BigDecimal.TEN);
         Price to = ModelTestData.getPrice1();
@@ -488,7 +488,7 @@ public class OperationServiceIT {
         User user1 = uService.saveUser(ModelTestData.getUser1());
         User user2 = uService.saveUser(ModelTestData.getUser2());
         Element element = eRepository.save(ModelTestData.getElement1());
-        ElementProvider provider = epRepository.save(ModelTestData.getElementProvider1());
+        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         Operation op1 = oService.createOperation(user1, element, provider, ModelTestData.getPrice1());
         Operation op2 = oService.createOperation(user1, element, provider, ModelTestData.getPrice1());
         Operation op3 = oService.createOperation(user2, element, provider, ModelTestData.getPrice1());

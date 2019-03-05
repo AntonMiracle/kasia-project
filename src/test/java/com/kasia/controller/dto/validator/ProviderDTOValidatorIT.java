@@ -3,7 +3,7 @@ package com.kasia.controller.dto.validator;
 import com.kasia.ModelTestData;
 import com.kasia.controller.dto.ProviderDTO;
 import com.kasia.model.Budget;
-import com.kasia.model.ElementProvider;
+import com.kasia.model.Provider;
 import com.kasia.model.service.BudgetService;
 import org.junit.Before;
 import org.junit.Test;
@@ -80,7 +80,7 @@ public class ProviderDTOValidatorIT {
     public void ifNameNotUniqueNameInvalid() {
         Budget budget = ModelTestData.getBudget1();
         bService.saveBudget(budget);
-        ElementProvider provider = ModelTestData.getElementProvider1();
+        Provider provider = ModelTestData.getElementProvider1();
         bService.addElementProvider(budget.getId(), provider);
 
         assertThat(bService.isElementProviderUnique(budget.getId(), provider.getName())).isFalse();

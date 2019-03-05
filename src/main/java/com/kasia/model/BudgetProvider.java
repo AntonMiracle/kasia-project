@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
-public class BudgetElementProvider implements Model {
+public class BudgetProvider implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -14,14 +14,14 @@ public class BudgetElementProvider implements Model {
     private Budget budget;
     @NotNull
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<ElementProvider> elementProviders;
+    private Set<Provider> providers;
 
-    public BudgetElementProvider() {
+    public BudgetProvider() {
     }
 
-    public BudgetElementProvider(Budget budget, Set<ElementProvider> elementProviders) {
+    public BudgetProvider(Budget budget, Set<Provider> providers) {
         this.budget = budget;
-        this.elementProviders = elementProviders;
+        this.providers = providers;
     }
 
     @Override
@@ -29,27 +29,27 @@ public class BudgetElementProvider implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BudgetElementProvider that = (BudgetElementProvider) o;
+        BudgetProvider that = (BudgetProvider) o;
 
         if (id != that.id) return false;
         if (budget != null ? !budget.equals(that.budget) : that.budget != null) return false;
-        return elementProviders != null ? elementProviders.equals(that.elementProviders) : that.elementProviders == null;
+        return providers != null ? providers.equals(that.providers) : that.providers == null;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (budget != null ? budget.hashCode() : 0);
-        result = 31 * result + (elementProviders != null ? elementProviders.hashCode() : 0);
+        result = 31 * result + (providers != null ? providers.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "BudgetElementProvider{" +
+        return "BudgetProvider{" +
                 "id=" + id +
                 ", budget=" + budget +
-                ", elementProviders=" + elementProviders +
+                ", providers=" + providers +
                 '}';
     }
 
@@ -69,11 +69,11 @@ public class BudgetElementProvider implements Model {
         this.budget = budget;
     }
 
-    public Set<ElementProvider> getElementProviders() {
-        return elementProviders;
+    public Set<Provider> getProviders() {
+        return providers;
     }
 
-    public void setElementProviders(Set<ElementProvider> elementProviders) {
-        this.elementProviders = elementProviders;
+    public void setProviders(Set<Provider> providers) {
+        this.providers = providers;
     }
 }

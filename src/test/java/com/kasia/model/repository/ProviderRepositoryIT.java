@@ -1,7 +1,7 @@
 package com.kasia.model.repository;
 
 import com.kasia.ModelTestData;
-import com.kasia.model.ElementProvider;
+import com.kasia.model.Provider;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ElementProviderRepositoryIT {
+public class ProviderRepositoryIT {
     @Autowired
     private ElementProviderRepository repository;
 
@@ -27,44 +27,44 @@ public class ElementProviderRepositoryIT {
 
     @Test
     public void save() {
-        ElementProvider elementProvider = ModelTestData.getElementProvider1();
-        assertThat(elementProvider.getId() == 0).isTrue();
+        Provider provider = ModelTestData.getElementProvider1();
+        assertThat(provider.getId() == 0).isTrue();
 
-        saveForTest(elementProvider);
+        saveForTest(provider);
 
-        assertThat(elementProvider.getId() > 0).isTrue();
+        assertThat(provider.getId() > 0).isTrue();
     }
 
-    private ElementProvider saveForTest(ElementProvider elementProvider) {
-        repository.save(elementProvider);
-        return elementProvider;
+    private Provider saveForTest(Provider provider) {
+        repository.save(provider);
+        return provider;
     }
 
     @Test
     public void getById() throws Exception {
-        ElementProvider elementProvider = saveForTest(ModelTestData.getElementProvider1());
-        long id = elementProvider.getId();
+        Provider provider = saveForTest(ModelTestData.getElementProvider1());
+        long id = provider.getId();
 
-        elementProvider = repository.findById(id).get();
+        provider = repository.findById(id).get();
 
-        assertThat(elementProvider).isNotNull();
-        assertThat(elementProvider.getId()).isEqualTo(id);
+        assertThat(provider).isNotNull();
+        assertThat(provider.getId()).isEqualTo(id);
     }
 
     @Test
     public void delete() throws Exception {
-        ElementProvider elementProvider = ModelTestData.getElementProvider1();
+        Provider provider = ModelTestData.getElementProvider1();
 
-        repository.delete(elementProvider);
+        repository.delete(provider);
 
-        assertThat(repository.findById(elementProvider.getId()).isPresent()).isFalse();
+        assertThat(repository.findById(provider.getId()).isPresent()).isFalse();
     }
 
     @Test
     public void getAll() throws Exception {
         saveForTest(ModelTestData.getElementProvider1());
         saveForTest(ModelTestData.getElementProvider2());
-        Set<ElementProvider> providers = new HashSet<>();
+        Set<Provider> providers = new HashSet<>();
 
         repository.findAll().forEach(providers::add);
 

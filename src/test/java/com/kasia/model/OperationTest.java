@@ -13,7 +13,7 @@ public class OperationTest {
         EqualsVerifier.forClass(Operation.class)
                 .usingGetClass()
                 .withPrefabValues(Element.class, ModelTestData.getElement1(), ModelTestData.getElement2())
-                .withPrefabValues(ElementProvider.class, ModelTestData.getElementProvider1(), ModelTestData.getElementProvider2())
+                .withPrefabValues(Provider.class, ModelTestData.getElementProvider1(), ModelTestData.getElementProvider2())
                 .withPrefabValues(Price.class, ModelTestData.getPrice1(), ModelTestData.getPrice2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)

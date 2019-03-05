@@ -44,12 +44,12 @@ final public class ModelTestData {
         return new Element("name2", getPrice2(), ElementType.INCOME);
     }
 
-    public static ElementProvider getElementProvider1() {
-        return new ElementProvider("name1", "description1");
+    public static Provider getElementProvider1() {
+        return new Provider("name1", "description1");
     }
 
-    public static ElementProvider getElementProvider2() {
-        return new ElementProvider("name2", "description2");
+    public static Provider getElementProvider2() {
+        return new Provider("name2", "description2");
     }
 
     public static LocalDateTime getNow() {
@@ -92,16 +92,16 @@ final public class ModelTestData {
         return new BudgetElement(getBudget2(), elements);
     }
 
-    public static BudgetElementProvider getBudgetElementProvider1() {
-        Set<ElementProvider> providers = new HashSet<>();
+    public static BudgetProvider getBudgetElementProvider1() {
+        Set<Provider> providers = new HashSet<>();
         providers.add(getElementProvider1());
-        return new BudgetElementProvider(getBudget1(), providers);
+        return new BudgetProvider(getBudget1(), providers);
     }
 
-    public static BudgetElementProvider getBudgetElementProvider2() {
-        Set<ElementProvider> providers = new HashSet<>();
+    public static BudgetProvider getBudgetElementProvider2() {
+        Set<Provider> providers = new HashSet<>();
         providers.add(getElementProvider2());
-        return new BudgetElementProvider(getBudget2(), providers);
+        return new BudgetProvider(getBudget2(), providers);
     }
 
     public static BudgetOperation getBudgetOperation1() {

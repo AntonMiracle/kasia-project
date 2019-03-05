@@ -38,7 +38,7 @@ public class OperationValidationImp implements OperationValidation {
 
     @Override
     public void verifyPositiveIdInside(Operation operation) throws IdInvalidRuntimeException {
-        if (operation.getElementProvider().getId() <= 0) throw new IdInvalidRuntimeException();
+        if (operation.getProvider().getId() <= 0) throw new IdInvalidRuntimeException();
         if (operation.getElement().getId() <= 0) throw new IdInvalidRuntimeException();
         if (operation.getUser().getId() <= 0) throw new IdInvalidRuntimeException();
     }

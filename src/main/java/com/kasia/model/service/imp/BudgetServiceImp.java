@@ -33,7 +33,7 @@ public class BudgetServiceImp implements BudgetService {
     @Autowired
     private BudgetElementProviderRepository bepRepository;
     @Autowired
-    private BudgetElementProviderValidation bepValidation;
+    private BudgetProviderValidation bepValidation;
     @Autowired
     private UserService uService;
     @Autowired
@@ -67,7 +67,7 @@ public class BudgetServiceImp implements BudgetService {
         beRepository.findByBudgetId(budget.getId()).ifPresent(beRepository::delete);
         elements.forEach(eRepository::delete);
 
-        Set<ElementProvider> providers = findAllElementProviders(budget.getId());
+        Set<Provider> providers = findAllElementProviders(budget.getId());
         bepRepository.findByBudgetId(budget.getId()).ifPresent(bepRepository::delete);
         providers.forEach(epRepository::delete);
 
@@ -169,12 +169,12 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean isElementProviderUnique(long budgetId, String providerName) {
-        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budgetId);
+        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
 
         if (providerName == null) return false;
 
-        if (!optional.isPresent() || optional.get().getElementProviders().size() == 0) return true;
-        long countExist = optional.get().getElementProviders()
+        if (!optional.isPresent() || optional.get().getProviders().size() == 0) return true;
+        long countExist = optional.get().getProviders()
                 .stream()
                 .filter(provider -> provider.getName().equals(providerName))
                 .count();
@@ -182,11 +182,11 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public ElementProvider findElementProviderByName(long budgetId, String name) {
-        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budgetId);
+    public Provider findElementProviderByName(long budgetId, String name) {
+        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
 
         if (optional.isPresent()) {
-            for (ElementProvider provider : optional.get().getElementProviders()) {
+            for (Provider provider : optional.get().getProviders()) {
                 if (provider.getName().equals(name)) return provider;
             }
         }
@@ -195,45 +195,45 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean addElementProvider(long budgetId, ElementProvider provider) {
+    public boolean addElementProvider(long budgetId, Provider provider) {
         if (budgetId <= 0 || provider == null) return false;
 
-        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budgetId);
+        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
 
-        BudgetElementProvider bep = optional
+        BudgetProvider bep = optional
                 .orElseGet(() ->
-                        new BudgetElementProvider(findBudgetById(budgetId), new HashSet<>()));
+                        new BudgetProvider(findBudgetById(budgetId), new HashSet<>()));
 
         if (!isElementProviderUnique(budgetId, provider.getName())) return false;
 
         epRepository.save(provider);
-        bep.getElementProviders().add(provider);
+        bep.getProviders().add(provider);
 
         bepValidation.verifyValidation(bep);
         bepRepository.save(bep);
 
-        return bep.getElementProviders().contains(provider);
+        return bep.getProviders().contains(provider);
     }
 
     @Override
     public boolean removeElementProvider(long budgetId, long providerId) {
-        Optional<BudgetElementProvider> optionalBEP = bepRepository.findByBudgetId(budgetId);
-        ElementProvider provider = epRepository.findById(providerId).orElse(null);
+        Optional<BudgetProvider> optionalBEP = bepRepository.findByBudgetId(budgetId);
+        Provider provider = epRepository.findById(providerId).orElse(null);
 
-        if (!optionalBEP.isPresent() || !optionalBEP.get().getElementProviders().contains(provider)) return false;
+        if (!optionalBEP.isPresent() || !optionalBEP.get().getProviders().contains(provider)) return false;
 
-        optionalBEP.get().getElementProviders().remove(provider);
+        optionalBEP.get().getProviders().remove(provider);
         epRepository.delete(provider);
 
         bepValidation.verifyValidation(optionalBEP.get());
         bepRepository.save(optionalBEP.get());
 
-        return !optionalBEP.get().getElementProviders().contains(provider);
+        return !optionalBEP.get().getProviders().contains(provider);
     }
 
     @Override
-    public Set<ElementProvider> findAllElementProviders(long budgetId) {
-        Optional<BudgetElementProvider> optional = bepRepository.findByBudgetId(budgetId);
-        return optional.map(BudgetElementProvider::getElementProviders).orElseGet(HashSet::new);
+    public Set<Provider> findAllElementProviders(long budgetId) {
+        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
+        return optional.map(BudgetProvider::getProviders).orElseGet(HashSet::new);
     }
 }

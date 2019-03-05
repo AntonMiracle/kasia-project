@@ -1,7 +1,7 @@
 package com.kasia.controller;
 
 import com.kasia.model.Budget;
-import com.kasia.model.ElementProvider;
+import com.kasia.model.Provider;
 import com.kasia.model.User;
 import com.kasia.model.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class MyControllerAdvice {
     }
 
     @ModelAttribute("providers")
-    public Set<ElementProvider> getAllProviders() {
+    public Set<Provider> getAllProviders() {
         Budget budget = sessionController.getBudget();
         if (budget != null) return bService.findAllElementProviders(budget.getId());
         else return new HashSet<>();

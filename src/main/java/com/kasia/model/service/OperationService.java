@@ -11,7 +11,7 @@ import java.util.Set;
 
 public interface OperationService {
 
-    Operation createOperation(User user, Element element, ElementProvider provider, Price price) throws ValidationException, IdInvalidRuntimeException;
+    Operation createOperation(User user, Element element, Provider provider, Price price) throws ValidationException, IdInvalidRuntimeException;
 
     boolean addOperation(long budgetId, Operation operation) throws ValidationException, CurrenciesNotEqualsRuntimeException;
 

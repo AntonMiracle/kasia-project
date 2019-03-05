@@ -35,7 +35,7 @@ public class OperationValidationIT {
         Operation operation3 = ModelTestData.getOperation1();
         operation3.setElement(null);
         Operation operation4 = ModelTestData.getOperation1();
-        operation4.setElementProvider(null);
+        operation4.setProvider(null);
         Operation operation5 = ModelTestData.getOperation1();
         operation5.setPrice(null);
 
@@ -58,7 +58,7 @@ public class OperationValidationIT {
         Operation operation1 = ModelTestData.getOperation1();
         operation1.getUser().setId(2);
         operation1.getElement().setId(2);
-        operation1.getElementProvider().setId(2);
+        operation1.getProvider().setId(2);
         return operation1;
     }
 
@@ -81,7 +81,7 @@ public class OperationValidationIT {
     @Test(expected = IdInvalidRuntimeException.class)
     public void whenElementProviderIdInvalidVerifyPositiveIdInsideThrowException() {
         Operation operation1 = getOperationWithValidIdInside();
-        operation1.getElementProvider().setId(0);
+        operation1.getProvider().setId(0);
 
         validationService.verifyPositiveIdInside(operation1);
     }

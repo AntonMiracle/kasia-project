@@ -1,9 +1,9 @@
 package com.kasia.model.validation.imp;
 
-import com.kasia.model.BudgetElementProvider;
-import com.kasia.model.ElementProvider;
+import com.kasia.model.BudgetProvider;
+import com.kasia.model.Provider;
 import com.kasia.model.Model;
-import com.kasia.model.validation.BudgetElementProviderValidation;
+import com.kasia.model.validation.BudgetProviderValidation;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
@@ -13,14 +13,14 @@ import javax.validation.ValidatorFactory;
 import java.util.Set;
 
 @Service
-public class BudgetElementProviderValidationImp implements BudgetElementProviderValidation {
+public class BudgetProviderValidationImp implements BudgetProviderValidation {
 
     @Override
-    public boolean isValid(BudgetElementProvider model) {
+    public boolean isValid(BudgetProvider model) {
         if (model == null) return false;
 
-        if (model.getElementProviders() == null) return false;
-        for (ElementProvider provider : model.getElementProviders()) {
+        if (model.getProviders() == null) return false;
+        for (Provider provider : model.getProviders()) {
         }
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

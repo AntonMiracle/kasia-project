@@ -16,8 +16,8 @@
             th:id="existBudgetRow"
             th:onclick="'javascript:rowClicked(\'' + ${ownBudget.id} + '\');'">
             <td th:text="${ownBudget.name}">Name</td>
-            <td th:text="${ownBudget.balanceInit.amount}">Amount</td>
-            <td th:text="${ownBudget.balanceInit.currencies.currency.getCurrencyCode()}">Currency</td>
+            <td th:text="${ownBudget.balance.amount}">Amount</td>
+            <td th:text="${ownBudget.balance.currencies.currency.getCurrencyCode()}">Currency</td>
         </tr>
     </table>
     <script th:inline="javascript">

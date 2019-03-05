@@ -6,19 +6,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class ElementProvider implements Model {
+public class Provider implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
     private String description;
 
-    public ElementProvider(String name, String description) {
+    public Provider(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public ElementProvider() {
+    public Provider() {
 
     }
 
@@ -27,7 +27,7 @@ public class ElementProvider implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ElementProvider that = (ElementProvider) o;
+        Provider that = (Provider) o;
 
         if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
@@ -44,7 +44,7 @@ public class ElementProvider implements Model {
 
     @Override
     public String toString() {
-        return "ElementProvider{" +
+        return "Provider{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

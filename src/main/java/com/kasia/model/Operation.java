@@ -15,7 +15,7 @@ public class Operation implements Model {
     private Element element;
     @NotNull
     @OneToOne(fetch = FetchType.EAGER)
-    private ElementProvider elementProvider;
+    private Provider provider;
     @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
@@ -26,9 +26,9 @@ public class Operation implements Model {
     @PastOrPresent
     private LocalDateTime createOn;
 
-    public Operation(User user, Element element, ElementProvider elementProvider, Price price, LocalDateTime createOn) {
+    public Operation(User user, Element element, Provider provider, Price price, LocalDateTime createOn) {
         this.element = element;
-        this.elementProvider = elementProvider;
+        this.provider = provider;
         this.user = user;
         this.price = price;
         this.createOn = createOn;
@@ -43,7 +43,7 @@ public class Operation implements Model {
         return "Operation{" +
                 "id=" + id +
                 ", element=" + element +
-                ", elementProvider=" + elementProvider +
+                ", provider=" + provider +
                 ", user=" + user +
                 ", price=" + price +
                 ", createOn=" + createOn +
@@ -59,7 +59,7 @@ public class Operation implements Model {
 
         if (id != operation.id) return false;
         if (element != null ? !element.equals(operation.element) : operation.element != null) return false;
-        if (elementProvider != null ? !elementProvider.equals(operation.elementProvider) : operation.elementProvider != null)
+        if (provider != null ? !provider.equals(operation.provider) : operation.provider != null)
             return false;
         if (user != null ? !user.equals(operation.user) : operation.user != null) return false;
         if (price != null ? !price.equals(operation.price) : operation.price != null) return false;
@@ -70,7 +70,7 @@ public class Operation implements Model {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (element != null ? element.hashCode() : 0);
-        result = 31 * result + (elementProvider != null ? elementProvider.hashCode() : 0);
+        result = 31 * result + (provider != null ? provider.hashCode() : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
@@ -85,12 +85,12 @@ public class Operation implements Model {
         this.element = element;
     }
 
-    public ElementProvider getElementProvider() {
-        return elementProvider;
+    public Provider getProvider() {
+        return provider;
     }
 
-    public void setElementProvider(ElementProvider elementProvider) {
-        this.elementProvider = elementProvider;
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 
     public Price getPrice() {

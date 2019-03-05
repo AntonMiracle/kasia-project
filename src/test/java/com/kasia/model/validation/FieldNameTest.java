@@ -2,7 +2,7 @@ package com.kasia.model.validation;
 
 import com.kasia.controller.dto.UserDTO;
 import com.kasia.model.Budget;
-import com.kasia.model.ElementProvider;
+import com.kasia.model.Provider;
 import com.kasia.model.User;
 import org.junit.Test;
 
@@ -41,7 +41,7 @@ public class FieldNameTest {
 
     @Test
     public void elementProviderFieldNameCorrect() {
-        Set<String> currentFieldsName = Arrays.stream(ElementProvider.class.getDeclaredFields())
+        Set<String> currentFieldsName = Arrays.stream(Provider.class.getDeclaredFields())
                 .map(field -> field.getName())
                 .collect(Collectors.toCollection(HashSet<String>::new));
         String name = FieldName.ELEMENT_PROVIDER_NAME.getName();
@@ -51,7 +51,7 @@ public class FieldNameTest {
 
     @Test
     public void elementFieldNameCorrect() {
-        Set<String> currentFieldsName = Arrays.stream(ElementProvider.class.getDeclaredFields())
+        Set<String> currentFieldsName = Arrays.stream(Provider.class.getDeclaredFields())
                 .map(field -> field.getName())
                 .collect(Collectors.toCollection(HashSet<String>::new));
         String name = FieldName.ELEMENT_NAME.getName();

@@ -49,7 +49,7 @@ public class OperationRepositoryIT {
 
     private Operation saveForTest(Operation operation) {
         elementRepository.save(operation.getElement());
-        providerRepository.save(operation.getElementProvider());
+        providerRepository.save(operation.getProvider());
         Optional<User> user = userRepository.findByName(operation.getUser().getName());
         if (user.isPresent()) {
             operation.setUser(user.get());

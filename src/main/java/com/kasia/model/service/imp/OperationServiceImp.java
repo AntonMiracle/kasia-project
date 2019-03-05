@@ -41,7 +41,7 @@ public class OperationServiceImp implements OperationService {
     private BudgetService bService;
 
     @Override
-    public Operation createOperation(User user, Element element, ElementProvider provider, Price price) {
+    public Operation createOperation(User user, Element element, Provider provider, Price price) {
         Operation operation = new Operation(user, element, provider, price, LocalDateTime.now().withNano(0));
         oValidation.verifyPositiveIdInside(operation);
         oValidation.verifyValidation(operation);
@@ -144,13 +144,13 @@ public class OperationServiceImp implements OperationService {
 
     @Override
     public Set<Operation> findOperationsByElementProvider(long budgetId, long providerId) {
-        ElementProvider provider = epRepository.findById(providerId).orElse(null);
+        Provider provider = epRepository.findById(providerId).orElse(null);
         Set<Operation> result = new HashSet<>();
         if (provider == null) return result;
 
         findAllOperations(budgetId)
                 .stream()
-                .filter(operation -> provider.equals(operation.getElementProvider()))
+                .filter(operation -> provider.equals(operation.getProvider()))
                 .forEach(result::add);
 
         return result;
