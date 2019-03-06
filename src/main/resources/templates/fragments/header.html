@@ -74,7 +74,7 @@
         </form>
     </div>
     <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
-    <div th:class="idLabel" th:text="${budget.name} +' ' + ${budget.balance}"></div>
+    <div th:class="idLabel" th:text="${budget.name} +' ' + ${budget.balance.amount} + ' ' + ${budget.balance.currencies}"></div>
 </div>
 
 <!--ERROR PAGE-->

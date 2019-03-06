@@ -15,16 +15,15 @@
         </tr>
         <tr th:each="ownBudget : ${allOwnBudgets}"
             th:class="button"
-            th:onclick="'javascript:rowClicked(\'' + ${ownBudget.id} + '\');'">
-            <td th:text="${ownBudget.name}">Name</td>
-            <td th:text="${ownBudget.balance.amount}">Amount</td>
-            <td th:text="${ownBudget.balance.currencies.currency.getCurrencyCode()}">Currency</td>
+            th:onclick="'javascript:openBudget(\'' + ${ownBudget.id} + '\');'">
+            <td th:text="${ownBudget.name}"></td>
+            <td th:text="${ownBudget.balance.amount}"></td>
+            <td th:text="${ownBudget.balance.currencies.currency.getCurrencyCode()}"></td>
         </tr>
     </table>
     <script th:inline="javascript">
-        function rowClicked(value) {
+        function openBudget(value) {
             location.href = "/budget/open/" + value;
-            console.log("ROW CLICKED");
         }
     </script>
 </div>
