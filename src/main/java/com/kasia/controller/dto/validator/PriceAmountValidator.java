@@ -1,11 +1,11 @@
 package com.kasia.controller.dto.validator;
 
-import com.kasia.controller.dto.validator.constraint.BalanceValueValid;
+import com.kasia.controller.dto.validator.constraint.PriceAmountValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class BalanceValueValidator implements ConstraintValidator<BalanceValueValid, Object> {
+public class PriceAmountValidator implements ConstraintValidator<PriceAmountValid, Object> {
     private boolean nullable;
     private String balanceFN;
     private int minL;
@@ -16,7 +16,7 @@ public class BalanceValueValidator implements ConstraintValidator<BalanceValueVa
     private ValidatorUtil vUtil = new ValidatorUtil();
 
     @Override
-    public void initialize(BalanceValueValid ca) {
+    public void initialize(PriceAmountValid ca) {
         balanceFN = ca.balanceFN();
         minL = ca.minL();
         maxL = ca.maxL();
