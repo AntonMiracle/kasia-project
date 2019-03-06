@@ -3,8 +3,8 @@ package com.kasia.controller.dto;
 import com.kasia.controller.dto.validator.constraint.PriceAmountValid;
 import com.kasia.controller.dto.validator.constraint.BudgetNameValid;
 
-@BudgetNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.budget.name.error}")
-@PriceAmountValid(balanceFN = "balanceInit", message = "{validation.budget.balanceInit.value.error}")
+@BudgetNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
+@PriceAmountValid(balanceFN = "balanceInit", message = "{validation.price.amount.error}")
 public class BudgetDTO {
     private String name;
     private String balanceInit = "0";
