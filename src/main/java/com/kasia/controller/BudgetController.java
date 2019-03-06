@@ -60,13 +60,12 @@ public class BudgetController {
 
     @GetMapping(U_BUDGET)
     public String openBudget() {
-        if (sessionController.getBudget() != null) return V_BUDGET;
-        return redirect(U_BUDGET_ALL);
+        return sessionController.isBudgetOpen() ? V_BUDGET : redirect(U_BUDGET_ALL);
     }
 
     @GetMapping(U_BUDGET_ADD)
     public String openAddBudget() {
-        return V_BUDGET_ADD;
+        return sessionController.isBudgetOpen() ? V_BUDGET_ADD : redirect(U_BUDGET_ALL);
     }
 
     @GetMapping(U_BUDGET_ALL)

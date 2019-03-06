@@ -5,7 +5,6 @@ import com.kasia.model.Provider;
 import com.kasia.model.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,18 +24,18 @@ public class ProviderController {
     @ModelAttribute("providerDTO")
     public ProviderDTO getAddBudgetDTO() {
         ProviderDTO dto = new ProviderDTO();
-        dto.setBudgetId(sessionController.getBudget().getId());
+        if (sessionController.isBudgetOpen()) dto.setBudgetId(sessionController.getBudget().getId());
         return dto;
     }
 
     @GetMapping(U_PROVIDER)
-    public String openProvider(Model model) {
-        return V_PROVIDER;
+    public String openProvider() {
+        return sessionController.isBudgetOpen() ? V_PROVIDER : redirect(U_BUDGET_ALL);
     }
 
     @PostMapping(U_PROVIDER_ADD)
-    public String addNewProvider(Model model, @Valid @ModelAttribute ProviderDTO dto, BindingResult bResult) {
-        if (bResult.hasErrors()) return openProvider(model);
+    public String addNewProvider(@Valid @ModelAttribute ProviderDTO dto, BindingResult bResult) {
+        if (bResult.hasErrors()) return openProvider();
 
         Provider provider = new Provider(dto.getName(), dto.getDescription());
         bService.addProvider(dto.getBudgetId(), provider);

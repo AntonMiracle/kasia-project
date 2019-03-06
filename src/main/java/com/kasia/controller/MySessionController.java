@@ -34,4 +34,8 @@ public class MySessionController {
         if (user != null && budget != null && budget.getId() > 0 && uService.findOwnBudgets(user.getId()).contains(budget))
             this.budget = budget;
     }
+
+    public boolean isBudgetOpen() {
+        return budget != null && budget.getId() > 0;
+    }
 }

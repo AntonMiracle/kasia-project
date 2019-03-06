@@ -1,6 +1,7 @@
 package com.kasia.controller;
 
 import com.kasia.model.Budget;
+import com.kasia.model.Element;
 import com.kasia.model.Provider;
 import com.kasia.model.User;
 import com.kasia.model.service.BudgetService;
@@ -32,6 +33,13 @@ public class MyControllerAdvice {
     public Set<Provider> getAllProviders() {
         Budget budget = sessionController.getBudget();
         if (budget != null) return bService.findAllProviders(budget.getId());
+        else return new HashSet<>();
+    }
+
+    @ModelAttribute("elements")
+    public Set<Element> getAllElements() {
+        Budget budget = sessionController.getBudget();
+        if (budget != null) return bService.findAllElements(budget.getId());
         else return new HashSet<>();
     }
 }
