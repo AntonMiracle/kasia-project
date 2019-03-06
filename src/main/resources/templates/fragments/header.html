@@ -22,6 +22,8 @@
 
 <!--HOME-->
 <div class="header" th:fragment="mainMenu">
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <div th:class="idLabel" th:text="${user.email} +' ' + ${user.name}"></div>
     <div>
         <form th:action="@{/logout}" method="post">
             <button class="button" type="submit" th:text="#{button.logout}"></button>
@@ -42,12 +44,12 @@
             <button class="button" type="submit" th:text="#{button.addBudget}"></button>
         </form>
     </div>
-    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
-    <div th:class="idLabel" th:text="${user.email} +' ' + ${user.name}"></div>
 </div>
 
 <!--BUDGET-->
 <div class="header" th:fragment="budgetMenu">
+    <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
+    <div th:class="idLabel" th:text="${budget.name} +' ' + ${budget.balance.amount} + ' ' + ${budget.balance.currencies}"></div>
     <div>
         <form th:action="@{/budget/all}">
             <button class="button" type="submit" th:text="#{button.back}"></button>
@@ -73,8 +75,6 @@
             <button class="button" type="submit" th:text="#{button.provider}"></button>
         </form>
     </div>
-    <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
-    <div th:class="idLabel" th:text="${budget.name} +' ' + ${budget.balance.amount} + ' ' + ${budget.balance.currencies}"></div>
 </div>
 
 <!--ERROR PAGE-->
