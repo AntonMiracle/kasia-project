@@ -48,7 +48,7 @@ public class ElementController {
     @PostMapping(U_ELEMENT_ADD)
     public String addNewElement(@Valid @ModelAttribute ElementDTO dto, BindingResult bResult) {
         if (bResult.hasErrors()) return openElement();
-        System.out.println(dto);
+
         Budget budget = sessionController.getBudget();
         Price price = new Price(new BigDecimal(dto.getDefaultPrice()), budget.getBalance().getCurrencies());
         Element element = new Element(dto.getName(), price, ElementType.valueOf(dto.getType()));

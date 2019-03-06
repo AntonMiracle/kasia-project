@@ -11,7 +11,7 @@
     <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.Provider>"*/-->
     <table th:class="myTable" th:if="${providers.size() != 0}">
         <tr>
-            <th colspan="2" th:text="#{title.providers}"></th>
+            <th colspan="2" th:text="#{title.provider}"></th>
         </tr>
         <tr th:each="provider : ${providers}">
             <td th:class="myLabel" th:text="${provider.name}"></td>
@@ -22,12 +22,12 @@
     <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
     <table th:class="myTable" th:if="${elements.size() != 0}">
         <tr>
-            <th colspan="3" th:text="#{title.element}"></th>
+            <th colspan="2" th:text="#{title.element}"></th>
         </tr>
         <tr th:each="element : ${elements}">
             <td th:class="myLabel" th:text="${element.name}"></td>
-            <td th:class="myLabel" th:text="${element.type}"></td>
-            <td th:class="myLabel" th:text="${element.defaultPrice.amount}"></td>
+            <td th:class="myLabel"
+                th:text="${element.type eq element.type.INCOME} ? #{label.income} : #{label.consumption}"></td>
         </tr>
     </table>
 </div>
