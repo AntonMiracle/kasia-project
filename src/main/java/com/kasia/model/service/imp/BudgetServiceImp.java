@@ -23,8 +23,6 @@ public class BudgetServiceImp implements BudgetService {
     @Autowired
     private ElementRepository eRepository;
     @Autowired
-    private ElementValidation eValidation;
-    @Autowired
     private ElementProviderRepository epRepository;
     @Autowired
     private BudgetElementRepository beRepository;
@@ -130,7 +128,6 @@ public class BudgetServiceImp implements BudgetService {
 
         BudgetElement be = optional.orElseGet(() -> new BudgetElement(budget, new HashSet<>()));
 
-        eValidation.verifyValidation(element);
         if (!isElementUnique(budget.getId(), element.getName())) return false;
 
         eRepository.save(element);

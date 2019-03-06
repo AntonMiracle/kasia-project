@@ -16,15 +16,12 @@ import java.util.Set;
 @Service
 public class OperationValidationImp implements OperationValidation {
     @Autowired
-    private ElementValidation elementValidationService;
-    @Autowired
     private PriceValidation priceValidationService;
 
     @Override
     public boolean isValid(Operation model) {
         if (model == null) return false;
 
-        if (!elementValidationService.isValid(model.getElement())) return false;
         if (!priceValidationService.isValid(model.getPrice())) return false;
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();

@@ -1,24 +1,15 @@
 package com.kasia.model;
 
-import com.kasia.model.validation.Validation;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Entity
 public class Element implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @NotBlank
-    @Pattern(regexp = Validation.PATTERN_NAME)
     private String name;
-    @NotNull
     @Embedded
     private Price defaultPrice;
-    @NotNull
     @Enumerated(EnumType.STRING)
     private ElementType type;
 
