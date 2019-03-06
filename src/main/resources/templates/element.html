@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/base_head :: base_head"></div>
+    <title th:text="#{title.providers}"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: budgetMenu"></div>
+<div id="mainContentWithoutMenu">
+
+</div>
+</body>
+</html>
