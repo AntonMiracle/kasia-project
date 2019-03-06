@@ -67,7 +67,7 @@ public class BudgetServiceImp implements BudgetService {
         beRepository.findByBudgetId(budget.getId()).ifPresent(beRepository::delete);
         elements.forEach(eRepository::delete);
 
-        Set<Provider> providers = findAllElementProviders(budget.getId());
+        Set<Provider> providers = findAllProviders(budget.getId());
         bepRepository.findByBudgetId(budget.getId()).ifPresent(bepRepository::delete);
         providers.forEach(epRepository::delete);
 
@@ -168,7 +168,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean isElementProviderUnique(long budgetId, String providerName) {
+    public boolean isProviderUnique(long budgetId, String providerName) {
         Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
 
         if (providerName == null) return false;
@@ -182,7 +182,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Provider findElementProviderByName(long budgetId, String name) {
+    public Provider findProviderByName(long budgetId, String name) {
         Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
 
         if (optional.isPresent()) {
@@ -195,7 +195,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean addElementProvider(long budgetId, Provider provider) {
+    public boolean addProvider(long budgetId, Provider provider) {
         if (budgetId <= 0 || provider == null) return false;
 
         Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
@@ -204,7 +204,7 @@ public class BudgetServiceImp implements BudgetService {
                 .orElseGet(() ->
                         new BudgetProvider(findBudgetById(budgetId), new HashSet<>()));
 
-        if (!isElementProviderUnique(budgetId, provider.getName())) return false;
+        if (!isProviderUnique(budgetId, provider.getName())) return false;
 
         epRepository.save(provider);
         bep.getProviders().add(provider);
@@ -216,7 +216,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean removeElementProvider(long budgetId, long providerId) {
+    public boolean removeProvider(long budgetId, long providerId) {
         Optional<BudgetProvider> optionalBEP = bepRepository.findByBudgetId(budgetId);
         Provider provider = epRepository.findById(providerId).orElse(null);
 
@@ -232,7 +232,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Set<Provider> findAllElementProviders(long budgetId) {
+    public Set<Provider> findAllProviders(long budgetId) {
         Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
         return optional.map(BudgetProvider::getProviders).orElseGet(HashSet::new);
     }

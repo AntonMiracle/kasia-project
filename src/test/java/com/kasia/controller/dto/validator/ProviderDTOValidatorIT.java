@@ -81,15 +81,15 @@ public class ProviderDTOValidatorIT {
         Budget budget = ModelTestData.getBudget1();
         bService.saveBudget(budget);
         Provider provider = ModelTestData.getElementProvider1();
-        bService.addElementProvider(budget.getId(), provider);
+        bService.addProvider(budget.getId(), provider);
 
-        assertThat(bService.isElementProviderUnique(budget.getId(), provider.getName())).isFalse();
+        assertThat(bService.isProviderUnique(budget.getId(), provider.getName())).isFalse();
         dto.setBudgetId(budget.getId());
         dto.setName(provider.getName());
         assertThat(validator.validate(dto).size() == 0).isFalse();
 
-        bService.removeElementProvider(budget.getId(),provider.getId());
-        assertThat(bService.isElementProviderUnique(budget.getId(), provider.getName())).isTrue();
+        bService.removeProvider(budget.getId(),provider.getId());
+        assertThat(bService.isProviderUnique(budget.getId(), provider.getName())).isTrue();
         bService.deleteBudget(budget.getId());
         assertThat(bService.findAllBudgets().size()==0).isTrue();
     }

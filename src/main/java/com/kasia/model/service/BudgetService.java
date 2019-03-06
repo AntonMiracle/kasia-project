@@ -30,13 +30,13 @@ public interface BudgetService {
 
     Set<Element> findAllElements(long budgetId);
 
-    Provider findElementProviderByName(long budgetId, String name);
+    Provider findProviderByName(long budgetId, String name);
 
-    boolean isElementProviderUnique(long budgetId, String providerName);
+    boolean isProviderUnique(long budgetId, String providerName);
 
-    boolean addElementProvider(long budgetId, Provider provider) throws ValidationException;
+    boolean addProvider(long budgetId, Provider provider) throws ValidationException;
 
-    boolean removeElementProvider(long budgetId, long providerId) throws ValidationException;
+    boolean removeProvider(long budgetId, long providerId) throws ValidationException;
 
-    Set<Provider> findAllElementProviders(long budgetId);
+    Set<Provider> findAllProviders(long budgetId);
 }

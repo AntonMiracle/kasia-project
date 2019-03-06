@@ -25,7 +25,7 @@ public class ValidatorUtil {
         }
     }
 
-    public long longValue(Object object, String fieldName) {
+    public long getLongValue(Object object, String fieldName) {
         try {
             Field f = object.getClass().getDeclaredField(fieldName);
             f.setAccessible(true);

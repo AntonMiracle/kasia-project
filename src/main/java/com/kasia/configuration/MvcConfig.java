@@ -45,12 +45,12 @@ public class MvcConfig implements WebMvcConfigurer {
         Provider provider1 = new Provider("8minut", "some shop");
         Provider provider2 = new Provider("M111111", "supermarket");
 
-        bService.addElementProvider(bu1.getId(), provider1);
-        bService.addElementProvider(bu1.getId(), provider2);
+        bService.addProvider(bu1.getId(), provider1);
+        bService.addProvider(bu1.getId(), provider2);
         provider1.setId(0);
         provider2.setId(0);
-        bService.addElementProvider(bu2.getId(), provider1);
-        bService.addElementProvider(bu2.getId(), provider2);
+        bService.addProvider(bu2.getId(), provider1);
+        bService.addProvider(bu2.getId(), provider2);
 
         System.out.println("=============== MvcConfig#init");
         System.out.println(user);

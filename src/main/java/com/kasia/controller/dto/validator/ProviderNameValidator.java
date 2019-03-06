@@ -32,15 +32,11 @@ public class ProviderNameValidator implements ConstraintValidator<ProviderNameVa
     public boolean isValid(Object o, ConstraintValidatorContext cvContext) {
         String value = vUtil.getStringValue(o, nameFN);
         if (nullable && value == null) return true;
-        if (!nullable && value == null) {
-            value = "";
-            vUtil.setStringValue(o, nameFN, value);
-        }
-        if (makeTrim) {
-            value = value.trim().replaceAll("[ ]{2,}", " ");
-            vUtil.setStringValue(o, nameFN, value);
-        }
-        if (!isNameValid(value) || !bService.isElementProviderUnique(vUtil.longValue(o, "budgetId"), value)) {
+        if (!nullable && value == null) value = "";
+        if (makeTrim) value = value.trim().replaceAll("[ ]{2,}", " ");
+        vUtil.setStringValue(o, nameFN, value);
+
+        if (!isNameValid(value) || !bService.isProviderUnique(vUtil.getLongValue(o, "budgetId"), value)) {
             vUtil.addConstraintViolation(nameFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
             return false;
         }

@@ -31,7 +31,7 @@ public class MyControllerAdvice {
     @ModelAttribute("providers")
     public Set<Provider> getAllProviders() {
         Budget budget = sessionController.getBudget();
-        if (budget != null) return bService.findAllElementProviders(budget.getId());
+        if (budget != null) return bService.findAllProviders(budget.getId());
         else return new HashSet<>();
     }
 }

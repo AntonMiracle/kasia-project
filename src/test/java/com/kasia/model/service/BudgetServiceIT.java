@@ -112,7 +112,7 @@ public class BudgetServiceIT {
         Operation operation = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
 
         bService.addElement(budget.getId(), element);
-        bService.addElementProvider(budget.getId(), provider);
+        bService.addProvider(budget.getId(), provider);
         oService.addOperation(budget.getId(), operation);
 
         assertThat(bService.findBudgetById(budget.getId())).isEqualTo(budget);
@@ -322,23 +322,23 @@ public class BudgetServiceIT {
         bep.getProviders().add(savedProvider);
         bepRepository.save(bep);
 
-        assertThat(bService.isElementProviderUnique(bep.getBudget().getId(), savedProvider.getName())).isFalse();
-        assertThat(bService.isElementProviderUnique(bep.getBudget().getId(), ModelTestData.getElementProvider2().getName())).isTrue();
-        assertThat(bService.isElementProviderUnique(0, null)).isFalse();
-        assertThat(bService.isElementProviderUnique(-1, null)).isFalse();
+        assertThat(bService.isProviderUnique(bep.getBudget().getId(), savedProvider.getName())).isFalse();
+        assertThat(bService.isProviderUnique(bep.getBudget().getId(), ModelTestData.getElementProvider2().getName())).isTrue();
+        assertThat(bService.isProviderUnique(0, null)).isFalse();
+        assertThat(bService.isProviderUnique(-1, null)).isFalse();
     }
 
     @Test
     public void findElementProviderByName() {
         BudgetProvider bep = getSavedForTestCleanBudgetElementProvider();
         Provider expected = ModelTestData.getElementProvider1();
-        bService.addElementProvider(bep.getBudget().getId(), expected);
+        bService.addProvider(bep.getBudget().getId(), expected);
 
-        Provider actual = bService.findElementProviderByName(bep.getBudget().getId(), expected.getName());
+        Provider actual = bService.findProviderByName(bep.getBudget().getId(), expected.getName());
 
         assertThat(actual).isEqualTo(expected);
-        assertThat(bService.findElementProviderByName(0, null)).isNull();
-        assertThat(bService.findElementProviderByName(-1, null)).isNull();
+        assertThat(bService.findProviderByName(0, null)).isNull();
+        assertThat(bService.findProviderByName(-1, null)).isNull();
     }
 
     @Test
@@ -351,12 +351,12 @@ public class BudgetServiceIT {
         int providersBeforeAdd = countElementProvidersInBudget(bep.getBudget());
 
         assertThat(provider1.getName()).isEqualTo(provider3.getName());
-        assertThat(bService.addElementProvider(bep.getBudget().getId(), provider1)).isTrue();
-        assertThat(bService.addElementProvider(bep.getBudget().getId(), provider2)).isTrue();
-        assertThat(bService.addElementProvider(bep.getBudget().getId(), provider3)).isFalse();
-        assertThat(bService.addElementProvider(0, provider3)).isFalse();
-        assertThat(bService.addElementProvider(-1, null)).isFalse();
-        assertThat(bService.addElementProvider(1, null)).isFalse();
+        assertThat(bService.addProvider(bep.getBudget().getId(), provider1)).isTrue();
+        assertThat(bService.addProvider(bep.getBudget().getId(), provider2)).isTrue();
+        assertThat(bService.addProvider(bep.getBudget().getId(), provider3)).isFalse();
+        assertThat(bService.addProvider(0, provider3)).isFalse();
+        assertThat(bService.addProvider(-1, null)).isFalse();
+        assertThat(bService.addProvider(1, null)).isFalse();
 
         int providersAfterAdd = countElementProvidersInBudget(bep.getBudget());
         assertThat(providersAfterAdd == (providersBeforeAdd + 2)).isTrue();
@@ -370,7 +370,7 @@ public class BudgetServiceIT {
         Set<Provider> elementsBefore = new HashSet<>();
         epRepository.findAll().forEach(elementsBefore::add);
 
-        bService.addElementProvider(bep.getBudget().getId(), provider);
+        bService.addProvider(bep.getBudget().getId(), provider);
 
         Set<Provider> elementsAfter = new HashSet<>();
         epRepository.findAll().forEach(elementsAfter::add);
@@ -382,12 +382,12 @@ public class BudgetServiceIT {
     public void removeElementProvider() {
         BudgetProvider bep = getSavedForTestCleanBudgetElementProvider();
         Provider provider = ModelTestData.getElementProvider1();
-        bService.addElementProvider(bep.getBudget().getId(), provider);
+        bService.addProvider(bep.getBudget().getId(), provider);
         int providersBeforeRemove = countElementProvidersInBudget(bep.getBudget());
 
-        assertThat(bService.removeElementProvider(bep.getBudget().getId(), provider.getId())).isTrue();
-        assertThat(bService.removeElementProvider(0, 0)).isFalse();
-        assertThat(bService.removeElementProvider(-1, -1)).isFalse();
+        assertThat(bService.removeProvider(bep.getBudget().getId(), provider.getId())).isTrue();
+        assertThat(bService.removeProvider(0, 0)).isFalse();
+        assertThat(bService.removeProvider(-1, -1)).isFalse();
 
         int providersAfterRemove = countElementProvidersInBudget(bep.getBudget());
         assertThat(providersAfterRemove == (providersBeforeRemove - 1)).isTrue();
@@ -397,12 +397,12 @@ public class BudgetServiceIT {
     public void removeElementProviderRemoveItFromElementProviderRepository() {
         BudgetProvider bep = getSavedForTestCleanBudgetElementProvider();
         Provider provider = ModelTestData.getElementProvider1();
-        bService.addElementProvider(bep.getBudget().getId(), provider);
+        bService.addProvider(bep.getBudget().getId(), provider);
 
         Set<Provider> elementsBefore = new HashSet<>();
         epRepository.findAll().forEach(elementsBefore::add);
 
-        bService.removeElementProvider(bep.getBudget().getId(), provider.getId());
+        bService.removeProvider(bep.getBudget().getId(), provider.getId());
 
         Set<Provider> elementsAfter = new HashSet<>();
         epRepository.findAll().forEach(elementsAfter::add);
@@ -421,11 +421,11 @@ public class BudgetServiceIT {
         BudgetProvider bep = getSavedForTestCleanBudgetElementProvider();
         Provider provider1 = ModelTestData.getElementProvider1();
         Provider provider2 = ModelTestData.getElementProvider2();
-        bService.addElementProvider(bep.getBudget().getId(), provider1);
-        bService.addElementProvider(bep.getBudget().getId(), provider2);
+        bService.addProvider(bep.getBudget().getId(), provider1);
+        bService.addProvider(bep.getBudget().getId(), provider2);
 
-        assertThat(bService.findAllElementProviders(bep.getBudget().getId()).size() == 2).isTrue();
-        assertThat(bService.findAllElementProviders(0).size() == 0).isTrue();
-        assertThat(bService.findAllElementProviders(-1).size() == 0).isTrue();
+        assertThat(bService.findAllProviders(bep.getBudget().getId()).size() == 2).isTrue();
+        assertThat(bService.findAllProviders(0).size() == 0).isTrue();
+        assertThat(bService.findAllProviders(-1).size() == 0).isTrue();
     }
 }
