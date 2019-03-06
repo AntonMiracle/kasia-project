@@ -63,8 +63,6 @@ public class BudgetDTOValidationIT {
         String valid15 = "+1.01";
 
         dto.setBalanceInit(valid1);
-        System.out.println(dto.getName());
-        System.out.println(validator.validate(dto));
         assertThat(validator.validate(dto).size() == 0).isTrue();
         dto.setBalanceInit(valid2);
         assertThat(validator.validate(dto).size() == 0).isTrue();

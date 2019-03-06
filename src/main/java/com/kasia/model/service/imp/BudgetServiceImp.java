@@ -107,7 +107,7 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean isElementUnique(long budgetId, String elementName) {
-        if (budgetId <= 0 || elementName == null) return false;
+        if (elementName == null) return false;
 
         Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
 
