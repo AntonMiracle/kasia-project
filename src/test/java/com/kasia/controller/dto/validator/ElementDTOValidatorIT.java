@@ -85,13 +85,44 @@ public class ElementDTOValidatorIT {
         Element element = ModelTestData.getElement1();
         bService.addElement(budget.getId(), element);
 
-        assertThat(bService.isElementUnique(budget.getId(), element.getName())).isFalse();
+        assertThat(bService.isElementNameUnique(budget.getId(), element.getName())).isFalse();
         dto.setBudgetId(budget.getId());
         dto.setName(element.getName());
+        dto.setType(element.getType().toString());
         assertThat(validator.validate(dto).size() == 0).isFalse();
 
         bService.removeElement(budget.getId(), element.getId());
-        assertThat(bService.isElementUnique(budget.getId(), element.getName())).isTrue();
+        assertThat(bService.isElementNameUnique(budget.getId(), element.getName())).isTrue();
+        bService.deleteBudget(budget.getId());
+        assertThat(bService.findAllBudgets().size() == 0).isTrue();
+    }
+
+    @Test
+    public void ifTypeUniqueNameNotUniqueElementUnique() {
+        Budget budget = ModelTestData.getBudget1();
+        bService.saveBudget(budget);
+        String name = "SuperName";
+
+        Element element1 = ModelTestData.getElement1();
+        element1.setType(ElementType.CONSUMPTION);
+        element1.setName(name);
+        Element element2 = ModelTestData.getElement1();
+        element2.setType(ElementType.INCOME);
+        element2.setName(name);
+
+        bService.addElement(budget.getId(), element1);
+        assertThat(bService.findAllElements(budget.getId()).size() == 1).isTrue();
+        assertThat(bService.isElementNameUnique(budget.getId(), element1.getName())).isFalse();
+
+        assertThat(element1.getType() != element2.getType()).isTrue();
+        dto.setBudgetId(budget.getId());
+        dto.setName(element2.getName());
+        dto.setType(element2.getType().toString());
+        System.out.println(validator.validate(dto));
+        assertThat(validator.validate(dto).size() == 0).isTrue();
+
+        bService.removeElement(budget.getId(), element1.getId());
+        assertThat(bService.isElementNameUnique(budget.getId(), element1.getName())).isTrue();
         bService.deleteBudget(budget.getId());
         assertThat(bService.findAllBudgets().size() == 0).isTrue();
     }

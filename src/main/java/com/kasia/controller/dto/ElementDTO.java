@@ -3,7 +3,7 @@ package com.kasia.controller.dto;
 import com.kasia.controller.dto.validator.constraint.ElementNameValid;
 import com.kasia.controller.dto.validator.constraint.PriceAmountValid;
 
-@ElementNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
+@ElementNameValid(nameFN = "name", typeFN = "type",min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
 @PriceAmountValid(balanceFN = "defaultPrice", message = "{validation.price.amount.error}")
 public class ElementDTO {
     private String name;

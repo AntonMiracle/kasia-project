@@ -21,6 +21,8 @@ public @interface ElementNameValid {
 
     String nameFN();
 
+    String typeFN();
+
     int min() default 0;
 
     int max() default 250;
