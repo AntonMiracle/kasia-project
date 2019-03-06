@@ -101,7 +101,7 @@ public class ProviderDTOValidatorIT {
         String valid3 = "n";
         String valid4 = " n   nnn  m  ";
         StringBuilder valid5 = new StringBuilder();
-        for (int i = 0; i < 250; ++i) valid5.append("s");
+        for (int i = 0; i < 64; ++i) valid5.append("s");
 
         dto.setDescription(valid1);
         assertThat(validator.validate(dto).size() == 0).isTrue();
@@ -118,7 +118,7 @@ public class ProviderDTOValidatorIT {
     @Test
     public void descriptionInvalid() {
         StringBuilder invalid2 = new StringBuilder();
-        for (int i = 0; i < 251; ++i) invalid2.append("s");
+        for (int i = 0; i < 65; ++i) invalid2.append("s");
 
         dto.setDescription(invalid2.toString());
         System.out.println(invalid2.length());

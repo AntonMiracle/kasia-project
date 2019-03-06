@@ -6,43 +6,40 @@
     <title th:text="#{title.budgetAdd}"></title>
 </head>
 <body>
-<div th:replace="fragments/header :: mainMenu"></div>
+<div th:insert="fragments/header :: mainMenu"></div>
 <div id="mainContentWithoutMenu">
-    <table th:class="myTable">
-        <th colspan="2" th:text="#{title.budget}"></th>
-
-        <!--/*@thymesVar id="BudgetDTO" type="com.kasia.controller.dto.BudgetDTO"*/-->
-        <form th:action="@{/budget/save}" th:object="${BudgetDTO}" method="post">
+    <!--/*@thymesVar id="budgetDTO" type="com.kasia.controller.dto.BudgetDTO"*/-->
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <!--/*@thymesVar id="currencies" type="com.kasia.model.Currencies"*/-->
+    <form th:action="@{/budget/save}" th:object="${budgetDTO}" method="post">
+        <table th:class="myTable">
             <tr>
-                <input type="hidden" th:value="${#authentication.name}" name="userEmail"/>
-                <td th:id="addBudgetInputName" th:text="#{label.name}"></td>
-                <td th:id="addBudgetInputError" th:class="errorClass" th:if="${#fields.hasErrors('name')}"
-                    th:errors="*{name}">Error
+                <th colspan="2" th:text="#{title.budget}"></th>
+            </tr>
+            <tr>
+                <td th:class="myLabel" th:text="#{label.name}"></td>
+                <td th:class="myLabelError"
+                    th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}">
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input th:id="addBudgetNameInput" type="text" th:field="*{name}"
-                                          th:placeholder="#{tip.name}"/></td>
+                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
             </tr>
             <tr>
-                <td colspan="2" th:id="addBudgetInputError" th:class="errorClass"
+                <td th:class="myLabel" th:text="#{label.balanceInit}"></td>
+                <td th:class="myLabelError"
                     th:if="${#fields.hasErrors('balanceInit')}"
                     th:errors="*{balanceInit}">Error
                 </td>
             </tr>
             <tr>
-                <td th:id="addBudgetInputName" th:text="#{label.balanceInit}"></td>
-                <td th:id="addBudgetInputName">
-                    <input th:id="banknotesInput" type="text" th:field="*{balanceInit}"
-                           th:placeholder="#{tip.balanceInit}"/>
-                    <!--make init number == 0-->
-                </td>
+                <td colspan="2"><input type="text" th:field="*{balanceInit}" th:placeholder="#{tip.balanceInit}"/></td>
             </tr>
             <tr>
-                <td th:id="addBudgetInputName" th:text="#{label.currency}"></td>
-                <td th:id="addBudgetInputName">
+                <td th:class="myLabel" th:text="#{label.currency}"></td>
+                <td th:class="myLabel">
                     <select th:field="*{currency}">
-                        <!--/*@thymesVar id="currencies" type="com.kasia.model.Currencies"*/-->
                         <option th:each="type : ${currencies}"
                                 th:value="${type}"
                                 th:text="${type}">Currency
@@ -51,12 +48,12 @@
                 </td>
             </tr>
             <tr>
-                <td th:id="addBudgetTdWithButton" th:colspan="2">
+                <td th:colspan="2" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.add}"></button>
                 </td>
             </tr>
-        </form>
-    </table>
+        </table>
+    </form>
 </div>
 </body>
 </html>

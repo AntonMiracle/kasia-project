@@ -37,10 +37,8 @@ public class ProviderController {
         if (bResult.hasErrors()) return openProvider(model);
 
         Provider provider = new Provider(dto.getName(), dto.getDescription());
-        System.out.println(provider);
-        System.out.println(dto.getBudgetId());
         bService.addElementProvider(dto.getBudgetId(), provider);
 
-        return redirect(U_PROVIDER);
+        return redirect(U_BUDGET);
     }
 }

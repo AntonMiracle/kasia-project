@@ -44,8 +44,8 @@ public class BudgetNameValidator implements ConstraintValidator<BudgetNameValid,
                 || uService.findOwnBudgets(user.getId())
                 .stream()
                 .filter(budget -> budget.getName().equals(streamVal))
-                .count() != 0) {
-            System.out.println(6);
+                .count() != 0
+                ) {
             vUtil.addConstraintViolation(nameFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
             return false;
         }

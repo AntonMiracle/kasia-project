@@ -12,7 +12,7 @@ public final class ViewNameAndControllerURL {
     public static final String U_ROOT = "/";
     public static final String U_LOGIN = "/login";
     public static final String U_PROFILE = "/profile";
-    public static final String U_PROFILE_UPDATE = U_PROFILE + "/updateProfile";
+    public static final String U_PROFILE_UPDATE = U_PROFILE + "/update";
     public static final String U_BUDGET = "/budget";
     public static final String U_BUDGET_OPEN = U_BUDGET + "/open";
     public static final String U_BUDGET_ADD = U_BUDGET + "/add";

@@ -42,6 +42,8 @@
             <button class="button" type="submit" th:text="#{button.addBudget}"></button>
         </form>
     </div>
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <div th:class="idLabel" th:text="${user.email}"></div>
 </div>
 
 <!--BUDGET-->
@@ -49,6 +51,11 @@
     <div>
         <form th:action="@{/budget/all}">
             <button class="button" type="submit" th:text="#{button.back}"></button>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/budget}">
+            <button class="button" type="submit" th:text="#{button.budget}"></button>
         </form>
     </div>
     <div>
@@ -66,6 +73,8 @@
             <button class="button" type="submit" th:text="#{button.provider}"></button>
         </form>
     </div>
+    <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
+    <div th:class="idLabel" th:text="${budget.name}"></div>
 </div>
 
 <!--ERROR PAGE-->

@@ -22,6 +22,8 @@ public class ProfileController {
     private MySessionController sessionController;
     @Autowired
     private UserService uService;
+    @Autowired
+    private Validator validator;
 
     @ModelAttribute("userDTO")
     public UserDTO getUserDTO() {
@@ -40,9 +42,6 @@ public class ProfileController {
         return V_PROFILE;
     }
 
-    @Autowired
-    private Validator validator;
-
     @PostMapping(U_PROFILE_UPDATE)
     public String updateProfile(Model model, @Valid @ModelAttribute UserDTO dto, BindingResult bResult) {
         User user = sessionController.getUser();
@@ -53,7 +52,6 @@ public class ProfileController {
             isAnyChanges = true;
             model.addAttribute("updatePass", "passUpdate");
         }
-
         if (dto.isUpdateZone() && dto.getZoneId().length() > 0) {
             user.setZoneId(uService.zoneIdOf(dto.getZoneId()));
             isAnyChanges = true;
@@ -68,7 +66,6 @@ public class ProfileController {
         }
         if (isAnyChanges) {
             uService.saveUser(user);
-            System.out.println("user save");
         }
         return openProfile();
     }

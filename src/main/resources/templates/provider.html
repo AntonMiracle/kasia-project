@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/base_head :: base_head"></div>
+    <title th:text="#{title.providers}"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: budgetMenu"></div>
+<div id="mainContentWithoutMenu">
+    <!--/*@thymesVar id="providerDTO" type="com.kasia.controller.dto.ProviderDTO"*/-->
+    <form th:action="@{/budget/provider/add}" th:object="${providerDTO}" method="post">
+        <table th:class="myTable">
+            <tr>
+                <th colspan="2" th:text="#{title.provider}"></th>
+            </tr>
+            <tr>
+                <td th:class="myLabel" th:text="#{label.name}"></td>
+                <td th:class="myLabelError"
+                    th:if="${#fields.hasErrors('name')}"
+                    th:errors="*{name}">
+                </td>
+            <tr>
+                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
+            </tr>
+            <tr>
+                <td th:class="myLabel" th:text="#{label.description}"></td>
+                <td th:class="myLabelError"
+                    th:if="${#fields.hasErrors('description')}"
+                    th:errors="*{description}">
+                </td>
+            </tr>
+            <tr>
+                <td th:colspan="2"><input type="text" th:field="*{description}" th:placeholder="#{tip.description}"/>
+                </td>
+            </tr>
+            <tr>
+                <td th:colspan="2" th:class="withButton">
+                    <button class="button" type="submit" th:text="#{button.add}"></button>
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" th:value="${budget.id}" name="budgetId"/>
+    </form>
+</div>
+</body>
+</html>

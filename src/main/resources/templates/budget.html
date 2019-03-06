@@ -7,11 +7,17 @@
 </head>
 <body>
 <div th:replace="fragments/header :: budgetMenu"></div>
-<!--create menu for pucked budget need add rachod i dochod, add elements-->
 <div id="mainContentWithoutMenu">
-    This is budget
-    <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
-    <div th:text="${budget.name}"></div>
+    <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.Provider>"*/-->
+    <table th:class="myTable" th:if="${providers.size() != 0}">
+        <tr>
+            <th colspan="3" th:text="#{title.providers}"></th>
+        </tr>
+        <tr th:each="provider : ${providers}">
+            <td th:class="myLabel" th:text="${provider.name}">Name</td>
+            <td th:class="myLabel" th:text="${provider.description}">description</td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>

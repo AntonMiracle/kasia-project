@@ -7,13 +7,14 @@
 </head>
 <body>
 <div th:replace="fragments/header :: mainMenu"></div>
-
 <div id="mainContentWithoutMenu">
     <!--/*@thymesVar id="allOwnBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
-    <table th:class="myTable">
-        <th colspan="3" th:text="#{title.budgetAll}"></th>
+    <table th:class="myTable" th:if="${allOwnBudgets.size() != 0}">
+        <tr>
+            <th colspan="3" th:text="#{title.budgetAll}"></th>
+        </tr>
         <tr th:each="ownBudget : ${allOwnBudgets}"
-            th:id="existBudgetRow"
+            th:class="button"
             th:onclick="'javascript:rowClicked(\'' + ${ownBudget.id} + '\');'">
             <td th:text="${ownBudget.name}">Name</td>
             <td th:text="${ownBudget.balance.amount}">Amount</td>

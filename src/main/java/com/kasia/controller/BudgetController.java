@@ -35,9 +35,11 @@ public class BudgetController {
     @Autowired
     private MySessionController sessionController;
 
-    @ModelAttribute("BudgetDTO")
+    @ModelAttribute("budgetDTO")
     public BudgetDTO getBudgetDTO() {
-        return new BudgetDTO();
+        BudgetDTO dto = new BudgetDTO();
+        dto.setUserEmail(sessionController.getUser().getEmail());
+        return dto;
     }
 
     @ModelAttribute("currencies")
@@ -73,14 +75,14 @@ public class BudgetController {
     }
 
     @PostMapping(U_BUDGET_SAVE)
-    public String addNewBudget(@Valid @ModelAttribute BudgetDTO dto, BindingResult bResult) {
+    public String addNewBudget(@Valid @ModelAttribute BudgetDTO budgetDTO, BindingResult bResult) {
         if (bResult.hasErrors()) return openAddBudget();
 
         User user = sessionController.getUser();
-        Budget budget = budgetService.createBudget(dto.getName()
+        Budget budget = budgetService.createBudget(budgetDTO.getName()
                 , balanceService.createBalance(
-                        new BigDecimal(dto.getBalanceInit())
-                        , Currencies.valueOf(dto.getCurrency())
+                        new BigDecimal(budgetDTO.getBalanceInit())
+                        , Currencies.valueOf(budgetDTO.getCurrency())
                 ));
 
         budgetService.saveBudget(budget);
