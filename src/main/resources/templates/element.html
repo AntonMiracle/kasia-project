@@ -8,7 +8,14 @@
 <body>
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div id="mainContentWithoutMenu">
-
+    <!--/*@thymesVar id="elementDTO" type="com.kasia.model.Element"*/-->
+    <form th:action="@{/budget/element/add}" th:object="${elementDTO}" method="post">
+        <table th:class="myTable">
+            <tr>
+                <th colspan="2" th:text="#{title.element}"></th>
+            </tr>
+        </table>
+    </form>
 </div>
 </body>
 </html>
