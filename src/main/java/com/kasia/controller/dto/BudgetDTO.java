@@ -7,7 +7,7 @@ import com.kasia.controller.dto.validator.constraint.BudgetNameValid;
 @BalanceValueValid(balanceFN = "balanceInit", message = "{validation.budget.balanceInit.value.error}")
 public class BudgetDTO {
     private String name;
-    private String balanceInit;
+    private String balanceInit = "0";
     private String currency;
     private String userEmail;
 
