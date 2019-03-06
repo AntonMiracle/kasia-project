@@ -43,7 +43,7 @@
         </form>
     </div>
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
-    <div th:class="idLabel" th:text="${user.email}"></div>
+    <div th:class="idLabel" th:text="${user.email} +' ' + ${user.name}"></div>
 </div>
 
 <!--BUDGET-->
@@ -74,7 +74,7 @@
         </form>
     </div>
     <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
-    <div th:class="idLabel" th:text="${budget.name}"></div>
+    <div th:class="idLabel" th:text="${budget.name} +' ' + ${budget.balance}"></div>
 </div>
 
 <!--ERROR PAGE-->
