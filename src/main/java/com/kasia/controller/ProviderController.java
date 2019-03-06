@@ -24,7 +24,9 @@ public class ProviderController {
 
     @ModelAttribute("providerDTO")
     public ProviderDTO getAddBudgetDTO() {
-        return new ProviderDTO();
+        ProviderDTO dto = new ProviderDTO();
+        dto.setBudgetId(sessionController.getBudget().getId());
+        return dto;
     }
 
     @GetMapping(U_PROVIDER)
@@ -33,7 +35,7 @@ public class ProviderController {
     }
 
     @PostMapping(U_PROVIDER_ADD)
-    public String addNewBudget(Model model, @Valid @ModelAttribute ProviderDTO dto, BindingResult bResult) {
+    public String addNewProvider(Model model, @Valid @ModelAttribute ProviderDTO dto, BindingResult bResult) {
         if (bResult.hasErrors()) return openProvider(model);
 
         Provider provider = new Provider(dto.getName(), dto.getDescription());

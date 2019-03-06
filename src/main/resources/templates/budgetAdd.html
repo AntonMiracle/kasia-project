@@ -9,7 +9,6 @@
 <div th:insert="fragments/header :: mainMenu"></div>
 <div id="mainContentWithoutMenu">
     <!--/*@thymesVar id="budgetDTO" type="com.kasia.controller.dto.BudgetDTO"*/-->
-    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
     <!--/*@thymesVar id="currencies" type="com.kasia.model.Currencies"*/-->
     <form th:action="@{/budget/save}" th:object="${budgetDTO}" method="post">
         <table th:class="myTable">
