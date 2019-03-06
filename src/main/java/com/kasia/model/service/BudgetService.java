@@ -22,7 +22,7 @@ public interface BudgetService {
 
     Element findElementByName(long budgetId, String name);
 
-    boolean isElementUnique(long budgetId, String elementName);
+    boolean isElementNameUnique(long budgetId, String elementName);
 
     boolean addElement(long budgetId, Element element) throws ValidationException;
 

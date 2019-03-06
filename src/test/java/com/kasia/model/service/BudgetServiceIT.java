@@ -191,11 +191,11 @@ public class BudgetServiceIT {
         be.getElements().add(savedElement);
         beRepository.save(be);
 
-        assertThat(bService.isElementUnique(be.getBudget().getId(), savedElement.getName())).isFalse();
-        assertThat(bService.isElementUnique(be.getBudget().getId(), ModelTestData.getElement2().getName())).isTrue();
-        assertThat(bService.isElementUnique(be.getBudget().getId(), ModelTestData.getElement2().getName())).isTrue();
-        assertThat(bService.isElementUnique(0, null)).isFalse();
-        assertThat(bService.isElementUnique(-1, null)).isFalse();
+        assertThat(bService.isElementNameUnique(be.getBudget().getId(), savedElement.getName())).isFalse();
+        assertThat(bService.isElementNameUnique(be.getBudget().getId(), ModelTestData.getElement2().getName())).isTrue();
+        assertThat(bService.isElementNameUnique(be.getBudget().getId(), ModelTestData.getElement2().getName())).isTrue();
+        assertThat(bService.isElementNameUnique(0, null)).isFalse();
+        assertThat(bService.isElementNameUnique(-1, null)).isFalse();
     }
 
     @Test

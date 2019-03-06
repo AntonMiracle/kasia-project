@@ -106,7 +106,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean isElementUnique(long budgetId, String elementName) {
+    public boolean isElementNameUnique(long budgetId, String elementName) {
         if (elementName == null) return false;
 
         Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
@@ -128,7 +128,7 @@ public class BudgetServiceImp implements BudgetService {
 
         BudgetElement be = optional.orElseGet(() -> new BudgetElement(budget, new HashSet<>()));
 
-        if (!isElementUnique(budget.getId(), element.getName())) return false;
+        if (!isElementNameUnique(budget.getId(), element.getName())) return false;
 
         eRepository.save(element);
         be.getElements().add(element);
