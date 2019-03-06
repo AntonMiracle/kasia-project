@@ -27,7 +27,7 @@
         <tr th:each="element : ${elements}">
             <td th:class="myLabel" th:text="${element.name}"></td>
             <td th:class="myLabel" th:text="${element.type}"></td>
-            <td th:class="myLabel" th:text="${element.defaultPrice}"></td>
+            <td th:class="myLabel" th:text="${element.defaultPrice.amount}"></td>
         </tr>
     </table>
 </div>

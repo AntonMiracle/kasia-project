@@ -121,14 +121,12 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean addElement(long budgetId, Element element) {
-        if (budgetId <= 0 || element == null) return false;
+        if (element == null) return false;
         Budget budget = findBudgetById(budgetId);
 
         Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
 
         BudgetElement be = optional.orElseGet(() -> new BudgetElement(budget, new HashSet<>()));
-
-        if (!isElementNameUnique(budget.getId(), element.getName())) return false;
 
         eRepository.save(element);
         be.getElements().add(element);
