@@ -8,9 +8,9 @@
 <body>
 <div th:replace="fragments/header :: errorPageMenu"></div>
 <div id="mainContentWithoutMenu">
-    <h1 th:class="kasiaClass">404</h1>
+    <h1 th:class="kasiaClass">Ooops...</h1>
     <img th:src="@{/images/romashka.png}" width="200" height="200"/>
-    <p th:text="#{text.url.error}"></p>
+    <p th:text="#{text.request.error}"></p>
 </div>
 </body>
 </html>
