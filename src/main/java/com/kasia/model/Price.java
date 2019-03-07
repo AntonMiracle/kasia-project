@@ -12,11 +12,8 @@ import java.math.BigDecimal;
 
 @Embeddable
 public class Price implements Model, Comparable<Price> {
-    @NotNull
-    @Min(0)
     @Convert(converter = BigDecimalAttributeConverter.class)
     private BigDecimal amount;
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Currencies currencies;
 

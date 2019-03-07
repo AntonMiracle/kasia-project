@@ -15,25 +15,16 @@ public class User implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @NotBlank
-    @Pattern(regexp = Validation.PATTERN_EMAIL)
     @Column(unique = true)
     private String email;
     @Column(unique = true)
     private String name;
-    @NotBlank
-    @Pattern(regexp = Validation.PATTERN_PASSWORD)
     private String password;
-    @NotNull
     private ZoneId zoneId;
-    @NotNull
-    @PastOrPresent
     private LocalDateTime createOn;
     private boolean activated;
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Role role;
-    @NotNull
     @Convert(converter = LocaleAttributeConverter.class)
     private Locale locale;
 

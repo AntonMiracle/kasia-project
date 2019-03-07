@@ -13,14 +13,10 @@ import java.time.LocalDateTime;
 
 @Embeddable
 public class Balance implements Model {
-    @NotNull
     @Convert(converter = BigDecimalAttributeConverter.class)
     private BigDecimal amount;
-    @NotNull
     @Enumerated(EnumType.STRING)
     private Currencies currencies;
-    @NotNull
-    @PastOrPresent
     private LocalDateTime changeOn;
 
     public Balance(BigDecimal amount, Currencies currencies, LocalDateTime changeOn) {

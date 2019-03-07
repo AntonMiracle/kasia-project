@@ -9,10 +9,8 @@ public class UserBudget implements Model {
     @Id
     @GeneratedValue
     private long id;
-    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
-    @NotNull
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Budget> budgets;
 

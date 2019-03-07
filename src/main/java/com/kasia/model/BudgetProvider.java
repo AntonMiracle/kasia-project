@@ -9,10 +9,8 @@ public class BudgetProvider implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @NotNull
     @OneToOne(fetch = FetchType.EAGER)
     private Budget budget;
-    @NotNull
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Provider> providers;
 
