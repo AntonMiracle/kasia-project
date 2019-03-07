@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -167,13 +166,12 @@ public class BudgetServiceIT {
         Element expected = ModelTestData.getElement1();
         bService.addElement(be.getBudget().getId(), expected);
 
-        Element actual = bService.findElementByName(be.getBudget().getId(), expected.getName());
+        Set<Element> actual = bService.findElementByName(be.getBudget().getId(), expected.getName());
 
-        assertThat(actual).isEqualTo(expected);
-        assertThat(actual).isEqualTo(expected);
-        assertThat(bService.findElementByName(0, "label.name")).isNull();
-        assertThat(bService.findElementByName(-1, "label.name")).isNull();
-        assertThat(bService.findElementByName(0, null)).isNull();
+        assertThat(actual.contains(expected)).isTrue();
+        assertThat(bService.findElementByName(0, "label.name").size()==0).isTrue();
+        assertThat(bService.findElementByName(-1, "label.name").size()==0).isTrue();
+        assertThat(bService.findElementByName(0, null).size()==0).isTrue();
     }
 
     private BudgetElement getSavedForTestCleanBudgetElement() {
@@ -203,20 +201,14 @@ public class BudgetServiceIT {
         BudgetElement be = getSavedForTestCleanBudgetElement();
         int elementsBeforeAdd = countElementsInBudget(be.getBudget());
         Element element1 = ModelTestData.getElement1();
-        Element element2 = ModelTestData.getElement1();
-        Element element3 = ModelTestData.getElement1();
-        element2.setName(element1.getName() + "new");
 
-        assertThat(element1.getName().equals(element3.getName())).isTrue();
         assertThat(bService.addElement(be.getBudget().getId(), element1)).isTrue();
-        assertThat(bService.addElement(be.getBudget().getId(), element2)).isTrue();
-        assertThat(bService.addElement(be.getBudget().getId(), element3)).isFalse();
         assertThat(bService.addElement(0, null)).isFalse();
         assertThat(bService.addElement(-1, null)).isFalse();
         assertThat(bService.addElement(0, element1)).isFalse();
 
         int elementsAfterAdd = countElementsInBudget(be.getBudget());
-        assertThat(elementsAfterAdd == (elementsBeforeAdd + 2)).isTrue();
+        assertThat(elementsAfterAdd == (elementsBeforeAdd + 1)).isTrue();
     }
 
     @Test
@@ -239,29 +231,22 @@ public class BudgetServiceIT {
         BudgetElement be = getSavedForTestCleanBudgetElement();
         int elementsBeforeAdd = countElementsInBudget(be.getBudget());
         Element element = ModelTestData.getElement1();
+        element.setType(ElementType.INCOME);
         Element element2 = ModelTestData.getElement2();
-        element2.setName(element.getName());
+        element2.setName(element.getName()+"new");
+        element2.setType(ElementType.CONSUMPTION);
 
         assertThat(bService.addElement(be.getBudget().getId(), element)).isTrue();
-        assertThat(bService.addElement(be.getBudget().getId(), element2)).isFalse();
+        assertThat(bService.addElement(be.getBudget().getId(), element2)).isTrue();
 
         int elementsAfterAdd = countElementsInBudget(be.getBudget());
-        assertThat(elementsAfterAdd == (elementsBeforeAdd + 1)).isTrue();
+        assertThat(elementsAfterAdd == (elementsBeforeAdd + 2)).isTrue();
     }
 
     private int countElementsInBudget(Budget budget) {
         return beRepository.findByBudgetId(budget.getId())
                 .map(budgetElement -> budgetElement.getElements().size())
                 .orElse(0);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenElementInvalidAddElementThrowException() {
-        BudgetElement be = getSavedForTestCleanBudgetElement();
-        Element element = ModelTestData.getElement1();
-        element.setName("");
-
-        bService.addElement(be.getBudget().getId(), element);
     }
 
     @Test

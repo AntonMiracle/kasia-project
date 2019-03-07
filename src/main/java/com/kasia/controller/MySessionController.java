@@ -1,5 +1,6 @@
 package com.kasia.controller;
 
+import com.kasia.controller.dto.OperationDTO;
 import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.service.UserService;
@@ -16,7 +17,8 @@ public class MySessionController {
     private User user;
     @Resource(name = "sessionBudget")
     private Budget budget;
-
+    @Resource(name = "operationDTO")
+    private OperationDTO operationDTO;
 
     public User getUser() {
         return user;
@@ -37,5 +39,17 @@ public class MySessionController {
 
     public boolean isBudgetOpen() {
         return budget != null && budget.getId() > 0;
+    }
+
+    public void cleanOperation() {
+        operationDTO = new OperationDTO();
+    }
+
+    public boolean isOperationStarted() {
+        return operationDTO != null && operationDTO.isStarted();
+    }
+
+    public OperationDTO getOperationDTO() {
+        return operationDTO;
     }
 }

@@ -20,7 +20,9 @@ public interface BudgetService {
 
     Budget createBudget(String name, Balance balance) throws ValidationException;
 
-    Element findElementByName(long budgetId, String name);
+    Element findElementById(long budgetId, long elementId);
+
+    public Set<Element> findElementByName(long budgetId, String name);
 
     boolean isElementNameUnique(long budgetId, String elementName);
 
@@ -29,6 +31,8 @@ public interface BudgetService {
     boolean removeElement(long budgetId, long elementId) throws ValidationException;
 
     Set<Element> findAllElements(long budgetId);
+
+    Provider findProviderById(long budgetId, long providerId);
 
     Provider findProviderByName(long budgetId, String name);
 

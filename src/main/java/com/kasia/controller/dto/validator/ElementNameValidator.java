@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.util.Set;
 
 public class ElementNameValidator implements ConstraintValidator<ElementNameValid, Object> {
     private boolean nullable;
@@ -41,8 +42,8 @@ public class ElementNameValidator implements ConstraintValidator<ElementNameVali
         if (makeTrim) value = value.trim().replaceAll("[ ]{2,}", " ");
         vUtil.setStringValue(o, nameFN, value);
 
-        Element element = bService.findElementByName(vUtil.getLongValue(o, "budgetId"), value);
-        if (!isNameValid(value) || (element != null && element.getType() == ElementType.valueOf(type))) {
+        Set<Element> element = bService.findElementByName(vUtil.getLongValue(o, "budgetId"), value);
+        if (!isNameValid(value) || !isElementUnique(o, value, type)) {
             vUtil.addConstraintViolation(nameFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
             return false;
         }
@@ -53,5 +54,15 @@ public class ElementNameValidator implements ConstraintValidator<ElementNameVali
         if (value.length() < min) return false;
         if (value.length() > max) return false;
         return !(value.length() > 0 && !value.matches(regex));
+    }
+
+    private boolean isElementUnique(Object o, String value, String type) {
+        Set<Element> elements = bService.findElementByName(vUtil.getLongValue(o, "budgetId"), value);
+        if (elements.size() == 0) return true;
+        if (elements.size() >= 2) return false;
+        for (Element e : elements) {
+            if (e.getType() == ElementType.valueOf(type)) return false;
+        }
+        return true;
     }
 }

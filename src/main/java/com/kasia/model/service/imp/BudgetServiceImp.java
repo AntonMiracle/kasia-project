@@ -5,7 +5,6 @@ import com.kasia.model.repository.*;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.OperationService;
 import com.kasia.model.service.UserService;
-import com.kasia.model.validation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,16 +88,32 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public Element findElementByName(long budgetId, String name) {
+    public Element findElementById(long budgetId, long elementId) {
         Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
 
         if (budgetId > 0 && optional.isPresent()) {
             for (Element element : optional.get().getElements()) {
-                if (element.getName().equals(name)) return element;
+                if (element.getId() == elementId) return element;
             }
         }
 
         return null;
+    }
+
+    @Override
+    public Set<Element> findElementByName(long budgetId, String name) {
+        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
+        Set<Element> result = new HashSet<>();
+
+        if (budgetId > 0 && optional.isPresent()) {
+            for (Element element : optional.get().getElements()) {
+                if (element.getName().equals(name)) {
+                    result.add(element);
+                    if (result.size() == 2) return result;
+                }
+            }
+        }
+        return result;
     }
 
     @Override
@@ -117,8 +132,8 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean addElement(long budgetId, Element element) {
-        if (element == null) return false;
         Budget budget = findBudgetById(budgetId);
+        if (element == null || budget == null) return false;
 
         Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
 
@@ -168,6 +183,19 @@ public class BudgetServiceImp implements BudgetService {
                 .filter(provider -> provider.getName().equals(providerName))
                 .count();
         return countExist == 0;
+    }
+
+    @Override
+    public Provider findProviderById(long budgetId, long providerId) {
+        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
+
+        if (optional.isPresent()) {
+            for (Provider provider : optional.get().getProviders()) {
+                if (provider.getId() == providerId) return provider;
+            }
+        }
+
+        return null;
     }
 
     @Override

@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class BudgetDTOValidationIT {
+public class BudgetDTOValidatorIT {
     @Autowired
     private UserService uService;
     @Autowired
