@@ -19,7 +19,7 @@ public @interface PriceAmountValid {
 
     Class<? extends Payload>[] payload() default {};
 
-    String balanceFN();
+    String priceFN();
 
     boolean nullable() default false;
 

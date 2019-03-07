@@ -17,7 +17,7 @@ public class PriceAmountValidator implements ConstraintValidator<PriceAmountVali
 
     @Override
     public void initialize(PriceAmountValid ca) {
-        balanceFN = ca.balanceFN();
+        balanceFN = ca.priceFN();
         minL = ca.minL();
         maxL = ca.maxL();
         nullable = ca.nullable();
