@@ -32,25 +32,17 @@ public class OperationServiceImp implements OperationService {
     @Autowired
     private OperationRepository oRepository;
     @Autowired
-    private OperationValidation oValidation;
-    @Autowired
     private BudgetOperationRepository boRepository;
-    @Autowired
-    private BudgetOperationValidation boValidation;
     @Autowired
     private BudgetService bService;
 
     @Override
     public Operation createOperation(User user, Element element, Provider provider, Price price) {
         Operation operation = new Operation(user, element, provider, price, LocalDateTime.now().withNano(0));
-        oValidation.verifyPositiveIdInside(operation);
-        oValidation.verifyValidation(operation);
         return operation;
     }
 
     private void verifyBeforeAddRemoveOperation(Budget budget, Operation operation) {
-        oValidation.verifyValidation(operation);
-        oValidation.verifyPositiveIdInside(operation);
         if (budget.getBalance().getCurrencies() != operation.getPrice().getCurrencies())
             throw new CurrenciesNotEqualsRuntimeException();
     }
@@ -84,7 +76,6 @@ public class OperationServiceImp implements OperationService {
 
         BudgetOperation bo = boRepository.findByBudgetId(budget.getId())
                 .orElse(new BudgetOperation(budget, new HashSet<>()));
-        boValidation.verifyValidation(bo);
         oRepository.save(operation);
 
         updateBudgetBalanceRemoveAddOperation(true, budget, operation);
@@ -112,7 +103,6 @@ public class OperationServiceImp implements OperationService {
 
         optional.get().getOperations().remove(operation);
         oRepository.delete(operation);
-        boValidation.verifyValidation(optional.get());
         boRepository.save(optional.get());
 
         return !optional.get().getOperations().contains(operation);

@@ -11,8 +11,6 @@ import com.kasia.model.repository.UserConnectBudgetRepository;
 import com.kasia.model.repository.UserRepository;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
-import com.kasia.model.validation.UserBudgetValidation;
-import com.kasia.model.validation.UserConnectBudgetValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,11 +34,7 @@ public class UserServiceImp implements UserService {
     @Autowired
     private UserBudgetRepository ubRepository;
     @Autowired
-    private UserBudgetValidation ubValidation;
-    @Autowired
     private UserConnectBudgetRepository ucbRepository;
-    @Autowired
-    private UserConnectBudgetValidation ucbValidation;
     @Autowired
     private BudgetService bService;
     @Autowired
@@ -225,7 +219,6 @@ public class UserServiceImp implements UserService {
             ub.setUser(user);
             if (ub.getBudgets() == null) ub.setBudgets(new HashSet<>());
             ub.getBudgets().add(budget);
-            ubValidation.verifyValidation(ub);
             ubRepository.save(ub);
             return true;
         }
@@ -236,13 +229,11 @@ public class UserServiceImp implements UserService {
             UserConnectBudget ucb = optionalUCB.get();
             if (ucb.getConnectBudgets().contains(budget)) return false;
             ucb.getConnectBudgets().add(budget);
-            ucbValidation.verifyValidation(ucb);
             ucbRepository.save(ucb);
             return true;
         } else {
             UserConnectBudget newUCB = new UserConnectBudget(user, new HashSet<>());
             newUCB.getConnectBudgets().add(budget);
-            ucbValidation.verifyValidation(newUCB);
             ucbRepository.save(newUCB);
             return true;
         }
@@ -262,7 +253,6 @@ public class UserServiceImp implements UserService {
             if (optionalUB.isPresent() && optionalUB.get().getBudgets().contains(budget)) {
                 UserBudget ub = optionalUB.get();
                 ub.getBudgets().remove(budget);
-                ubValidation.verifyValidation(ub);
                 bService.deleteBudget(budget.getId());
                 ubRepository.save(ub);
                 return true;
@@ -274,7 +264,6 @@ public class UserServiceImp implements UserService {
         if (optionalUCB.isPresent() && optionalUCB.get().getConnectBudgets().contains(budget)) {
             UserConnectBudget ucb = optionalUCB.get();
             ucb.getConnectBudgets().remove(budget);
-            ucbValidation.verifyValidation(ucb);
             ucbRepository.save(ucb);
             return true;
         }

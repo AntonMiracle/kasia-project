@@ -27,11 +27,7 @@ public class BudgetServiceImp implements BudgetService {
     @Autowired
     private BudgetElementRepository beRepository;
     @Autowired
-    private BudgetElementValidation beValidation;
-    @Autowired
     private BudgetElementProviderRepository bepRepository;
-    @Autowired
-    private BudgetProviderValidation bepValidation;
     @Autowired
     private UserService uService;
     @Autowired
@@ -131,7 +127,6 @@ public class BudgetServiceImp implements BudgetService {
         eRepository.save(element);
         be.getElements().add(element);
 
-        beValidation.verifyValidation(be);
         beRepository.save(be);
 
         return be.getElements().contains(element);
@@ -150,7 +145,6 @@ public class BudgetServiceImp implements BudgetService {
         optional.get().getElements().remove(element);
         eRepository.delete(element);
 
-        beValidation.verifyValidation(optional.get());
         beRepository.save(optional.get());
 
         return !optional.get().getElements().contains(element);
@@ -204,7 +198,6 @@ public class BudgetServiceImp implements BudgetService {
         epRepository.save(provider);
         bep.getProviders().add(provider);
 
-        bepValidation.verifyValidation(bep);
         bepRepository.save(bep);
 
         return bep.getProviders().contains(provider);
@@ -220,7 +213,6 @@ public class BudgetServiceImp implements BudgetService {
         optionalBEP.get().getProviders().remove(provider);
         epRepository.delete(provider);
 
-        bepValidation.verifyValidation(optionalBEP.get());
         bepRepository.save(optionalBEP.get());
 
         return !optionalBEP.get().getProviders().contains(provider);
