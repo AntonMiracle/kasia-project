@@ -2,6 +2,7 @@ package com.kasia.controller;
 
 import com.kasia.model.*;
 import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.MyStringFormatter;
 import com.kasia.model.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,6 +19,8 @@ public class MyControllerAdvice {
     private BudgetService bService;
     @Autowired
     private OperationService oService;
+    @Autowired
+    private MyStringFormatter myStringFormatter;
 
     @ModelAttribute("user")
     public User getUser() {
@@ -48,5 +51,10 @@ public class MyControllerAdvice {
         Budget budget = sessionController.getBudget();
         if (budget != null) return oService.findAllOperations(budget.getId());
         else return new HashSet<>();
+    }
+
+    @ModelAttribute("myFormatter")
+    public MyStringFormatter getMyFormatter() {
+        return myStringFormatter;
     }
 }
