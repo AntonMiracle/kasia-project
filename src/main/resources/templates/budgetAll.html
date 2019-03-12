@@ -18,7 +18,7 @@
             th:class="button"
             th:onclick="'javascript:openBudget(\'' + ${ownBudget.id} + '\');'">
             <td th:text="${ownBudget.name}"></td>
-            <td th:text="${myFormatter.formatByLocale(user.id,ownBudget.balance.amount)}"></td>
+            <td th:text="${myFormatter.formatNumberByLocale(user.id,ownBudget.balance.amount)}"></td>
             <td th:text="${ownBudget.balance.currencies.currency.getCurrencyCode()}"></td>
         </tr>
     </table>

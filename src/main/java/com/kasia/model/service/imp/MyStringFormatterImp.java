@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
 
 @Service
 public class MyStringFormatterImp implements MyStringFormatter {
@@ -16,19 +17,24 @@ public class MyStringFormatterImp implements MyStringFormatter {
     private UserService uService;
 
     @Override
-    public String formatByLocale(boolean makeNegative, long userId, BigDecimal amount) {
+    public String formatNumberByLocale(boolean makeNegative, long userId, BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) >= 0 && makeNegative)
-            return formatByLocale(userId, new BigDecimal("-" + amount.toString()));
+            return formatNumberByLocale(userId, new BigDecimal("-" + amount.toString()));
         else
-            return formatByLocale(userId, amount);
+            return formatNumberByLocale(userId, amount);
     }
 
     @Override
-    public String formatByLocale(long userId, BigDecimal amount) {
+    public String formatNumberByLocale(long userId, BigDecimal amount) {
         User user = uService.findUserById(userId);
         NumberFormat formatter = NumberFormat.getInstance(user.getLocale());
         formatter.setMaximumFractionDigits(2);
         formatter.setRoundingMode(RoundingMode.HALF_UP);
         return formatter.format(amount);
+    }
+
+    @Override
+    public String formatDateByLocale(long userId, LocalDateTime date) {
+        return null;
     }
 }
