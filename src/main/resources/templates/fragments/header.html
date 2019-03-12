@@ -49,7 +49,10 @@
 <!--BUDGET-->
 <div class="header" th:fragment="budgetMenu">
     <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
-    <div th:class="idLabel" th:text="${budget.name} +' ' + ${budget.balance.amount} + ' ' + ${budget.balance.currencies}"></div>
+    <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
+    <div th:class="idLabel" th:text="${budget.name}
+    +' ' + ${myFormatter.formatByLocale(user.id,budget.balance.amount)}
+    + ' ' + ${budget.balance.currencies}"></div>
     <div>
         <form th:action="@{/budget/all}">
             <button class="button" type="submit" th:text="#{button.back}"></button>

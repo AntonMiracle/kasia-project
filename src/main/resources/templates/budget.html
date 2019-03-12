@@ -32,7 +32,6 @@
     </table>
 
     <!--/*@thymesVar id="operations" type="java.util.Set<com.kasia.model.Operation>"*/-->
-    <!--/*@thymesVar id="operation" type="com.kasia.model.Operation"*/-->
     <!--/*@thymesVar id="type" type="com.kasia.model.ElementType"*/-->
     <!--/*@thymesVar id="element" type="com.kasia.model.Element"*/-->
     <!--/*@thymesVar id="price" type="com.kasia.model.Price"*/-->
@@ -40,10 +39,15 @@
         <tr>
             <th colspan="2" th:text="#{title.operation}"></th>
         </tr>
+        <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
+        <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+        <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
         <tr th:each="operation : ${operations}">
             <td th:class="myLabel"
                 th:text="${operation.element.type eq operation.element.type.INCOME} ?
-                ${operation.price.amount} : '-'+${operation.price.amount}"></td>
+                ${myFormatter.formatByLocale(user.id,operation.price.amount)}
+                : ${myFormatter.formatByLocale(true,user.id,operation.price.amount)}">
+                </td>
 
             <td th:class="myLabel" th:text="${operation.element.name}"></td>
             <td th:class="myLabel" th:text="${operation.provider.name}"></td>
