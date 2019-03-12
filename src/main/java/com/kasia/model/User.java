@@ -1,10 +1,8 @@
 package com.kasia.model;
 
 import com.kasia.model.repository.converter.LocaleAttributeConverter;
-import com.kasia.model.validation.Validation;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;

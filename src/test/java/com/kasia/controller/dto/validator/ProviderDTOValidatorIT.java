@@ -121,8 +121,6 @@ public class ProviderDTOValidatorIT {
         for (int i = 0; i < 65; ++i) invalid2.append("s");
 
         dto.setDescription(invalid2.toString());
-        System.out.println(invalid2.length());
-        System.out.println(validator.validate(dto));
         assertThat(validator.validate(dto).size() == 0).isFalse();
     }
 

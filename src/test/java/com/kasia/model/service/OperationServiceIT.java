@@ -1,11 +1,11 @@
 package com.kasia.model.service;
 
 import com.kasia.ModelTestData;
-import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
-import com.kasia.exception.IdInvalidRuntimeException;
-import com.kasia.exception.IntervalRuntimeException;
 import com.kasia.model.*;
-import com.kasia.model.repository.*;
+import com.kasia.model.repository.BudgetOperationRepository;
+import com.kasia.model.repository.ElementProviderRepository;
+import com.kasia.model.repository.ElementRepository;
+import com.kasia.model.repository.OperationRepository;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -66,46 +65,6 @@ public class OperationServiceIT {
         assertThat(actual.getElement()).isEqualTo(op.getElement());
         assertThat(actual.getProvider()).isEqualTo(op.getProvider());
         assertThat(actual.getCreateOn().compareTo(LocalDateTime.now().plusSeconds(3)) < 0).isTrue();
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenUserIdInvalidCreateOperationThrowException() {
-        Operation op = getValidOperationWithNestedPositiveId();
-        op.getUser().setId(0);
-
-        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenElementIdInvalidCreateOperationThrowException() {
-        Operation op = getValidOperationWithNestedPositiveId();
-        op.getElement().setId(0);
-
-        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenElementProviderIdInvalidCreateOperationThrowException() {
-        Operation op = getValidOperationWithNestedPositiveId();
-        op.getProvider().setId(0);
-
-        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenUserInvalidCreateOperationThrowException() {
-        Operation op = getValidOperationWithNestedPositiveId();
-        op.getUser().setName("");
-
-        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenElementInvalidCreateOperationThrowException() {
-        Operation op = getValidOperationWithNestedPositiveId();
-        op.getElement().setName("");
-
-        oService.createOperation(op.getUser(), op.getElement(), op.getProvider(), op.getPrice());
     }
 
     @Test
@@ -167,76 +126,11 @@ public class OperationServiceIT {
         assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(-2.5));
     }
 
-    @Test(expected = CurrenciesNotEqualsRuntimeException.class)
-    public void whenCurrenciesNotEqualsAddOperationThrowException() {
-        Budget budget = ModelTestData.getBudget1();
-        budget.getBalance().setCurrencies(Currencies.PLN);
-        bService.saveBudget(budget);
-
-        User user = uService.saveUser(ModelTestData.getUser1());
-        Element element = eRepository.save(ModelTestData.getElement1());
-        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
-        Operation op1 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
-        op1.getPrice().setCurrencies(Currencies.EUR);
-
-        oService.addOperation(budget.getId(), op1);
-    }
-
     private Operation getSavedOperationForCheckRuntimeException() {
         User user = uService.saveUser(ModelTestData.getUser1());
         Element element = eRepository.save(ModelTestData.getElement1());
         Provider provider = epRepository.save(ModelTestData.getElementProvider1());
         return oService.createOperation(user, element, provider, ModelTestData.getPrice1());
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenUserInvalidAddOperationThrowException() {
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-
-        op.getUser().setName("");
-
-        oService.addOperation(savedBudget.getId(), op);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenElementInvalidAddOperationThrowException() {
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-
-        op.getElement().setName("");
-
-        oService.addOperation(savedBudget.getId(), op);
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenUserIdInvalidAddOperationThrowException() {
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-
-        op.getUser().setId(0);
-
-        oService.addOperation(savedBudget.getId(), op);
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenElementIdInvalidAddOperationThrowException() {
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-
-        op.getElement().setId(0);
-
-        oService.addOperation(savedBudget.getId(), op);
-    }
-
-    @Test(expected = IdInvalidRuntimeException.class)
-    public void whenElementProviderIdInvalidAddOperationThrowException() {
-        Budget savedBudget = bService.saveBudget(ModelTestData.getBudget1());
-        Operation op = getSavedOperationForCheckRuntimeException();
-
-        op.getProvider().setId(0);
-
-        oService.addOperation(savedBudget.getId(), op);
     }
 
     @Test
@@ -311,21 +205,6 @@ public class OperationServiceIT {
         oService.removeOperation(budget.getId(), consumptionOp.getId());
         budget = bService.findBudgetById(budget.getId());
         assertThat(budget.getBalance().getAmount()).isEqualTo(BigDecimal.valueOf(0.0));
-    }
-
-    @Test(expected = CurrenciesNotEqualsRuntimeException.class)
-    public void whenCurrenciesNotEqualsRemoveOperationThrowException() {
-        Budget budget = ModelTestData.getBudget1();
-        budget.getBalance().setCurrencies(Currencies.PLN);
-        Budget savedBudget = bService.saveBudget(budget);
-        User user = uService.saveUser(ModelTestData.getUser1());
-        Element element = eRepository.save(ModelTestData.getElement1());
-        Provider provider = epRepository.save(ModelTestData.getElementProvider1());
-        Operation op1 = oService.createOperation(user, element, provider, ModelTestData.getPrice1());
-        oService.addOperation(savedBudget.getId(), op1);
-        op1.getPrice().setCurrencies(Currencies.EUR);
-
-        oService.removeOperation(savedBudget.getId(), op1.getId());
     }
 
     @Test
@@ -412,16 +291,6 @@ public class OperationServiceIT {
         assertThat(oService.findOperationsBetweenDates(-1, from, to).size() == 0).isTrue();
     }
 
-    @Test(expected = IntervalRuntimeException.class)
-    public void whenPeriodInvalidFindOperationBetweenDatesThrowException() {
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(2);
-        LocalDateTime to = LocalDateTime.now().minusDays(1);
-        LocalDateTime from = LocalDateTime.now().plusDays(1);
-
-        oService.findOperationsBetweenDates(budget.getId(), from, to);
-    }
-
     @Test
     public void findOperationsBetweenPrices() {
         Budget budget = bService.saveBudget(ModelTestData.getBudget1());
@@ -449,18 +318,6 @@ public class OperationServiceIT {
         assertThat(oService.findOperationsBetweenPrices(budget.getId(), from, null).size() == 0).isTrue();
         assertThat(oService.findOperationsBetweenPrices(0, from, to).size() == 0).isTrue();
         assertThat(oService.findOperationsBetweenPrices(-1, from, to).size() == 0).isTrue();
-    }
-
-    @Test(expected = IntervalRuntimeException.class)
-    public void whenIntervalInvalidFindOperationsBetweenPricesThrowException() {
-        Budget budget = ModelTestData.getBudget1();
-        budget.setId(1);
-        Price to = ModelTestData.getPrice1();
-        Price from = ModelTestData.getPrice1();
-        from.setAmount(BigDecimal.TEN);
-        to.setAmount(BigDecimal.ZERO);
-
-        oService.findOperationsBetweenPrices(budget.getId(), from, to);
     }
 
     @Test

@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
@@ -87,14 +86,6 @@ public class UserServiceIT {
         User actual = uService.findUserById(expected.getId());
         assertThat(actual).isEqualTo(expected);
         assertThat(actual.getPassword()).isEqualTo(cryptPass);
-    }
-
-    @Test(expected = ValidationException.class)
-    public void whenUserInvalidSaveNewUserThrowException() {
-        User expected = ModelTestData.getUser1();
-        expected.setName("");
-
-        uService.saveUser(expected);
     }
 
     private User getSavedUserForTest() {
