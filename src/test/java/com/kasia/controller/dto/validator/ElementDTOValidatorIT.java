@@ -45,7 +45,6 @@ public class ElementDTOValidatorIT {
         String valid8 = " M ";
 
         dto.setName(valid1);
-        System.out.println(validator.validate(dto));
         assertThat(validator.validate(dto).size() == 0).isTrue();
         dto.setName(valid2);
         assertThat(validator.validate(dto).size() == 0).isTrue();
@@ -118,7 +117,6 @@ public class ElementDTOValidatorIT {
         dto.setBudgetId(budget.getId());
         dto.setName(element2.getName());
         dto.setType(element2.getType().toString());
-        System.out.println(validator.validate(dto));
         assertThat(validator.validate(dto).size() == 0).isTrue();
 
         bService.removeElement(budget.getId(), element1.getId());
