@@ -2,7 +2,9 @@ package com.kasia.controller.dto;
 
 import com.kasia.controller.dto.validator.constraint.PriceAmountValid;
 
-@PriceAmountValid(priceFN = "price", message = "{validation.price.amount.error}")
+@PriceAmountValid(priceFN = "price"
+        , regex = "^\\d+|\\d+[.,]\\d+|\\d+[.,]|[.,]\\d+$"
+        , message = "{validation.price.amount.error}")
 public class OperationDTO {
     private long elementId;
     private long providerId;

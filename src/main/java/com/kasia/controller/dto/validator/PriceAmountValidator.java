@@ -10,7 +10,7 @@ public class PriceAmountValidator implements ConstraintValidator<PriceAmountVali
     private String priceFN;
     private int minL;
     private int maxL;
-    private String regex = "^[-+]?\\d+|[-+]?\\d+[.,]\\d+|[-+]?\\d+[.,]|[.,]\\d+$";
+    private String regex;
     private boolean makeTrim;
 
     private ValidatorUtil vUtil = new ValidatorUtil();
@@ -22,6 +22,7 @@ public class PriceAmountValidator implements ConstraintValidator<PriceAmountVali
         maxL = ca.maxL();
         nullable = ca.nullable();
         makeTrim = ca.makeTrim();
+        regex = ca.regex();
     }
 
     @Override

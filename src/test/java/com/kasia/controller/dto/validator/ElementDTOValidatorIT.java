@@ -140,8 +140,6 @@ public class ElementDTOValidatorIT {
         String valid11 = "0001.0000001";
         String valid12 = "000000.000001";
         String valid13 = "000000.10000";
-        String valid14 = "-1.01";
-        String valid15 = "+1.01";
 
         dto.setDefaultPrice(valid1);
         assertThat(validator.validate(dto).size() == 0).isTrue();
@@ -169,10 +167,6 @@ public class ElementDTOValidatorIT {
         assertThat(validator.validate(dto).size() == 0).isTrue();
         dto.setDefaultPrice(valid13);
         assertThat(validator.validate(dto).size() == 0).isTrue();
-        dto.setDefaultPrice(valid14);
-        assertThat(validator.validate(dto).size() == 0).isTrue();
-        dto.setDefaultPrice(valid15);
-        assertThat(validator.validate(dto).size() == 0).isTrue();
     }
 
     @Test
@@ -189,6 +183,8 @@ public class ElementDTOValidatorIT {
         String invalid12 = "1.01-";
         String invalid13 = "-,0";
         String invalid14 = "+,0";
+        String invalid15 = "-1.01";
+        String invalid16 = "+1.01";
 
         dto.setDefaultPrice(invalid1);
         assertThat(validator.validate(dto).size() == 0).isFalse();
@@ -214,5 +210,10 @@ public class ElementDTOValidatorIT {
         assertThat(validator.validate(dto).size() == 0).isFalse();
         dto.setDefaultPrice(invalid14);
         assertThat(validator.validate(dto).size() == 0).isFalse();
+        dto.setDefaultPrice(invalid15);
+        assertThat(validator.validate(dto).size() == 0).isFalse();
+        dto.setDefaultPrice(invalid16);
+        assertThat(validator.validate(dto).size() == 0).isFalse();
     }
+
 }

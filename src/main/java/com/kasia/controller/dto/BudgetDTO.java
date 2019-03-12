@@ -4,7 +4,9 @@ import com.kasia.controller.dto.validator.constraint.PriceAmountValid;
 import com.kasia.controller.dto.validator.constraint.BudgetNameValid;
 
 @BudgetNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
-@PriceAmountValid(priceFN = "balanceInit", message = "{validation.price.amount.error}")
+@PriceAmountValid(priceFN = "balanceInit"
+        , regex = "^[-+]?\\d+|[-+]?\\d+[.,]\\d+|[-+]?\\d+[.,]|[.,]\\d+$"
+        , message = "{validation.price.amount.error}")
 public class BudgetDTO {
     private String name;
     private String balanceInit = "0";

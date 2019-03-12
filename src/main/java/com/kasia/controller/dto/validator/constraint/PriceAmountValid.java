@@ -28,4 +28,6 @@ public @interface PriceAmountValid {
     int minL() default 0;
 
     int maxL() default 16;
+
+    String regex();
 }
