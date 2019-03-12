@@ -1,5 +1,6 @@
 package com.kasia.configuration;
 
+import com.kasia.controller.dto.OperationDTO;
 import com.kasia.model.*;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
@@ -52,6 +53,23 @@ public class MvcConfig implements WebMvcConfigurer {
         bService.addProvider(bu2.getId(), provider1);
         bService.addProvider(bu2.getId(), provider2);
 
+        Element element1 = new Element("food",new Price(BigDecimal.ZERO,bu1.getBalance().getCurrencies()),ElementType.CONSUMPTION);
+        Element element2 = new Element("food",new Price(BigDecimal.ZERO,bu1.getBalance().getCurrencies()),ElementType.INCOME);
+        Element element3 = new Element("salary",new Price(BigDecimal.TEN,bu1.getBalance().getCurrencies()),ElementType.INCOME);
+
+        bService.addElement(bu1.getId(),element1);
+        bService.addElement(bu1.getId(),element2);
+        bService.addElement(bu1.getId(),element3);
+        element1.setId(0);
+        element2.setId(0);
+        element3.setId(0);
+        element1.setDefaultPrice(new Price(BigDecimal.ZERO,bu2.getBalance().getCurrencies()));
+        element2.setDefaultPrice(new Price(BigDecimal.ZERO,bu2.getBalance().getCurrencies()));
+        element3.setDefaultPrice(new Price(BigDecimal.ZERO,bu2.getBalance().getCurrencies()));
+        bService.addElement(bu2.getId(),element1);
+        bService.addElement(bu2.getId(),element2);
+        bService.addElement(bu2.getId(),element3);
+
         System.out.println("=============== MvcConfig#init");
         System.out.println(user);
     }
@@ -92,5 +110,11 @@ public class MvcConfig implements WebMvcConfigurer {
     @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public User sessionUser() {
         return new User();
+    }
+
+    @Bean
+    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public OperationDTO sessionOperationDTO() {
+        return new OperationDTO();
     }
 }

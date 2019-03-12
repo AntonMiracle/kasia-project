@@ -1,10 +1,8 @@
 package com.kasia.controller;
 
-import com.kasia.model.Budget;
-import com.kasia.model.Element;
-import com.kasia.model.Provider;
-import com.kasia.model.User;
+import com.kasia.model.*;
 import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.OperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +16,8 @@ public class MyControllerAdvice {
     private MySessionController sessionController;
     @Autowired
     private BudgetService bService;
+    @Autowired
+    private OperationService oService;
 
     @ModelAttribute("user")
     public User getUser() {
@@ -40,6 +40,13 @@ public class MyControllerAdvice {
     public Set<Element> getAllElements() {
         Budget budget = sessionController.getBudget();
         if (budget != null) return bService.findAllElements(budget.getId());
+        else return new HashSet<>();
+    }
+
+    @ModelAttribute("operations")
+    public Set<Operation> getAllOperations() {
+        Budget budget = sessionController.getBudget();
+        if (budget != null) return oService.findAllOperations(budget.getId());
         else return new HashSet<>();
     }
 }

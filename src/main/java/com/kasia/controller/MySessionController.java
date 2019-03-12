@@ -17,7 +17,7 @@ public class MySessionController {
     private User user;
     @Resource(name = "sessionBudget")
     private Budget budget;
-    @Resource(name = "operationDTO")
+    @Resource(name = "sessionOperationDTO")
     private OperationDTO operationDTO;
 
     public User getUser() {
@@ -41,7 +41,7 @@ public class MySessionController {
         return budget != null && budget.getId() > 0;
     }
 
-    public void cleanOperation() {
+    public void stopOperation() {
         operationDTO = new OperationDTO();
     }
 

@@ -30,6 +30,28 @@
                 th:text="${element.type eq element.type.INCOME} ? #{label.income} : #{label.consumption}"></td>
         </tr>
     </table>
+
+    <!--/*@thymesVar id="operations" type="java.util.Set<com.kasia.model.Operation>"*/-->
+    <!--/*@thymesVar id="operation" type="com.kasia.model.Operation"*/-->
+    <!--/*@thymesVar id="type" type="com.kasia.model.ElementType"*/-->
+    <!--/*@thymesVar id="element" type="com.kasia.model.Element"*/-->
+    <!--/*@thymesVar id="price" type="com.kasia.model.Price"*/-->
+    <table th:class="myTable" th:if="${operations.size() != 0}">
+        <tr>
+            <th colspan="2" th:text="#{title.operation}"></th>
+        </tr>
+        <tr th:each="operation : ${operations}">
+            <td th:class="myLabel"
+                th:text="${operation.element.type eq operation.element.type.INCOME} ?
+                ${operation.price.amount} : '-'+${operation.price.amount}"></td>
+
+            <td th:class="myLabel" th:text="${operation.element.name}"></td>
+            <td th:class="myLabel" th:text="${operation.provider.name}"></td>
+            <td th:class="myLabel" th:text="${operation.provider.description}"></td>
+        </tr>
+    </table>
+
+
 </div>
 </body>
 </html>

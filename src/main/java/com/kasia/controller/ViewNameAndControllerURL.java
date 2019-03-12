@@ -9,6 +9,7 @@ public final class ViewNameAndControllerURL {
     public static final String V_BUDGET = "budget";
     public static final String V_PROVIDER = "provider";
     public static final String V_ELEMENT = "element";
+    public static final String V_OPERATION = "operation";
 
     public static final String U_ROOT = "/";
     public static final String U_LOGIN = "/login";
@@ -21,7 +22,11 @@ public final class ViewNameAndControllerURL {
     public static final String U_BUDGET_SAVE = U_BUDGET + "/save";
     public static final String U_REGISTRATION = "/registration";
     public static final String U_OPERATION = U_BUDGET + "/operation";
+    public static final String U_OPERATION_PICK = U_OPERATION + "/pick";
+    public static final String U_OPERATION_PICK_PROVIDER = U_OPERATION_PICK + "/provider";
+    public static final String U_OPERATION_PICK_ELEMENT = U_OPERATION_PICK + "/element";
     public static final String U_OPERATION_ADD = U_OPERATION + "/add";
+    public static final String U_OPERATION_NEXT = U_OPERATION + "/next";
     public static final String U_ELEMENT = U_BUDGET + "/element";
     public static final String U_ELEMENT_ADD = U_ELEMENT + "/add";
     public static final String U_PROVIDER = U_BUDGET + "/provider";

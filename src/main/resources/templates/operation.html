@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/base_head :: base_head"></div>
+    <title th:text="#{title.operation}"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: budgetMenu"></div>
+<div id="mainContentWithoutMenu">
+    <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.Provider>"*/-->
+    <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
+    <!--/*@thymesVar id="type" type="com.kasia.model.ElementType"*/-->
+    <!--/*@thymesVar id="operationDTO" type="com.kasia.controller.dto.OperationDTO"*/-->
+
+    <div th:if="${providers.size() != 0 and operationDTO.getProviderId() == 0}">
+        <div th:each="provider : ${providers}"
+             th:class="button"
+             th:onclick="'javascript:pickProvider(\'' + ${provider.id} + '\');'">
+            <div th:text="${provider.name}"></div>
+            <div th:if="${provider.description.length() > 0}" th:text="${provider.description}"></div>
+        </div>
+    </div>
+
+    <div th:if="${elements.size() != 0 and operationDTO.getElementId()==0 and operationDTO.getProviderId() != 0}">
+        <div th:each="element : ${elements}"
+             th:class="button"
+             th:onclick="'javascript:pickElement(\'' + ${element.id} + '\');'">
+            <div th:text="${element.name}"></div>
+            <div th:text="${element.type}"></div>
+        </div>
+    </div>
+
+    <form th:action="@{/budget/operation/add}" th:object="${operationDTO}" method="post">
+        <!--/*@thymesVar id="operationE" type="com.kasia.model.Element"*/-->
+        <!--/*@thymesVar id="operationP" type="com.kasia.model.Provider"*/-->
+        <table th:class="myTable" th:if="${operationDTO.getElementId()!=0 and operationDTO.getProviderId() != 0}">
+            <tr>
+                <th th:colspan="2" th:text="#{title.operation}"></th>
+            </tr>
+            <tr>
+                <td th:class="myLabel" th:text="${operationE.name}"></td>
+                <td th:class="myLabel"
+                    th:if="${operationE.type} == ${operationE.type.INCOME}"
+                    th:text="#{label.income}"></td>
+                <td th:class="myLabel"
+                    th:if="${operationE.type} == ${operationE.type.CONSUMPTION}"
+                    th:text="#{label.consumption}"></td>
+            </tr>
+            <tr>
+                <td th:class="myLabel" th:text="${operationP.name}"></td>
+                <td th:class="myLabel" th:text="${operationP.description}"></td>
+            </tr>
+            <tr>
+                <td th:class="myLabel"
+                    th:text="${operationE.defaultPrice.currencies}"></td>
+                <td th:class="myLabelError"
+                    th:if="${#fields.hasErrors('price')}"
+                    th:errors="*{price}">
+                </td>
+            </tr>
+            <tr>
+                <td th:colspan="2"><input type="text" th:field="*{price}" th:placeholder="#{tip.price.amount}"/></td>
+            </tr>
+            <tr>
+                <td th:colspan="2" th:class="withButton">
+                    <button class="button" type="submit" th:text="#{button.add}"></button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script th:inline="javascript">
+        function pickProvider(value) {
+            location.href = "/budget/operation/pick/provider/" + value;
+        }
+        function pickElement(value) {
+            location.href = "/budget/operation/pick/element/" + value;
+        }
+    </script>
+</div>
+</body>
+</html>

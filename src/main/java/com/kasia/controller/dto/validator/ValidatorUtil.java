@@ -3,6 +3,7 @@ package com.kasia.controller.dto.validator;
 import javax.validation.ConstraintValidatorContext;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
+import java.util.Arrays;
 
 public class ValidatorUtil {
 

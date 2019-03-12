@@ -7,7 +7,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class PriceAmountValidator implements ConstraintValidator<PriceAmountValid, Object> {
     private boolean nullable;
-    private String balanceFN;
+    private String priceFN;
     private int minL;
     private int maxL;
     private String regex = "^[-+]?\\d+|[-+]?\\d+[.,]\\d+|[-+]?\\d+[.,]|[.,]\\d+$";
@@ -17,7 +17,7 @@ public class PriceAmountValidator implements ConstraintValidator<PriceAmountVali
 
     @Override
     public void initialize(PriceAmountValid ca) {
-        balanceFN = ca.priceFN();
+        priceFN = ca.priceFN();
         minL = ca.minL();
         maxL = ca.maxL();
         nullable = ca.nullable();
@@ -26,7 +26,7 @@ public class PriceAmountValidator implements ConstraintValidator<PriceAmountVali
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext cvContext) {
-        String value = vUtil.getStringValue(o, balanceFN);
+        String value = vUtil.getStringValue(o, priceFN);
         if (nullable && value == null) return true;
         if (!nullable && value == null) {
             value = "0";
@@ -35,9 +35,9 @@ public class PriceAmountValidator implements ConstraintValidator<PriceAmountVali
             value = value.trim().replaceAll("[ ]+", "");
         }
         value = value.replaceAll("[,]", ".");
-        vUtil.setStringValue(o, balanceFN, value);
+        vUtil.setStringValue(o, priceFN, value);
         if (!isStrValueValid(value)) {
-            vUtil.addConstraintViolation(balanceFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
+            vUtil.addConstraintViolation(priceFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
             return false;
         }
         return true;
