@@ -17,7 +17,7 @@ public class MyStringFormatterImp implements MyStringFormatter {
 
     @Override
     public String formatByLocale(boolean makeNegative, long userId, BigDecimal amount) {
-        if (makeNegative)
+        if (amount.compareTo(BigDecimal.ZERO) >= 0 && makeNegative)
             return formatByLocale(userId, new BigDecimal("-" + amount.toString()));
         else
             return formatByLocale(userId, amount);

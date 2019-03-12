@@ -48,6 +48,8 @@ public class MyStringFormatterTest {
         assertThat(formatter.formatByLocale(user.getId(),number)).isEqualTo("0.01");
         number = new BigDecimal("2.4");
         assertThat(formatter.formatByLocale(user.getId(),number)).isEqualTo("2.4");
+        number = new BigDecimal("-2.4");
+        assertThat(formatter.formatByLocale(user.getId(),number)).isEqualTo("-2.4");
     }
     @Test
     public void formatByLocaleNegative() {
@@ -60,6 +62,8 @@ public class MyStringFormatterTest {
         number = new BigDecimal("0.01");
         assertThat(formatter.formatByLocale(true,user.getId(),number)).isEqualTo("-0.01");
         number = new BigDecimal("2.4");
+        assertThat(formatter.formatByLocale(true,user.getId(),number)).isEqualTo("-2.4");
+        number = new BigDecimal("-2.4");
         assertThat(formatter.formatByLocale(true,user.getId(),number)).isEqualTo("-2.4");
     }
 }
