@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class MyStringFormatterImp implements MyStringFormatter {
@@ -35,6 +36,8 @@ public class MyStringFormatterImp implements MyStringFormatter {
 
     @Override
     public String formatDateByLocale(long userId, LocalDateTime date) {
-        return null;
+        User user = uService.findUserById(userId);
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd EE HH:MM", user.getLocale());
+        return date.format(f);
     }
 }

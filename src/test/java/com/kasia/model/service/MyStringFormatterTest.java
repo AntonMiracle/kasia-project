@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,35 +37,43 @@ public class MyStringFormatterTest {
     }
 
     @Test
-    public void formatByLocalePositive() {
+    public void formatNumberByLocalePositive() {
         BigDecimal number = new BigDecimal("1000000.10");
-        assertThat(formatter.formatNumberByLocale(user.getId(),number)).isEqualTo("1,000,000.1");
-        number = new BigDecimal("-"+number.toString());
-        assertThat(formatter.formatNumberByLocale(user.getId(),number)).isEqualTo("-1,000,000.1");
+        assertThat(formatter.formatNumberByLocale(user.getId(), number)).isEqualTo("1,000,000.1");
+        number = new BigDecimal("-" + number.toString());
+        assertThat(formatter.formatNumberByLocale(user.getId(), number)).isEqualTo("-1,000,000.1");
         number = new BigDecimal("0.001");
-        assertThat(formatter.formatNumberByLocale(user.getId(),number)).isEqualTo("0");
+        assertThat(formatter.formatNumberByLocale(user.getId(), number)).isEqualTo("0");
         number = new BigDecimal("0.005");
-        assertThat(formatter.formatNumberByLocale(user.getId(),number)).isEqualTo("0.01");
+        assertThat(formatter.formatNumberByLocale(user.getId(), number)).isEqualTo("0.01");
         number = new BigDecimal("0.01");
-        assertThat(formatter.formatNumberByLocale(user.getId(),number)).isEqualTo("0.01");
+        assertThat(formatter.formatNumberByLocale(user.getId(), number)).isEqualTo("0.01");
         number = new BigDecimal("2.4");
-        assertThat(formatter.formatNumberByLocale(user.getId(),number)).isEqualTo("2.4");
+        assertThat(formatter.formatNumberByLocale(user.getId(), number)).isEqualTo("2.4");
         number = new BigDecimal("-2.4");
-        assertThat(formatter.formatNumberByLocale(user.getId(),number)).isEqualTo("-2.4");
+        assertThat(formatter.formatNumberByLocale(user.getId(), number)).isEqualTo("-2.4");
     }
+
     @Test
-    public void formatByLocaleNegative() {
+    public void formatNumberByLocaleNegative() {
         BigDecimal number = new BigDecimal("1000000.10");
-        assertThat(formatter.formatNumberByLocale(true,user.getId(),number)).isEqualTo("-1,000,000.1");
+        assertThat(formatter.formatNumberByLocale(true, user.getId(), number)).isEqualTo("-1,000,000.1");
         number = new BigDecimal("0.001");
-        assertThat(formatter.formatNumberByLocale(true,user.getId(),number)).isEqualTo("-0");
+        assertThat(formatter.formatNumberByLocale(true, user.getId(), number)).isEqualTo("-0");
         number = new BigDecimal("0.005");
-        assertThat(formatter.formatNumberByLocale(true,user.getId(),number)).isEqualTo("-0.01");
+        assertThat(formatter.formatNumberByLocale(true, user.getId(), number)).isEqualTo("-0.01");
         number = new BigDecimal("0.01");
-        assertThat(formatter.formatNumberByLocale(true,user.getId(),number)).isEqualTo("-0.01");
+        assertThat(formatter.formatNumberByLocale(true, user.getId(), number)).isEqualTo("-0.01");
         number = new BigDecimal("2.4");
-        assertThat(formatter.formatNumberByLocale(true,user.getId(),number)).isEqualTo("-2.4");
+        assertThat(formatter.formatNumberByLocale(true, user.getId(), number)).isEqualTo("-2.4");
         number = new BigDecimal("-2.4");
-        assertThat(formatter.formatNumberByLocale(true,user.getId(),number)).isEqualTo("-2.4");
+        assertThat(formatter.formatNumberByLocale(true, user.getId(), number)).isEqualTo("-2.4");
+    }
+
+    @Test
+    public void formatDateByLocale() {
+        user.setCreateOn(LocalDateTime.of(2019,03,12,22,03));
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd EE HH:MM", user.getLocale());
+        assertThat(user.getCreateOn().format(f)).isEqualTo("2019-03-12 Tue 22:03");
     }
 }
