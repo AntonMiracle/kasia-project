@@ -37,12 +37,12 @@
     <!--/*@thymesVar id="price" type="com.kasia.model.Price"*/-->
     <table th:class="myTable" th:if="${operations.size() != 0}">
         <tr>
-            <th colspan="2" th:text="#{title.operation}"></th>
+            <th colspan="5" th:text="#{title.operation}"></th>
         </tr>
         <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
         <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
         <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
-        <tr th:colspan="5" th:each="operation : ${operations}">
+        <tr th:each="operation : ${operations}">
             <td th:class="myLabel"
                 th:text="${operation.element.type eq operation.element.type.INCOME} ?
                 ${myFormatter.formatNumberByLocale(user.id,operation.price.amount)}
