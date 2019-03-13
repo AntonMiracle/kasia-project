@@ -17,13 +17,15 @@ public class Operation implements Model, Comparable<Operation> {
     @Embedded
     private Price price;
     private LocalDateTime createOn;
+    private String description;
 
-    public Operation(User user, Element element, Provider provider, Price price, LocalDateTime createOn) {
+    public Operation(User user, Element element, Provider provider, Price price, LocalDateTime createOn, String description) {
         this.element = element;
         this.provider = provider;
         this.user = user;
         this.price = price;
         this.createOn = createOn;
+        this.description = description;
     }
 
     public Operation() {
@@ -39,6 +41,7 @@ public class Operation implements Model, Comparable<Operation> {
                 ", user=" + user +
                 ", price=" + price +
                 ", createOn=" + createOn +
+                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -51,11 +54,11 @@ public class Operation implements Model, Comparable<Operation> {
 
         if (id != operation.id) return false;
         if (element != null ? !element.equals(operation.element) : operation.element != null) return false;
-        if (provider != null ? !provider.equals(operation.provider) : operation.provider != null)
-            return false;
+        if (provider != null ? !provider.equals(operation.provider) : operation.provider != null) return false;
         if (user != null ? !user.equals(operation.user) : operation.user != null) return false;
         if (price != null ? !price.equals(operation.price) : operation.price != null) return false;
-        return createOn != null ? createOn.equals(operation.createOn) : operation.createOn == null;
+        if (createOn != null ? !createOn.equals(operation.createOn) : operation.createOn != null) return false;
+        return description != null ? description.equals(operation.description) : operation.description == null;
     }
 
     @Override
@@ -66,6 +69,7 @@ public class Operation implements Model, Comparable<Operation> {
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
 
@@ -117,9 +121,17 @@ public class Operation implements Model, Comparable<Operation> {
         this.user = creater;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public int compareTo(Operation o) {
-        if(o.getCreateOn().compareTo(this.createOn) >=0) return 1;
+        if (o.getCreateOn().compareTo(this.createOn) >= 0) return 1;
         else return -1;
     }
 }

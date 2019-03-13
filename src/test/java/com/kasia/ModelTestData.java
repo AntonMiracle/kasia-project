@@ -57,11 +57,11 @@ final public class ModelTestData {
     }
 
     public static Operation getOperation1() {
-        return new Operation(getUser1(), getElement1(), getElementProvider1(), getPrice1(), getNow());
+        return new Operation(getUser1(), getElement1(), getElementProvider1(), getPrice1(), getNow(),"");
     }
 
     public static Operation getOperation2() {
-        return new Operation(getUser2(), getElement2(), getElementProvider2(), getPrice2(), getNow());
+        return new Operation(getUser2(), getElement2(), getElementProvider2(), getPrice2(), getNow(),"");
     }
 
     public static Currency getBudgetCurrency1() {

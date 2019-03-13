@@ -40,7 +40,7 @@ public class OperationServiceImp implements OperationService {
 
     @Override
     public Operation createOperation(User user, Element element, Provider provider, Price price) {
-        Operation operation = new Operation(user, element, provider, price, LocalDateTime.now().withNano(0));
+        Operation operation = new Operation(user, element, provider, price, LocalDateTime.now().withNano(0),"");
         return operation;
     }
 
