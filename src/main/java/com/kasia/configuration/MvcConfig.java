@@ -39,6 +39,10 @@ public class MvcConfig implements WebMvcConfigurer {
         User user = uService.createUser("anton@gmail.com", "Anton", "Password2",
                 "America/Atka", "pl", "PL");
         uService.saveUser(user);
+        User user2 = uService.createUser("anton2@gmail.com", "Anton2", "Password2",
+                "America/Atka", "pl", "PL");
+        uService.saveUser(user);
+        uService.saveUser(user2);
         Balance ba1 = new Balance(BigDecimal.valueOf(12), Currencies.PLN, LocalDateTime.now());
         Balance ba2 = new Balance(BigDecimal.valueOf(-1200.99), Currencies.EUR, LocalDateTime.now());
         Budget bu1 = new Budget("Семейный Бюджет", ba1, LocalDateTime.now());
