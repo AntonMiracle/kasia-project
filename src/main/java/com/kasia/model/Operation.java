@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Operation implements Model {
+public class Operation implements Model, Comparable<Operation> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -115,5 +115,11 @@ public class Operation implements Model {
 
     public void setUser(User creater) {
         this.user = creater;
+    }
+
+    @Override
+    public int compareTo(Operation o) {
+        if(o.getCreateOn().compareTo(this.createOn) >=0) return 1;
+        else return -1;
     }
 }

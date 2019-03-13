@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @ControllerAdvice
 public class MyControllerAdvice {
@@ -49,8 +50,9 @@ public class MyControllerAdvice {
     @ModelAttribute("operations")
     public Set<Operation> getAllOperations() {
         Budget budget = sessionController.getBudget();
-        if (budget != null) return oService.findAllOperations(budget.getId());
-        else return new HashSet<>();
+        Set<Operation> result = new TreeSet<>();
+        if (budget != null) result.addAll(oService.findAllOperations(budget.getId()));
+        return result;
     }
 
     @ModelAttribute("myFormatter")
