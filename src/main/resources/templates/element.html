@@ -49,6 +49,9 @@
                     <button class="button" type="submit" th:text="#{button.add}"></button>
                 </td>
             </tr>
+            <tr>
+                <th th:colspan="2" th:text="#{label.created}"></th>
+            </tr>
             <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
             <div th:if="${elements.size() != 0}">
                 <tr th:each="element : ${elements}"
