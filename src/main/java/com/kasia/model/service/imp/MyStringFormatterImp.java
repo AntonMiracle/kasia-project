@@ -10,6 +10,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -18,15 +20,15 @@ public class MyStringFormatterImp implements MyStringFormatter {
     private UserService uService;
 
     @Override
-    public String formatNumberByLocale(boolean makeNegative, long userId, BigDecimal amount) {
+    public String formatNumber(boolean makeNegative, long userId, BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) >= 0 && makeNegative)
-            return formatNumberByLocale(userId, new BigDecimal("-" + amount.toString()));
+            return formatNumber(userId, new BigDecimal("-" + amount.toString()));
         else
-            return formatNumberByLocale(userId, amount);
+            return formatNumber(userId, amount);
     }
 
     @Override
-    public String formatNumberByLocale(long userId, BigDecimal amount) {
+    public String formatNumber(long userId, BigDecimal amount) {
         User user = uService.findUserById(userId);
         NumberFormat formatter = NumberFormat.getInstance(user.getLocale());
         formatter.setMaximumFractionDigits(2);
@@ -35,23 +37,27 @@ public class MyStringFormatterImp implements MyStringFormatter {
     }
 
     @Override
-    public String formatDateByLocale(long userId, LocalDateTime date) {
+    public String formatFullDate(long userId, LocalDateTime date) {
         User user = uService.findUserById(userId);
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE HH:mm", user.getLocale());
-        return date.format(f);
+        return convert(date,user.getZoneId()).format(f);
     }
 
     @Override
-    public String formatOnlyDateByLocale(long userId, LocalDateTime date) {
+    public String formatOnlyDate(long userId, LocalDateTime date) {
         User user = uService.findUserById(userId);
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE", user.getLocale());
-        return date.format(f);
+        return convert(date,user.getZoneId()).format(f);
     }
 
     @Override
-    public String formatOnlyTimeByLocale(long userId, LocalDateTime date) {
+    public String formatOnlyTime(long userId, LocalDateTime date) {
         User user = uService.findUserById(userId);
         DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm", user.getLocale());
-        return date.format(f);
+        return convert(date,user.getZoneId()).format(f);
+    }
+
+    private ZonedDateTime convert(LocalDateTime date, ZoneId zoneId) {
+        return date.atZone(ZoneId.systemDefault()).toInstant().atZone(zoneId);
     }
 }

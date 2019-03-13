@@ -20,7 +20,7 @@
 
         <div th:each="packageKey : ${packageOperations.keySet()}">
             <tr>
-                <th th:colspan="5" th:text="${myFormatter.formatOnlyDateByLocale(user.id, packageKey)}"></th>
+                <th th:colspan="5" th:text="${myFormatter.formatOnlyDate(user.id, packageKey)}"></th>
             </tr>
             <tr th:each="packageOperation : ${packageOperations.get(packageKey)}"
                 th:id="${packageOperation.element.type eq packageOperation.element.type.INCOME} ? operationIncome : operationConsumption">
@@ -28,12 +28,12 @@
                 <td th:class="myLabel" th:text="${packageOperation.provider.name}"></td>
                 <td th:class="myLabel"
                     th:text="${packageOperation.element.type eq packageOperation.element.type.INCOME} ?
-                ${myFormatter.formatNumberByLocale(user.id,packageOperation.price.amount)}
-                : ${myFormatter.formatNumberByLocale(true,user.id,packageOperation.price.amount)}">
+                ${myFormatter.formatNumber(user.id,packageOperation.price.amount)}
+                : ${myFormatter.formatNumber(true,user.id,packageOperation.price.amount)}">
                 </td>
                 <td th:class="myLabel" th:text="${packageOperation.description}"></td>
                 <td th:class="myLabel"
-                    th:text="${myFormatter.formatOnlyTimeByLocale(user.id,packageOperation.createOn)}"></td>
+                    th:text="${myFormatter.formatOnlyTime(user.id,packageOperation.createOn)}"></td>
             </tr>
         </div>
     </table>

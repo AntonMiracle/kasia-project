@@ -19,5 +19,4 @@ public class BudgetProviderTest {
                 .withIgnoredAnnotations(Id.class)
                 .verify();
     }
-
 }

@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public interface MyStringFormatter {
-    String formatNumberByLocale(boolean makeNegative, long userId, BigDecimal amount);
+    String formatNumber(boolean makeNegative, long userId, BigDecimal amount);
 
-    String formatNumberByLocale(long userId, BigDecimal amount);
+    String formatNumber(long userId, BigDecimal amount);
 
-    String formatDateByLocale(long userId, LocalDateTime date);
+    String formatFullDate(long userId, LocalDateTime date);
 
-    String formatOnlyDateByLocale(long userId, LocalDateTime date);
+    String formatOnlyDate(long userId, LocalDateTime date);
 
-    String formatOnlyTimeByLocale(long userId, LocalDateTime date);
+    String formatOnlyTime(long userId, LocalDateTime date);
 }
