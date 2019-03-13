@@ -13,6 +13,11 @@
     <!--/*@thymesVar id="type" type="com.kasia.model.ElementType"*/-->
     <!--/*@thymesVar id="operationDTO" type="com.kasia.controller.dto.OperationDTO"*/-->
 
+    <div th:class="myTable" th:if="${elements.size() == 0}"
+         th:text="#{tip.need.element}"></div>
+    <div th:class="myTable" th:if="${providers.size() == 0}"
+         th:text="#{tip.need.provider}"></div>
+
     <div th:if="${providers.size() != 0 and operationDTO.getProviderId() == 0}">
         <div th:each="provider : ${providers}"
              th:class="operationChoose"
