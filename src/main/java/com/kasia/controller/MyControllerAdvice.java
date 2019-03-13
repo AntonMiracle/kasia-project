@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @ControllerAdvice
 public class MyControllerAdvice {
@@ -22,6 +21,8 @@ public class MyControllerAdvice {
     private OperationService oService;
     @Autowired
     private MyStringFormatter myStringFormatter;
+    @Autowired
+    private OperationController operationController;
 
     @ModelAttribute("user")
     public User getUser() {
@@ -53,6 +54,16 @@ public class MyControllerAdvice {
         Set<Operation> result = new TreeSet<>();
         if (budget != null) result.addAll(oService.findAllOperations(budget.getId()));
         return result;
+    }
+
+    @ModelAttribute("packageOperations")
+    public Map<LocalDateTime, Set<Operation>> getPackageOperations() {
+        Budget budget = sessionController.getBudget();
+        Set<Operation> operations = new TreeSet<>();
+        if (budget != null) operations.addAll(oService.findAllOperations(budget.getId()));
+        Map<LocalDateTime, Set<Operation>> result = new TreeMap<>();
+        if (operations.size() == 0) return result;
+        return operationController.packageByOperationDay(operations);
     }
 
     @ModelAttribute("myFormatter")

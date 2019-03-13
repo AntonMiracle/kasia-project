@@ -10,28 +10,32 @@
 <div id="mainContentWithoutMenu">
 
     <!--/*@thymesVar id="operations" type="java.util.Set<com.kasia.model.Operation>"*/-->
-    <!--/*@thymesVar id="type" type="com.kasia.model.ElementType"*/-->
-    <!--/*@thymesVar id="element" type="com.kasia.model.Element"*/-->
-    <!--/*@thymesVar id="price" type="com.kasia.model.Price"*/-->
     <table th:class="myTable" th:if="${operations.size() != 0}">
         <tr>
             <th colspan="5" th:text="#{title.operation}"></th>
         </tr>
+        <!--/*@thymesVar id="packageOperations" type="java.util.Map<java.time.LocalDateTime,java.util.Set<com.kasia.model.Operation>>"*/-->
         <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
         <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
-        <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
-        <tr th:each="operation : ${operations}"
-            th:id="${operation.element.type eq operation.element.type.INCOME} ? operationIncome : operationConsumption">
-            <td th:class="myLabel" th:text="${operation.element.name}"></td>
-            <td th:class="myLabel" th:text="${operation.provider.name}"></td>
-            <td th:class="myLabel"
-                th:text="${operation.element.type eq operation.element.type.INCOME} ?
-                ${myFormatter.formatNumberByLocale(user.id,operation.price.amount)}
-                : ${myFormatter.formatNumberByLocale(true,user.id,operation.price.amount)}">
-            </td>
-            <td th:class="myLabel" th:text="${operation.description}"></td>
-            <td th:class="myLabel" th:text="${myFormatter.formatDateByLocale(user.id,operation.createOn)}"></td>
-        </tr>
+
+        <div th:each="packageKey : ${packageOperations.keySet()}">
+            <tr>
+                <th th:colspan="5" th:text="${myFormatter.formatOnlyDateByLocale(user.id, packageKey)}"></th>
+            </tr>
+            <tr th:each="packageOperation : ${packageOperations.get(packageKey)}"
+                th:id="${packageOperation.element.type eq packageOperation.element.type.INCOME} ? operationIncome : operationConsumption">
+                <td th:class="myLabel" th:text="${packageOperation.element.name}"></td>
+                <td th:class="myLabel" th:text="${packageOperation.provider.name}"></td>
+                <td th:class="myLabel"
+                    th:text="${packageOperation.element.type eq packageOperation.element.type.INCOME} ?
+                ${myFormatter.formatNumberByLocale(user.id,packageOperation.price.amount)}
+                : ${myFormatter.formatNumberByLocale(true,user.id,packageOperation.price.amount)}">
+                </td>
+                <td th:class="myLabel" th:text="${packageOperation.description}"></td>
+                <td th:class="myLabel"
+                    th:text="${myFormatter.formatOnlyTimeByLocale(user.id,packageOperation.createOn)}"></td>
+            </tr>
+        </div>
     </table>
 </div>
 </body>

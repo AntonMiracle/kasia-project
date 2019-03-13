@@ -19,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
+import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -33,7 +34,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private BalanceService balanceService;
 
-//    @PostConstruct
+    @PostConstruct
     public void init() {
         User user = uService.createUser("anton@gmail.com", "Anton", "Password2",
                 "America/Atka", "pl", "PL");
@@ -67,12 +68,22 @@ public class MvcConfig implements WebMvcConfigurer {
         Operation op2 = oService.createOperation(user, element2, provider2, price2);
         Operation op3 = oService.createOperation(user, element1, provider1, price1);
         op3.setCreateOn(LocalDateTime.of(2018,03,12,12,22,00));
+        op3.setDescription("some text!@#!@##");
         Operation op4 = oService.createOperation(user, element2, provider2, price2);
+        op4.setDescription("some desc");
         op4.setCreateOn(LocalDateTime.of(2019,01,10,22,59,00));
+        Operation op5 = oService.createOperation(user, element2, provider2, price2);
+        op5.setDescription("some desc");
+        op5.setCreateOn(LocalDateTime.of(2019,01,10,22,58,00));
+        Operation op6 = oService.createOperation(user, element2, provider2, price2);
+        op6.setDescription("some desc");
+        op6.setCreateOn(LocalDateTime.of(2019,01,10,22,58,00));
         oService.addOperation(bu1.getId(), op1);
         oService.addOperation(bu1.getId(), op2);
         oService.addOperation(bu1.getId(), op3);
         oService.addOperation(bu1.getId(), op4);
+        oService.addOperation(bu1.getId(), op5);
+        oService.addOperation(bu1.getId(), op6);
 
         // budget 2
         provider1.setId(0);
@@ -98,10 +109,18 @@ public class MvcConfig implements WebMvcConfigurer {
         op3.setCreateOn(LocalDateTime.of(2018,03,12,12,22,00));
         op4 = oService.createOperation(user, element2, provider2, price2);
         op4.setCreateOn(LocalDateTime.of(2019,01,10,22,59,00));
+        op5 = oService.createOperation(user, element2, provider2, price2);
+        op5.setDescription("some desc");
+        op5.setCreateOn(LocalDateTime.of(2019,01,10,22,58,00));
+        op6 = oService.createOperation(user, element2, provider2, price2);
+        op6.setDescription("some desc");
+        op6.setCreateOn(LocalDateTime.of(2019,01,10,22,58,00));
         oService.addOperation(bu2.getId(), op1);
         oService.addOperation(bu2.getId(), op2);
         oService.addOperation(bu2.getId(), op3);
         oService.addOperation(bu2.getId(), op4);
+        oService.addOperation(bu2.getId(), op5);
+        oService.addOperation(bu2.getId(), op6);
 
         System.out.println("=============== MvcConfig#init");
         System.out.println(user);

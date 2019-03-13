@@ -9,4 +9,8 @@ public interface MyStringFormatter {
     String formatNumberByLocale(long userId, BigDecimal amount);
 
     String formatDateByLocale(long userId, LocalDateTime date);
+
+    String formatOnlyDateByLocale(long userId, LocalDateTime date);
+
+    String formatOnlyTimeByLocale(long userId, LocalDateTime date);
 }

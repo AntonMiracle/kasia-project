@@ -40,4 +40,18 @@ public class MyStringFormatterImp implements MyStringFormatter {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE HH:mm", user.getLocale());
         return date.format(f);
     }
+
+    @Override
+    public String formatOnlyDateByLocale(long userId, LocalDateTime date) {
+        User user = uService.findUserById(userId);
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE", user.getLocale());
+        return date.format(f);
+    }
+
+    @Override
+    public String formatOnlyTimeByLocale(long userId, LocalDateTime date) {
+        User user = uService.findUserById(userId);
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm", user.getLocale());
+        return date.format(f);
+    }
 }
