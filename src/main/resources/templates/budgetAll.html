@@ -15,7 +15,7 @@
             <th colspan="3" th:text="#{title.budgetAll}"></th>
         </tr>
         <tr th:each="ownBudget : ${allOwnBudgets}"
-            th:class="button"
+            th:class="button" th:id="whiteButton"
             th:onclick="'javascript:openBudget(\'' + ${ownBudget.id} + '\');'">
             <td th:text="${ownBudget.name}"></td>
             <td th:text="${myFormatter.formatNumberByLocale(user.id,ownBudget.balance.amount)}"></td>

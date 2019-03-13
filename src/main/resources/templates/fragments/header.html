@@ -6,7 +6,7 @@
 <div class="header" th:fragment="loginMenu">
     <div sec:authorize="isAnonymous()">
         <form th:action="@{/registration}" method="get">
-            <button class="button" type="submit" th:text="#{button.registration}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.registration}"></button>
         </form>
     </div>
 </div>
@@ -15,7 +15,7 @@
 <div class="header" th:fragment="registrationMenu">
     <div>
         <form th:action="@{/registration/back}">
-            <button class="button" type="submit" th:text="#{button.back}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.back}"></button>
         </form>
     </div>
 </div>
@@ -26,22 +26,22 @@
     <div th:class="idLabel" th:text="${user.email} +' ' + ${user.name}"></div>
     <div>
         <form th:action="@{/logout}" method="post">
-            <button class="button" type="submit" th:text="#{button.logout}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.logout}"></button>
         </form>
     </div>
     <div>
         <form th:action="@{/profile}">
-            <button class="button" type="submit" th:text="#{button.profile}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.profile}"></button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/all}">
-            <button class="button" type="submit" th:text="#{button.allBudget}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.allBudget}"></button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/add}">
-            <button class="button" type="submit" th:text="#{button.addBudget}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.addBudget}"></button>
         </form>
     </div>
 </div>
@@ -55,27 +55,27 @@
     + ' ' + ${budget.balance.currencies}"></div>
     <div>
         <form th:action="@{/budget/all}">
-            <button class="button" type="submit" th:text="#{button.back}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.back}"></button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget}">
-            <button class="button" type="submit" th:text="#{button.budget}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.budget}"></button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/operation}">
-            <button class="button" type="submit" th:text="#{button.operation}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.operation}"></button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/element}">
-            <button class="button" type="submit" th:text="#{button.element}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.element}"></button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/provider}">
-            <button class="button" type="submit" th:text="#{button.provider}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.provider}"></button>
         </form>
     </div>
 </div>
@@ -84,7 +84,7 @@
 <div class="header" th:fragment="errorPageMenu">
     <div>
         <form th:action="@{/login}">
-            <button class="button" type="submit" th:text="#{button.back}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.back}"></button>
         </form>
     </div>
 </div>

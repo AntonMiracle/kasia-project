@@ -11,26 +11,25 @@
     <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.Provider>"*/-->
     <table th:class="myTable" th:if="${providers.size() != 0}">
         <tr>
-            <th colspan="2" th:text="#{title.provider}"></th>
+            <th th:colspan="2" th:text="#{title.provider}"></th>
         </tr>
         <tr th:each="provider : ${providers}">
             <td th:class="myLabel" th:text="${provider.name}"></td>
             <td th:class="myLabel" th:text="${provider.description}"></td>
         </tr>
     </table>
-
     <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
     <table th:class="myTable" th:if="${elements.size() != 0}">
         <tr>
             <th colspan="2" th:text="#{title.element}"></th>
         </tr>
-        <tr th:each="element : ${elements}">
+        <tr th:each="element : ${elements}"
+            th:id="${element.type eq element.type.INCOME} ? operationIncome : operationConsumption">
             <td th:class="myLabel" th:text="${element.name}"></td>
             <td th:class="myLabel"
                 th:text="${element.type eq element.type.INCOME} ? #{label.income} : #{label.consumption}"></td>
         </tr>
     </table>
-
     <!--/*@thymesVar id="operations" type="java.util.Set<com.kasia.model.Operation>"*/-->
     <!--/*@thymesVar id="type" type="com.kasia.model.ElementType"*/-->
     <!--/*@thymesVar id="element" type="com.kasia.model.Element"*/-->
@@ -42,12 +41,13 @@
         <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
         <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
         <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
-        <tr th:each="operation : ${operations}">
+        <tr th:each="operation : ${operations}"
+            th:id="${operation.element.type eq operation.element.type.INCOME} ? operationIncome : operationConsumption">
             <td th:class="myLabel"
                 th:text="${operation.element.type eq operation.element.type.INCOME} ?
                 ${myFormatter.formatNumberByLocale(user.id,operation.price.amount)}
                 : ${myFormatter.formatNumberByLocale(true,user.id,operation.price.amount)}">
-                </td>
+            </td>
 
             <td th:class="myLabel" th:text="${operation.element.name}"></td>
             <td th:class="myLabel" th:text="${operation.provider.name}"></td>
@@ -55,8 +55,6 @@
             <td th:class="myLabel" th:text="${myFormatter.formatDateByLocale(user.id,operation.createOn)}"></td>
         </tr>
     </table>
-
-
 </div>
 </body>
 </html>
