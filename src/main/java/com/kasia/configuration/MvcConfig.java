@@ -2,7 +2,9 @@ package com.kasia.configuration;
 
 import com.kasia.controller.dto.OperationDTO;
 import com.kasia.model.*;
+import com.kasia.model.service.BalanceService;
 import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.OperationService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -26,9 +27,13 @@ public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private UserService uService;
     @Autowired
-    private BudgetService bService;
+    private BudgetService budgetService;
+    @Autowired
+    private OperationService oService;
+    @Autowired
+    private BalanceService balanceService;
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         User user = uService.createUser("anton@gmail.com", "Anton", "Password2",
                 "America/Atka", "pl", "PL");
@@ -38,37 +43,65 @@ public class MvcConfig implements WebMvcConfigurer {
         Budget bu1 = new Budget("Семейный Бюджет", ba1, LocalDateTime.now());
         Budget bu2 = new Budget("Anton Bond", ba2, LocalDateTime.now());
 
-        bService.saveBudget(bu1);
-        bService.saveBudget(bu2);
+        budgetService.saveBudget(bu1);
+        budgetService.saveBudget(bu2);
         uService.addBudget(user.getId(), bu1.getId());
         uService.addBudget(user.getId(), bu2.getId());
 
+        // budget 1
         Provider provider1 = new Provider("8minut", "some shop");
         Provider provider2 = new Provider("M111111", "supermarket");
+        Element element1 = new Element("food", new Price(BigDecimal.ZERO, bu1.getBalance().getCurrencies()), ElementType.CONSUMPTION);
+        Element element2 = new Element("food", new Price(BigDecimal.ZERO, bu1.getBalance().getCurrencies()), ElementType.INCOME);
+        Element element3 = new Element("salary", new Price(BigDecimal.TEN, bu1.getBalance().getCurrencies()), ElementType.INCOME);
 
-        bService.addProvider(bu1.getId(), provider1);
-        bService.addProvider(bu1.getId(), provider2);
+        budgetService.addProvider(bu1.getId(), provider1);
+        budgetService.addProvider(bu1.getId(), provider2);
+        budgetService.addElement(bu1.getId(), element1);
+        budgetService.addElement(bu1.getId(), element2);
+        budgetService.addElement(bu1.getId(), element3);
+
+        Price price1 = balanceService.createPrice(BigDecimal.valueOf(80.22), bu1.getBalance().getCurrencies());
+        Price price2 = balanceService.createPrice(BigDecimal.valueOf(1900), bu1.getBalance().getCurrencies());
+        Operation op1 = oService.createOperation(user, element1, provider1, price1);
+        Operation op2 = oService.createOperation(user, element2, provider2, price2);
+        Operation op3 = oService.createOperation(user, element1, provider1, price1);
+        op3.setCreateOn(LocalDateTime.of(2018,03,12,12,22,00));
+        Operation op4 = oService.createOperation(user, element2, provider2, price2);
+        op4.setCreateOn(LocalDateTime.of(2019,01,10,22,59,00));
+        oService.addOperation(bu1.getId(), op1);
+        oService.addOperation(bu1.getId(), op2);
+        oService.addOperation(bu1.getId(), op3);
+        oService.addOperation(bu1.getId(), op4);
+
+        // budget 2
         provider1.setId(0);
         provider2.setId(0);
-        bService.addProvider(bu2.getId(), provider1);
-        bService.addProvider(bu2.getId(), provider2);
-
-        Element element1 = new Element("food",new Price(BigDecimal.ZERO,bu1.getBalance().getCurrencies()),ElementType.CONSUMPTION);
-        Element element2 = new Element("food",new Price(BigDecimal.ZERO,bu1.getBalance().getCurrencies()),ElementType.INCOME);
-        Element element3 = new Element("salary",new Price(BigDecimal.TEN,bu1.getBalance().getCurrencies()),ElementType.INCOME);
-
-        bService.addElement(bu1.getId(),element1);
-        bService.addElement(bu1.getId(),element2);
-        bService.addElement(bu1.getId(),element3);
         element1.setId(0);
         element2.setId(0);
         element3.setId(0);
-        element1.setDefaultPrice(new Price(BigDecimal.ZERO,bu2.getBalance().getCurrencies()));
-        element2.setDefaultPrice(new Price(BigDecimal.ZERO,bu2.getBalance().getCurrencies()));
-        element3.setDefaultPrice(new Price(BigDecimal.ZERO,bu2.getBalance().getCurrencies()));
-        bService.addElement(bu2.getId(),element1);
-        bService.addElement(bu2.getId(),element2);
-        bService.addElement(bu2.getId(),element3);
+        element1.setDefaultPrice(new Price(BigDecimal.ZERO, bu2.getBalance().getCurrencies()));
+        element2.setDefaultPrice(new Price(BigDecimal.ZERO, bu2.getBalance().getCurrencies()));
+        element3.setDefaultPrice(new Price(BigDecimal.ZERO, bu2.getBalance().getCurrencies()));
+
+        budgetService.addProvider(bu2.getId(), provider1);
+        budgetService.addProvider(bu2.getId(), provider2);
+        budgetService.addElement(bu2.getId(), element1);
+        budgetService.addElement(bu2.getId(), element2);
+        budgetService.addElement(bu2.getId(), element3);
+
+        price1 = balanceService.createPrice(BigDecimal.valueOf(80.22), bu2.getBalance().getCurrencies());
+        price2 = balanceService.createPrice(BigDecimal.valueOf(1900), bu2.getBalance().getCurrencies());
+        op1 = oService.createOperation(user, element1, provider1, price1);
+        op2 = oService.createOperation(user, element2, provider2, price2);
+        op3 = oService.createOperation(user, element1, provider1, price1);
+        op3.setCreateOn(LocalDateTime.of(2018,03,12,12,22,00));
+        op4 = oService.createOperation(user, element2, provider2, price2);
+        op4.setCreateOn(LocalDateTime.of(2019,01,10,22,59,00));
+        oService.addOperation(bu2.getId(), op1);
+        oService.addOperation(bu2.getId(), op2);
+        oService.addOperation(bu2.getId(), op3);
+        oService.addOperation(bu2.getId(), op4);
 
         System.out.println("=============== MvcConfig#init");
         System.out.println(user);

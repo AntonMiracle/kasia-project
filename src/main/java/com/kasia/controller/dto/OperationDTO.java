@@ -2,6 +2,8 @@ package com.kasia.controller.dto;
 
 import com.kasia.controller.dto.validator.constraint.PriceAmountValid;
 
+import javax.validation.constraints.Size;
+
 @PriceAmountValid(priceFN = "price"
         , regex = "^\\d+|\\d+[.,]\\d+|\\d+[.,]|[.,]\\d+$"
         , message = "{validation.price.amount.error}")
@@ -12,6 +14,8 @@ public class OperationDTO {
     private long budgetId;
     private String price = "0";
     private boolean isStarted;
+    @Size(max = 250, message = "{validation.description.error}")
+    private String description = "";
 
     public OperationDTO() {
     }
@@ -25,6 +29,7 @@ public class OperationDTO {
                 ", budgetId=" + budgetId +
                 ", price='" + price + '\'' +
                 ", isStarted=" + isStarted +
+                ", description='" + description + '\'' +
                 '}';
     }
 
@@ -40,7 +45,8 @@ public class OperationDTO {
         if (userId != that.userId) return false;
         if (budgetId != that.budgetId) return false;
         if (isStarted != that.isStarted) return false;
-        return price != null ? price.equals(that.price) : that.price == null;
+        if (price != null ? !price.equals(that.price) : that.price != null) return false;
+        return description != null ? description.equals(that.description) : that.description == null;
     }
 
     @Override
@@ -51,6 +57,7 @@ public class OperationDTO {
         result = 31 * result + (int) (budgetId ^ (budgetId >>> 32));
         result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (isStarted ? 1 : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
 
@@ -110,5 +117,13 @@ public class OperationDTO {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
