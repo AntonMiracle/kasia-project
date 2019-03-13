@@ -39,18 +39,16 @@
                     <button class="button" type="submit" th:text="#{button.add}"></button>
                 </td>
             </tr>
+            <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.Provider>"*/-->
+            <div th:if="${providers.size() != 0}">
+                <tr th:each="provider : ${providers}">
+                    <td th:class="myLabel" th:text="${provider.name}"></td>
+                    <td th:class="myLabel" th:text="${provider.description}"></td>
+                </tr>
+            </div>
         </table>
     </form>
-    <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.Provider>"*/-->
-    <table th:class="myTable" th:if="${providers.size() != 0}">
-        <tr>
-            <th th:colspan="2" th:text="#{title.provider}"></th>
-        </tr>
-        <tr th:each="provider : ${providers}">
-            <td th:class="myLabel" th:text="${provider.name}"></td>
-            <td th:class="myLabel" th:text="${provider.description}"></td>
-        </tr>
-    </table>
+
 </div>
 </body>
 </html>

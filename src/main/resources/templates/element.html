@@ -49,20 +49,17 @@
                     <button class="button" type="submit" th:text="#{button.add}"></button>
                 </td>
             </tr>
+            <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
+            <div th:if="${elements.size() != 0}">
+                <tr th:each="element : ${elements}"
+                    th:id="${element.type eq element.type.INCOME} ? operationIncome : operationConsumption">
+                    <td th:class="myLabel" th:text="${element.name}"></td>
+                    <td th:class="myLabel"
+                        th:text="${element.type eq element.type.INCOME} ? #{label.income} : #{label.consumption}"></td>
+                </tr>
+            </div>
         </table>
     </form>
-    <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
-    <table th:class="myTable" th:if="${elements.size() != 0}">
-        <tr>
-            <th colspan="2" th:text="#{title.element}"></th>
-        </tr>
-        <tr th:each="element : ${elements}"
-            th:id="${element.type eq element.type.INCOME} ? operationIncome : operationConsumption">
-            <td th:class="myLabel" th:text="${element.name}"></td>
-            <td th:class="myLabel"
-                th:text="${element.type eq element.type.INCOME} ? #{label.income} : #{label.consumption}"></td>
-        </tr>
-    </table>
 </div>
 </body>
 </html>
