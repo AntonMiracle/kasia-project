@@ -14,7 +14,7 @@ public class OperationDTO {
     private long budgetId;
     private String price = "0";
     private boolean isStarted;
-    @Size(max = 250, message = "{validation.description.error}")
+    @Size(max = 10, message = "{validation.description.error}")
     private String description = "";
 
     public OperationDTO() {

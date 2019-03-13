@@ -112,9 +112,10 @@ public class OperationController {
         Element e = budgetService.findElementById(dto.getBudgetId(), dto.getElementId());
         User u = uService.findUserById(dto.getUserId());
         Budget b = budgetService.findBudgetById(dto.getBudgetId());
-        // operation validation test
+
         Price price = balanceService.createPrice(new BigDecimal(dto.getPrice()), b.getBalance().getCurrencies());
         Operation o = oService.createOperation(u, e, p, price);
+        o.setDescription(dto.getDescription());
 
         oService.addOperation(b.getId(), o);
         sessionController.setBudget(budgetService.findBudgetById(b.getId()));

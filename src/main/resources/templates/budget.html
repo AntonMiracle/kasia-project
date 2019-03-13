@@ -43,15 +43,14 @@
         <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
         <tr th:each="operation : ${operations}"
             th:id="${operation.element.type eq operation.element.type.INCOME} ? operationIncome : operationConsumption">
+            <td th:class="myLabel" th:text="${operation.element.name}"></td>
+            <td th:class="myLabel" th:text="${operation.provider.name}"></td>
             <td th:class="myLabel"
                 th:text="${operation.element.type eq operation.element.type.INCOME} ?
                 ${myFormatter.formatNumberByLocale(user.id,operation.price.amount)}
                 : ${myFormatter.formatNumberByLocale(true,user.id,operation.price.amount)}">
             </td>
-
-            <td th:class="myLabel" th:text="${operation.element.name}"></td>
-            <td th:class="myLabel" th:text="${operation.provider.name}"></td>
-            <td th:class="myLabel" th:text="${operation.provider.description}"></td>
+            <td th:class="myLabel" th:text="${operation.description}"></td>
             <td th:class="myLabel" th:text="${myFormatter.formatDateByLocale(user.id,operation.createOn)}"></td>
         </tr>
     </table>
