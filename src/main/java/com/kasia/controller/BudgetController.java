@@ -69,8 +69,18 @@ public class BudgetController {
     }
 
     @GetMapping(U_BUDGET_ALL)
-    public String openAllBudget() {
-        return V_BUDGET_ALL;
+    public String openAllBudget() {        return V_BUDGET_ALL;
+    }
+
+    @GetMapping(U_HOME)
+    public String openHome() {
+        if(uService.findOwnBudgets(sessionController.getUser().getId()).size()==1){
+            for(Budget b: uService.findOwnBudgets(sessionController.getUser().getId())){
+                sessionController.setBudget(b);
+            }
+            return redirect(U_BUDGET);
+        }
+        return redirect(U_BUDGET_ALL);
     }
 
     @PostMapping(U_BUDGET_SAVE)
