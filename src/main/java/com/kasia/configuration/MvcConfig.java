@@ -19,7 +19,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
-import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -34,7 +33,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private BalanceService balanceService;
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         User user = uService.createUser("anton@gmail.com", "Anton", "Password2",
                 "America/Atka", "pl", "PL");
