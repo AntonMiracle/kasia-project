@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,7 +72,6 @@ public class MyStringFormatterIT {
     @Test
     public void formatDateByLocale() {
         user.setCreateOn(LocalDateTime.of(2019,03,12,22,03));
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd EE HH:MM", user.getLocale());
-        assertThat(user.getCreateOn().format(f)).isEqualTo("2019-03-12 Tue 22:03");
+        assertThat(formatter.formatDateByLocale(user.getId(),user.getCreateOn())).isEqualTo("12-03-2019 Tue 22:03");
     }
 }
