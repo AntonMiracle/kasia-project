@@ -31,7 +31,8 @@
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="text" th:field="*{defaultPrice}" th:placeholder="#{tip.price.amount}"/></td>
+                <td th:colspan="2"><input type="text" th:field="*{defaultPrice}" th:placeholder="#{tip.price.amount}"/>
+                </td>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.category}"></td>
@@ -50,6 +51,18 @@
             </tr>
         </table>
     </form>
+    <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
+    <table th:class="myTable" th:if="${elements.size() != 0}">
+        <tr>
+            <th colspan="2" th:text="#{title.element}"></th>
+        </tr>
+        <tr th:each="element : ${elements}"
+            th:id="${element.type eq element.type.INCOME} ? operationIncome : operationConsumption">
+            <td th:class="myLabel" th:text="${element.name}"></td>
+            <td th:class="myLabel"
+                th:text="${element.type eq element.type.INCOME} ? #{label.income} : #{label.consumption}"></td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>
