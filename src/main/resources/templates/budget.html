@@ -9,31 +9,33 @@
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div id="mainContentWithoutMenu">
 
-    <!--/*@thymesVar id="operations" type="java.util.Set<com.kasia.model.Operation>"*/-->
-    <table th:class="myTable" th:if="${operations.size() != 0}">
-        <tr>
-            <th colspan="5" th:text="#{title.operation}"></th>
-        </tr>
-        <!--/*@thymesVar id="packageOperations" type="java.util.Map<java.time.LocalDateTime,java.util.Set<com.kasia.model.Operation>>"*/-->
-        <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
-        <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <!--/*@thymesVar id="weekOperationHistory" type="com.kasia.controller.dto.WeekOperationHistory"*/-->
+    <table th:class="myTable" th:if="${weekOperationHistory.isExist()}">
+        <form th:action="@{/budget/operation/week/previous}" method="get">
+            <button class="button" type="submit" th:text="#{button.previous}"></button>
+        </form>
+        <form th:action="@{/budget/operation/week/next}" method="get">
+            <button class="button" type="submit" th:text="#{button.next}"></button>
+        </form>
 
-        <div th:each="packageKey : ${packageOperations.keySet()}">
+        <div th:each="day : ${weekOperationHistory.current().keySet()}">
             <tr>
-                <th th:colspan="5" th:text="${myFormatter.formatOnlyDate(user.id, packageKey)}"></th>
+                <th th:colspan="5" th:text="${myFormatter.formatOnlyDate(user.id, day)}"></th>
             </tr>
-            <tr th:each="packageOperation : ${packageOperations.get(packageKey)}"
-                th:id="${packageOperation.element.type eq packageOperation.element.type.INCOME} ? operationIncome : operationConsumption">
-                <td th:class="myLabel" th:text="${packageOperation.element.name}"></td>
-                <td th:class="myLabel" th:text="${packageOperation.provider.name}"></td>
+            <tr th:each="dayOperation : ${weekOperationHistory.current().get(day)}"
+                th:id="${dayOperation.element.type eq dayOperation.element.type.INCOME} ? operationIncome : operationConsumption">
+                <td th:class="myLabel" th:text="${dayOperation.element.name}"></td>
+                <td th:class="myLabel" th:text="${dayOperation.provider.name}"></td>
                 <td th:class="myLabel"
-                    th:text="${packageOperation.element.type eq packageOperation.element.type.INCOME} ?
-                ${myFormatter.formatNumber(user.id,packageOperation.price.amount)}
-                : ${myFormatter.formatNumber(true,user.id,packageOperation.price.amount)}">
+                    th:text="${dayOperation.element.type eq dayOperation.element.type.INCOME} ?
+                ${myFormatter.formatNumber(user.id,dayOperation.price.amount)}
+                : ${myFormatter.formatNumber(true,user.id,dayOperation.price.amount)}">
                 </td>
-                <td th:class="myLabel" th:text="${packageOperation.description}"></td>
+                <td th:class="myLabel" th:text="${dayOperation.description}"></td>
                 <td th:class="myLabel"
-                    th:text="${myFormatter.formatOnlyTime(user.id,packageOperation.createOn)}"></td>
+                    th:text="${myFormatter.formatOnlyTime(user.id,dayOperation.createOn)}"></td>
             </tr>
         </div>
     </table>

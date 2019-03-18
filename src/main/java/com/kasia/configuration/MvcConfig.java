@@ -1,6 +1,7 @@
 package com.kasia.configuration;
 
 import com.kasia.controller.dto.OperationDTO;
+import com.kasia.controller.dto.WeekOperationHistory;
 import com.kasia.model.*;
 import com.kasia.model.service.BalanceService;
 import com.kasia.model.service.BudgetService;
@@ -71,23 +72,27 @@ public class MvcConfig implements WebMvcConfigurer {
         Operation op1 = oService.createOperation(user, element1, provider1, price1);
         Operation op2 = oService.createOperation(user, element2, provider2, price2);
         Operation op3 = oService.createOperation(user, element1, provider1, price1);
-        op3.setCreateOn(LocalDateTime.of(2018,03,12,12,22,00));
+        op3.setCreateOn(LocalDateTime.of(2018, 03, 12, 12, 22, 00));
         op3.setDescription("some text!@#!@##");
         Operation op4 = oService.createOperation(user, element2, provider2, price2);
         op4.setDescription("some desc");
-        op4.setCreateOn(LocalDateTime.of(2019,01,10,22,59,00));
+        op4.setCreateOn(LocalDateTime.of(2019, 01, 10, 22, 59, 00));
         Operation op5 = oService.createOperation(user, element2, provider2, price2);
         op5.setDescription("some desc");
-        op5.setCreateOn(LocalDateTime.of(2019,01,10,22,58,00));
+        op5.setCreateOn(LocalDateTime.of(2019, 01, 10, 22, 58, 00));
         Operation op6 = oService.createOperation(user, element2, provider2, price2);
         op6.setDescription("some desc");
-        op6.setCreateOn(LocalDateTime.of(2019,01,10,22,58,00));
+        op6.setCreateOn(LocalDateTime.of(2019, 01, 11, 22, 58, 00));
+        Operation op7 = oService.createOperation(user, element2, provider2, price2);
+        op7.setDescription("some desc");
+        op7.setCreateOn(LocalDateTime.of(2019, 01, 12, 22, 58, 00));
         oService.addOperation(bu1.getId(), op1);
         oService.addOperation(bu1.getId(), op2);
         oService.addOperation(bu1.getId(), op3);
         oService.addOperation(bu1.getId(), op4);
         oService.addOperation(bu1.getId(), op5);
         oService.addOperation(bu1.getId(), op6);
+        oService.addOperation(bu1.getId(), op7);
 
         // budget 2
         provider1.setId(0);
@@ -110,21 +115,25 @@ public class MvcConfig implements WebMvcConfigurer {
         op1 = oService.createOperation(user, element1, provider1, price1);
         op2 = oService.createOperation(user, element2, provider2, price2);
         op3 = oService.createOperation(user, element1, provider1, price1);
-        op3.setCreateOn(LocalDateTime.of(2018,03,12,12,22,00));
+        op3.setCreateOn(LocalDateTime.of(2018, 03, 12, 12, 22, 00));
         op4 = oService.createOperation(user, element2, provider2, price2);
-        op4.setCreateOn(LocalDateTime.of(2019,01,10,22,59,00));
+        op4.setCreateOn(LocalDateTime.of(2019, 01, 10, 22, 59, 00));
         op5 = oService.createOperation(user, element2, provider2, price2);
         op5.setDescription("some desc");
-        op5.setCreateOn(LocalDateTime.of(2019,01,10,22,58,00));
+        op5.setCreateOn(LocalDateTime.of(2019, 01, 10, 22, 58, 00));
         op6 = oService.createOperation(user, element2, provider2, price2);
         op6.setDescription("some desc");
-        op6.setCreateOn(LocalDateTime.of(2019,01,10,22,58,00));
+        op6.setCreateOn(LocalDateTime.of(2019, 01, 11, 22, 58, 00));
+        op7 = oService.createOperation(user, element2, provider2, price2);
+        op7.setDescription("some desc");
+        op7.setCreateOn(LocalDateTime.of(2019, 01, 12, 22, 58, 00));
         oService.addOperation(bu2.getId(), op1);
         oService.addOperation(bu2.getId(), op2);
         oService.addOperation(bu2.getId(), op3);
         oService.addOperation(bu2.getId(), op4);
         oService.addOperation(bu2.getId(), op5);
         oService.addOperation(bu2.getId(), op6);
+        oService.addOperation(bu2.getId(), op7);
 
         System.out.println("=============== MvcConfig#init");
         System.out.println(user);
@@ -173,4 +182,11 @@ public class MvcConfig implements WebMvcConfigurer {
     public OperationDTO sessionOperationDTO() {
         return new OperationDTO();
     }
+
+    @Bean
+    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public WeekOperationHistory sessionWeekOperationHistory() {
+        return new WeekOperationHistory();
+    }
+
 }

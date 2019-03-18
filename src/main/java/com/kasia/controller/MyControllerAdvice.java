@@ -1,5 +1,6 @@
 package com.kasia.controller;
 
+import com.kasia.controller.dto.WeekOperationHistory;
 import com.kasia.model.*;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.MyStringFormatter;
@@ -8,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 @ControllerAdvice
 public class MyControllerAdvice {
@@ -56,14 +58,10 @@ public class MyControllerAdvice {
         return result;
     }
 
-    @ModelAttribute("packageOperations")
-    public Map<LocalDateTime, Set<Operation>> getPackageOperations() {
-        Budget budget = sessionController.getBudget();
-        Set<Operation> operations = new TreeSet<>();
-        if (budget != null) operations.addAll(oService.findAllOperations(budget.getId()));
-        Map<LocalDateTime, Set<Operation>> result = new TreeMap<>();
-        if (operations.size() == 0) return result;
-        return operationController.packageByOperationDay(operations);
+    @ModelAttribute("weekOperationHistory")
+    public WeekOperationHistory getPackageOperations() {
+        sessionController.getWeekOperationHistory().start();
+        return sessionController.getWeekOperationHistory();
     }
 
     @ModelAttribute("myFormatter")

@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.*;
 
 import static com.kasia.controller.ViewNameAndControllerURL.*;
 
@@ -106,6 +104,22 @@ public class OperationController {
         }
     }
 
+    @GetMapping(U_OPERATION_WEEK_PREVIOUS)
+    public String previousWeek() {
+        if (sessionController.isBudgetOpen()) {
+            sessionController.getWeekOperationHistory().previous();
+            return V_BUDGET;
+        } else return redirect(V_BUDGET_ALL);
+    }
+
+    @GetMapping(U_OPERATION_WEEK_NEXT)
+    public String nextWeek() {
+        if (sessionController.isBudgetOpen()) {
+            sessionController.getWeekOperationHistory().next();
+            return V_BUDGET;
+        } else return redirect(V_BUDGET_ALL);
+    }
+
     @PostMapping(U_OPERATION_ADD)
     public String addOperation(@Valid @ModelAttribute OperationDTO dto, BindingResult bResult) {
         if (bResult.hasErrors()) return nextOperationField();
@@ -122,30 +136,6 @@ public class OperationController {
         oService.addOperation(b.getId(), o);
         sessionController.setBudget(budgetService.findBudgetById(b.getId()));
         return redirect(U_BUDGET);
-    }
-
-    public Map<LocalDateTime, Set<Operation>> packageByOperationDay(Set<Operation> toPackage) {
-        Map<LocalDateTime, Set<Operation>> result = new TreeMap<>(Collections.reverseOrder());
-        toPackage = new TreeSet<>(toPackage);
-        LocalDateTime from = null;
-        LocalDateTime to = null;
-        Set<Operation> dayOperations = new TreeSet<>();
-        for (Operation o : toPackage) {
-            LocalDateTime on = o.getCreateOn();
-            if (from == null) {
-                from = LocalDateTime.of(on.getYear(), on.getMonth(), on.getDayOfMonth(), 0, 0, 0, 0);
-                to = from.minusDays(1);
-                result.put(from, dayOperations);
-            }
-            if (on.compareTo(to) <= 0) {
-                from = LocalDateTime.of(on.getYear(), on.getMonth(), on.getDayOfMonth(), 0, 0, 0, 0);
-                to = from.minusDays(1);
-                dayOperations = new TreeSet<>();
-                result.put(from, dayOperations);
-            }
-            dayOperations.add(o);
-        }
-        return result;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.kasia.controller;
 
 import com.kasia.controller.dto.OperationDTO;
+import com.kasia.controller.dto.WeekOperationHistory;
 import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.service.UserService;
@@ -19,6 +20,8 @@ public class MySessionController {
     private Budget budget;
     @Resource(name = "sessionOperationDTO")
     private OperationDTO operationDTO;
+    @Resource(name = "sessionWeekOperationHistory")
+    private WeekOperationHistory weekOperationHistory;
 
     public User getUser() {
         return user;
@@ -51,5 +54,9 @@ public class MySessionController {
 
     public OperationDTO getOperationDTO() {
         return operationDTO;
+    }
+
+    public WeekOperationHistory getWeekOperationHistory() {
+        return weekOperationHistory;
     }
 }

@@ -12,7 +12,7 @@ public class OperationDTO {
     private long providerId;
     private long userId;
     private long budgetId;
-    private String price = "0";
+    private String price;
     private boolean isStarted;
     @Size(max = 64, message = "{validation.description.error}")
     private String description = "";

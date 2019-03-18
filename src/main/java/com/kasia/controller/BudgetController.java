@@ -6,6 +6,7 @@ import com.kasia.model.Currencies;
 import com.kasia.model.User;
 import com.kasia.model.service.BalanceService;
 import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.OperationService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,8 @@ public class BudgetController {
     private BalanceService balanceService;
     @Autowired
     private MySessionController sessionController;
+    @Autowired
+    private OperationService oService;
 
     @ModelAttribute("budgetDTO")
     public BudgetDTO getBudgetDTO() {
@@ -60,7 +63,11 @@ public class BudgetController {
 
     @GetMapping(U_BUDGET)
     public String openBudget() {
-        return sessionController.isBudgetOpen() ? V_BUDGET : redirect(U_BUDGET_ALL);
+        if (sessionController.isBudgetOpen()) {
+            sessionController.getWeekOperationHistory().create(oService.findAllOperations(sessionController.getBudget().getId()));
+            return V_BUDGET;
+        }
+        return redirect(U_BUDGET_ALL);
     }
 
     @GetMapping(U_BUDGET_ADD)
@@ -69,13 +76,14 @@ public class BudgetController {
     }
 
     @GetMapping(U_BUDGET_ALL)
-    public String openAllBudget() {        return V_BUDGET_ALL;
+    public String openAllBudget() {
+        return V_BUDGET_ALL;
     }
 
     @GetMapping(U_HOME)
     public String openHome() {
-        if(uService.findOwnBudgets(sessionController.getUser().getId()).size()==1){
-            for(Budget b: uService.findOwnBudgets(sessionController.getUser().getId())){
+        if (uService.findOwnBudgets(sessionController.getUser().getId()).size() == 1) {
+            for (Budget b : uService.findOwnBudgets(sessionController.getUser().getId())) {
                 sessionController.setBudget(b);
             }
             return redirect(U_BUDGET);
