@@ -12,15 +12,21 @@
     <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
     <!--/*@thymesVar id="weekOperationHistory" type="com.kasia.controller.dto.WeekOperationHistory"*/-->
-    <table th:class="myTable" th:if="${weekOperationHistory.isExist()}">
-        <form th:action="@{/budget/operation/week/previous}" method="get">
+    <table th:class="myTable">
+        <form th:if="${weekOperationHistory.isExist()}"
+              th:action="@{/budget/operation/week/previous}" method="get">
             <button class="button" type="submit" th:text="#{button.previous}"></button>
         </form>
-        <form th:action="@{/budget/operation/week/next}" method="get">
-            <button class="button" type="submit" th:text="#{button.next}"></button>
+        <form th:action="@{/budget/operation}" method="get">
+            <button class="button" type="submit" th:text="#{button.add}"></button>
         </form>
 
-        <div th:each="day : ${weekOperationHistory.current().keySet()}">
+        <form th:if="${weekOperationHistory.isExist()}"
+              th:action="@{/budget/operation/week/next}" method="get">
+            <button class="button" type="submit" th:text="#{button.next}"></button>
+        </form>
+        <div th:if="${weekOperationHistory.isExist()}"
+             th:each="day : ${weekOperationHistory.current().keySet()}">
             <tr>
                 <th th:colspan="5" th:text="${myFormatter.formatOnlyDate(user.id, day)}"></th>
             </tr>
@@ -39,6 +45,17 @@
             </tr>
         </div>
     </table>
+    <script th:inline="javascript">
+        function nextWeek() {
+            location.href = "/budget/operation/week/next";
+        }
+        function previousWeek() {
+            location.href = "/budget/operation/week/previous";
+        }
+        function newOperation() {
+            location.href = "/budget/operation/week/previous";
+        }
+    </script>
 </div>
 </body>
 </html>
