@@ -4,7 +4,7 @@ import com.kasia.exception.CurrenciesNotEqualsRuntimeException;
 import com.kasia.exception.IntervalRuntimeException;
 import com.kasia.model.*;
 import com.kasia.model.repository.BudgetOperationRepository;
-import com.kasia.model.repository.ElementProviderRepository;
+import com.kasia.model.repository.ProviderRepository;
 import com.kasia.model.repository.ElementRepository;
 import com.kasia.model.repository.OperationRepository;
 import com.kasia.model.service.BalanceService;
@@ -28,7 +28,7 @@ public class OperationServiceImp implements OperationService {
     @Autowired
     private ElementRepository eRepository;
     @Autowired
-    private ElementProviderRepository epRepository;
+    private ProviderRepository epRepository;
     @Autowired
     private UserService uService;
     @Autowired
@@ -135,7 +135,7 @@ public class OperationServiceImp implements OperationService {
     }
 
     @Override
-    public Set<Operation> findOperationsByElementProvider(long budgetId, long providerId) {
+    public Set<Operation> findOperationsByProvider(long budgetId, long providerId) {
         Provider provider = epRepository.findById(providerId).orElse(null);
         Set<Operation> result = new HashSet<>();
         if (provider == null) return result;

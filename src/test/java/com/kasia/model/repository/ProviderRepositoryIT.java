@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class ProviderRepositoryIT {
     @Autowired
-    private ElementProviderRepository repository;
+    private ProviderRepository repository;
 
     @After
     public void cleanData() {

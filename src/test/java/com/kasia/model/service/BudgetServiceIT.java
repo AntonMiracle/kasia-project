@@ -29,7 +29,7 @@ public class BudgetServiceIT {
     @Autowired
     private ElementRepository eRepository;
     @Autowired
-    private ElementProviderRepository epRepository;
+    private ProviderRepository epRepository;
     @Autowired
     private UserService uService;
     @Autowired

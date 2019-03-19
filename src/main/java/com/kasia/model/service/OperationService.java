@@ -21,7 +21,7 @@ public interface OperationService {
 
     Set<Operation> findOperationsByElement(long budgetId, long elementId);
 
-    Set<Operation> findOperationsByElementProvider(long budgetId, long providerId);
+    Set<Operation> findOperationsByProvider(long budgetId, long providerId);
 
     Set<Operation> findOperationsBetweenDates(long budgetId, LocalDateTime from, LocalDateTime to) throws IntervalRuntimeException;
 

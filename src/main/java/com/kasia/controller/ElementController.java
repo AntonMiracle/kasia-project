@@ -54,6 +54,6 @@ public class ElementController {
         Element element = new Element(dto.getName(), price, ElementType.valueOf(dto.getType()));
         bService.addElement(budget.getId(), element);
 
-        return redirect(U_BUDGET);
+        return redirect(U_ELEMENT);
     }
 }

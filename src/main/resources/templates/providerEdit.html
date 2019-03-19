@@ -9,23 +9,13 @@
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div id="mainContentWithoutMenu">
     <!--/*@thymesVar id="providerDTO" type="com.kasia.controller.dto.ProviderDTO"*/-->
-    <form th:action="@{/budget/provider/add}" th:object="${providerDTO}" method="post">
-        <table th:class="myTable">
+
+    <table th:class="myTable">
+        <form th:action="@{/budget/provider/update}" th:object="${providerDTO}" method="post">
             <tr>
-                <th colspan="2" th:text="#{title.provider}"></th>
+                <th colspan="2" th:text="#{title.edit}"></th>
             </tr>
             <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.Provider>"*/-->
-            <div th:if="${providers.size() != 0}">
-                <tr th:each="provider : ${providers}"
-                    th:class="button" th:id="whiteButton"
-                    th:onclick="'javascript:editProvider(\'' + ${provider.id} + '\');'">
-                    <td th:class="myLabel" th:text="${provider.name}"></td>
-                    <td th:class="myLabel" th:text="${provider.description}"></td>
-                </tr>
-            </div>
-            <tr>
-                <th th:colspan="2" th:text="#{title.new}"></th>
-            </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>
                 <td th:class="myLabelError"
@@ -46,18 +36,25 @@
                 <td th:colspan="2"><input type="text" th:field="*{description}"/>
                 </td>
             </tr>
+
             <tr>
                 <td th:colspan="2" th:class="withButton">
-                    <button class="button" type="submit" th:text="#{button.add}"></button>
+                    <button class="button" type="submit" th:text="#{button.update}"></button>
                 </td>
             </tr>
-        </table>
-    </form>
-    <script th:inline="javascript">
-        function editProvider(value) {
-            location.href = "/budget/provider/edit/" + value;
-        }
-    </script>
+            <input type="hidden" th:value="*{oldName}" name="oldName"/>
+            <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
+        </form>
+        <form th:action="@{/budget/provider/delete}" th:object="${providerDTO}" method="post">
+            <tr th:if="*{canBeDeleted}">
+                <td th:colspan="2" th:class="withButton">
+                    <button class="button" type="submit" th:text="#{button.delete}"></button>
+                </td>
+            </tr>
+            <input type="hidden" th:value="*{oldName}" name="oldName"/>
+        </form>
+    </table>
+
 </div>
 </body>
 </html>

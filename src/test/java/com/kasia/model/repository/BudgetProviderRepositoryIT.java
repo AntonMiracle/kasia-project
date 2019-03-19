@@ -21,7 +21,7 @@ public class BudgetProviderRepositoryIT {
     @Autowired
     private BudgetElementProviderRepository repository;
     @Autowired
-    private ElementProviderRepository providerRepository;
+    private ProviderRepository providerRepository;
     @Autowired
     private BudgetRepository budgetRepository;
 

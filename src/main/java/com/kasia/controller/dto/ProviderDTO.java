@@ -1,7 +1,7 @@
 package com.kasia.controller.dto;
 
-import com.kasia.controller.dto.validator.constraint.ProviderNameValid;
 import com.kasia.controller.dto.validator.constraint.DescriptionValid;
+import com.kasia.controller.dto.validator.constraint.ProviderNameValid;
 
 @ProviderNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
 @DescriptionValid(stringFN = "description", max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.description.error}")
@@ -9,25 +9,15 @@ public class ProviderDTO {
     private String name;
     private String description;
     private long budgetId;
+    private String oldName;
+    private boolean canBeDeleted;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ProviderDTO that = (ProviderDTO) o;
-
-        if (budgetId != that.budgetId) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        return description != null ? description.equals(that.description) : that.description == null;
+    public boolean isDelete() {
+        return delete;
     }
 
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (int) (budgetId ^ (budgetId >>> 32));
-        return result;
+    public void setDelete(boolean delete) {
+        this.delete = delete;
     }
 
     @Override
@@ -36,7 +26,28 @@ public class ProviderDTO {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", budgetId=" + budgetId +
+                ", oldName='" + oldName + '\'' +
+                ", canBeDeleted=" + canBeDeleted +
+                ", delete=" + delete +
                 '}';
+    }
+
+    private boolean delete;
+
+    public boolean isCanBeDeleted() {
+        return canBeDeleted;
+    }
+
+    public void setCanBeDeleted(boolean canBeDeleted) {
+        this.canBeDeleted = canBeDeleted;
+    }
+
+    public String getOldName() {
+        return oldName;
+    }
+
+    public void setOldName(String oldName) {
+        this.oldName = oldName;
     }
 
     public String getName() {

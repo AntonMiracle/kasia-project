@@ -8,6 +8,7 @@ public final class ViewNameAndControllerURL {
     public static final String V_BUDGET_ALL = "budgetAll";
     public static final String V_BUDGET = "budget";
     public static final String V_PROVIDER = "provider";
+    public static final String V_PROVIDER_EDIT = "providerEdit";
     public static final String V_ELEMENT = "element";
     public static final String V_OPERATION = "operation";
 
@@ -34,6 +35,9 @@ public final class ViewNameAndControllerURL {
     public static final String U_ELEMENT_ADD = U_ELEMENT + "/add";
     public static final String U_PROVIDER = U_BUDGET + "/provider";
     public static final String U_PROVIDER_ADD = U_PROVIDER + "/add";
+    public static final String U_PROVIDER_EDIT = U_PROVIDER + "/edit";
+    public static final String U_PROVIDER_UPDATE = U_PROVIDER + "/update";
+    public static final String U_PROVIDER_DELETE = U_PROVIDER + "/delete";
     public static final String U_HOME = "/home";
 
     public static String redirect(String url) {

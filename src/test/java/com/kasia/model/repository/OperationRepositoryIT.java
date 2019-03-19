@@ -24,7 +24,7 @@ public class OperationRepositoryIT {
     @Autowired
     private ElementRepository elementRepository;
     @Autowired
-    private ElementProviderRepository providerRepository;
+    private ProviderRepository providerRepository;
     @Autowired
     private UserRepository userRepository;
 

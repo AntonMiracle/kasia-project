@@ -22,7 +22,7 @@ public class BudgetServiceImp implements BudgetService {
     @Autowired
     private ElementRepository eRepository;
     @Autowired
-    private ElementProviderRepository epRepository;
+    private ProviderRepository epRepository;
     @Autowired
     private BudgetElementRepository beRepository;
     @Autowired

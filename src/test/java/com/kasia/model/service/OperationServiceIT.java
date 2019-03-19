@@ -3,7 +3,7 @@ package com.kasia.model.service;
 import com.kasia.ModelTestData;
 import com.kasia.model.*;
 import com.kasia.model.repository.BudgetOperationRepository;
-import com.kasia.model.repository.ElementProviderRepository;
+import com.kasia.model.repository.ProviderRepository;
 import com.kasia.model.repository.ElementRepository;
 import com.kasia.model.repository.OperationRepository;
 import org.junit.After;
@@ -26,7 +26,7 @@ public class OperationServiceIT {
     @Autowired
     private ElementRepository eRepository;
     @Autowired
-    private ElementProviderRepository epRepository;
+    private ProviderRepository epRepository;
     @Autowired
     private UserService uService;
     @Autowired
@@ -258,9 +258,9 @@ public class OperationServiceIT {
         oService.addOperation(budget.getId(), op2);
         oService.addOperation(budget.getId(), op3);
 
-        assertThat(oService.findOperationsByElementProvider(budget.getId(), provider1.getId()).size() == 2).isTrue();
-        assertThat(oService.findOperationsByElementProvider(0, 0).size() == 0).isTrue();
-        assertThat(oService.findOperationsByElementProvider(-1, -1).size() == 0).isTrue();
+        assertThat(oService.findOperationsByProvider(budget.getId(), provider1.getId()).size() == 2).isTrue();
+        assertThat(oService.findOperationsByProvider(0, 0).size() == 0).isTrue();
+        assertThat(oService.findOperationsByProvider(-1, -1).size() == 0).isTrue();
 
     }
 
