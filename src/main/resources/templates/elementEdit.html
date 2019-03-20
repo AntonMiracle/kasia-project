@@ -9,28 +9,16 @@
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div id="mainContentWithoutMenu">
     <!--/*@thymesVar id="elementDTO" type="com.kasia.controller.dto.ElementDTO"*/-->
-    <form th:action="@{/budget/element/add}" th:object="${elementDTO}" method="post">
-        <table th:class="myTable">
+
+    <table th:class="myTable">
+        <form th:action="@{/budget/element/update}" th:object="${elementDTO}" method="post">
             <tr>
-                <th colspan="2" th:text="#{title.element}"></th>
-            </tr>
-            <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
-            <div th:if="${elements.size() != 0}">
-                <tr th:each="element : ${elements}"
-                    th:class="button" th:id="whiteButton"
-                    th:onclick="'javascript:editElement(\'' + ${element.id} + '\');'">
-                    <td th:class="myLabel" th:text="${element.name}"></td>
-                    <td th:class="myLabel"
-                        th:text="${element.type eq element.type.INCOME} ? #{label.income} : #{label.consumption}"></td>
-                </tr>
-            </div>
-            <tr>
-                <th th:colspan="2" th:text="#{title.new}"></th>
+                <th th:colspan="2" th:text="#{title.edit}"></th>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>
                 <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('name')}"
+                    th:if="${#fields.hasErrors('name') and (name != oldName)}"
                     th:errors="*{name}">
                 </td>
             <tr>
@@ -58,17 +46,21 @@
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2" th:class="withButton">
-                    <button class="button" type="submit" th:text="#{button.add}"></button>
+                <td th:colspan="*{canBeDeleted} ? 1 : 2" th:class="withButton">
+                    <button class="button" type="submit" th:text="#{button.update}"></button>
                 </td>
+                <input type="hidden" th:value="*{id}" name="id"/>
+                <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
+        </form>
+        <form th:action="@{/budget/element/delete}" th:object="${elementDTO}" method="post">
+                <td th:if="*{canBeDeleted}" th:class="withButton">
+                    <button class="button" type="submit" th:text="#{button.delete}"></button>
+                </td>
+            <input type="hidden" th:value="*{id}" name="id"/>
             </tr>
-        </table>
-    </form>
-    <script th:inline="javascript">
-        function editElement(value) {
-            location.href = "/budget/element/edit/" + value;
-        }
-    </script>
+        </form>
+    </table>
+
 </div>
 </body>
 </html>

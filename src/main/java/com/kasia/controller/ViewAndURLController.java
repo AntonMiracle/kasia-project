@@ -1,6 +1,6 @@
 package com.kasia.controller;
 
-public final class ViewNameAndControllerURL {
+public final class ViewAndURLController {
     public static final String V_PROFILE = "profile";
     public static final String V_LOGIN = "login";
     public static final String V_REGISTRATION = "registration";
@@ -10,6 +10,7 @@ public final class ViewNameAndControllerURL {
     public static final String V_PROVIDER = "provider";
     public static final String V_PROVIDER_EDIT = "providerEdit";
     public static final String V_ELEMENT = "element";
+    public static final String V_ELEMENT_EDIT = "elementEdit";
     public static final String V_OPERATION = "operation";
 
     public static final String U_ROOT = "/";
@@ -33,6 +34,9 @@ public final class ViewNameAndControllerURL {
     public static final String U_OPERATION_WEEK_PREVIOUS = U_OPERATION_WEEK + "/previous";
     public static final String U_ELEMENT = U_BUDGET + "/element";
     public static final String U_ELEMENT_ADD = U_ELEMENT + "/add";
+    public static final String U_ELEMENT_EDIT = U_ELEMENT + "/edit";
+    public static final String U_ELEMENT_UPDATE = U_ELEMENT + "/update";
+    public static final String U_ELEMENT_DELETE = U_ELEMENT + "/delete";
     public static final String U_PROVIDER = U_BUDGET + "/provider";
     public static final String U_PROVIDER_ADD = U_PROVIDER + "/add";
     public static final String U_PROVIDER_EDIT = U_PROVIDER + "/edit";

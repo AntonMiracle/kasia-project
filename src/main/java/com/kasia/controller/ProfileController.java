@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import javax.validation.Validator;
 
-import static com.kasia.controller.ViewNameAndControllerURL.*;
+import static com.kasia.controller.ViewAndURLController.*;
 
 @Controller
 public class ProfileController {

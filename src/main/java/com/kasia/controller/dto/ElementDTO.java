@@ -3,7 +3,7 @@ package com.kasia.controller.dto;
 import com.kasia.controller.dto.validator.constraint.ElementNameValid;
 import com.kasia.controller.dto.validator.constraint.PriceAmountValid;
 
-@ElementNameValid(nameFN = "name", typeFN = "type",min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
+@ElementNameValid(nameFN = "name", typeFN = "type", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
 @PriceAmountValid(priceFN = "defaultPrice"
         , regex = "^\\d+|\\d+[.,]\\d+|\\d+[.,]|[.,]\\d+$"
         , message = "{validation.price.amount.error}")
@@ -13,6 +13,9 @@ public class ElementDTO {
     private String type;
     private long budgetId;
     private String currency;
+    private boolean canBeDeleted;
+    private long id;
+    private String oldName;
 
     @Override
     public String toString() {
@@ -22,7 +25,18 @@ public class ElementDTO {
                 ", type='" + type + '\'' +
                 ", budgetId=" + budgetId +
                 ", currency='" + currency + '\'' +
+                ", canBeDeleted=" + canBeDeleted +
+                ", id=" + id +
+                ", oldName='" + oldName + '\'' +
                 '}';
+    }
+
+    public String getOldName() {
+        return oldName;
+    }
+
+    public void setOldName(String oldName) {
+        this.oldName = oldName;
     }
 
     public String getName() {
@@ -65,28 +79,20 @@ public class ElementDTO {
         this.currency = currency;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ElementDTO that = (ElementDTO) o;
-
-        if (budgetId != that.budgetId) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (defaultPrice != null ? !defaultPrice.equals(that.defaultPrice) : that.defaultPrice != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        return currency != null ? currency.equals(that.currency) : that.currency == null;
+    public boolean isCanBeDeleted() {
+        return canBeDeleted;
     }
 
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (defaultPrice != null ? defaultPrice.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (int) (budgetId ^ (budgetId >>> 32));
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        return result;
+    public void setCanBeDeleted(boolean canBeDeleted) {
+        this.canBeDeleted = canBeDeleted;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public ElementDTO() {

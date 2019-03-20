@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 
-import static com.kasia.controller.ViewNameAndControllerURL.*;
+import static com.kasia.controller.ViewAndURLController.*;
 
 @Controller
 public class OperationController {

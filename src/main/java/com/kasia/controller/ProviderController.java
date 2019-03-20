@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
-import static com.kasia.controller.ViewNameAndControllerURL.*;
+import static com.kasia.controller.ViewAndURLController.*;
 
 @Controller
 public class ProviderController {
