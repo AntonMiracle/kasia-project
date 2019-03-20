@@ -38,16 +38,14 @@
             </tr>
 
             <tr>
-                <td th:colspan="2" th:class="withButton">
+                <td th:colspan="*{canBeDeleted} ? 1 : 2" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.update}"></button>
                 </td>
-            </tr>
-            <input type="hidden" th:value="*{oldName}" name="oldName"/>
-            <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
+                <input type="hidden" th:value="*{oldName}" name="oldName"/>
+                <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
         </form>
         <form th:action="@{/budget/provider/delete}" th:object="${providerDTO}" method="post">
-            <tr th:if="*{canBeDeleted}">
-                <td th:colspan="2" th:class="withButton">
+                <td th:if="*{canBeDeleted}" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.delete}"></button>
                 </td>
             </tr>
