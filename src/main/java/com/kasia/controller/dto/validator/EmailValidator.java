@@ -1,13 +1,13 @@
 package com.kasia.controller.dto.validator;
 
-import com.kasia.controller.dto.validator.constraint.UserEmailValid;
+import com.kasia.controller.dto.validator.constraint.EmailValid;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UserEmailValidator implements ConstraintValidator<UserEmailValid, Object> {
+public class EmailValidator implements ConstraintValidator<EmailValid, Object> {
     private boolean nullable;
     private String emailFN;
     private int min;
@@ -15,11 +15,11 @@ public class UserEmailValidator implements ConstraintValidator<UserEmailValid, O
     private String regex;
     private boolean makeTrim;
     @Autowired
-    private UserService uService;
+    private UserService userS;
     private ValidatorUtil vUtil = new ValidatorUtil();
 
     @Override
-    public void initialize(UserEmailValid ca) {
+    public void initialize(EmailValid ca) {
         emailFN = ca.emailFN();
         min = ca.min();
         max = ca.max();
@@ -36,7 +36,7 @@ public class UserEmailValidator implements ConstraintValidator<UserEmailValid, O
         if (makeTrim) value = value.trim().replaceAll("[ ]+", "");
         vUtil.setStringValue(o, emailFN, value);
 
-        if (!isEmailValid(value) || !uService.isUserEmailUnique(value)) {
+        if (!isEmailValid(value) || !userS.isEmailUnique(value)) {
             vUtil.addConstraintViolation(emailFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
             return false;
         }

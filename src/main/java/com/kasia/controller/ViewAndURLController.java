@@ -12,6 +12,7 @@ public final class ViewAndURLController {
     public static final String V_ELEMENT = "element";
     public static final String V_ELEMENT_EDIT = "elementEdit";
     public static final String V_OPERATION = "operation";
+    public static final String V_HOME = "home";
 
     public static final String U_ROOT = "/";
     public static final String U_LOGIN = "/login";
@@ -23,6 +24,7 @@ public final class ViewAndURLController {
     public static final String U_BUDGET_ALL = U_BUDGET + "/all";
     public static final String U_BUDGET_SAVE = U_BUDGET + "/save";
     public static final String U_REGISTRATION = "/registration";
+    public static final String U_REGISTRATION_BACK = U_REGISTRATION + "/back";
     public static final String U_OPERATION = U_BUDGET + "/operation";
     public static final String U_OPERATION_PICK = U_OPERATION + "/pick";
     public static final String U_OPERATION_PICK_PROVIDER = U_OPERATION_PICK + "/provider";
@@ -48,5 +50,4 @@ public final class ViewAndURLController {
         if (url.startsWith("/")) return "redirect:" + url;
         throw new RuntimeException("url name not exist");
     }
-
 }

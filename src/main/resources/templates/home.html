@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/base_head :: base_head"></div>
+    <title th:text="#{title.budgetAll}"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: mainMenu"></div>
+<div id="mainContentWithoutMenu">
+    <!--/*@thymesVar id="ownBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+    <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <table th:class="myTable" th:if="${ownBudgets.size() != 0}">
+        <tr>
+            <th colspan="3" th:text="#{title.budgetAll}"></th>
+        </tr>
+        <tr th:each="ownBudget : ${ownBudgets}"
+            th:class="button" th:id="whiteButton"
+            th:onclick="'javascript:openBudget(\'' + ${ownBudget.id} + '\');'">
+            <td th:text="${ownBudget.name}"></td>
+
+            <td th:text="${myFormatter.formatNumber(user.id,ownBudget.balance.amount)}"></td>
+            <td th:text="${ownBudget.balance}"></td>
+        </tr>
+    </table>
+    <script th:inline="javascript">
+        function openBudget(value) {
+            location.href = "/budget/open/" + value;
+        }
+    </script>
+</div>
+</body>
+</html>

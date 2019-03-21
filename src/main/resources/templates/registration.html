@@ -6,11 +6,16 @@
     <title th:text="#{title.registration}"></title>
 </head>
 <body>
-<div th:insert="fragments/header :: registrationMenu"></div>
-
+<div class="header">
+    <div>
+        <form th:action="@{/registration/back}">
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.back}"></button>
+        </form>
+    </div>
+</div>
 <div id="mainContentWithoutMenu">
-    <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
-    <form th:action="@{/registration}" th:object="${userDTO}" method="post">
+    <!--/*@thymesVar id="registration" type="com.kasia.controller.dto.Registration"*/-->
+    <form th:action="@{/registration}" th:object="${registration}" method="post">
         <table th:class="myTable">
             <tr>
                 <th th:colspan="3" th:text="#{title.registration}"></th>
@@ -43,17 +48,6 @@
             <tr>
                 <td th:colspan="2"><input type="password" th:field="*{confirm}"/></td>
             </tr>
-
-            <tr>
-                <td th:class="myLabel" th:text="#{label.name}"></td>
-                <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('name')}"
-                    th:errors="*{name}"></td>
-            </tr>
-            <tr>
-                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
-            </tr>
-
             <tr>
                 <td th:class="withButton" th:colspan="2">
                     <button class="button" type="submit" th:text="#{button.complete}"></button>

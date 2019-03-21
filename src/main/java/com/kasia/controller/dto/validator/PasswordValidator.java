@@ -1,11 +1,11 @@
 package com.kasia.controller.dto.validator;
 
-import com.kasia.controller.dto.validator.constraint.UserPasswordValid;
+import com.kasia.controller.dto.validator.constraint.PasswordValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UserPasswordValidator implements ConstraintValidator<UserPasswordValid, Object> {
+public class PasswordValidator implements ConstraintValidator<PasswordValid, Object> {
     private String passwordFN;
     private int min;
     private int max;
@@ -13,7 +13,7 @@ public class UserPasswordValidator implements ConstraintValidator<UserPasswordVa
     private ValidatorUtil vUtil = new ValidatorUtil();
 
     @Override
-    public void initialize(UserPasswordValid ca) {
+    public void initialize(PasswordValid ca) {
         passwordFN = ca.passwordFN();
         min = ca.min();
         max = ca.max();

@@ -15,8 +15,6 @@ public class User implements Model {
     private long id;
     @Column(unique = true)
     private String email;
-    @Column(unique = true)
-    private String name;
     private String password;
     private ZoneId zoneId;
     private LocalDateTime createOn;
@@ -26,18 +24,17 @@ public class User implements Model {
     @Convert(converter = LocaleAttributeConverter.class)
     private Locale locale;
 
-    public User() {
-    }
-
-    public User(String email, String name, String password, ZoneId zoneId, LocalDateTime createOn, Role role, boolean isActivated, Locale locale) {
+    public User(String email, String password, Role role, LocalDateTime createOn, boolean activated, ZoneId zoneId, Locale locale) {
         this.email = email;
-        this.name = name;
         this.password = password;
         this.zoneId = zoneId;
         this.createOn = createOn;
+        this.activated = activated;
         this.role = role;
-        this.activated = isActivated;
         this.locale = locale;
+    }
+
+    public User() {
     }
 
     @Override
@@ -50,7 +47,6 @@ public class User implements Model {
         if (id != user.id) return false;
         if (activated != user.activated) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (zoneId != null ? !zoneId.equals(user.zoneId) : user.zoneId != null) return false;
         if (createOn != null ? !createOn.equals(user.createOn) : user.createOn != null) return false;
@@ -62,7 +58,6 @@ public class User implements Model {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (zoneId != null ? zoneId.hashCode() : 0);
         result = 31 * result + (createOn != null ? createOn.hashCode() : 0);
@@ -77,7 +72,6 @@ public class User implements Model {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", zoneId=" + zoneId +
                 ", createOn=" + createOn +
@@ -87,20 +81,20 @@ public class User implements Model {
                 '}';
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {
@@ -125,14 +119,6 @@ public class User implements Model {
 
     public void setCreateOn(LocalDateTime createOn) {
         this.createOn = createOn;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public boolean isActivated() {

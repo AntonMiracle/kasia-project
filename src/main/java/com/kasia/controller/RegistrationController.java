@@ -1,51 +1,44 @@
 package com.kasia.controller;
 
-import com.kasia.controller.dto.UserDTO;
-import com.kasia.model.User;
+import com.kasia.controller.dto.Registration;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 
 import static com.kasia.controller.ViewAndURLController.*;
 
 @Controller
-@EnableAutoConfiguration
-@RequestMapping(U_REGISTRATION)
 public class RegistrationController {
     @Autowired
-    private UserService uService;
+    private MySessionController sessionC;
+    @Autowired
+    private UserService userS;
 
-    @ModelAttribute("userDTO")
-    public UserDTO getNewUserDTO() {
-        return new UserDTO();
+    @ModelAttribute("registration")
+    public Registration getRegistration() {
+        return new Registration();
     }
 
-    @GetMapping
+    @GetMapping(U_REGISTRATION)
     public String openRegistration() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth.getName().equals("anonymousUser")) return V_REGISTRATION;
-        return redirect(U_LOGIN);
+        return sessionC.isUserLogin() ? redirect(U_HOME) : V_REGISTRATION;
     }
 
-    @GetMapping("/back")
+    @GetMapping(U_REGISTRATION_BACK)
     public String backToLogin() {
         return redirect(U_LOGIN);
     }
 
-    @PostMapping
-    public String finishRegistration(@Valid @ModelAttribute UserDTO dto, BindingResult bResult) {
+    @PostMapping(U_REGISTRATION)
+    public String registration(@Valid @ModelAttribute Registration registration, BindingResult bResult) {
         if (bResult.hasErrors()) return V_REGISTRATION;
-
-        User user = uService.createUser(dto.getEmail(), dto.getName(), dto.getPassword()
-                , dto.getZoneId(), dto.getLang(), dto.getCountry());
-        uService.saveUser(user);
+        userS.save(userS.convert(registration));
         return redirect(U_LOGIN + "?registration");
     }
 }

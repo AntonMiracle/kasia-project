@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class MyStringFormatterImp implements MyStringFormatter {
     @Autowired
-    private UserService uService;
+    private UserService userS;
 
     @Override
     public String formatNumber(boolean makeNegative, long userId, BigDecimal amount) {
@@ -29,7 +29,7 @@ public class MyStringFormatterImp implements MyStringFormatter {
 
     @Override
     public String formatNumber(long userId, BigDecimal amount) {
-        User user = uService.findUserById(userId);
+        User user = userS.findById(userId);
         NumberFormat formatter = NumberFormat.getInstance(user.getLocale());
         formatter.setMaximumFractionDigits(2);
         formatter.setRoundingMode(RoundingMode.HALF_UP);
@@ -38,23 +38,23 @@ public class MyStringFormatterImp implements MyStringFormatter {
 
     @Override
     public String formatFullDate(long userId, LocalDateTime date) {
-        User user = uService.findUserById(userId);
+        User user = userS.findById(userId);
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE HH:mm", user.getLocale());
-        return convert(date,user.getZoneId()).format(f);
+        return convert(date, user.getZoneId()).format(f);
     }
 
     @Override
     public String formatOnlyDate(long userId, LocalDateTime date) {
-        User user = uService.findUserById(userId);
+        User user = userS.findById(userId);
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE", user.getLocale());
-        return convert(date,user.getZoneId()).format(f);
+        return convert(date, user.getZoneId()).format(f);
     }
 
     @Override
     public String formatOnlyTime(long userId, LocalDateTime date) {
-        User user = uService.findUserById(userId);
+        User user = userS.findById(userId);
         DateTimeFormatter f = DateTimeFormatter.ofPattern("HH:mm", user.getLocale());
-        return convert(date,user.getZoneId()).format(f);
+        return convert(date, user.getZoneId()).format(f);
     }
 
     private ZonedDateTime convert(LocalDateTime date, ZoneId zoneId) {

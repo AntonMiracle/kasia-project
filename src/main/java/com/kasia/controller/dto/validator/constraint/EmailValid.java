@@ -1,6 +1,6 @@
 package com.kasia.controller.dto.validator.constraint;
 
-import com.kasia.controller.dto.validator.UserEmailValidator;
+import com.kasia.controller.dto.validator.EmailValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UserEmailValidator.class)
-public @interface UserEmailValid {
+@Constraint(validatedBy = EmailValidator.class)
+public @interface EmailValid {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
