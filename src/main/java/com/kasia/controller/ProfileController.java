@@ -1,6 +1,6 @@
 package com.kasia.controller;
 
-import com.kasia.controller.dto.UserDTO;
+import com.kasia.controller.dto.Profile;
 import com.kasia.model.User;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,61 +12,72 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import javax.validation.Validator;
+import java.time.DateTimeException;
+import java.time.ZoneId;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 import static com.kasia.controller.ViewAndURLController.*;
 
 @Controller
 public class ProfileController {
     @Autowired
-    private MySessionController sessionController;
+    private MySessionController sessionC;
     @Autowired
-    private UserService uService;
-    @Autowired
-    private Validator validator;
+    private UserService userS;
 
-    @ModelAttribute("userDTO")
-    public UserDTO getUserDTO() {
-        User user = sessionController.getUser();
-        UserDTO dto = new UserDTO();
-        dto.setEmail(user.getEmail());
-        dto.setName(user.getName());
-        dto.setCountry(user.getLocale().getCountry());
-        dto.setLang(user.getLocale().getLanguage());
-        dto.setZoneId(user.getZoneId().toString());
-        return dto;
+    @ModelAttribute("profile")
+    public Profile getProfile() {
+        Profile profile = new Profile();
+        profile.setUserId(sessionC.getUser().getId());
+        return profile;
     }
 
     @GetMapping(U_PROFILE)
     public String openProfile() {
-        return V_PROFILE;
+        return sessionC.isUserLogin() ? V_PROFILE : redirect(U_LOGIN);
     }
 
     @PostMapping(U_PROFILE_UPDATE)
-    public String updateProfile(Model model, @Valid @ModelAttribute UserDTO dto, BindingResult bResult) {
-        User user = sessionController.getUser();
-        boolean isAnyChanges = false;
-        if (validator.validate(dto).stream().filter(cv -> cv.getPropertyPath().toString().equals("password")).count() == 0
-                && validator.validate(dto).stream().filter(cv -> cv.getPropertyPath().toString().equals("confirm")).count() == 0) {
-            user.setPassword(uService.cryptPassword(dto.getPassword()));
-            isAnyChanges = true;
-            model.addAttribute("updatePass", "passUpdate");
+    public String updateProfile(Model model, @Valid @ModelAttribute Profile dto, BindingResult bResult) {
+        User user = sessionC.getUser();
+        if ((dto.getPassword().length() > 0 || dto.getConfirm().length() > 0) && !bResult.hasErrors()) {
+            user.setPassword(userS.cryptPassword(dto.getPassword()));
+            dto.setPasswordUpdated(true);
+            userS.save(user);
         }
-        if (dto.isUpdateZone() && dto.getZoneId().length() > 0) {
-            user.setZoneId(uService.zoneIdOf(dto.getZoneId()));
-            isAnyChanges = true;
-            dto.setUpdateZone(false);
-            model.addAttribute("updateZoneId", "zoneIdUpdate");
+        if (dto.isUpdateZone()) {
+            try {
+                user.setZoneId(ZoneId.of(dto.getZoneId()));
+                userS.save(user);
+                dto.setUpdateZone(false);
+                dto.setZoneIdUpdated(true);
+            } catch (DateTimeException ex) {
+            }
         }
-        if (dto.isUpdateLocale() && dto.getLang().length() > 0 && dto.getCountry().length() > 0) {
-            user.setLocale(uService.localeOf(dto.getLang(), dto.getCountry()));
-            isAnyChanges = true;
-            dto.setUpdateLocale(false);
-            model.addAttribute("updateLocale", "localeUpdate");
+        if (dto.isUpdateLocale()) {
+            try {
+                Locale locale = new Locale(dto.getLang(), dto.getCountry());
+                if (availableLocales().contains(locale)) {
+                    user.setLocale(locale);
+                    userS.save(user);
+                    dto.setUpdateLocale(false);
+                    dto.setLocaleUpdated(true);
+                }
+            } catch (NullPointerException ex) {
+            }
         }
-        if (isAnyChanges) {
-            uService.saveUser(user);
-        }
+        model.addAttribute("profile", dto);
         return openProfile();
+    }
+
+    private Set<Locale> availableLocales() {
+        Set<Locale> locales = new HashSet<>();
+        for (Locale locale : Locale.getAvailableLocales()) {
+            if (locale.getLanguage().length() > 0 && locale.getCountry().length() > 0)
+                locales.add(locale);
+        }
+        return locales;
     }
 }

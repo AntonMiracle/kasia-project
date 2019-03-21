@@ -33,6 +33,10 @@ public class MvcConfig implements WebMvcConfigurer {
     public void init() {
         User user1 = new User("anton@gmail.com", "Password2", Role.USER, LocalDateTime.now(), true, ZoneId.systemDefault(), Locale.getDefault());
         User user2 = new User("anton2@gmail.com", "Password2", Role.USER, LocalDateTime.now(), true, ZoneId.systemDefault(), Locale.getDefault());
+        user1.setZoneId(ZoneId.of("America/Atka"));
+        user2.setZoneId(ZoneId.of("America/Atka"));
+        user1.setLocale(new Locale("zh", "HK"));
+        user2.setLocale(new Locale("zh", "HK"));
         userS.save(user1);
         userS.save(user2);
         Balance balance1 = new Balance(BigDecimal.TEN, Currencies.USD.name(),LocalDateTime.now());

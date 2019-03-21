@@ -67,7 +67,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User save(User user) {
-        user.setPassword(cryptPassword(user.getPassword()));
+        if (user.getId() == 0) {
+            user.setPassword(cryptPassword(user.getPassword()));
+        }
         return userR.save(user);
     }
 

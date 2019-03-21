@@ -7,28 +7,23 @@
 </head>
 <body>
 <div th:replace="fragments/header :: mainMenu"></div>
-<div id="mainContentWithoutMenu">
-    <!--/*@thymesVar id="userDTO" type="com.kasia.controller.dto.UserDTO"*/-->
-    <!--/*@thymesVar id="updatePass" type="java.lang.String"*/-->
-    <!--/*@thymesVar id="updateLocale" type="java.lang.String"*/-->
-    <!--/*@thymesVar id="updateZoneId" type="java.lang.String"*/-->
-    <form th:action="@{/profile/update}" th:object="${userDTO}" method="post">
+<div th:id="mainContentWithoutMenu">
+
+    <!--/*@thymesuserIdr id="updatePass" type="java.lang.String"*/-->
+    <!--/*@thymesuserIdr id="updateLocale" type="java.lang.String"*/-->
+    <!--/*@thymesuserIdr id="updateZoneId" type="java.lang.String"*/-->
+    <!--/*@thymesVar id="profile" type="com.kasia.controller.dto.Profile"*/-->
+
+    <form th:action="@{/profile/update}" th:object="${profile}" method="post">
         <table th:class="myTable">
             <tr>
                 <th th:colspan="2" th:text="#{title.profile}"></th>
             </tr>
-            <tr>
-                <td th:class="myLabel" th:text="#{label.email}"></td>
-                <td th:class="myLabel" th:text="${userDTO.email}"></td>
-            </tr>
-            <tr>
-                <td th:class="myLabel" th:text="#{label.name}"></td>
-                <td th:class="myLabel" th:text="${userDTO.name}"></td>
-            </tr>
+
             <tr>
                 <td th:class="myLabel" th:text="#{label.password.new}"></td>
                 <td th:class="myLabelSuccess"
-                    th:if="${updatePass} eq 'passUpdate'"
+                    th:if="*{passwordUpdated}"
                     th:text="#{text.password.update}">
                 </td>
                 <td th:class="myLabelError"
@@ -52,7 +47,7 @@
             <tr>
                 <td th:class="myLabel" th:text="#{label.locale.update}"></td>
                 <td colspan="2" th:class="myLabelSuccess"
-                    th:if="${updateLocale} eq 'localeUpdate'"
+                    th:if="*{localeUpdated}"
                     th:text="#{text.locale.update}">
                 </td>
             </tr>
@@ -62,7 +57,7 @@
             <tr>
                 <td th:class="myLabel" th:text="#{label.zoneid.update}"></td>
                 <td colspan="2" th:class="myLabelSuccess"
-                    th:if="${updateZoneId} eq 'zoneIdUpdate'"
+                    th:if="*{zoneIdUpdated}"
                     th:text="#{text.zone.update}"></td>
             </tr>
             <tr>
