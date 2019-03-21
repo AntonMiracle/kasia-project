@@ -1,15 +1,16 @@
 package com.kasia.model.service.imp;
 
-import com.kasia.model.*;
-import com.kasia.model.repository.*;
+import com.kasia.model.Budget;
+import com.kasia.model.User;
+import com.kasia.model.UserBudget;
+import com.kasia.model.repository.BudgetRepository;
+import com.kasia.model.repository.UserBudgetRepository;
 import com.kasia.model.service.BudgetService;
-import com.kasia.model.service.OperationService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -18,237 +19,50 @@ import java.util.Set;
 @Transactional
 public class BudgetServiceImp implements BudgetService {
     @Autowired
-    private BudgetRepository bRepository;
+    private UserService userS;
     @Autowired
-    private ElementRepository eRepository;
+    private BudgetRepository budgetR;
     @Autowired
-    private ProviderRepository epRepository;
-    @Autowired
-    private BudgetElementRepository beRepository;
-    @Autowired
-    private BudgetElementProviderRepository bepRepository;
-    @Autowired
-    private UserService uService;
-    @Autowired
-    private OperationRepository oRepository;
-    @Autowired
-    private BudgetOperationRepository boRepository;
-    @Autowired
-    private OperationService oService;
+    private UserBudgetRepository userBudgetR;
 
     @Override
-    public Budget saveBudget(Budget model) {
-        return bRepository.save(model);
-    }
+    public boolean setOwner(long budgetId, long userId) {
+        User owner = userS.findById(userId);
+        Budget budget = findById(budgetId);
 
-    @Override
-    public boolean deleteBudget(long id) {
-        Budget model = findBudgetById(id);
-        if (model == null) return false;
-        warningDeleteAllInBudget(model);
-
-        bRepository.delete(model);
-        return true;
-    }
-
-    private void warningDeleteAllInBudget(Budget budget) {
-        Set<Operation> operations = oService.findAllOperations(budget.getId());
-        boRepository.findByBudgetId(budget.getId()).ifPresent(boRepository::delete);
-        operations.forEach(oRepository::delete);
-
-        Set<Element> elements = findAllElements(budget.getId());
-        beRepository.findByBudgetId(budget.getId()).ifPresent(beRepository::delete);
-        elements.forEach(eRepository::delete);
-
-        Set<Provider> providers = findAllProviders(budget.getId());
-        bepRepository.findByBudgetId(budget.getId()).ifPresent(bepRepository::delete);
-        providers.forEach(epRepository::delete);
-
-        uService.findConnectUsers(budget.getId()).forEach(user -> uService.removeBudget(user.getId(), budget.getId()));
-    }
-
-    @Override
-    public Budget findBudgetById(long id) {
-        if (id <= 0) return null;
-        Optional<Budget> budget = bRepository.findById(id);
-        return budget.orElse(null);
-    }
-
-    @Override
-    public Set<Budget> findAllBudgets() {
-        Set<Budget> budgets = new HashSet<>();
-        bRepository.findAll().forEach(budgets::add);
-        return budgets;
-    }
-
-    @Override
-    public Budget createBudget(String name, Balance balance) {
-        Budget b = new Budget(name, balance, LocalDateTime.now().withNano(0));
-        return b;
-    }
-
-    @Override
-    public Element findElementById(long budgetId, long elementId) {
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
-
-        if (budgetId > 0 && optional.isPresent()) {
-            for (Element element : optional.get().getElements()) {
-                if (element.getId() == elementId) return element;
-            }
+        if (budget != null && owner != null) {
+            UserBudget result = userBudgetR.findByUserId(owner.getId()).orElse(new UserBudget());
+            if (result.getUser() == null) result.setUser(owner);
+            result.getBudgets().add(budget);
+            userBudgetR.save(result);
+            System.out.println(result);
+            return true;
         }
 
-        return null;
+        return false;
     }
 
     @Override
-    public Set<Element> findElementByName(long budgetId, String name) {
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
-        Set<Element> result = new HashSet<>();
-
-        if (budgetId > 0 && optional.isPresent()) {
-            for (Element element : optional.get().getElements()) {
-                if (element.getName().equals(name)) {
-                    result.add(element);
-                    if (result.size() == 2) return result;
-                }
-            }
-        }
+    public Set<Budget> findOwnBudgets(long userId) {
+        Set<Budget> result = new HashSet<>();
+        Optional<UserBudget> userBudget = userBudgetR.findByUserId(userId);
+        userBudget.ifPresent(userBudget1 -> userBudget1.getBudgets().forEach(result::add));
         return result;
     }
 
     @Override
-    public boolean isElementNameUnique(long budgetId, String elementName) {
-        if (elementName == null) return false;
-
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
-
-        if (!optional.isPresent() || optional.get().getElements().size() == 0) return true;
-        long countExist = optional.get().getElements()
-                .stream()
-                .filter(element -> element.getName().equals(elementName))
-                .count();
-        return countExist == 0;
+    public Budget findById(long budgetId) {
+        return budgetR.findById(budgetId).orElse(null);
     }
 
     @Override
-    public boolean addElement(long budgetId, Element element) {
-        Budget budget = findBudgetById(budgetId);
-        if (element == null || budget == null) return false;
-
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budget.getId());
-
-        BudgetElement be = optional.orElseGet(() -> new BudgetElement(budget, new HashSet<>()));
-
-        eRepository.save(element);
-        be.getElements().add(element);
-
-        beRepository.save(be);
-
-        return be.getElements().contains(element);
+    public boolean isOwnBudgetNameUnique(long userId, String name) {
+        Set<Budget> ownBudgets = findOwnBudgets(userId);
+        return ownBudgets.stream().filter(b -> b.getName().equals(name)).count() == 0;
     }
 
     @Override
-    public boolean removeElement(long budgetId, long elementId) {
-        Element element = eRepository.findById(elementId).orElse(null);
-
-        if (element == null) return false;
-
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
-
-        if (!optional.isPresent() || !optional.get().getElements().contains(element)) return false;
-
-        optional.get().getElements().remove(element);
-        eRepository.delete(element);
-
-        beRepository.save(optional.get());
-
-        return !optional.get().getElements().contains(element);
-    }
-
-    @Override
-    public Set<Element> findAllElements(long budgetId) {
-        Optional<BudgetElement> optional = beRepository.findByBudgetId(budgetId);
-        return optional.map(BudgetElement::getElements).orElseGet(HashSet::new);
-    }
-
-    @Override
-    public boolean isProviderUnique(long budgetId, String providerName) {
-        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
-
-        if (providerName == null) return false;
-
-        if (!optional.isPresent() || optional.get().getProviders().size() == 0) return true;
-        long countExist = optional.get().getProviders()
-                .stream()
-                .filter(provider -> provider.getName().equals(providerName))
-                .count();
-        return countExist == 0;
-    }
-
-    @Override
-    public Provider findProviderById(long budgetId, long providerId) {
-        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
-
-        if (optional.isPresent()) {
-            for (Provider provider : optional.get().getProviders()) {
-                if (provider.getId() == providerId) return provider;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public Provider findProviderByName(long budgetId, String name) {
-        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
-
-        if (optional.isPresent()) {
-            for (Provider provider : optional.get().getProviders()) {
-                if (provider.getName().equals(name)) return provider;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public boolean addProvider(long budgetId, Provider provider) {
-        if (budgetId <= 0 || provider == null) return false;
-
-        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
-
-        BudgetProvider bep = optional
-                .orElseGet(() ->
-                        new BudgetProvider(findBudgetById(budgetId), new HashSet<>()));
-
-        if (!isProviderUnique(budgetId, provider.getName())) return false;
-
-        epRepository.save(provider);
-        bep.getProviders().add(provider);
-
-        bepRepository.save(bep);
-
-        return bep.getProviders().contains(provider);
-    }
-
-    @Override
-    public boolean removeProvider(long budgetId, long providerId) {
-        Optional<BudgetProvider> optionalBEP = bepRepository.findByBudgetId(budgetId);
-        Provider provider = epRepository.findById(providerId).orElse(null);
-
-        if (!optionalBEP.isPresent() || !optionalBEP.get().getProviders().contains(provider)) return false;
-
-        optionalBEP.get().getProviders().remove(provider);
-        epRepository.delete(provider);
-
-        bepRepository.save(optionalBEP.get());
-
-        return !optionalBEP.get().getProviders().contains(provider);
-    }
-
-    @Override
-    public Set<Provider> findAllProviders(long budgetId) {
-        Optional<BudgetProvider> optional = bepRepository.findByBudgetId(budgetId);
-        return optional.map(BudgetProvider::getProviders).orElseGet(HashSet::new);
+    public Budget save(Budget budget) {
+        return budgetR.save(budget);
     }
 }

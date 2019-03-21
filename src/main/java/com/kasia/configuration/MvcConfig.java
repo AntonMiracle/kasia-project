@@ -1,7 +1,7 @@
 package com.kasia.configuration;
 
-import com.kasia.model.Role;
-import com.kasia.model.User;
+import com.kasia.model.*;
+import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
@@ -25,6 +26,8 @@ import java.util.Locale;
 public class MvcConfig implements WebMvcConfigurer {
     @Autowired
     private UserService userS;
+    @Autowired
+    private BudgetService budgetS;
 
     @PostConstruct
     public void init() {
@@ -32,6 +35,15 @@ public class MvcConfig implements WebMvcConfigurer {
         User user2 = new User("anton2@gmail.com", "Password2", Role.USER, LocalDateTime.now(), true, ZoneId.systemDefault(), Locale.getDefault());
         userS.save(user1);
         userS.save(user2);
+        Balance balance1 = new Balance(BigDecimal.TEN, Currencies.USD.name(),LocalDateTime.now());
+        Balance balance2 = new Balance(BigDecimal.valueOf(-100.2), Currencies.USD.name(),LocalDateTime.now());
+        Budget budget1 = new Budget("budget name 1", balance1,LocalDateTime.now());
+        Budget budget2 = new Budget("budget name 2", balance2,LocalDateTime.now());
+        budgetS.save(budget1);
+        budgetS.save(budget2);
+        budgetS.setOwner(budget1.getId(), user1.getId());
+        budgetS.setOwner(budget2.getId(), user1.getId());
+
     }
 
     @Bean/* config i18n to get error msg from messages.properties*/

@@ -2,10 +2,8 @@ package com.kasia.model.service.imp;
 
 import com.kasia.controller.MySessionController;
 import com.kasia.controller.dto.Registration;
-import com.kasia.model.Budget;
 import com.kasia.model.Role;
 import com.kasia.model.User;
-import com.kasia.model.UserBudget;
 import com.kasia.model.repository.UserBudgetRepository;
 import com.kasia.model.repository.UserRepository;
 import com.kasia.model.service.UserService;
@@ -21,7 +19,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Locale;
 
 @Service
 @Transactional
@@ -39,8 +38,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User findById(long id) {
-        return userR.findById(id).orElse(null);
+    public User findById(long userId) {
+        return userR.findById(userId).orElse(null);
     }
 
     @Override
@@ -72,15 +71,6 @@ public class UserServiceImp implements UserService {
         return userR.save(user);
     }
 
-    @Override
-    public Set<Budget> findOwnBudgets(long userId) {
-        Set<Budget> result = new HashSet<>();
-        Optional<UserBudget> userBudget = userBudgetR.findByUserId(userId);
-        if (userBudget.isPresent()) {
-            userBudget.get().getBudgets().forEach(result::add);
-        }
-        return result;
-    }
 
     @Override
     public boolean isEmailUnique(String email) {

@@ -1,7 +1,7 @@
 package com.kasia.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -12,7 +12,7 @@ public class UserBudget implements Model {
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<Budget> budgets;
+    private Set<Budget> budgets = new HashSet<>();
 
     public UserBudget(User user, Set<Budget> budgets) {
         this.user = user;

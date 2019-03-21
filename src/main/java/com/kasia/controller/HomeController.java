@@ -1,7 +1,7 @@
 package com.kasia.controller;
 
 import com.kasia.model.Budget;
-import com.kasia.model.service.UserService;
+import com.kasia.model.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +15,13 @@ import static com.kasia.controller.ViewAndURLController.*;
 @Controller
 public class HomeController {
     @Autowired
-    private UserService userS;
+    private BudgetService budgetS;
     @Autowired
     private MySessionController sessionC;
 
     @ModelAttribute("ownBudgets")
     public Set<Budget> getBudgets() {
-        return sessionC.isUserLogin() ? userS.findOwnBudgets(sessionC.getUser().getId()) : new HashSet<>();
+        return sessionC.isUserLogin() ? budgetS.findOwnBudgets(sessionC.getUser().getId()) : new HashSet<>();
     }
 
     @GetMapping(U_HOME)

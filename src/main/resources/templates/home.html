@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:insert="fragments/base_head :: base_head"></div>
-    <title th:text="#{title.budgetAll}"></title>
+    <title th:text="#{title.home}"></title>
 </head>
 <body>
 <div th:replace="fragments/header :: mainMenu"></div>
@@ -21,7 +21,7 @@
             <td th:text="${ownBudget.name}"></td>
 
             <td th:text="${myFormatter.formatNumber(user.id,ownBudget.balance.amount)}"></td>
-            <td th:text="${ownBudget.balance}"></td>
+            <td th:text="${ownBudget.balance.currency}"></td>
         </tr>
     </table>
     <script th:inline="javascript">
