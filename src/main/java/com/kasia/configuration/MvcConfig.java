@@ -39,10 +39,10 @@ public class MvcConfig implements WebMvcConfigurer {
         user2.setLocale(new Locale("zh", "HK"));
         userS.save(user1);
         userS.save(user2);
-        Balance balance1 = new Balance(BigDecimal.TEN, Currencies.USD.name(),LocalDateTime.now());
-        Balance balance2 = new Balance(BigDecimal.valueOf(-100.2), Currencies.USD.name(),LocalDateTime.now());
-        Budget budget1 = new Budget("budget name 1", balance1,LocalDateTime.now());
-        Budget budget2 = new Budget("budget name 2", balance2,LocalDateTime.now());
+        Balance balance1 = new Balance(BigDecimal.TEN, Currencies.USD.name(), LocalDateTime.now());
+        Balance balance2 = new Balance(BigDecimal.valueOf(-100.2), Currencies.USD.name(), LocalDateTime.now());
+        Budget budget1 = new Budget("budget name 1", balance1, LocalDateTime.now());
+        Budget budget2 = new Budget("budget name 2", balance2, LocalDateTime.now());
         budgetS.save(budget1);
         budgetS.save(budget2);
         budgetS.setOwner(budget1.getId(), user1.getId());
@@ -76,12 +76,12 @@ public class MvcConfig implements WebMvcConfigurer {
     /*==================================
     Session models
      ==================================*/
-//    @Bean
-//    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-//    public Budget sessionBudget() {
-//        return new Budget();
-//    }
-//
+    @Bean
+    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public Budget sessionBudget() {
+        return new Budget();
+    }
+
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public User sessionUser() {

@@ -1,5 +1,6 @@
 package com.kasia.controller;
 
+import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.service.MyStringFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ public class MyControllerAdvice {
     @ModelAttribute("user")
     public User getUser() {
         return sessionC.getUser();
+    }
+
+    @ModelAttribute("budget")
+    public Budget getBudget() {
+        return sessionC.getBudget();
     }
 
     @ModelAttribute("myFormatter")

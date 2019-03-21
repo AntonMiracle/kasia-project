@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -48,6 +49,29 @@ public class BudgetController {
         Budget budget = budgetS.save(budgetS.convert(dto));
         budgetS.setOwner(budget.getId(), user.getId());
 
+        return redirect(U_MAIN);
+    }
+
+    @GetMapping(U_BUDGET_OPEN + "/{id}")
+    public String openBudget(@PathVariable long id) {
+        if (sessionC.isUserLogin()) {
+            User user = sessionC.getUser();
+            Budget budget = budgetS.findById(id);
+            if (user != null && budget != null) {
+                if (budgetS.findOwnBudgets(user.getId()).contains(budget)) {
+                    sessionC.setBudget(budget);
+                    return redirect(U_BUDGET);
+                }
+            }
+        }
+        return redirect(U_MAIN);
+    }
+
+    @GetMapping(U_BUDGET)
+    public String openBudget() {
+        if (sessionC.isBudgetOpen()) {
+            return V_BUDGET;
+        }
         return redirect(U_MAIN);
     }
 }
