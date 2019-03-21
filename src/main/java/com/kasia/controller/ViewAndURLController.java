@@ -12,7 +12,7 @@ public final class ViewAndURLController {
     public static final String V_ELEMENT = "element";
     public static final String V_ELEMENT_EDIT = "elementEdit";
     public static final String V_OPERATION = "operation";
-    public static final String V_HOME = "home";
+    public static final String V_MAIN = "main";
 
     public static final String U_ROOT = "/";
     public static final String U_LOGIN = "/login";
@@ -44,7 +44,7 @@ public final class ViewAndURLController {
     public static final String U_PROVIDER_EDIT = U_PROVIDER + "/edit";
     public static final String U_PROVIDER_UPDATE = U_PROVIDER + "/update";
     public static final String U_PROVIDER_DELETE = U_PROVIDER + "/delete";
-    public static final String U_HOME = "/home";
+    public static final String U_MAIN = "/main";
 
     public static String redirect(String url) {
         if (url.startsWith("/")) return "redirect:" + url;

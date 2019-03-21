@@ -13,8 +13,8 @@
         </form>
     </div>
 </div>
-<div id="mainContentWithoutMenu">
-    <!--/*@thymesVar id="registration" type="com.kasia.controller.dto.Registration"*/-->
+<div th:id="mainContentWithoutMenu">
+    <!--/*@thymesuserIdr id="registration" type="com.kasia.controller.dto.Registration"*/-->
     <form th:action="@{/registration}" th:object="${registration}" method="post">
         <table th:class="myTable">
             <tr>

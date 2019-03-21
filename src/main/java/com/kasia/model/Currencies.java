@@ -11,11 +11,11 @@ public enum Currencies {
 
     private final Currency currency;
 
-    Currencies(Currency currency){
+    Currencies(Currency currency) {
         this.currency = currency;
     }
 
-    public Currency getCurrency() {
+    public Currency currency() {
         return currency;
     }
 }

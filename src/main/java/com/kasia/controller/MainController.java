@@ -13,7 +13,7 @@ import java.util.Set;
 import static com.kasia.controller.ViewAndURLController.*;
 
 @Controller
-public class HomeController {
+public class MainController {
     @Autowired
     private BudgetService budgetS;
     @Autowired
@@ -24,8 +24,9 @@ public class HomeController {
         return sessionC.isUserLogin() ? budgetS.findOwnBudgets(sessionC.getUser().getId()) : new HashSet<>();
     }
 
-    @GetMapping(U_HOME)
+    @GetMapping(U_MAIN)
     public String openHome() {
-        return sessionC.isUserLogin() ? V_HOME : redirect(U_LOGIN);
+        return sessionC.isUserLogin() ? V_MAIN : redirect(U_LOGIN);
     }
+
 }

@@ -13,7 +13,7 @@ public class LoginController {
 
     @GetMapping({U_LOGIN, U_ROOT})
     public String openLogin() {
-        return sessionC.isUserLogin() ? redirect(U_HOME) : V_LOGIN;
+        return sessionC.isUserLogin() ? redirect(U_MAIN) : V_LOGIN;
     }
 
 }

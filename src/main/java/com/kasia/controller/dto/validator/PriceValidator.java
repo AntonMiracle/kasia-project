@@ -1,11 +1,11 @@
 package com.kasia.controller.dto.validator;
 
-import com.kasia.controller.dto.validator.constraint.PriceAmountValid;
+import com.kasia.controller.dto.validator.constraint.PriceValid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class PriceAmountValidator implements ConstraintValidator<PriceAmountValid, Object> {
+public class PriceValidator implements ConstraintValidator<PriceValid, Object> {
     private boolean nullable;
     private String priceFN;
     private int minL;
@@ -16,7 +16,7 @@ public class PriceAmountValidator implements ConstraintValidator<PriceAmountVali
     private ValidatorUtil vUtil = new ValidatorUtil();
 
     @Override
-    public void initialize(PriceAmountValid ca) {
+    public void initialize(PriceValid ca) {
         priceFN = ca.priceFN();
         minL = ca.minL();
         maxL = ca.maxL();

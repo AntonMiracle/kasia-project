@@ -27,7 +27,7 @@ public class RegistrationController {
 
     @GetMapping(U_REGISTRATION)
     public String openRegistration() {
-        return sessionC.isUserLogin() ? redirect(U_HOME) : V_REGISTRATION;
+        return sessionC.isUserLogin() ? redirect(U_MAIN) : V_REGISTRATION;
     }
 
     @GetMapping(U_REGISTRATION_BACK)

@@ -1,6 +1,6 @@
 package com.kasia.controller.dto.validator.constraint;
 
-import com.kasia.controller.dto.validator.PriceAmountValidator;
+import com.kasia.controller.dto.validator.PriceValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PriceAmountValidator.class)
-public @interface PriceAmountValid {
+@Constraint(validatedBy = PriceValidator.class)
+public @interface PriceValid {
     String message() default "";
 
     Class<?>[] groups() default {};

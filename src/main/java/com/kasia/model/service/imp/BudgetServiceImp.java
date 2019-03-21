@@ -1,5 +1,7 @@
 package com.kasia.model.service.imp;
 
+import com.kasia.controller.dto.BudgetAdd;
+import com.kasia.model.Balance;
 import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.UserBudget;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -35,7 +39,6 @@ public class BudgetServiceImp implements BudgetService {
             if (result.getUser() == null) result.setUser(owner);
             result.getBudgets().add(budget);
             userBudgetR.save(result);
-            System.out.println(result);
             return true;
         }
 
@@ -64,5 +67,11 @@ public class BudgetServiceImp implements BudgetService {
     @Override
     public Budget save(Budget budget) {
         return budgetR.save(budget);
+    }
+
+    @Override
+    public Budget convert(BudgetAdd budgetAdd) {
+        Balance balance = new Balance(new BigDecimal(budgetAdd.getPrice()), budgetAdd.getCurrency(), LocalDateTime.now());
+        return new Budget(budgetAdd.getName(), balance, LocalDateTime.now());
     }
 }

@@ -7,10 +7,10 @@
 </head>
 <body>
 <div th:insert="fragments/header :: mainMenu"></div>
-<div id="mainContentWithoutMenu">
-    <!--/*@thymesVar id="budgetDTO" type="com.kasia.controller.dto.BudgetDTO"*/-->
-    <!--/*@thymesVar id="currencies" type="com.kasia.model.Currencies"*/-->
-    <form th:action="@{/budget/save}" th:object="${budgetDTO}" method="post">
+<div th:id="mainContentWithoutMenu">
+    <!--/*@thymesuserIdr id="currencies" type="com.kasia.model.Currencies"*/-->
+    <!--/*@thymesVar id="budgetAdd" type="com.kasia.controller.dto.BudgetAdd"*/-->
+    <form th:action="@{/budget/save}" th:object="${budgetAdd}" method="post">
         <table th:class="myTable">
             <tr>
                 <th colspan="2" th:text="#{title.budget}"></th>
@@ -26,14 +26,14 @@
                 <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.price.amount}"></td>
+                <td th:class="myLabel" th:text="#{label.price.init}"></td>
                 <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('balanceInit')}"
-                    th:errors="*{balanceInit}">Error
+                    th:if="${#fields.hasErrors('price')}"
+                    th:errors="*{price}">Error
                 </td>
             </tr>
             <tr>
-                <td colspan="2"><input type="text" th:field="*{balanceInit}" th:placeholder="#{tip.price.amount}"/></td>
+                <td colspan="2"><input type="text" th:field="*{price}" th:placeholder="#{tip.price}"/></td>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.currency}"></td>

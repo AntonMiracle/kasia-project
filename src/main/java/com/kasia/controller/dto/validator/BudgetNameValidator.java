@@ -1,8 +1,7 @@
 package com.kasia.controller.dto.validator;
 
 import com.kasia.controller.dto.validator.constraint.BudgetNameValid;
-import com.kasia.model.User;
-import com.kasia.model.service.UserService;
+import com.kasia.model.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
@@ -16,7 +15,7 @@ public class BudgetNameValidator implements ConstraintValidator<BudgetNameValid,
     private String regex;
     private boolean makeTrim;
     @Autowired
-    private UserService uService;
+    private BudgetService budgetS;
     private ValidatorUtil vUtil = new ValidatorUtil();
 
     @Override
@@ -32,20 +31,14 @@ public class BudgetNameValidator implements ConstraintValidator<BudgetNameValid,
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext cvContext) {
         String value = vUtil.getStringValue(o, nameFN);
-        User user = uService.findUserByEmail(vUtil.getStringValue(o, "userEmail"));
-        if (user == null) return false;
+        long userId = vUtil.getLongValue(o, "userId");
+        if (userId < 1) return false;
         if (nullable && value == null) return true;
         if (!nullable && value == null) value = "";
         if (makeTrim) value = value.trim().replaceAll("[ ]{2,}", " ");
         vUtil.setStringValue(o, nameFN, value);
 
-        String streamVal = value;
-        if (!isNameValid(value)
-                || uService.findOwnBudgets(user.getId())
-                .stream()
-                .filter(budget -> budget.getName().equals(streamVal))
-                .count() != 0
-                ) {
+        if (!isNameValid(value) || !budgetS.isOwnBudgetNameUnique(userId, value)) {
             vUtil.addConstraintViolation(nameFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
             return false;
         }

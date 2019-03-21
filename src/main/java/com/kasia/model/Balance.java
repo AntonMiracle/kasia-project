@@ -4,10 +4,6 @@ import com.kasia.model.repository.converter.BigDecimalAttributeConverter;
 
 import javax.persistence.Convert;
 import javax.persistence.Embeddable;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -15,26 +11,16 @@ import java.time.LocalDateTime;
 public class Balance implements Model {
     @Convert(converter = BigDecimalAttributeConverter.class)
     private BigDecimal amount;
-    @Enumerated(EnumType.STRING)
-    private Currencies currencies;
-    private LocalDateTime changeOn;
+    private String currency;
+    private LocalDateTime updateOn;
 
-    public Balance(BigDecimal amount, Currencies currencies, LocalDateTime changeOn) {
+    public Balance(BigDecimal amount, String currency, LocalDateTime updateOn) {
         this.amount = amount;
-        this.currencies = currencies;
-        this.changeOn = changeOn;
+        this.currency = currency;
+        this.updateOn = updateOn;
     }
 
     public Balance() {
-    }
-
-    @Override
-    public String toString() {
-        return "Balance{" +
-                "amount=" + amount +
-                ", currencies=" + currencies +
-                ", changeOn=" + changeOn +
-                '}';
     }
 
     @Override
@@ -45,16 +31,25 @@ public class Balance implements Model {
         Balance balance = (Balance) o;
 
         if (amount != null ? !amount.equals(balance.amount) : balance.amount != null) return false;
-        if (currencies != balance.currencies) return false;
-        return changeOn != null ? changeOn.equals(balance.changeOn) : balance.changeOn == null;
+        if (currency != null ? !currency.equals(balance.currency) : balance.currency != null) return false;
+        return updateOn != null ? updateOn.equals(balance.updateOn) : balance.updateOn == null;
     }
 
     @Override
     public int hashCode() {
         int result = amount != null ? amount.hashCode() : 0;
-        result = 31 * result + (currencies != null ? currencies.hashCode() : 0);
-        result = 31 * result + (changeOn != null ? changeOn.hashCode() : 0);
+        result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (updateOn != null ? updateOn.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Balance{" +
+                "amount=" + amount +
+                ", currency='" + currency + '\'' +
+                ", updateOn=" + updateOn +
+                '}';
     }
 
     public BigDecimal getAmount() {
@@ -65,19 +60,19 @@ public class Balance implements Model {
         this.amount = amount;
     }
 
-    public LocalDateTime getChangeOn() {
-        return changeOn;
+    public String getCurrency() {
+        return currency;
     }
 
-    public void setChangeOn(LocalDateTime changeOn) {
-        this.changeOn = changeOn;
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
-    public Currencies getCurrencies() {
-        return currencies;
+    public LocalDateTime getUpdateOn() {
+        return updateOn;
     }
 
-    public void setCurrencies(Currencies currency) {
-        this.currencies = currency;
+    public void setUpdateOn(LocalDateTime updateOn) {
+        this.updateOn = updateOn;
     }
 }
