@@ -1,42 +1,34 @@
 package com.kasia.controller.dto;
 
 import com.kasia.controller.dto.validator.constraint.ElementNameValid;
-import com.kasia.controller.dto.validator.constraint.PriceAmountValid;
+import com.kasia.controller.dto.validator.constraint.PriceValid;
 
-@ElementNameValid(nameFN = "name", typeFN = "type", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
-@PriceAmountValid(priceFN = "defaultPrice"
+@ElementNameValid(nameFN = "name", typeFN = "type", min = 4, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
+@PriceValid(priceFN = "price"
         , regex = "^\\d+|\\d+[.,]\\d+|\\d+[.,]|[.,]\\d+$"
         , message = "{validation.price.amount.error}")
 public class ElementDTO {
-    private String name;
-    private String defaultPrice = "0";
-    private String type;
+    private String name = "";
+    private String price = "0";
     private long budgetId;
-    private String currency;
+    private long elementId;
+    private long userId;
+    private String currency = "";
     private boolean canBeDeleted;
-    private long id;
-    private String oldName;
+    private String oldName = "";
 
     @Override
     public String toString() {
         return "ElementDTO{" +
                 "name='" + name + '\'' +
-                ", defaultPrice='" + defaultPrice + '\'' +
-                ", type='" + type + '\'' +
+                ", price='" + price + '\'' +
                 ", budgetId=" + budgetId +
+                ", elementId=" + elementId +
+                ", userId=" + userId +
                 ", currency='" + currency + '\'' +
                 ", canBeDeleted=" + canBeDeleted +
-                ", id=" + id +
                 ", oldName='" + oldName + '\'' +
                 '}';
-    }
-
-    public String getOldName() {
-        return oldName;
-    }
-
-    public void setOldName(String oldName) {
-        this.oldName = oldName;
     }
 
     public String getName() {
@@ -47,20 +39,12 @@ public class ElementDTO {
         this.name = name;
     }
 
-    public String getDefaultPrice() {
-        return defaultPrice;
+    public String getPrice() {
+        return price;
     }
 
-    public void setDefaultPrice(String defaultPrice) {
-        this.defaultPrice = defaultPrice;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public long getBudgetId() {
@@ -69,6 +53,22 @@ public class ElementDTO {
 
     public void setBudgetId(long budgetId) {
         this.budgetId = budgetId;
+    }
+
+    public long getElementId() {
+        return elementId;
+    }
+
+    public void setElementId(long elementId) {
+        this.elementId = elementId;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getCurrency() {
@@ -87,24 +87,11 @@ public class ElementDTO {
         this.canBeDeleted = canBeDeleted;
     }
 
-    public long getId() {
-        return id;
+    public String getOldName() {
+        return oldName;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public ElementDTO() {
-
-    }
-
-    public ElementDTO(String name, String defaultPrice, String type, long budgetId, String currency) {
-
-        this.name = name;
-        this.defaultPrice = defaultPrice;
-        this.type = type;
-        this.budgetId = budgetId;
-        this.currency = currency;
+    public void setOldName(String oldName) {
+        this.oldName = oldName;
     }
 }
