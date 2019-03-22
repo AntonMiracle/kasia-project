@@ -20,7 +20,7 @@
                 th:class="button" th:id="whiteButton"
                 th:onclick="'javascript:editElement(\'' + ${element.id} + '\');'">
                 <td th:class="myLabel" th:text="${element.name}"></td>
-                <td th:class="myLabel" th:text="${element.price} + ' ' *{currency}"></td>
+                <td th:class="myLabel" th:text="${element.price} + ' ' + *{currency}"></td>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>
@@ -33,7 +33,7 @@
                 <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.price} + ' ' +  *{currency}"></td>
+                <td th:class="myLabel" th:text="#{label.price} + ' ' + *{currency}"></td>
                 <td th:class="myLabelError"
                     th:if="${#fields.hasErrors('price')}"
                     th:errors="*{price}">Error

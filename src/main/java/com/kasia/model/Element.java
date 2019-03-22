@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-public class Element implements Model {
+public class Element implements Model, Comparable<Element> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -64,5 +64,10 @@ public class Element implements Model {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    @Override
+    public int compareTo(Element o) {
+        return this.name.compareTo(o.name);
     }
 }

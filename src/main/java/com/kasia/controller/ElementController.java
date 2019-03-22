@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static com.kasia.controller.ViewAndURLController.*;
 
@@ -32,7 +33,7 @@ public class ElementController {
     @ModelAttribute("elements")
     public Set<Element> getElements() {
         if (sessionC.isBudgetOpen()) {
-            return budgetS.findAllElements(sessionC.getBudget().getId());
+            return new TreeSet<>(budgetS.findAllElements(sessionC.getBudget().getId()));
         }
         return new HashSet<>();
     }
