@@ -3,23 +3,22 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:insert="fragments/base_head :: base_head"></div>
-    <title th:text="#{title.provider}"></title>
+    <title th:text="#{title.place}"></title>
 </head>
 <body>
 <div th:replace="fragments/header :: budgetMenu"></div>
-<div id="mainContentWithoutMenu">
-    <!--/*@thymesVar id="providerDTO" type="com.kasia.controller.dto.ProviderDTO"*/-->
+<div th:id="mainContentWithoutMenu">
 
     <table th:class="myTable">
-        <form th:action="@{/budget/provider/update}" th:object="${providerDTO}" method="post">
+        <!--/*@thymesVar id="placeEdit" type="com.kasia.controller.dto.PlaceDTO"*/-->
+        <form th:action="@{/budget/place/update}" th:object="${placeEdit}" method="post">
             <tr>
                 <th colspan="2" th:text="#{title.edit}"></th>
             </tr>
-            <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.Provider>"*/-->
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>
                 <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('name')}"
+                    th:if="${#fields.hasErrors('name')} and *{name != oldName}"
                     th:errors="*{name}">
                 </td>
             <tr>
@@ -28,7 +27,7 @@
             <tr>
                 <td th:class="myLabel" th:text="#{label.description}"></td>
                 <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('description')}"
+                    th:if="${#fields.hasErrors('description')} and *{description != oldDescription}"
                     th:errors="*{description}">
                 </td>
             </tr>
@@ -41,15 +40,22 @@
                 <td th:colspan="*{canBeDeleted} ? 1 : 2" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.update}"></button>
                 </td>
-                <input type="hidden" th:value="*{oldName}" name="oldName"/>
+
                 <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
+                <input type="hidden" th:value="*{userId}" name="userId"/>
+                <input type="hidden" th:value="*{budgetId}" name="budgetId"/>
+                <input type="hidden" th:value="*{placeId}" name="placeId"/>
+                <input type="hidden" th:value="*{oldName}" name="oldName"/>
+                <input type="hidden" th:value="*{oldDescription}" name="oldDescription"/>
         </form>
-        <form th:action="@{/budget/provider/delete}" th:object="${providerDTO}" method="post">
-                <td th:if="*{canBeDeleted}" th:class="withButton">
-                    <button class="button" type="submit" th:text="#{button.delete}"></button>
-                </td>
+        <form th:action="@{/budget/place/delete}" th:object="${placeEdit}" method="post">
+            <td th:if="*{canBeDeleted}" th:class="withButton">
+                <button class="button" type="submit" th:text="#{button.delete}"></button>
+            </td>
             </tr>
-            <input type="hidden" th:value="*{oldName}" name="oldName"/>
+            <input type="hidden" th:value="*{placeId}" name="placeId"/>
+            <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
+            <input type="hidden" th:value="*{budgetId}" name="budgetId"/>
         </form>
     </table>
 

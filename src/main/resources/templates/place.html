@@ -9,7 +9,7 @@
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div th:id="mainContentWithoutMenu">
 
-    <!--/*@thymesVar id="placeAdd" type="com.kasia.controller.dto.PlaceAdd"*/-->
+    <!--/*@thymesVar id="placeAdd" type="com.kasia.controller.dto.PlaceDTO"*/-->
     <!--/*@thymesVar id="places" type="java.util.Set<com.kasia.model.Place>"*/-->
     <form th:action="@{/budget/place/add}" th:object="${placeAdd}" method="post">
         <table th:class="myTable">
@@ -25,9 +25,6 @@
                     <td th:class="myLabel" th:text="${place.description}"></td>
                 </tr>
             </div>
-            <tr>
-                <th th:colspan="2" th:text="#{title.new}"></th>
-            </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>
                 <td th:class="myLabelError"

@@ -28,7 +28,4 @@ public @interface DescriptionValid {
 
     String regex() default "";
 
-    boolean nullable() default false;
-
-    boolean makeTrim() default true;
 }

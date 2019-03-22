@@ -1,6 +1,6 @@
 package com.kasia.model.service.imp;
 
-import com.kasia.controller.dto.PlaceAdd;
+import com.kasia.controller.dto.PlaceDTO;
 import com.kasia.model.Place;
 import com.kasia.model.repository.PlaceRepository;
 import com.kasia.model.service.PlaceService;
@@ -25,7 +25,13 @@ public class PlaceServiceImp implements PlaceService {
     }
 
     @Override
-    public Place convert(PlaceAdd dto) {
+    public Place convert(PlaceDTO dto) {
         return new Place(dto.getName(), dto.getDescription());
+    }
+
+    @Override
+    public boolean delete(long placeId) {
+        placeR.delete(findById(placeId));
+        return true;
     }
 }

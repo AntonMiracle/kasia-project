@@ -6,12 +6,10 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 public class DescriptionValidator implements ConstraintValidator<DescriptionValid, Object> {
-    private boolean nullable;
     private String stringFN;
     private int min;
     private int max;
     private String regex;
-    private boolean makeTrim;
     private ValidatorUtil vUtil = new ValidatorUtil();
 
     @Override
@@ -20,28 +18,17 @@ public class DescriptionValidator implements ConstraintValidator<DescriptionVali
         min = ca.min();
         max = ca.max();
         regex = ca.regex();
-        nullable = ca.nullable();
-        makeTrim = ca.makeTrim();
     }
 
     @Override
     public boolean isValid(Object o, ConstraintValidatorContext cvContext) {
         String value = vUtil.getStringValue(o, stringFN);
-
-        if (nullable && value == null) return true;
-        if (!nullable && value == null) {
-            value = "";
-            vUtil.setStringValue(o, stringFN, value);
-        }
-        if (makeTrim) {
-            value = value.trim().replaceAll("[ ]{2,}", " ");
-            vUtil.setStringValue(o, stringFN, value);
-        }
+        value = value.trim().replaceAll("[ ]{2,}", " ");
+        vUtil.setStringValue(o, stringFN, value);
         if (!isStringValid(value)) {
             vUtil.addConstraintViolation(stringFN, cvContext.getDefaultConstraintMessageTemplate(), cvContext);
             return false;
         }
-
         return true;
     }
 

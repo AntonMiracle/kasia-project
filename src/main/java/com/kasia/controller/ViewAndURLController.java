@@ -8,7 +8,7 @@ public final class ViewAndURLController {
     public static final String V_BUDGET_ALL = "budgetAll";
     public static final String V_BUDGET = "budget";
     public static final String V_PLACE = "place";
-    public static final String V_PROVIDER_EDIT = "providerEdit";
+    public static final String V_PLACE_EDIT = "placeEdit";
     public static final String V_ELEMENT = "element";
     public static final String V_ELEMENT_EDIT = "elementEdit";
     public static final String V_OPERATION = "operation";

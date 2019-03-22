@@ -21,7 +21,13 @@ public interface BudgetService {
 
     boolean addPlace(long budgetId, long placeId);
 
+    boolean removePlace(long budgetId, long placeId);
+
     Set<Place> findAllPlaces(long budgetId);
 
     boolean isPlaceNameUnique(long budgetId, String name);
+
+    boolean isOwner(long budgetId, long userId);
+
+    boolean isPlaceCanDeleted(long budgetId, long placeId);
 }

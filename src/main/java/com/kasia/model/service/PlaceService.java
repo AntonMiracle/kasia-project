@@ -1,6 +1,6 @@
 package com.kasia.model.service;
 
-import com.kasia.controller.dto.PlaceAdd;
+import com.kasia.controller.dto.PlaceDTO;
 import com.kasia.model.Place;
 
 public interface PlaceService {
@@ -8,5 +8,7 @@ public interface PlaceService {
 
     Place findById(long placeId);
 
-    Place convert(PlaceAdd dto);
+    Place convert(PlaceDTO dto);
+
+    boolean delete(long placeId);
 }

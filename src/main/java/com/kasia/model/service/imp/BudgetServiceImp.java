@@ -2,6 +2,7 @@ package com.kasia.model.service.imp;
 
 import com.kasia.controller.dto.BudgetAdd;
 import com.kasia.model.*;
+import com.kasia.model.repository.BudgetOperationRepository;
 import com.kasia.model.repository.BudgetPlaceRepository;
 import com.kasia.model.repository.BudgetRepository;
 import com.kasia.model.repository.UserBudgetRepository;
@@ -31,6 +32,8 @@ public class BudgetServiceImp implements BudgetService {
     private PlaceService placeS;
     @Autowired
     private BudgetPlaceRepository budgetPlaceR;
+    @Autowired
+    private BudgetOperationRepository budgetOperationR;
 
     @Override
     public boolean setOwner(long budgetId, long userId) {
@@ -92,6 +95,24 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
+    public boolean removePlace(long budgetId, long placeId) {
+        Place place = placeS.findById(placeId);
+        Budget budget = budgetR.findById(budgetId).orElse(null);
+        BudgetPlace bp = budgetPlaceR.findByBudgetId(budgetId).orElse(new BudgetPlace());
+        if (place == null || budget == null) return true;
+        if (bp.getPlaces().size() == 0) placeS.delete(placeId);
+        else {
+            if (bp.getPlaces().contains(place)) {
+                bp.getPlaces().remove(place);
+                System.out.println(place);
+                budgetPlaceR.save(bp);
+                placeS.delete(place.getId());
+            }
+        }
+        return true;
+    }
+
+    @Override
     public Set<Place> findAllPlaces(long budgetId) {
         Set<Place> result = new HashSet<>();
         budgetPlaceR.findByBudgetId(budgetId).ifPresent(bp -> result.addAll(bp.getPlaces()));
@@ -101,5 +122,20 @@ public class BudgetServiceImp implements BudgetService {
     @Override
     public boolean isPlaceNameUnique(long budgetId, String name) {
         return findAllPlaces(budgetId).stream().filter(place -> place.getName().equals(name)).count() == 0;
+    }
+
+    @Override
+    public boolean isOwner(long budgetId, long userId) {
+        Optional<UserBudget> result = userBudgetR.findByUserId(userId);
+        return result.filter(userBudget -> userBudget.getBudgets().stream().filter(budget -> budget.getId() == budgetId).count() == 1).isPresent();
+    }
+
+    @Override
+    public boolean isPlaceCanDeleted(long budgetId, long placeId) {
+        Optional<BudgetOperation> budgetOperation = budgetOperationR.findByBudgetId(budgetId);
+        return !budgetOperation.filter(
+                bo -> bo.getOperations().stream().filter(
+                        operation -> operation.getPlace().getId() == placeId).count() > 0)
+                .isPresent();
     }
 }

@@ -1,6 +1,6 @@
 package com.kasia.controller.dto.validator.constraint;
 
-import com.kasia.controller.dto.validator.ProviderNameValidator;
+import com.kasia.controller.dto.validator.PlaceNameValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ProviderNameValidator.class)
-public @interface ProviderNameValid {
+@Constraint(validatedBy = PlaceNameValidator.class)
+public @interface PlaceNameValid {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
@@ -26,8 +26,4 @@ public @interface ProviderNameValid {
     int max() default 250;
 
     String regex() default "";
-
-    boolean nullable() default false;
-
-    boolean makeTrim() default true;
 }
