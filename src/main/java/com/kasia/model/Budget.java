@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Budget implements Model {
+public class Budget implements Model, Comparable<Budget> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -84,5 +84,10 @@ public class Budget implements Model {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public int compareTo(Budget o) {
+        return this.name.compareTo(o.name);
     }
 }

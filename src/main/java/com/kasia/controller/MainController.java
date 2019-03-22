@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import static com.kasia.controller.ViewAndURLController.*;
 
@@ -21,7 +22,7 @@ public class MainController {
 
     @ModelAttribute("ownBudgets")
     public Set<Budget> getBudgets() {
-        return sessionC.isUserLogin() ? budgetS.findOwnBudgets(sessionC.getUser().getId()) : new HashSet<>();
+        return new TreeSet<>(sessionC.isUserLogin() ? budgetS.findOwnBudgets(sessionC.getUser().getId()) : new HashSet<>());
     }
 
     @GetMapping(U_MAIN)
