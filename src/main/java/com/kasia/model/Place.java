@@ -6,19 +6,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Provider implements Model {
+public class Place implements Model, Comparable<Place> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
     private String description;
 
-    public Provider(String name, String description) {
+    public Place(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public Provider() {
+    public Place() {
 
     }
 
@@ -27,7 +27,7 @@ public class Provider implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Provider that = (Provider) o;
+        Place that = (Place) o;
 
         if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
@@ -44,7 +44,7 @@ public class Provider implements Model {
 
     @Override
     public String toString() {
-        return "Provider{" +
+        return "Place{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
@@ -73,5 +73,10 @@ public class Provider implements Model {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public int compareTo(Place o) {
+        return this.name.compareTo(o.getName());
     }
 }

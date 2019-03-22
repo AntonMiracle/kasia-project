@@ -38,7 +38,7 @@ public class MySessionController {
     }
 
     public boolean isBudgetOpen() {
-        return budget != null && budget.getId() > 0;
+        return isUserLogin() && budget != null && budget.getId() > 0;
     }
 
     public Budget getBudget() {

@@ -2,6 +2,7 @@ package com.kasia.configuration;
 
 import com.kasia.model.*;
 import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.PlaceService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -28,6 +29,8 @@ public class MvcConfig implements WebMvcConfigurer {
     private UserService userS;
     @Autowired
     private BudgetService budgetS;
+    @Autowired
+    private PlaceService placeS;
 
     @PostConstruct
     public void init() {
@@ -48,6 +51,30 @@ public class MvcConfig implements WebMvcConfigurer {
         budgetS.setOwner(budget1.getId(), user1.getId());
         budgetS.setOwner(budget2.getId(), user1.getId());
 
+        Place place1 = new Place("Aname", "");
+        Place place2 = new Place("Cname", "some description");
+        Place place3 = new Place("Bname", "some description");
+        Place place4 = new Place("Dname", "some description");
+        placeS.save(place1);
+        placeS.save(place2);
+        placeS.save(place3);
+        placeS.save(place4);
+        budgetS.addPlace(budget1.getId(),place1.getId());
+        budgetS.addPlace(budget1.getId(),place2.getId());
+        budgetS.addPlace(budget1.getId(),place3.getId());
+        budgetS.addPlace(budget1.getId(),place4.getId());
+        place1.setId(0);
+        place2.setId(0);
+        place3.setId(0);
+        place4.setId(0);
+        placeS.save(place1);
+        placeS.save(place2);
+        placeS.save(place3);
+        placeS.save(place4);
+        budgetS.addPlace(budget2.getId(),place1.getId());
+        budgetS.addPlace(budget2.getId(),place2.getId());
+        budgetS.addPlace(budget2.getId(),place3.getId());
+        budgetS.addPlace(budget2.getId(),place4.getId());
     }
 
     @Bean/* config i18n to get error msg from messages.properties*/

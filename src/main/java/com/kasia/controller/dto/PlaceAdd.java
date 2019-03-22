@@ -1,16 +1,17 @@
 package com.kasia.controller.dto;
 
 import com.kasia.controller.dto.validator.constraint.DescriptionValid;
-import com.kasia.controller.dto.validator.constraint.ProviderNameValid;
+import com.kasia.controller.dto.validator.constraint.PlaceNameValid;
 
-@ProviderNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
+@PlaceNameValid(nameFN = "name", min = 4, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
 @DescriptionValid(stringFN = "description", max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.description.error}")
-public class ProviderDTO {
-    private String name;
-    private String description;
+public class PlaceAdd {
+    private String name = "";
+    private String description = "";
     private long budgetId;
-    private String oldName;
+    private String oldName = "";
     private boolean canBeDeleted;
+    private long userId;
 
     public boolean isDelete() {
         return delete;
@@ -20,14 +21,23 @@ public class ProviderDTO {
         this.delete = delete;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
-        return "ProviderDTO{" +
+        return "PlaceAdd{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", budgetId=" + budgetId +
                 ", oldName='" + oldName + '\'' +
                 ", canBeDeleted=" + canBeDeleted +
+                ", userId=" + userId +
                 ", delete=" + delete +
                 '}';
     }

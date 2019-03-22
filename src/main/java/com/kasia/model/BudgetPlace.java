@@ -1,25 +1,25 @@
 package com.kasia.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class BudgetProvider implements Model {
+public class BudgetPlace implements Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @OneToOne(fetch = FetchType.EAGER)
     private Budget budget;
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<Provider> providers;
+    private Set<Place> places = new HashSet<>();
 
-    public BudgetProvider() {
+    public BudgetPlace() {
     }
 
-    public BudgetProvider(Budget budget, Set<Provider> providers) {
+    public BudgetPlace(Budget budget, Set<Place> places) {
         this.budget = budget;
-        this.providers = providers;
+        this.places = places;
     }
 
     @Override
@@ -27,27 +27,27 @@ public class BudgetProvider implements Model {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BudgetProvider that = (BudgetProvider) o;
+        BudgetPlace that = (BudgetPlace) o;
 
         if (id != that.id) return false;
         if (budget != null ? !budget.equals(that.budget) : that.budget != null) return false;
-        return providers != null ? providers.equals(that.providers) : that.providers == null;
+        return places != null ? places.equals(that.places) : that.places == null;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (budget != null ? budget.hashCode() : 0);
-        result = 31 * result + (providers != null ? providers.hashCode() : 0);
+        result = 31 * result + (places != null ? places.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "BudgetProvider{" +
+        return "BudgetPlace{" +
                 "id=" + id +
                 ", budget=" + budget +
-                ", providers=" + providers +
+                ", places=" + places +
                 '}';
     }
 
@@ -67,11 +67,11 @@ public class BudgetProvider implements Model {
         this.budget = budget;
     }
 
-    public Set<Provider> getProviders() {
-        return providers;
+    public Set<Place> getPlaces() {
+        return places;
     }
 
-    public void setProviders(Set<Provider> providers) {
-        this.providers = providers;
+    public void setPlaces(Set<Place> places) {
+        this.places = places;
     }
 }

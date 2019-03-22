@@ -3,14 +3,14 @@ package com.kasia.controller.dto;
 import com.kasia.controller.dto.validator.constraint.PriceValid;
 import com.kasia.controller.dto.validator.constraint.BudgetNameValid;
 
-@BudgetNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
+@BudgetNameValid(nameFN = "name", min = 4, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
 @PriceValid(priceFN = "price"
         , regex = "^[-+]?\\d+|[-+]?\\d+[.,]\\d+|[-+]?\\d+[.,]|[.,]\\d+$"
         , message = "{validation.price.amount.error}")
 public class BudgetAdd {
-    private String name;
+    private String name = "";
     private String price = "0";
-    private String currency;
+    private String currency = "";
     private long userId;
 
     @Override

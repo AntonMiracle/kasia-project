@@ -7,7 +7,7 @@ public final class ViewAndURLController {
     public static final String V_BUDGET_ADD = "budgetAdd";
     public static final String V_BUDGET_ALL = "budgetAll";
     public static final String V_BUDGET = "budget";
-    public static final String V_PROVIDER = "provider";
+    public static final String V_PLACE = "place";
     public static final String V_PROVIDER_EDIT = "providerEdit";
     public static final String V_ELEMENT = "element";
     public static final String V_ELEMENT_EDIT = "elementEdit";
@@ -39,11 +39,11 @@ public final class ViewAndURLController {
     public static final String U_ELEMENT_EDIT = U_ELEMENT + "/edit";
     public static final String U_ELEMENT_UPDATE = U_ELEMENT + "/update";
     public static final String U_ELEMENT_DELETE = U_ELEMENT + "/delete";
-    public static final String U_PROVIDER = U_BUDGET + "/provider";
-    public static final String U_PROVIDER_ADD = U_PROVIDER + "/add";
-    public static final String U_PROVIDER_EDIT = U_PROVIDER + "/edit";
-    public static final String U_PROVIDER_UPDATE = U_PROVIDER + "/update";
-    public static final String U_PROVIDER_DELETE = U_PROVIDER + "/delete";
+    public static final String U_PLACE = U_BUDGET + "/place";
+    public static final String U_PLACE_ADD = U_PLACE + "/add";
+    public static final String U_PLACE_EDIT = U_PLACE + "/edit";
+    public static final String U_PLACE_UPDATE = U_PLACE + "/update";
+    public static final String U_PLACE_DELETE = U_PLACE + "/delete";
     public static final String U_MAIN = "/main";
 
     public static String redirect(String url) {
