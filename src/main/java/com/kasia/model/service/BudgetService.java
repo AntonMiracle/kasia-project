@@ -24,16 +24,21 @@ public interface BudgetService {
 
     boolean removePlace(long budgetId, long placeId);
 
+    boolean removeElement(long budgetId, long elementId);
+
     boolean addElement(long budgetId, long elementId);
 
     Set<Place> findAllPlaces(long budgetId);
 
     boolean isPlaceNameUnique(long budgetId, String name);
+
     boolean isElementNameUnique(long budgetId, String name);
 
     boolean isOwner(long budgetId, long userId);
 
     boolean isPlaceCanDeleted(long budgetId, long placeId);
+
+    boolean isElementCanDeleted(long budgetId, long elementId);
 
     Set<Element> findAllElements(long budgetId);
 }

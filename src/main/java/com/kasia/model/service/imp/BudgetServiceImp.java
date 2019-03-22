@@ -103,13 +103,25 @@ public class BudgetServiceImp implements BudgetService {
         BudgetPlace bp = budgetPlaceR.findByBudgetId(budgetId).orElse(new BudgetPlace());
         if (place == null || budget == null) return true;
         if (bp.getPlaces().size() == 0) placeS.delete(placeId);
-        else {
-            if (bp.getPlaces().contains(place)) {
-                bp.getPlaces().remove(place);
-                System.out.println(place);
-                budgetPlaceR.save(bp);
-                placeS.delete(place.getId());
-            }
+        else if (bp.getPlaces().contains(place)) {
+            bp.getPlaces().remove(place);
+            budgetPlaceR.save(bp);
+            placeS.delete(place.getId());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean removeElement(long budgetId, long elementId) {
+        Element element = elementS.findById(elementId);
+        Budget budget = findById(budgetId);
+        BudgetElement be = budgetElementR.findByBudgetId(budgetId).orElse(new BudgetElement());
+        if (element == null || budget == null) return true;
+        if (be.getElements().size() == 0) elementS.delete(elementId);
+        else if (be.getElements().contains(element)) {
+            be.getElements().remove(element);
+            budgetElementR.save(be);
+            elementS.delete(element.getId());
         }
         return true;
     }
@@ -156,6 +168,15 @@ public class BudgetServiceImp implements BudgetService {
         return !budgetOperation.filter(
                 bo -> bo.getOperations().stream().filter(
                         operation -> operation.getPlace().getId() == placeId).count() > 0)
+                .isPresent();
+    }
+
+    @Override
+    public boolean isElementCanDeleted(long budgetId, long elementId) {
+        Optional<BudgetOperation> budgetOperation = budgetOperationR.findByBudgetId(budgetId);
+        return !budgetOperation.filter(
+                bo -> bo.getOperations().stream().filter(
+                        operation -> operation.getElement().getId() == elementId).count() > 0)
                 .isPresent();
     }
 

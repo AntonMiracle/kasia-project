@@ -7,6 +7,7 @@ public interface ElementService {
     Element convert(ElementDTO dto);
 
     Element save(Element element);
+    boolean delete(long elementId);
 
     Element findById(long elementId);
 }

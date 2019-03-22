@@ -20,7 +20,7 @@
                 th:class="button" th:id="whiteButton"
                 th:onclick="'javascript:editElement(\'' + ${element.id} + '\');'">
                 <td th:class="myLabel" th:text="${element.name}"></td>
-                <td th:class="myLabel" th:text="${element.price}"></td>
+                <td th:class="myLabel" th:text="${element.price} + ' ' *{currency}"></td>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>

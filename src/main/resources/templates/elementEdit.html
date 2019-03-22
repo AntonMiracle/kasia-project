@@ -7,56 +7,52 @@
 </head>
 <body>
 <div th:replace="fragments/header :: budgetMenu"></div>
-<div id="mainContentWithoutMenu">
-    <!--/*@thymesVar id="elementDTO" type="com.kasia.controller.dto.ElementDTO"*/-->
+<div th:id="mainContentWithoutMenu">
 
     <table th:class="myTable">
-        <form th:action="@{/budget/element/update}" th:object="${elementDTO}" method="post">
+        <!--/*@thymesVar id="elementEdit" type="com.kasia.controller.dto.ElementDTO"*/-->
+        <form th:action="@{/budget/element/update}" th:object="${elementEdit}" method="post">
             <tr>
                 <th th:colspan="2" th:text="#{title.edit}"></th>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>
                 <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('name') and (name != oldName)}"
+                    th:if="${#fields.hasErrors('name')} and *{name != oldName}"
                     th:errors="*{name}">
                 </td>
             <tr>
                 <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.price.amount} + ' ' +  *{currency}"></td>
+                <td th:class="myLabel" th:text="#{label.price} + ' ' +  *{currency}"></td>
                 <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('defaultPrice')}"
-                    th:errors="*{defaultPrice}">Error
+                    th:if="${#fields.hasErrors('price')}"
+                    th:errors="*{price}">Error
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="text" th:field="*{defaultPrice}" th:placeholder="#{tip.price.amount}"/>
-                </td>
-            </tr>
-            <tr>
-                <td th:class="myLabel" th:text="#{label.category}"></td>
-                <td th:class="myLabel">
-                    <select th:field="*{type}">
-                        <!--/*@thymesVar id="types" type="com.kasia.model.ElementType"*/-->
-                        <option th:value="${types.CONSUMPTION}" th:text="#{label.consumption}"></option>
-                        <option th:value="${types.INCOME}" th:text="#{label.income}"></option>
-                    </select>
+                <td th:colspan="2"><input type="text" th:field="*{price}" th:placeholder="#{tip.price}"/>
                 </td>
             </tr>
             <tr>
                 <td th:colspan="*{canBeDeleted} ? 1 : 2" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.update}"></button>
                 </td>
-                <input type="hidden" th:value="*{id}" name="id"/>
+                <input type="hidden" th:value="*{userId}" name="userId"/>
                 <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
+                <input type="hidden" th:value="*{budgetId}" name="budgetId"/>
+                <input type="hidden" th:value="*{elementId}" name="elementId"/>
+                <input type="hidden" th:value="*{oldName}" name="oldName"/>
+                <input type="hidden" th:value="*{currency}" name="currency"/>
         </form>
-        <form th:action="@{/budget/element/delete}" th:object="${elementDTO}" method="post">
+        <form th:action="@{/budget/element/delete}" th:object="${elementEdit}" method="post">
                 <td th:if="*{canBeDeleted}" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.delete}"></button>
                 </td>
-            <input type="hidden" th:value="*{id}" name="id"/>
+            <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
+            <input type="hidden" th:value="*{budgetId}" name="budgetId"/>
+            <input type="hidden" th:value="*{elementId}" name="elementId"/>
             </tr>
         </form>
     </table>

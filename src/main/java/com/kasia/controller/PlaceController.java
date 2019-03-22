@@ -38,7 +38,7 @@ public class PlaceController {
         return dto;
     }
 
-    public PlaceDTO getPlaceEdit(long placeId) {
+    private PlaceDTO getPlaceEdit(long placeId) {
         PlaceDTO dto = new PlaceDTO();
         Place place = placeS.findById(placeId);
         if (sessionC.isBudgetOpen() && place != null) {

@@ -27,6 +27,12 @@ public class ElementServiceImp implements ElementService {
     }
 
     @Override
+    public boolean delete(long elementId) {
+        elementR.delete(findById(elementId));
+        return true;
+    }
+
+    @Override
     public Element findById(long elementId) {
         return elementR.findById(elementId).orElse(null);
     }

@@ -2,6 +2,7 @@ package com.kasia.configuration;
 
 import com.kasia.model.*;
 import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.ElementService;
 import com.kasia.model.service.PlaceService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class MvcConfig implements WebMvcConfigurer {
     private BudgetService budgetS;
     @Autowired
     private PlaceService placeS;
+    @Autowired
+    private ElementService elementS;
 
     @PostConstruct
     public void init() {
@@ -59,10 +62,10 @@ public class MvcConfig implements WebMvcConfigurer {
         placeS.save(place2);
         placeS.save(place3);
         placeS.save(place4);
-        budgetS.addPlace(budget1.getId(),place1.getId());
-        budgetS.addPlace(budget1.getId(),place2.getId());
-        budgetS.addPlace(budget1.getId(),place3.getId());
-        budgetS.addPlace(budget1.getId(),place4.getId());
+        budgetS.addPlace(budget1.getId(), place1.getId());
+        budgetS.addPlace(budget1.getId(), place2.getId());
+        budgetS.addPlace(budget1.getId(), place3.getId());
+        budgetS.addPlace(budget1.getId(), place4.getId());
         place1.setId(0);
         place2.setId(0);
         place3.setId(0);
@@ -71,10 +74,35 @@ public class MvcConfig implements WebMvcConfigurer {
         placeS.save(place2);
         placeS.save(place3);
         placeS.save(place4);
-        budgetS.addPlace(budget2.getId(),place1.getId());
-        budgetS.addPlace(budget2.getId(),place2.getId());
-        budgetS.addPlace(budget2.getId(),place3.getId());
-        budgetS.addPlace(budget2.getId(),place4.getId());
+        budgetS.addPlace(budget2.getId(), place1.getId());
+        budgetS.addPlace(budget2.getId(), place2.getId());
+        budgetS.addPlace(budget2.getId(), place3.getId());
+        budgetS.addPlace(budget2.getId(), place4.getId());
+
+        Element element1 = new Element("Aelement", BigDecimal.valueOf(22));
+        Element element2 = new Element("Belement", BigDecimal.valueOf(200));
+        Element element3 = new Element("Celement", BigDecimal.valueOf(0));
+        Element element4 = new Element("Aelement1", BigDecimal.valueOf(20));
+        elementS.save(element1);
+        elementS.save(element2);
+        elementS.save(element3);
+        elementS.save(element4);
+        budgetS.addElement(budget1.getId(), element1.getId());
+        budgetS.addElement(budget1.getId(), element2.getId());
+        budgetS.addElement(budget1.getId(), element3.getId());
+        budgetS.addElement(budget1.getId(), element4.getId());
+        element1.setId(0);
+        element2.setId(0);
+        element3.setId(0);
+        element4.setId(0);
+        elementS.save(element1);
+        elementS.save(element2);
+        elementS.save(element3);
+        elementS.save(element4);
+        budgetS.addElement(budget2.getId(), element1.getId());
+        budgetS.addElement(budget2.getId(), element2.getId());
+        budgetS.addElement(budget2.getId(), element3.getId());
+        budgetS.addElement(budget2.getId(), element4.getId());
     }
 
     @Bean/* config i18n to get error msg from messages.properties*/
