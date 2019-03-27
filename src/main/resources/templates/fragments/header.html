@@ -52,6 +52,16 @@
         </form>
     </div>
     <div>
+        <form th:action="@{/budget/operation/income}">
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.income}"></button>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/budget/operation/consumption}">
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.consumption}"></button>
+        </form>
+    </div>
+    <div>
         <form th:action="@{/budget/element}">
             <button class="button" th:id="whiteButton" type="submit" th:text="#{button.element}"></button>
         </form>

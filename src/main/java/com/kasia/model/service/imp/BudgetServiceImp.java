@@ -3,10 +3,7 @@ package com.kasia.model.service.imp;
 import com.kasia.controller.dto.BudgetAdd;
 import com.kasia.model.*;
 import com.kasia.model.repository.*;
-import com.kasia.model.service.BudgetService;
-import com.kasia.model.service.ElementService;
-import com.kasia.model.service.PlaceService;
-import com.kasia.model.service.UserService;
+import com.kasia.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +33,8 @@ public class BudgetServiceImp implements BudgetService {
     private BudgetElementRepository budgetElementR;
     @Autowired
     private ElementService elementS;
+    @Autowired
+    private OperationService operationS;
 
     @Override
     public boolean setOwner(long budgetId, long userId) {
@@ -185,5 +184,38 @@ public class BudgetServiceImp implements BudgetService {
         Set<Element> result = new HashSet<>();
         budgetElementR.findByBudgetId(budgetId).ifPresent(bp -> result.addAll(bp.getElements()));
         return result;
+    }
+
+    @Override
+    public Set<Operation> findAllOperations(long budgetId) {
+        Budget budget = findById(budgetId);
+        BudgetOperation bo = budgetOperationR.findByBudgetId(budgetId).orElse(new BudgetOperation());
+        if (bo.getBudget() == null) {
+            bo.setBudget(budget);
+            budgetOperationR.save(bo);
+        }
+        return bo.getOperations();
+    }
+
+    @Override
+    public boolean addOperation(long budgetId, long operationId) {
+        Budget budget = findById(budgetId);
+        Operation operation = operationS.findById(operationId);
+        BudgetOperation bo = budgetOperationR.findByBudgetId(budgetId).orElse(new BudgetOperation());
+        if (operation == null || budget == null) return true;
+
+        if (bo.getBudget() == null) bo.setBudget(budget);
+        bo.getOperations().add(operation);
+        BigDecimal newAmount = BigDecimal.ZERO;
+
+        if (operation.getType() == OperationType.CONSUMPTION)
+            newAmount = budget.getBalance().getAmount().subtract(operation.getPrice());
+        else if (operation.getType() == OperationType.INCOME)
+            newAmount = budget.getBalance().getAmount().add(operation.getPrice());
+
+        budget.getBalance().setAmount(newAmount);
+        save(budget);
+        budgetOperationR.save(bo);
+        return true;
     }
 }

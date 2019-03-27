@@ -1,9 +1,8 @@
 package com.kasia.controller;
 
 import com.kasia.controller.dto.BudgetAdd;
-import com.kasia.model.Budget;
-import com.kasia.model.Currencies;
-import com.kasia.model.User;
+import com.kasia.controller.dto.WeekOperationHistory;
+import com.kasia.model.*;
 import com.kasia.model.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,6 +28,21 @@ public class BudgetController {
         BudgetAdd dto = new BudgetAdd();
         dto.setUserId(sessionC.getUser().getId());
         return dto;
+    }
+
+    @ModelAttribute("weekOperations")
+    public WeekOperationHistory getWeekOperation() {
+        return sessionC.getWeekOperationHistory();
+    }
+
+    @ModelAttribute("income")
+    public OperationType getIncome() {
+        return OperationType.INCOME;
+    }
+
+    @ModelAttribute("consumption")
+    public OperationType getConsumption() {
+        return OperationType.CONSUMPTION;
     }
 
     @ModelAttribute("currencies")
@@ -60,6 +74,7 @@ public class BudgetController {
             if (user != null && budget != null) {
                 if (budgetS.findOwnBudgets(user.getId()).contains(budget)) {
                     sessionC.setBudget(budget);
+                    sessionC.setWeekOperationHistory();
                     return redirect(U_BUDGET);
                 }
             }
@@ -70,8 +85,21 @@ public class BudgetController {
     @GetMapping(U_BUDGET)
     public String openBudget() {
         if (sessionC.isBudgetOpen()) {
+            sessionC.setWeekOperationHistory();
             return V_BUDGET;
         }
         return redirect(U_MAIN);
+    }
+
+    @GetMapping(U_OPERATION_WEEK_NEXT)
+    public String nextWeekOperationHistory() {
+        sessionC.getWeekOperationHistory().next();
+        return V_BUDGET;
+    }
+
+    @GetMapping(U_OPERATION_WEEK_PREVIOUS)
+    public String previousWeekOperationHistory() {
+        sessionC.getWeekOperationHistory().previous();
+        return V_BUDGET;
     }
 }

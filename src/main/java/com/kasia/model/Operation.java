@@ -148,7 +148,7 @@ public class Operation implements Model, Comparable<Operation> {
 
     @Override
     public int compareTo(Operation o) {
-        if (o.getCreateOn().compareTo(this.createOn) >= 0) return -1;
-        else return 1;
+        if (o.getCreateOn().compareTo(this.createOn) >= 0) return 1;
+        else return -1;
     }
 }

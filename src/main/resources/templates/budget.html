@@ -8,51 +8,45 @@
 <body>
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div th:id="mainContentWithoutMenu">
+    <table th:class="myTable">
+        <!--/*@thymesVar id="weekOperations" type="com.kasia.controller.dto.WeekOperationHistory"*/-->
+        <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
+        <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+        <!--/*@thymesVar id="income" type="com.kasia.model.OperationType"*/-->
 
-    <!--/*@thymesuserIdr id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
-    <!--/*@thymesuserIdr id="user" type="com.kasia.model.User"*/-->
-    <!--/*@thymesuserIdr id="weekOperationHistory" type="com.kasia.controller.dto.WeekOperationHistory"*/-->
-    <!--<table th:class="myTable">-->
-        <!--<form th:if="${weekOperationHistory.isExist()}"-->
-              <!--th:action="@{/budget/operation/week/previous}" method="get">-->
-            <!--<button class="button" type="submit" th:text="#{button.previous}"></button>-->
-        <!--</form>-->
-        <!--<form th:action="@{/budget/operation}" method="get">-->
-            <!--<button class="button" type="submit" th:text="#{button.add}"></button>-->
-        <!--</form>-->
-
-        <!--<form th:if="${weekOperationHistory.isExist()}"-->
-              <!--th:action="@{/budget/operation/week/next}" method="get">-->
-            <!--<button class="button" type="submit" th:text="#{button.next}"></button>-->
-        <!--</form>-->
-        <!--<div th:if="${weekOperationHistory.isExist()}"-->
-             <!--th:each="day : ${weekOperationHistory.current().keySet()}">-->
-            <!--<tr>-->
-                <!--<th th:colspan="5" th:text="${myFormatter.formatOnlyDate(user.userId, day)}"></th>-->
-            <!--</tr>-->
-            <!--<tr th:each="dayOperation : ${weekOperationHistory.current().get(day)}"-->
-                <!--th:id="${dayOperation.element.type eq dayOperation.element.type.INCOME} ? operationIncome : operationConsumption">-->
-                <!--<td th:class="myLabel" th:text="${dayOperation.element.name}"></td>-->
-                <!--<td th:class="myLabel" th:text="${dayOperation.provider.name}"></td>-->
-                <!--<td th:class="myLabel"-->
-                    <!--th:text="${dayOperation.element.type eq dayOperation.element.type.INCOME} ?-->
-                <!--${myFormatter.formatNumber(user.userId,dayOperation.price.amount)}-->
-                <!--: ${myFormatter.formatNumber(true,user.userId,dayOperation.price.amount)}">-->
-                <!--</td>-->
-                <!--<td th:class="myLabel" th:text="${dayOperation.description}"></td>-->
-                <!--<td th:class="myLabel"-->
-                    <!--th:text="${myFormatter.formatOnlyTime(user.userId,dayOperation.createOn)}"></td>-->
-            <!--</tr>-->
-        <!--</div>-->
-    <!--</table>-->
+        <tr>
+            <th th:colspan="5" th:text="#{title.operation}"></th>
+        </tr>
+        <tr th:if="${weekOperations.isExist()}"
+            th:each="operation : ${weekOperations.current()}"
+            th:id="${operation.type eq income} ? operationIncome : operationConsumption">
+            <td th:class="myLabel" th:text="${operation.element.name}"></td>
+            <td th:class="myLabel" th:text="${operation.place.name}"></td>
+            <td th:class="myLabel"
+                th:text="${operation.type eq income} ?
+                ${myFormatter.formatNumber(user.id,operation.price)}
+                : ${myFormatter.formatNumber(true,user.id,operation.price)}">
+            </td>
+            <td th:class="myLabel" th:text="${operation.description}"></td>
+            <td th:class="myLabel"
+                th:text="${myFormatter.formatFullDate(user.id,operation.createOn)}"></td>
+        </tr>
+        <tr>
+            <td th:class="withButton" th:colspan="5">
+                <button class="button" th:id="buttonInline"
+                        th:onclick="'javascript:previousWeek();'"
+                        type="button" th:text="#{button.previous}"></button>
+                <button class="button" th:id="buttonInline"
+                        th:onclick="'javascript:nextWeek();'"
+                        type="button" th:text="#{button.next}"></button>
+            </td>
+        </tr>
+    </table>
     <script th:inline="javascript">
         function nextWeek() {
             location.href = "/budget/operation/week/next";
         }
         function previousWeek() {
-            location.href = "/budget/operation/week/previous";
-        }
-        function newOperation() {
             location.href = "/budget/operation/week/previous";
         }
     </script>

@@ -3,6 +3,7 @@ package com.kasia.model.service;
 import com.kasia.controller.dto.BudgetAdd;
 import com.kasia.model.Budget;
 import com.kasia.model.Element;
+import com.kasia.model.Operation;
 import com.kasia.model.Place;
 
 import java.util.Set;
@@ -41,4 +42,8 @@ public interface BudgetService {
     boolean isElementCanDeleted(long budgetId, long elementId);
 
     Set<Element> findAllElements(long budgetId);
+
+    Set<Operation> findAllOperations(long budgetId);
+
+    boolean addOperation(long budgetId, long operationId);
 }

@@ -63,9 +63,9 @@ public class OperationTest {
         operations.add(o4);
         operations.add(o5);
         operations.add(o6);
-        int id = 0;
+        int id = 7;
         for (Operation o : operations) {
-            assertThat(o.getId() == ++id).isTrue();
+            assertThat(o.getId() == --id).isTrue();
         }
     }
 }

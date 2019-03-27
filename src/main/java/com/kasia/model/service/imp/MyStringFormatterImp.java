@@ -40,6 +40,9 @@ public class MyStringFormatterImp implements MyStringFormatter {
     public String formatFullDate(long userId, LocalDateTime date) {
         User user = userS.findById(userId);
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE HH:mm", user.getLocale());
+        if (date.getYear() == LocalDateTime.now().getYear()) {
+            f = DateTimeFormatter.ofPattern("dd-MM EE HH:mm", user.getLocale());
+        }
         return convert(date, user.getZoneId()).format(f);
     }
 

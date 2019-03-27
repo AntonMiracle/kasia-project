@@ -1,10 +1,8 @@
 package com.kasia.configuration;
 
+import com.kasia.controller.dto.WeekOperationHistory;
 import com.kasia.model.*;
-import com.kasia.model.service.BudgetService;
-import com.kasia.model.service.ElementService;
-import com.kasia.model.service.PlaceService;
-import com.kasia.model.service.UserService;
+import com.kasia.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +32,8 @@ public class MvcConfig implements WebMvcConfigurer {
     private PlaceService placeS;
     @Autowired
     private ElementService elementS;
+    @Autowired
+    private OperationService operationS;
 
     @PostConstruct
     public void init() {
@@ -103,6 +103,67 @@ public class MvcConfig implements WebMvcConfigurer {
         budgetS.addElement(budget2.getId(), element2.getId());
         budgetS.addElement(budget2.getId(), element3.getId());
         budgetS.addElement(budget2.getId(), element4.getId());
+
+        Operation operation1 = new Operation(user1, element1, place1, BigDecimal.TEN, LocalDateTime.now(), "now", OperationType.INCOME);
+        Operation operation2 = new Operation(user1, element1, place1, BigDecimal.valueOf(100), LocalDateTime.now().minusDays(1), "minus 1 day", OperationType.CONSUMPTION);
+        Operation operation3 = new Operation(user1, element1, place1, BigDecimal.valueOf(102), LocalDateTime.now().minusDays(8), "minus 8 day", OperationType.INCOME);
+        Operation operation4 = new Operation(user1, element1, place1, BigDecimal.valueOf(10), LocalDateTime.now().minusYears(2), "minus 2 year", OperationType.CONSUMPTION);
+        Operation operation5 = new Operation(user1, element1, place1, BigDecimal.valueOf(99), LocalDateTime.now().minusHours(10), "minus 10 hour", OperationType.INCOME);
+        Operation operation6 = new Operation(user1, element1, place1, BigDecimal.valueOf(32), LocalDateTime.now().minusMonths(2), "minus 2 month", OperationType.CONSUMPTION);
+        Operation operation7 = new Operation(user1, element1, place1, BigDecimal.valueOf(1.9), LocalDateTime.now().minusWeeks(1), "minus 1 week", OperationType.INCOME);
+        Operation operation8 = new Operation(user1, element1, place1, BigDecimal.valueOf(0.01), LocalDateTime.now().minusMinutes(20), "minus 20 minute", OperationType.CONSUMPTION);
+        Operation operation9 = new Operation(user1, element1, place1, BigDecimal.valueOf(10000000), LocalDateTime.now().minusSeconds(20), "minus 20 second", OperationType.INCOME);
+        Operation operation10 = new Operation(user1, element1, place1, BigDecimal.TEN, LocalDateTime.now(), "now", OperationType.CONSUMPTION);
+        operationS.save(operation1);
+        operationS.save(operation2);
+        operationS.save(operation3);
+        operationS.save(operation4);
+        operationS.save(operation5);
+        operationS.save(operation6);
+        operationS.save(operation7);
+        operationS.save(operation8);
+        operationS.save(operation9);
+        operationS.save(operation10);
+        budgetS.addOperation(budget1.getId(), operation1.getId());
+        budgetS.addOperation(budget1.getId(), operation2.getId());
+        budgetS.addOperation(budget1.getId(), operation3.getId());
+        budgetS.addOperation(budget1.getId(), operation4.getId());
+        budgetS.addOperation(budget1.getId(), operation5.getId());
+        budgetS.addOperation(budget1.getId(), operation6.getId());
+        budgetS.addOperation(budget1.getId(), operation7.getId());
+        budgetS.addOperation(budget1.getId(), operation8.getId());
+        budgetS.addOperation(budget1.getId(), operation9.getId());
+        budgetS.addOperation(budget1.getId(), operation10.getId());
+        operation1.setId(0);
+        operation2.setId(0);
+        operation3.setId(0);
+        operation4.setId(0);
+        operation5.setId(0);
+        operation6.setId(0);
+        operation7.setId(0);
+        operation8.setId(0);
+        operation9.setId(0);
+        operation10.setId(0);
+        operationS.save(operation1);
+        operationS.save(operation2);
+        operationS.save(operation3);
+        operationS.save(operation4);
+        operationS.save(operation5);
+        operationS.save(operation6);
+        operationS.save(operation7);
+        operationS.save(operation8);
+        operationS.save(operation9);
+        operationS.save(operation10);
+        budgetS.addOperation(budget2.getId(), operation1.getId());
+        budgetS.addOperation(budget2.getId(), operation2.getId());
+        budgetS.addOperation(budget2.getId(), operation3.getId());
+        budgetS.addOperation(budget2.getId(), operation4.getId());
+        budgetS.addOperation(budget2.getId(), operation5.getId());
+        budgetS.addOperation(budget2.getId(), operation6.getId());
+        budgetS.addOperation(budget2.getId(), operation7.getId());
+        budgetS.addOperation(budget2.getId(), operation8.getId());
+        budgetS.addOperation(budget2.getId(), operation9.getId());
+        budgetS.addOperation(budget2.getId(), operation10.getId());
     }
 
     @Bean/* config i18n to get error msg from messages.properties*/
@@ -149,10 +210,10 @@ public class MvcConfig implements WebMvcConfigurer {
 //        return new OperationDTO();
 //    }
 //
-//    @Bean
-//    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-//    public WeekOperationHistory sessionWeekOperationHistory() {
-//        return new WeekOperationHistory();
-//    }
+    @Bean
+    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public WeekOperationHistory sessionWeekOperationHistory() {
+        return new WeekOperationHistory();
+    }
 
 }

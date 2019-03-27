@@ -1,5 +1,6 @@
 package com.kasia.controller;
 
+import com.kasia.controller.dto.WeekOperationHistory;
 import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.service.BudgetService;
@@ -18,6 +19,8 @@ public class MySessionController {
     private User user;
     @Resource(name = "sessionBudget")
     private Budget budget;
+    @Resource(name = "sessionWeekOperationHistory")
+    private WeekOperationHistory weekOperationHistory;
 
     public User getUser() {
         return user;
@@ -43,5 +46,16 @@ public class MySessionController {
 
     public Budget getBudget() {
         return budget;
+    }
+
+    public WeekOperationHistory getWeekOperationHistory() {
+        return weekOperationHistory;
+    }
+
+    public void setWeekOperationHistory() {
+        if (isUserLogin() && isBudgetOpen()) {
+            this.weekOperationHistory.setWeeks(budgetS.findAllOperations(getBudget().getId()));
+        }
+
     }
 }

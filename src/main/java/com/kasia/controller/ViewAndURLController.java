@@ -5,13 +5,11 @@ public final class ViewAndURLController {
     public static final String V_LOGIN = "login";
     public static final String V_REGISTRATION = "registration";
     public static final String V_BUDGET_ADD = "budgetAdd";
-    public static final String V_BUDGET_ALL = "budgetAll";
     public static final String V_BUDGET = "budget";
     public static final String V_PLACE = "place";
     public static final String V_PLACE_EDIT = "placeEdit";
     public static final String V_ELEMENT = "element";
     public static final String V_ELEMENT_EDIT = "elementEdit";
-    public static final String V_OPERATION = "operation";
     public static final String V_MAIN = "main";
 
     public static final String U_ROOT = "/";
@@ -21,7 +19,6 @@ public final class ViewAndURLController {
     public static final String U_BUDGET = "/budget";
     public static final String U_BUDGET_OPEN = U_BUDGET + "/open";
     public static final String U_BUDGET_ADD = U_BUDGET + "/add";
-    public static final String U_BUDGET_ALL = U_BUDGET + "/all";
     public static final String U_BUDGET_SAVE = U_BUDGET + "/save";
     public static final String U_REGISTRATION = "/registration";
     public static final String U_REGISTRATION_BACK = U_REGISTRATION + "/back";
@@ -30,6 +27,8 @@ public final class ViewAndURLController {
     public static final String U_OPERATION_PICK_PROVIDER = U_OPERATION_PICK + "/provider";
     public static final String U_OPERATION_PICK_ELEMENT = U_OPERATION_PICK + "/element";
     public static final String U_OPERATION_ADD = U_OPERATION + "/add";
+    public static final String U_OPERATION_INCOME = U_OPERATION + "/income";
+    public static final String U_OPERATION_CONSUMPTION = U_OPERATION + "/consumption";
     public static final String U_OPERATION_NEXT = U_OPERATION + "/next";
     public static final String U_OPERATION_WEEK = U_OPERATION + "/week";
     public static final String U_OPERATION_WEEK_NEXT = U_OPERATION_WEEK + "/next";

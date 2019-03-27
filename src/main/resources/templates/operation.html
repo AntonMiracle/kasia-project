@@ -7,22 +7,22 @@
 </head>
 <body>
 <div th:replace="fragments/header :: budgetMenu"></div>
-<div id="mainContentWithoutMenu">
-    <!--/*@thymesVar id="providers" type="java.util.Set<com.kasia.model.Provider>"*/-->
-    <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
-    <!--/*@thymesVar id="type" type="com.kasia.model.ElementType"*/-->
-    <!--/*@thymesVar id="operationDTO" type="com.kasia.controller.dto.OperationDTO"*/-->
+<div th:id="mainContentWithoutMenu">
+    <!--/*@thymesuserIdr placesders" type="java.util.Set<com.kasia.moPlaceider>"*/-->
+    <!--/*@thymesuserIdr id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
+    <!--/*@thymesuserIdr id="type" type="com.kasia.model.OperationType"*/-->
+    <!--/*@thymesuserIdr id="operationDTO" type="com.kasia.controller.dto.OperationDTO"*/-->
 
     <div th:class="myTable" th:if="${elements.size() == 0}"
          th:text="#{tip.need.element}"></div>
-    <div th:class="myTable" th:if="${providers.size() == 0}"
-         th:text="#{tip.need.provider}"></div>
+    <div th:class="myTable" th:if="${places.size() == 0}"
+         th:text="#{tip.need.place}"></div>
 
-    <div th:if="${providers.size() != 0 and operationDTO.getProviderId() == 0}">
-        <div th:each="provider : ${providers}"
+    <div th:if="${places.size() != 0 and operationDTO.getProviderId() == 0}">
+        <div th:each="place : ${places}"
              th:class="operationChoose"
-             th:onclick="'javascript:pickProvider(\'' + ${provider.id} + '\');'"
-             th:text="${provider.name}">
+             th:onclick="'javascript:pickProvider(\'' + ${place.userId} + '\');'"
+             th:text="${place.name}">
         </div>
     </div>
 
@@ -30,14 +30,14 @@
         <div th:each="element : ${elements}"
              th:class="operationChoose"
              th:id="${element.type eq element.type.INCOME} ? operationIncome : operationConsumption"
-             th:onclick="'javascript:pickElement(\'' + ${element.id} + '\');'"
+             th:onclick="'javascript:pickElement(\'' + ${element.userId} + '\');'"
              th:text="${element.name}">
         </div>
     </div>
 
     <form th:action="@{/budget/operation/add}" th:object="${operationDTO}" method="post">
-        <!--/*@thymesVar id="operationE" type="com.kasia.model.Element"*/-->
-        <!--/*@thymesVar id="operationP" type="com.kasia.model.Provider"*/-->
+        <!--/*@thymesuserIdr id="operationE" type="com.kasia.model.Element"*/-->
+        <!--/*@thymesuserIdr id="operationP" type="com.kasia.moPlaceider"*/-->
         <table th:class="myTable" th:if="${operationDTO.getElementId()!=0 and operationDTO.getProviderId() != 0}">
             <tr>
                 <th th:colspan="2" th:text="#{title.operation}"></th>
@@ -57,14 +57,14 @@
             </tr>
             <tr>
                 <td th:class="myLabel"
-                    th:text="${operationE.defaultPrice.currencies}"></td>
+                    th:text="${operationE.price.currencies}"></td>
                 <td th:class="myLabelError"
                     th:if="${#fields.hasErrors('price')}"
                     th:errors="*{price}">
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="text" th:field="*{price}" th:placeholder="#{tip.price.amount}"/></td>
+                <td th:colspan="2"><input type="text" th:field="*{price}" th:placeholder="#{tip.price}"/></td>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.description}"></td>
@@ -86,7 +86,7 @@
     </form>
     <script th:inline="javascript">
         function pickProvider(value) {
-            location.href = "/budget/operation/pick/provider/" + value;
+            location.href = "/budget/operation/pick/place/" + value;
         }
         function pickElement(value) {
             location.href = "/budget/operation/pick/element/" + value;
