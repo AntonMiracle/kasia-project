@@ -17,7 +17,7 @@
         <tr>
             <th th:colspan="5" th:text="#{title.operation}"></th>
         </tr>
-        <tr h:each="operation : ${weekOperations.current()}"
+        <tr th:each="operation : ${weekOperations.current()}"
             th:id="${operation.type eq income} ? operationIncome : operationConsumption">
             <td th:class="myLabel" th:text="${operation.element.name}"></td>
             <td th:class="myLabel" th:text="${operation.place.name}"></td>
