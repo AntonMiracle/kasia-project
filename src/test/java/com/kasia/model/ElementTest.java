@@ -12,7 +12,6 @@ public class ElementTest {
     public void equalsAndHashCode() throws Exception {
         EqualsVerifier.forClass(Element.class)
                 .usingGetClass()
-                .withPrefabValues(Price.class, ModelTestData.getPrice1(), ModelTestData.getPrice2())
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)
                 .verify();

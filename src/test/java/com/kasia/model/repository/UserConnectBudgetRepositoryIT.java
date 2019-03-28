@@ -2,6 +2,7 @@ package com.kasia.model.repository;
 
 import com.kasia.ModelTestData;
 import com.kasia.model.Budget;
+import com.kasia.model.User;
 import com.kasia.model.UserConnectBudget;
 import org.junit.After;
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class UserConnectBudgetRepositoryIT {
 
     @Test
     public void save() {
-        UserConnectBudget userConnectBudget = ModelTestData.getUserConnectBudget1();
+        UserConnectBudget userConnectBudget = ModelTestData.userConnectBudget();
         assertThat(userConnectBudget.getId() == 0).isTrue();
 
         saveForTest(userConnectBudget);
@@ -45,18 +46,22 @@ public class UserConnectBudgetRepositoryIT {
 
     @Test
     public void saveWithSameBudget() {
-        Budget budget1 = bRepository.save(ModelTestData.getBudget1());
+        Budget budget1 = bRepository.save(ModelTestData.budget());
 
-        UserConnectBudget ucb1 = ModelTestData.getUserConnectBudget1();
-        UserConnectBudget ucb2 = ModelTestData.getUserConnectBudget1();
+        UserConnectBudget ucb1 = ModelTestData.userConnectBudget();
+        UserConnectBudget ucb2 = ModelTestData.userConnectBudget();
 
         ucb1.getConnectBudgets().clear();
         ucb2.getConnectBudgets().clear();
         ucb1.getConnectBudgets().add(budget1);
         ucb2.getConnectBudgets().add(budget1);
 
-        ucb1.setUser(uRepository.save(ModelTestData.getUser1()));
-        ucb2.setUser(uRepository.save(ModelTestData.getUser2()));
+        User user1 = ModelTestData.user();
+        User user2 = ModelTestData.user();
+        user2.setEmail("new" + user1.getEmail());
+
+        ucb1.setUser(uRepository.save(user1));
+        ucb2.setUser(uRepository.save(user2));
 
         assertThat(ucb1.getId() == 0).isTrue();
         assertThat(ucb2.getId() == 0).isTrue();
@@ -76,8 +81,8 @@ public class UserConnectBudgetRepositoryIT {
     }
 
     @Test
-    public void getById() throws Exception {
-        UserConnectBudget userConnectBudget = saveForTest(ModelTestData.getUserConnectBudget1());
+    public void findById() throws Exception {
+        UserConnectBudget userConnectBudget = saveForTest(ModelTestData.userConnectBudget());
         long id = userConnectBudget.getId();
 
         userConnectBudget = ucbRepository.findById(id).orElse(null);
@@ -88,7 +93,7 @@ public class UserConnectBudgetRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        UserConnectBudget userConnectBudget = saveForTest(ModelTestData.getUserConnectBudget1());
+        UserConnectBudget userConnectBudget = saveForTest(ModelTestData.userConnectBudget());
 
         ucbRepository.delete(userConnectBudget);
 
@@ -96,9 +101,18 @@ public class UserConnectBudgetRepositoryIT {
     }
 
     @Test
-    public void getAll() throws Exception {
-        saveForTest(ModelTestData.getUserConnectBudget1());
-        saveForTest(ModelTestData.getUserConnectBudget2());
+    public void findAll() throws Exception {
+        User user1 = ModelTestData.user();
+        User user2 = ModelTestData.user();
+        user2.setEmail("new" + user1.getEmail());
+
+        UserConnectBudget ucb1 = ModelTestData.userConnectBudget();
+        UserConnectBudget ucb2 = ModelTestData.userConnectBudget();
+        ucb1.setUser(user1);
+        ucb2.setUser(user2);
+
+        saveForTest(ucb1);
+        saveForTest(ucb2);
         Set<UserConnectBudget> userConnectBudgets = new HashSet<>();
 
         ucbRepository.findAll().forEach(userConnectBudgets::add);
@@ -108,7 +122,7 @@ public class UserConnectBudgetRepositoryIT {
 
     @Test
     public void findByUserId() {
-        UserConnectBudget expected = saveForTest(ModelTestData.getUserConnectBudget1());
+        UserConnectBudget expected = saveForTest(ModelTestData.userConnectBudget());
         long userId = expected.getUser().getId();
 
         Optional<UserConnectBudget> actual = ucbRepository.findByUserId(userId);

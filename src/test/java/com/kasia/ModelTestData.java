@@ -1,160 +1,75 @@
 package com.kasia;
 
-import com.kasia.controller.dto.UserDTO;
 import com.kasia.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Currency;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
 final public class ModelTestData {
-    public static Balance getBalance1() {
-        return new Balance(BigDecimal.valueOf(0.00), Currencies.EUR, getNow());
+    public static Balance balance() {
+        return new Balance(BigDecimal.valueOf(0), Currencies.EUR.name(), now());
     }
 
-    public static Balance getBalance2() {
-        return new Balance(BigDecimal.valueOf(-0.01), Currencies.USD, getNow());
+    public static Budget budget() {
+        return new Budget("budgetName", balance(), now());
     }
 
-    public static Price getPrice1() {
-        return new Price(BigDecimal.ZERO, Currencies.EUR);
+    public static Element element() {
+        return new Element("elementName", price(0));
     }
 
-    public static Price getPrice2() {
-        return new Price(BigDecimal.TEN, Currencies.USD);
+    public static BigDecimal price(double price) {
+        return new BigDecimal(price);
     }
 
-    public static Budget getBudget1() {
-        return new Budget("name1", getBalance1(), LocalDateTime.now());
+    public static Place provider() {
+        return new Place("providerName", "provider description");
     }
 
-    public static Budget getBudget2() {
-        return new Budget("name2", getBalance2(), LocalDateTime.now());
-    }
-
-    public static Element getElement1() {
-        return new Element("name1", getPrice1(), ElementType.CONSUMPTION);
-    }
-
-    public static Element getElement2() {
-        return new Element("name2", getPrice2(), ElementType.INCOME);
-    }
-
-    public static Provider getElementProvider1() {
-        return new Provider("name1", "description1");
-    }
-
-    public static Provider getElementProvider2() {
-        return new Provider("name2", "description2");
-    }
-
-    public static LocalDateTime getNow() {
+    public static LocalDateTime now() {
         return LocalDateTime.now().withNano(0);
     }
 
-    public static Operation getOperation1() {
-        return new Operation(getUser1(), getElement1(), getElementProvider1(), getPrice1(), getNow(),"");
+    public static Operation operation() {
+        return new Operation(user(), element(), provider(), price(10), now(), "operation description", OperationType.CONSUMPTION);
     }
 
-    public static Operation getOperation2() {
-        return new Operation(getUser2(), getElement2(), getElementProvider2(), getPrice2(), getNow(),"");
+    public static User user() {
+        return new User("email@gmail.com", "Password2", Role.USER, now(), true, ZoneId.systemDefault(), Locale.getDefault());
     }
 
-    public static Currency getBudgetCurrency1() {
-        return Currencies.EUR.getCurrency();
-    }
-
-    public static Currency getBudgetCurrency2() {
-        return Currencies.PLN.getCurrency();
-    }
-
-    public static User getUser1() {
-        return new User("email1@gmail.com", "Name1", "Password2", ZoneId.systemDefault(), getNow(), Role.USER, false, new Locale("en", "CA"));
-    }
-
-    public static User getUser2() {
-        return new User("email2@gmail.com", "Name2", "Password3", ZoneId.systemDefault(), getNow(), Role.USER, false, new Locale("en", "SG"));
-    }
-
-    public static BudgetElement getBudgetElement1() {
+    public static BudgetElement budgetElement() {
         Set<Element> elements = new HashSet<>();
-        elements.add(getElement1());
-        return new BudgetElement(getBudget1(), elements);
+        elements.add(element());
+        return new BudgetElement(budget(), elements);
     }
 
-    public static BudgetElement getBudgetElement2() {
-        Set<Element> elements = new HashSet<>();
-        elements.add(getElement2());
-        return new BudgetElement(getBudget2(), elements);
+    public static BudgetPlace budgetProvider() {
+        Set<Place> places = new HashSet<>();
+        places.add(provider());
+        return new BudgetPlace(budget(), places);
     }
 
-    public static BudgetProvider getBudgetElementProvider1() {
-        Set<Provider> providers = new HashSet<>();
-        providers.add(getElementProvider1());
-        return new BudgetProvider(getBudget1(), providers);
-    }
-
-    public static BudgetProvider getBudgetElementProvider2() {
-        Set<Provider> providers = new HashSet<>();
-        providers.add(getElementProvider2());
-        return new BudgetProvider(getBudget2(), providers);
-    }
-
-    public static BudgetOperation getBudgetOperation1() {
+    public static BudgetOperation budgetOperation() {
         Set<Operation> operations = new HashSet<>();
-        operations.add(getOperation1());
-        return new BudgetOperation(getBudget1(), operations);
+        operations.add(operation());
+        return new BudgetOperation(budget(), operations);
     }
 
-    public static BudgetOperation getBudgetOperation2() {
-        Set<Operation> operations = new HashSet<>();
-        operations.add(getOperation2());
-        return new BudgetOperation(getBudget1(), operations);
-    }
-
-    public static UserBudget getUserBudget1() {
+    public static UserBudget userBudget() {
         Set<Budget> budgets = new HashSet<>();
-        budgets.add(getBudget1());
-        return new UserBudget(getUser1(), budgets);
+        budgets.add(budget());
+        return new UserBudget(user(), budgets);
     }
 
-    public static UserBudget getUserBudget2() {
+    public static UserConnectBudget userConnectBudget() {
         Set<Budget> budgets = new HashSet<>();
-        budgets.add(getBudget2());
-        return new UserBudget(getUser2(), budgets);
-    }
-
-    public static UserConnectBudget getUserConnectBudget1() {
-        Set<Budget> budgets = new HashSet<>();
-        budgets.add(getBudget1());
-        return new UserConnectBudget(getUser1(), budgets);
-    }
-
-    public static UserConnectBudget getUserConnectBudget2() {
-        Set<Budget> budgets = new HashSet<>();
-        budgets.add(getBudget2());
-        return new UserConnectBudget(getUser2(), budgets);
-    }
-
-    public static Locale getDefaultLocale() {
-        return new Locale("pl", "PL");
-    }
-
-    public static UserDTO getUserDto1() {
-        UserDTO dto = new UserDTO();
-        User u = ModelTestData.getUser1();
-        dto.setConfirm(u.getPassword());
-        dto.setCountry(u.getLocale().getCountry());
-        dto.setEmail(u.getEmail());
-        dto.setLang(u.getLocale().getLanguage());
-        dto.setName(u.getName());
-        dto.setPassword(u.getPassword());
-        dto.setZoneId(u.getZoneId().toString());
-        return dto;
+        budgets.add(budget());
+        return new UserConnectBudget(user(), budgets);
     }
 
 }

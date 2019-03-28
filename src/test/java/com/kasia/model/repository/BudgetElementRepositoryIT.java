@@ -34,7 +34,7 @@ public class BudgetElementRepositoryIT {
 
     @Test
     public void findByBudgetId() {
-        BudgetElement expected = saveForTest(ModelTestData.getBudgetElement1());
+        BudgetElement expected = saveForTest(ModelTestData.budgetElement());
 
         Optional<BudgetElement> actual = repository.findByBudgetId(expected.getBudget().getId());
 
@@ -45,7 +45,7 @@ public class BudgetElementRepositoryIT {
 
     @Test
     public void save() {
-        BudgetElement budgetElement = ModelTestData.getBudgetElement1();
+        BudgetElement budgetElement = ModelTestData.budgetElement();
         assertThat(budgetElement.getId() == 0).isTrue();
 
         saveForTest(budgetElement);
@@ -61,8 +61,8 @@ public class BudgetElementRepositoryIT {
     }
 
     @Test
-    public void getById() throws Exception {
-        BudgetElement budgetElement = saveForTest(ModelTestData.getBudgetElement1());
+    public void findById() throws Exception {
+        BudgetElement budgetElement = saveForTest(ModelTestData.budgetElement());
         long id = budgetElement.getId();
 
         budgetElement = repository.findById(id).get();
@@ -73,7 +73,7 @@ public class BudgetElementRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        BudgetElement budgetElement = saveForTest(ModelTestData.getBudgetElement1());
+        BudgetElement budgetElement = saveForTest(ModelTestData.budgetElement());
 
         repository.delete(budgetElement);
 
@@ -81,9 +81,9 @@ public class BudgetElementRepositoryIT {
     }
 
     @Test
-    public void getAll() throws Exception {
-        saveForTest(ModelTestData.getBudgetElement1());
-        saveForTest(ModelTestData.getBudgetElement2());
+    public void findAll() throws Exception {
+        saveForTest(ModelTestData.budgetElement());
+        saveForTest(ModelTestData.budgetElement());
         Set<BudgetElement> budgetElements = new HashSet<>();
 
         repository.findAll().forEach(budgetElements::add);

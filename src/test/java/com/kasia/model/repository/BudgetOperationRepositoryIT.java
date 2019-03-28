@@ -26,7 +26,7 @@ public class BudgetOperationRepositoryIT {
     @Autowired
     private ElementRepository elementRepository;
     @Autowired
-    private ProviderRepository providerRepository;
+    private PlaceRepository placeRepository;
     @Autowired
     private BudgetRepository budgetRepository;
     @Autowired
@@ -38,12 +38,12 @@ public class BudgetOperationRepositoryIT {
         budgetRepository.findAll().forEach(model -> budgetRepository.delete(model));
         operationRepository.findAll().forEach(model -> operationRepository.delete(model));
         elementRepository.findAll().forEach(model -> elementRepository.delete(model));
-        providerRepository.findAll().forEach(model -> providerRepository.delete(model));
+        placeRepository.findAll().forEach(model -> placeRepository.delete(model));
     }
 
     @Test
     public void save() {
-        BudgetOperation budgetOperation = ModelTestData.getBudgetOperation1();
+        BudgetOperation budgetOperation = ModelTestData.budgetOperation();
         assertThat(budgetOperation.getId() == 0).isTrue();
 
         saveForTest(budgetOperation);
@@ -55,8 +55,8 @@ public class BudgetOperationRepositoryIT {
         budgetOperation.getOperations().forEach(operation ->
         {
             elementRepository.save(operation.getElement());
-            providerRepository.save(operation.getProvider());
-            Optional<User> user = userRepository.findByName(operation.getUser().getName());
+            placeRepository.save(operation.getPlace());
+            Optional<User> user = userRepository.findByEmail(operation.getUser().getEmail());
             if (user.isPresent()) {
                 operation.setUser(user.get());
             } else {
@@ -70,8 +70,8 @@ public class BudgetOperationRepositoryIT {
     }
 
     @Test
-    public void getById() throws Exception {
-        BudgetOperation budgetOperation = saveForTest(ModelTestData.getBudgetOperation1());
+    public void findById() throws Exception {
+        BudgetOperation budgetOperation = saveForTest(ModelTestData.budgetOperation());
         long id = budgetOperation.getId();
 
         budgetOperation = repository.findById(id).get();
@@ -82,7 +82,7 @@ public class BudgetOperationRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        BudgetOperation budget = saveForTest(ModelTestData.getBudgetOperation1());
+        BudgetOperation budget = saveForTest(ModelTestData.budgetOperation());
 
         repository.delete(budget);
 
@@ -90,9 +90,9 @@ public class BudgetOperationRepositoryIT {
     }
 
     @Test
-    public void getAll() throws Exception {
-        saveForTest(ModelTestData.getBudgetOperation1());
-        saveForTest(ModelTestData.getBudgetOperation2());
+    public void findAll() throws Exception {
+        saveForTest(ModelTestData.budgetOperation());
+        saveForTest(ModelTestData.budgetOperation());
         Set<BudgetOperation> budgetOperations = new HashSet<>();
 
         repository.findAll().forEach(budgetOperations::add);
@@ -103,7 +103,7 @@ public class BudgetOperationRepositoryIT {
 
     @Test
     public void findByBudgetId() {
-        BudgetOperation expected = saveForTest(ModelTestData.getBudgetOperation1());
+        BudgetOperation expected = saveForTest(ModelTestData.budgetOperation());
 
         assertThat(repository.findByBudgetId(expected.getBudget().getId()).get()).isEqualTo(expected);
     }

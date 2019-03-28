@@ -29,7 +29,7 @@ public class UserRepositoryIT {
 
     @Test
     public void correctLocaleConvert() {
-        User user = ModelTestData.getUser1();
+        User user = ModelTestData.user();
         Locale locale = new Locale("en", "CA");
         user.setLocale(locale);
 
@@ -41,7 +41,7 @@ public class UserRepositoryIT {
 
     @Test
     public void save() {
-        User user = ModelTestData.getUser1();
+        User user = ModelTestData.user();
         assertThat(user.getId() == 0).isTrue();
 
         saveForTest(user);
@@ -57,32 +57,17 @@ public class UserRepositoryIT {
     @Test(expected = DataIntegrityViolationException.class)
     public void whenSaveWithNonUniqueEmailThenException() {
         System.out.println("================= Must be DataIntegrityViolationException or ConstraintViolationException");
-        User user1 = ModelTestData.getUser1();
-        User user2 = ModelTestData.getUser2();
-        user2.setEmail(user1.getEmail());
+        User user1 = ModelTestData.user();
+        User user2 = ModelTestData.user();
         assertThat(user1.getEmail()).isEqualTo(user2.getEmail());
-        assertThat(user1.getName()).isNotEqualTo(user2.getName());
-
-        saveForTest(user1);
-        saveForTest(user2);
-    }
-
-    @Test(expected = DataIntegrityViolationException.class)
-    public void whenSaveWithNonUniqueNameThenException() {
-        System.out.println("================= Must be DataIntegrityViolationException or ConstraintViolationException");
-        User user1 = ModelTestData.getUser1();
-        User user2 = ModelTestData.getUser2();
-        user2.setName(user1.getName());
-        assertThat(user1.getEmail()).isNotEqualTo(user2.getEmail());
-        assertThat(user1.getName()).isEqualTo(user2.getName());
 
         saveForTest(user1);
         saveForTest(user2);
     }
 
     @Test
-    public void getById() throws Exception {
-        User user = saveForTest(ModelTestData.getUser1());
+    public void findById() throws Exception {
+        User user = saveForTest(ModelTestData.user());
         long id = user.getId();
 
         user = repository.findById(id).get();
@@ -93,7 +78,7 @@ public class UserRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        User user = saveForTest(ModelTestData.getUser1());
+        User user = saveForTest(ModelTestData.user());
 
         repository.delete(user);
 
@@ -101,9 +86,12 @@ public class UserRepositoryIT {
     }
 
     @Test
-    public void getAll() throws Exception {
-        saveForTest(ModelTestData.getUser1());
-        saveForTest(ModelTestData.getUser2());
+    public void findAll() throws Exception {
+        User user1 = ModelTestData.user();
+        User user2 = ModelTestData.user();
+        user2.setEmail("new" + user1.getEmail());
+        saveForTest(user1);
+        saveForTest(user2);
         Set<User> users = new HashSet<>();
 
         repository.findAll().forEach(users::add);
@@ -112,8 +100,8 @@ public class UserRepositoryIT {
     }
 
     @Test
-    public void getByEmail() {
-        User user = ModelTestData.getUser1();
+    public void findByEmail() {
+        User user = ModelTestData.user();
         String email = user.getEmail();
         saveForTest(user);
 
@@ -126,23 +114,7 @@ public class UserRepositoryIT {
 
     @Test
     public void whenEmailNotExistGetByEmailReturnNull() {
-        assertThat(repository.findByEmail(ModelTestData.getUser1().getEmail()).isPresent()).isFalse();
-    }
-
-    @Test
-    public void getByName() {
-        User user = ModelTestData.getUser1();
-        String name = user.getName();
-        saveForTest(user);
-
-        user = repository.findByName(name).get();
-
-        assertThat(user.getName()).isEqualTo(name);
-    }
-
-    @Test
-    public void whenNameNotExistGetByNameReturnNull() {
-        assertThat(repository.findByName(ModelTestData.getUser1().getName()).isPresent()).isFalse();
+        assertThat(repository.findByEmail(ModelTestData.user().getEmail()).isPresent()).isFalse();
     }
 
 }

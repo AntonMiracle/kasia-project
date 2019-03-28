@@ -27,7 +27,7 @@ public class ElementRepositoryIT {
 
     @Test
     public void save() {
-        Element element = ModelTestData.getElement1();
+        Element element = ModelTestData.element();
         assertThat(element.getId() == 0).isTrue();
 
         saveForTest(element);
@@ -41,8 +41,8 @@ public class ElementRepositoryIT {
     }
 
     @Test
-    public void getById() throws Exception {
-        Element element = saveForTest(ModelTestData.getElement1());
+    public void findById() throws Exception {
+        Element element = saveForTest(ModelTestData.element());
         long id = element.getId();
 
         element = repository.findById(id).get();
@@ -53,7 +53,7 @@ public class ElementRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        Element element = saveForTest(ModelTestData.getElement1());
+        Element element = saveForTest(ModelTestData.element());
 
         repository.delete(element);
 
@@ -61,10 +61,9 @@ public class ElementRepositoryIT {
     }
 
     @Test
-    public void getAll() throws Exception {
-
-        saveForTest(ModelTestData.getElement1());
-        saveForTest(ModelTestData.getElement2());
+    public void findAll() throws Exception {
+        saveForTest(ModelTestData.element());
+        saveForTest(ModelTestData.element());
         Set<Element> elements = new HashSet<>();
 
         repository.findAll().forEach(elements::add);

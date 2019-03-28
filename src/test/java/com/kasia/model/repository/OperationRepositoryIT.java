@@ -24,7 +24,7 @@ public class OperationRepositoryIT {
     @Autowired
     private ElementRepository elementRepository;
     @Autowired
-    private ProviderRepository providerRepository;
+    private PlaceRepository placeRepository;
     @Autowired
     private UserRepository userRepository;
 
@@ -32,14 +32,14 @@ public class OperationRepositoryIT {
     public void cleanData() {
         repository.findAll().forEach(model -> repository.delete(model));
         elementRepository.findAll().forEach(model -> elementRepository.delete(model));
-        providerRepository.findAll().forEach(model -> providerRepository.delete(model));
+        placeRepository.findAll().forEach(model -> placeRepository.delete(model));
         userRepository.findAll().forEach(model -> userRepository.delete(model));
     }
 
 
     @Test
     public void save() {
-        Operation operation = ModelTestData.getOperation1();
+        Operation operation = ModelTestData.operation();
         assertThat(operation.getId() == 0).isTrue();
 
         saveForTest(operation);
@@ -49,8 +49,8 @@ public class OperationRepositoryIT {
 
     private Operation saveForTest(Operation operation) {
         elementRepository.save(operation.getElement());
-        providerRepository.save(operation.getProvider());
-        Optional<User> user = userRepository.findByName(operation.getUser().getName());
+        placeRepository.save(operation.getPlace());
+        Optional<User> user = userRepository.findByEmail(operation.getUser().getEmail());
         if (user.isPresent()) {
             operation.setUser(user.get());
         } else {
@@ -62,8 +62,8 @@ public class OperationRepositoryIT {
 
 
     @Test
-    public void getById() throws Exception {
-        Operation operation = saveForTest(ModelTestData.getOperation1());
+    public void findById() throws Exception {
+        Operation operation = saveForTest(ModelTestData.operation());
         long id = operation.getId();
 
         operation = repository.findById(id).get();
@@ -74,7 +74,7 @@ public class OperationRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        Operation operation = saveForTest(ModelTestData.getOperation1());
+        Operation operation = saveForTest(ModelTestData.operation());
 
         repository.delete(operation);
 
@@ -82,9 +82,9 @@ public class OperationRepositoryIT {
     }
 
     @Test
-    public void getAll() throws Exception {
-        saveForTest(ModelTestData.getOperation1());
-        saveForTest(ModelTestData.getOperation2());
+    public void findAll() throws Exception {
+        saveForTest(ModelTestData.operation());
+        saveForTest(ModelTestData.operation());
         Set<Operation> operations = new HashSet<>();
 
         repository.findAll().forEach(operations::add);
@@ -93,19 +93,8 @@ public class OperationRepositoryIT {
     }
 
     @Test
-    public void findByUserName() {
-        Operation operation = saveForTest(ModelTestData.getOperation1());
-        User user = operation.getUser();
-        Set<Operation> operations = new HashSet<>();
-
-        repository.findByUserName(user.getName()).forEach(operations::add);
-
-        assertThat(operations.size() == 1).isTrue();
-    }
-
-    @Test
     public void findByUserId() {
-        Operation operation = saveForTest(ModelTestData.getOperation1());
+        Operation operation = saveForTest(ModelTestData.operation());
         User user = operation.getUser();
         Set<Operation> operations = new HashSet<>();
 

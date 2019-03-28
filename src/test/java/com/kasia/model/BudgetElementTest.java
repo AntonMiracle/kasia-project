@@ -10,11 +10,18 @@ import javax.persistence.Id;
 public class BudgetElementTest {
     @Test
     public void equalsAndHashCode() throws Exception {
+        Element element1 = ModelTestData.element();
+        Element element2 = ModelTestData.element();
+        element2.setName("new" + element1.getName());
+
+        Budget budget1 = ModelTestData.budget();
+        Budget budget2 = ModelTestData.budget();
+        budget1.setName("new" + budget1.getName());
 
         EqualsVerifier.forClass(BudgetElement.class)
                 .usingGetClass()
-                .withPrefabValues(Budget.class, ModelTestData.getBudget1(), ModelTestData.getBudget2())
-                .withPrefabValues(Element.class, ModelTestData.getElement1(), ModelTestData.getElement2())
+                .withPrefabValues(Budget.class, budget1, budget2)
+                .withPrefabValues(Element.class, element1, element2)
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)
                 .verify();

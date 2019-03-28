@@ -7,25 +7,22 @@ import org.junit.Test;
 
 import javax.persistence.Id;
 
-public class BudgetOperationTest {
+public class BudgetPlaceTest {
     @Test
-    public void equalsAndHashCode() throws Exception {
+    public void equals() throws Exception {
         Budget budget1 = ModelTestData.budget();
         Budget budget2 = ModelTestData.budget();
-        budget1.setName("new" + budget1.getName());
+        budget2.setName("new" + budget1.getName());
+        Place place1 = ModelTestData.provider();
+        Place place2 = ModelTestData.provider();
+        place2.setName("new" + place1.getName());
 
-        Operation operation1 = ModelTestData.operation();
-        Operation operation2 = ModelTestData.operation();
-        operation1.setId(1);
-        operation2.setId(2);
-
-        EqualsVerifier.forClass(BudgetOperation.class)
+        EqualsVerifier.forClass(BudgetPlace.class)
                 .usingGetClass()
                 .withPrefabValues(Budget.class, budget1, budget2)
-                .withPrefabValues(Operation.class, operation1, operation2)
+                .withPrefabValues(Place.class, place1, place2)
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)
                 .verify();
     }
-
 }

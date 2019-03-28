@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import javax.persistence.Id;
 
-public class ProviderTest {
+public class PlaceTest {
     @Test
     public void equalsAndHashCode() throws Exception {
-        EqualsVerifier.forClass(Provider.class)
+        EqualsVerifier.forClass(Place.class)
                 .usingGetClass()
                 .suppress(Warning.NONFINAL_FIELDS)
                 .withIgnoredAnnotations(Id.class)

@@ -1,6 +1,7 @@
 package com.kasia.model.repository;
 
 import com.kasia.ModelTestData;
+import com.kasia.model.User;
 import com.kasia.model.UserBudget;
 import org.junit.After;
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class UserBudgetRepositoryIT {
 
     @Test
     public void save() {
-        UserBudget userBudget = ModelTestData.getUserBudget1();
+        UserBudget userBudget = ModelTestData.userBudget();
         assertThat(userBudget.getId() == 0).isTrue();
 
         saveForTest(userBudget);
@@ -50,8 +51,8 @@ public class UserBudgetRepositoryIT {
     }
 
     @Test
-    public void getById() throws Exception {
-        UserBudget userBudget = saveForTest(ModelTestData.getUserBudget1());
+    public void findById() throws Exception {
+        UserBudget userBudget = saveForTest(ModelTestData.userBudget());
         long id = userBudget.getId();
 
         userBudget = repository.findById(id).orElse(null);
@@ -62,7 +63,7 @@ public class UserBudgetRepositoryIT {
 
     @Test
     public void findByUserId() {
-        UserBudget expected = saveForTest(ModelTestData.getUserBudget1());
+        UserBudget expected = saveForTest(ModelTestData.userBudget());
         long userId = expected.getUser().getId();
 
         Optional<UserBudget> actual = repository.findByUserId(userId);
@@ -73,7 +74,7 @@ public class UserBudgetRepositoryIT {
 
     @Test
     public void delete() throws Exception {
-        UserBudget userBudget = saveForTest(ModelTestData.getUserBudget1());
+        UserBudget userBudget = saveForTest(ModelTestData.userBudget());
 
         repository.delete(userBudget);
 
@@ -81,9 +82,19 @@ public class UserBudgetRepositoryIT {
     }
 
     @Test
-    public void getAll() throws Exception {
-        saveForTest(ModelTestData.getUserBudget1());
-        saveForTest(ModelTestData.getUserBudget2());
+    public void findAll() throws Exception {
+        User user1 = ModelTestData.user();
+        User user2 = ModelTestData.user();
+        user2.setEmail("new" + user1.getEmail());
+
+        UserBudget ub1 = ModelTestData.userBudget();
+        UserBudget ub2 = ModelTestData.userBudget();
+
+        ub1.setUser(user1);
+        ub2.setUser(user2);
+
+        saveForTest(ub1);
+        saveForTest(ub2);
         Set<UserBudget> userBudgets = new HashSet<>();
 
         repository.findAll().forEach(userBudgets::add);
