@@ -1,13 +1,16 @@
 package com.kasia.controller;
 
 import com.kasia.controller.dto.OperationDTO;
-import com.kasia.model.*;
-import com.kasia.model.service.BalanceService;
+import com.kasia.model.Element;
+import com.kasia.model.Operation;
+import com.kasia.model.Place;
 import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.ElementService;
 import com.kasia.model.service.OperationService;
-import com.kasia.model.service.UserService;
+import com.kasia.model.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,127 +18,105 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static com.kasia.controller.ViewAndURLController.*;
 
 @Controller
 public class OperationController {
     @Autowired
-    private MySessionController sessionController;
+    private MySessionController sessionC;
     @Autowired
-    private BudgetService budgetService;
+    private BudgetService budgetS;
     @Autowired
-    private OperationService oService;
+    private PlaceService placeS;
     @Autowired
-    private UserService uService;
+    private ElementService elementS;
     @Autowired
-    private BalanceService balanceService;
+    private OperationService operationS;
 
-    @ModelAttribute("operationDTO")
-    public OperationDTO getOperationDTO() {
-        OperationDTO session = sessionController.getOperationDTO();
-        OperationDTO dto = new OperationDTO(
-                session.getElementId(), session.getProviderId()
-                , session.getProviderId(), session.getBudgetId()
-                , session.getPrice(), session.isStarted());
-        return dto;
+    @ModelAttribute("elements")
+    public Set<Element> getElements() {
+        if (sessionC.isBudgetOpen()) return budgetS.findAllElements(sessionC.getBudget().getId());
+        return new TreeSet<>();
     }
 
-    @ModelAttribute("operationE")
-    public Element getOperationE() {
-        if (sessionController.isOperationStarted() && sessionController.getOperationDTO().getElementId() > 0) {
-            return budgetService.findElementById(sessionController.getOperationDTO().getBudgetId()
-                    , sessionController.getOperationDTO().getElementId());
-        } else return new Element();
-    }
-
-    @ModelAttribute("operationP")
-    public Provider getOperationP() {
-        if (sessionController.isOperationStarted() && sessionController.getOperationDTO().getProviderId() > 0) {
-            return budgetService.findProviderById(sessionController.getOperationDTO().getBudgetId()
-                    , sessionController.getOperationDTO().getProviderId());
-        } else return new Provider();
+    @ModelAttribute("places")
+    public Set<Place> getPlaces() {
+        if (sessionC.isBudgetOpen()) return budgetS.findAllPlaces(sessionC.getBudget().getId());
+        return new TreeSet<>();
     }
 
     @GetMapping(U_OPERATION)
     public String openOperation() {
-        if (sessionController.isOperationStarted()) {
-            sessionController.stopOperation();
-            return redirect(U_OPERATION);
-        }
-        return sessionController.isBudgetOpen() ? V_OPERATION : redirect(U_BUDGET_ALL);
-    }
-
-    @GetMapping(U_OPERATION_NEXT)
-    public String nextOperationField() {
-        return sessionController.isOperationStarted() ? V_OPERATION : redirect(U_OPERATION);
-    }
-
-    @GetMapping(U_OPERATION_PICK_PROVIDER + "/{id}")
-    public String pickProvider(@PathVariable long id) {
-        if (sessionController.isOperationStarted()) sessionController.stopOperation();
-        if (sessionController.isBudgetOpen()
-                && budgetService.findProviderById(sessionController.getBudget().getId(), id) != null) {
-            sessionController.getOperationDTO().setStarted(true);
-            sessionController.getOperationDTO().setBudgetId(sessionController.getBudget().getId());
-            sessionController.getOperationDTO().setUserId(sessionController.getUser().getId());
-            sessionController.getOperationDTO().setProviderId(id);
-            return redirect(U_OPERATION_NEXT);
-        } else {
-            return redirect(U_OPERATION);
-        }
-    }
-
-    @GetMapping(U_OPERATION_PICK_ELEMENT + "/{id}")
-    public String pickElement(@PathVariable long id) {
-        OperationDTO dto = sessionController.getOperationDTO();
-        if (sessionController.isOperationStarted()
-                && dto.getProviderId() > 0
-                && dto.getBudgetId() > 0
-                && dto.getUserId() > 0
-                && budgetService.findElementById(dto.getBudgetId(), id) != null) {
-            sessionController.getOperationDTO().setElementId(id);
-            Element element = budgetService.findElementById(dto.getBudgetId(), id);
-            sessionController.getOperationDTO().setPrice(element.getDefaultPrice().getAmount().toString());
-            return redirect(U_OPERATION_NEXT);
-        } else {
-            return redirect(U_OPERATION);
-        }
-    }
-
-    @GetMapping(U_OPERATION_WEEK_PREVIOUS)
-    public String previousWeek() {
-        if (sessionController.isBudgetOpen()) {
-            sessionController.getWeekOperationHistory().previous();
-            return V_BUDGET;
-        } else return redirect(V_BUDGET_ALL);
-    }
-
-    @GetMapping(U_OPERATION_WEEK_NEXT)
-    public String nextWeek() {
-        if (sessionController.isBudgetOpen()) {
-            sessionController.getWeekOperationHistory().next();
-            return V_BUDGET;
-        } else return redirect(V_BUDGET_ALL);
-    }
-
-    @PostMapping(U_OPERATION_ADD)
-    public String addOperation(@Valid @ModelAttribute OperationDTO dto, BindingResult bResult) {
-        if (bResult.hasErrors()) return nextOperationField();
-
-        Provider p = budgetService.findProviderById(dto.getBudgetId(), dto.getProviderId());
-        Element e = budgetService.findElementById(dto.getBudgetId(), dto.getElementId());
-        User u = uService.findUserById(dto.getUserId());
-        Budget b = budgetService.findBudgetById(dto.getBudgetId());
-
-        Price price = balanceService.createPrice(new BigDecimal(dto.getPrice()), b.getBalance().getCurrencies());
-        Operation o = oService.createOperation(u, e, p, price);
-        o.setDescription(dto.getDescription());
-
-        oService.addOperation(b.getId(), o);
-        sessionController.setBudget(budgetService.findBudgetById(b.getId()));
+        if (sessionC.isBudgetOpen()) return V_OPERATION;
         return redirect(U_BUDGET);
     }
 
+    @GetMapping(U_OPERATION_INCOME)
+    public String startIncome(Model model) {
+        if (!sessionC.isBudgetOpen()) return openOperation();
+        OperationDTO dto = new OperationDTO();
+        dto.setStarted(true);
+        dto.setIncome(true);
+        sessionC.setOperationAdd(dto);
+        model.addAttribute("operationAdd", dto);
+        return openOperation();
+    }
+
+    @GetMapping(U_OPERATION_PICK_PLACE + "/{id}")
+    public String pickPlace(Model model, @PathVariable long id) {
+        if (!sessionC.isBudgetOpen()) return openOperation();
+        sessionC.getOperationAdd().setPlaceId(id);
+        sessionC.getOperationAdd().setPlaceName(placeS.findById(id).getName());
+        sessionC.getOperationAdd().setPlaceDescription(placeS.findById(id).getDescription());
+        model.addAttribute("operationAdd", sessionC.getOperationAdd());
+        return openOperation();
+    }
+
+    @GetMapping(U_OPERATION_PICK_ELEMENT + "/{id}")
+    public String pickElement(Model model, @PathVariable long id) {
+        if (!sessionC.isBudgetOpen()) return openOperation();
+        sessionC.getOperationAdd().setElementId(id);
+        sessionC.getOperationAdd().setElementName(elementS.findById(id).getName());
+        sessionC.getOperationAdd().setPrice(elementS.findById(id).getPrice().toString());
+        sessionC.getOperationAdd().setCurrency(sessionC.getBudget().getBalance().getCurrency());
+        model.addAttribute("operationAdd", sessionC.getOperationAdd());
+        return openOperation();
+    }
+
+    @PostMapping(U_OPERATION_ADD)
+    public String addOperation(Model model, @Valid @ModelAttribute("operationAdd") OperationDTO dto, BindingResult bResult) {
+        dto.setPlaceName(sessionC.getOperationAdd().getPlaceName());
+        dto.setPlaceId(sessionC.getOperationAdd().getPlaceId());
+        dto.setPlaceDescription(sessionC.getOperationAdd().getPlaceDescription());
+        dto.setElementName(sessionC.getOperationAdd().getElementName());
+        dto.setElementId(sessionC.getOperationAdd().getElementId());
+        dto.setCurrency(sessionC.getOperationAdd().getCurrency());
+        dto.setIncome(sessionC.getOperationAdd().isIncome());
+        dto.setConsumption(sessionC.getOperationAdd().isConsumption());
+        dto.setUserId(sessionC.getUser().getId());
+        dto.setBudgetId(sessionC.getBudget().getId());
+        if (bResult.hasErrors()) return openOperation();
+
+        Operation operation = operationS.convert(dto);
+        operationS.save(operation);
+        budgetS.addOperation(dto.getBudgetId(), operation.getId());
+        sessionC.setBudget(budgetS.findById(sessionC.getBudget().getId()));
+
+        sessionC.getOperationAdd().setStarted(false);
+        return redirect(U_BUDGET);
+    }
+
+    @GetMapping(U_OPERATION_CONSUMPTION)
+    public String startConsumption(Model model) {
+        if (!sessionC.isBudgetOpen()) return openOperation();
+        OperationDTO dto = new OperationDTO();
+        dto.setStarted(true);
+        dto.setConsumption(true);
+        sessionC.setOperationAdd(dto);
+        model.addAttribute("operationAdd", dto);
+        return openOperation();
+    }
 }

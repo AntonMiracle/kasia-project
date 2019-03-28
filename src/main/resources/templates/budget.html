@@ -8,7 +8,7 @@
 <body>
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div th:id="mainContentWithoutMenu">
-    <table th:class="myTable">
+    <table th:class="myTable" th:if="${weekOperations.isExist()}">
         <!--/*@thymesVar id="weekOperations" type="com.kasia.controller.dto.WeekOperationHistory"*/-->
         <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
         <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
@@ -17,8 +17,7 @@
         <tr>
             <th th:colspan="5" th:text="#{title.operation}"></th>
         </tr>
-        <tr th:if="${weekOperations.isExist()}"
-            th:each="operation : ${weekOperations.current()}"
+        <tr th:each="operation : ${weekOperations.current()}"
             th:id="${operation.type eq income} ? operationIncome : operationConsumption">
             <td th:class="myLabel" th:text="${operation.element.name}"></td>
             <td th:class="myLabel" th:text="${operation.place.name}"></td>

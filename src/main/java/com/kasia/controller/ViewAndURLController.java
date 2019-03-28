@@ -11,6 +11,7 @@ public final class ViewAndURLController {
     public static final String V_ELEMENT = "element";
     public static final String V_ELEMENT_EDIT = "elementEdit";
     public static final String V_MAIN = "main";
+    public static final String V_OPERATION = "operation";
 
     public static final String U_ROOT = "/";
     public static final String U_LOGIN = "/login";
@@ -24,7 +25,7 @@ public final class ViewAndURLController {
     public static final String U_REGISTRATION_BACK = U_REGISTRATION + "/back";
     public static final String U_OPERATION = U_BUDGET + "/operation";
     public static final String U_OPERATION_PICK = U_OPERATION + "/pick";
-    public static final String U_OPERATION_PICK_PROVIDER = U_OPERATION_PICK + "/provider";
+    public static final String U_OPERATION_PICK_PLACE = U_OPERATION_PICK + "/place";
     public static final String U_OPERATION_PICK_ELEMENT = U_OPERATION_PICK + "/element";
     public static final String U_OPERATION_ADD = U_OPERATION + "/add";
     public static final String U_OPERATION_INCOME = U_OPERATION + "/income";

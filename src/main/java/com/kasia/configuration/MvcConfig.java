@@ -1,5 +1,6 @@
 package com.kasia.configuration;
 
+import com.kasia.controller.dto.OperationDTO;
 import com.kasia.controller.dto.WeekOperationHistory;
 import com.kasia.model.*;
 import com.kasia.model.service.*;
@@ -223,13 +224,13 @@ public class MvcConfig implements WebMvcConfigurer {
     public User sessionUser() {
         return new User();
     }
-//
-//    @Bean
-//    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-//    public OperationDTO sessionOperationDTO() {
-//        return new OperationDTO();
-//    }
-//
+
+    @Bean
+    @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+    public OperationDTO sessionOperationDTO() {
+        return new OperationDTO();
+    }
+
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
     public WeekOperationHistory sessionWeekOperationHistory() {
