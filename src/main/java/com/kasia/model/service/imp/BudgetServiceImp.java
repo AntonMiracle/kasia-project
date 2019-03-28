@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 @Transactional
@@ -163,20 +164,24 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public boolean isPlaceCanDeleted(long budgetId, long placeId) {
-        Optional<BudgetOperation> budgetOperation = budgetOperationR.findByBudgetId(budgetId);
-        return !budgetOperation.filter(
-                bo -> bo.getOperations().stream().filter(
-                        operation -> operation.getPlace().getId() == placeId).count() > 0)
-                .isPresent();
+        Optional<BudgetOperation> bo = budgetOperationR.findByBudgetId(budgetId);
+        Place place = placeS.findById(placeId);
+        if (!bo.isPresent()) return true;
+        for (Operation o : bo.get().getOperations()) {
+            if (o.getPlace().equals(place)) return false;
+        }
+        return true;
     }
 
     @Override
     public boolean isElementCanDeleted(long budgetId, long elementId) {
-        Optional<BudgetOperation> budgetOperation = budgetOperationR.findByBudgetId(budgetId);
-        return !budgetOperation.filter(
-                bo -> bo.getOperations().stream().filter(
-                        operation -> operation.getElement().getId() == elementId).count() > 0)
-                .isPresent();
+        Optional<BudgetOperation> bo = budgetOperationR.findByBudgetId(budgetId);
+        Element element = elementS.findById(elementId);
+        if (!bo.isPresent()) return true;
+        for (Operation o : bo.get().getOperations()) {
+            if (o.getElement().equals(element)) return false;
+        }
+        return true;
     }
 
     @Override
@@ -188,13 +193,8 @@ public class BudgetServiceImp implements BudgetService {
 
     @Override
     public Set<Operation> findAllOperations(long budgetId) {
-        Budget budget = findById(budgetId);
         BudgetOperation bo = budgetOperationR.findByBudgetId(budgetId).orElse(new BudgetOperation());
-        if (bo.getBudget() == null) {
-            bo.setBudget(budget);
-            budgetOperationR.save(bo);
-        }
-        return bo.getOperations();
+        return bo.getBudget() == null ? new TreeSet<>() : bo.getOperations();
     }
 
     @Override

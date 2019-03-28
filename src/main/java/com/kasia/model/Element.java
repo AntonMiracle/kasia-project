@@ -67,6 +67,15 @@ public class Element implements Model, Comparable<Element> {
     }
 
     @Override
+    public String toString() {
+        return "Element{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
+    @Override
     public int compareTo(Element o) {
         return this.name.compareTo(o.name);
     }
