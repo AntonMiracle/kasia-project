@@ -18,8 +18,8 @@
             </tr>
 
             <div th:if="${places.size() != 0}">
-                <tr th:each="place : ${places}"
-                    th:class="button" th:id="whiteButton"
+                <tr th:each="place, count : ${places}"
+                    th:id="${count.count%2!=0}? elementWhite:elementDark"
                     th:onclick="'javascript:editPlace(\'' + ${place.id} + '\');'">
                     <td th:class="myLabel" th:text="${place.name}"></td>
                     <td th:class="myLabel" th:text="${place.description}"></td>
