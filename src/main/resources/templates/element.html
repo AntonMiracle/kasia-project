@@ -16,8 +16,8 @@
                 <th th:colspan="2" th:text="#{title.element}"></th>
             </tr>
             <tr th:if="${elements.size() != 0}"
-                th:each="element : ${elements}"
-                th:class="button" th:id="whiteButton"
+                th:each="element,count : ${elements}"
+                th:id="${count.count%2!=0}? elementWhite:elementDark"
                 th:onclick="'javascript:editElement(\'' + ${element.id} + '\');'">
                 <td th:class="myLabel" th:text="${element.name}"></td>
                 <td th:class="myLabel" th:text="${element.price} + ' ' + *{currency}"></td>

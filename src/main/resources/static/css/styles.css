@@ -64,7 +64,7 @@ html {
 }
 
 #whiteButton:hover {
-    color: #ffffff;
+    color: white;
     background-color: rgba(0, 100, 0, 0.8);
 }
 
@@ -178,6 +178,30 @@ html {
 }
 
 #operationIncomeWhite:hover {
+    color: white;
+    background-color: rgba(0, 100, 0, 0.8);
+}
+
+#elementWhite {
+    margin: 0;
+    border: 0px solid darkgreen;
+    box-shadow: none;
+    color: black;
+    background-color: rgba(255, 255, 255, 0);
+}
+#elementDark {
+    margin: 0;
+    border: 0px solid darkgreen;
+    box-shadow: none;
+    color: black;
+    background-color: rgba(0, 100, 0, 0.1);
+}
+
+#elementWhite:hover {
+    color: white;
+    background-color: rgba(0, 100, 0, 0.8);
+}
+#elementDark:hover {
     color: white;
     background-color: rgba(0, 100, 0, 0.8);
 }
