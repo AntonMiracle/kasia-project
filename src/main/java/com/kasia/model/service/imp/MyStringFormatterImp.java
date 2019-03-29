@@ -42,6 +42,9 @@ public class MyStringFormatterImp implements MyStringFormatter {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE HH:mm", user.getLocale());
         if (date.getYear() == LocalDateTime.now().getYear()) {
             f = DateTimeFormatter.ofPattern("dd-MM EE HH:mm", user.getLocale());
+            if(date.getMonth() == LocalDateTime.now().getMonth()){
+                f = DateTimeFormatter.ofPattern("dd EE HH:mm", user.getLocale());
+            }
         }
         return convert(date, user.getZoneId()).format(f);
     }

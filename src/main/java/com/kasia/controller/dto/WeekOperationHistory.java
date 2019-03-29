@@ -62,4 +62,10 @@ public class WeekOperationHistory {
                 ", weeks=" + weeks +
                 '}';
     }
+    public boolean isEnd(){
+        return week == max;
+    }
+    public boolean isStart(){
+        return week == 1;
+    }
 }
