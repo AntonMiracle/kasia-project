@@ -55,8 +55,8 @@ public class MvcConfig implements WebMvcConfigurer {
         budgetS.setOwner(budget1.getId(), user1.getId());
         budgetS.setOwner(budget2.getId(), user1.getId());
 
-        Place place1 = new Place("Auchan", " M1");
-        Place place2 = new Place("Auchan", "Bora komorowskiego");
+        Place place1 = new Place("Auchan M1", "");
+        Place place2 = new Place("Auchan Bora", "Bora komorowskiego");
         Place place3 = new Place("dom", "");
         Place place4 = new Place("MPK", "");
         Place place5 = new Place("Praca", "");

@@ -47,4 +47,10 @@ public class OperationServiceImp implements OperationService {
         operation.setPrice(new BigDecimal(dto.getPrice()));
         return operation;
     }
+
+    @Override
+    public boolean delete(long operationId) {
+        operationR.delete(findById(operationId));
+        return true;
+    }
 }

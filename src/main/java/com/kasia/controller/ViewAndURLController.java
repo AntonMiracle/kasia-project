@@ -12,6 +12,7 @@ public final class ViewAndURLController {
     public static final String V_ELEMENT_EDIT = "elementEdit";
     public static final String V_MAIN = "main";
     public static final String V_OPERATION = "operation";
+    public static final String V_OPERATION_EDIT = "operationEdit";
 
     public static final String U_ROOT = "/";
     public static final String U_LOGIN = "/login";
@@ -30,7 +31,8 @@ public final class ViewAndURLController {
     public static final String U_OPERATION_ADD = U_OPERATION + "/add";
     public static final String U_OPERATION_INCOME = U_OPERATION + "/income";
     public static final String U_OPERATION_CONSUMPTION = U_OPERATION + "/consumption";
-    public static final String U_OPERATION_NEXT = U_OPERATION + "/next";
+    public static final String U_OPERATION_EDIT = U_OPERATION + "/edit";
+    public static final String U_OPERATION_DELETE = U_OPERATION + "/delete";
     public static final String U_OPERATION_WEEK = U_OPERATION + "/week";
     public static final String U_OPERATION_WEEK_NEXT = U_OPERATION_WEEK + "/next";
     public static final String U_OPERATION_WEEK_PREVIOUS = U_OPERATION_WEEK + "/previous";

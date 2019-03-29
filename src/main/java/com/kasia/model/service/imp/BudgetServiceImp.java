@@ -218,4 +218,22 @@ public class BudgetServiceImp implements BudgetService {
         budgetOperationR.save(bo);
         return true;
     }
+
+    @Override
+    public boolean removeOperation(long budgetId, long operationId) {
+        Budget budget = findById(budgetId);
+        Operation operation = operationS.findById(operationId);
+        BudgetOperation bo = budgetOperationR.findByBudgetId(budgetId).orElse(new BudgetOperation());
+        if (operation == null || budget == null || bo.getBudget() == null) return true;
+        if (bo.getOperations().contains(operation)) {
+            bo.getOperations().remove(operation);
+            BigDecimal newAmount = budget.getBalance().getAmount();
+            newAmount = newAmount.subtract(operation.getPrice());
+            budget.getBalance().setAmount(newAmount);
+            save(budget);
+            budgetOperationR.save(bo);
+            operationS.delete(operation.getId());
+        }
+        return true;
+    }
 }

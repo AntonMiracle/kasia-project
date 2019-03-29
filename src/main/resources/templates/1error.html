@@ -6,8 +6,14 @@
     <title th:text="#{title.error}"></title>
 </head>
 <body>
-<div th:replace="fragments/header :: errorPageMenu"></div>
-<div id="mainContentWithoutMenu">
+<div class="header">
+    <div>
+        <form th:action="@{/login}">
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.back}"></button>
+        </form>
+    </div>
+</div>
+<div th:id="mainContentWithoutMenu">
     <h1 th:class="kasiaClass">Ooops...</h1>
     <img th:src="@{/images/romashka.png}" width="200" height="200"/>
     <p th:text="#{text.request.error}"></p>

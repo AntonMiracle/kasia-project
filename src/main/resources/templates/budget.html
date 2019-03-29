@@ -20,7 +20,8 @@
         <tr th:each="operation,count : ${weekOperations.current()}"
             th:id="${operation.type eq income} ?
                 ${count.count%2!=0 ? 'operationIncomeWhite' : 'operationIncomeBlack'} :
-                ${count.count%2!=0 ? 'operationConsumptionWhite' : 'operationConsumptionBlack'} ">
+                ${count.count%2!=0 ? 'operationConsumptionWhite' : 'operationConsumptionBlack'} "
+            th:onclick="'javascript:operationEdit(\'' + ${operation.id} + '\');'">
             <td th:class="myHistoryLabel" th:text="${operation.element.name}"></td>
             <td th:class="myHistoryLabel"
                 th:text="${operation.type eq income} ?
@@ -47,6 +48,9 @@
         }
         function previousWeek() {
             location.href = "/budget/operation/week/previous";
+        }
+        function operationEdit(value) {
+            location.href = "/budget/operation/edit/" + value;
         }
     </script>
 </div>

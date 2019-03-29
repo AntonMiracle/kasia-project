@@ -10,6 +10,8 @@ public interface MyStringFormatter {
 
     String formatFullDate(long userId, LocalDateTime date);
 
+    String formatDate(long userId, LocalDateTime date);
+
     String formatOnlyDate(long userId, LocalDateTime date);
 
     String formatOnlyTime(long userId, LocalDateTime date);

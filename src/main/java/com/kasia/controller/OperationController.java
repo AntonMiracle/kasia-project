@@ -119,4 +119,19 @@ public class OperationController {
         model.addAttribute("operationAdd", dto);
         return openOperation();
     }
+
+    @GetMapping(U_OPERATION_EDIT + "/{id}")
+    public String editOperation(Model model, @PathVariable long id) {
+        if (!sessionC.isBudgetOpen()) return redirect(U_BUDGET);
+        model.addAttribute("operationEdit", operationS.findById(id));
+        return V_OPERATION_EDIT;
+    }
+
+    @PostMapping(U_OPERATION_DELETE)
+    public String editOperation(Model model, @ModelAttribute("operationEdit") Operation operation) {
+        if (!sessionC.isBudgetOpen()) return redirect(U_BUDGET);
+        budgetS.removeOperation(sessionC.getBudget().getId(), operation.getId());
+        sessionC.setBudget(budgetS.findById(sessionC.getBudget().getId()));
+        return redirect(U_BUDGET);
+    }
 }

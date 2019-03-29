@@ -9,4 +9,6 @@ public interface OperationService {
     Operation findById(long operationId);
 
     Operation convert(OperationDTO dto);
+
+    boolean delete(long operationId);
 }

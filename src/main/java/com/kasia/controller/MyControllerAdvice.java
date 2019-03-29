@@ -1,7 +1,9 @@
 package com.kasia.controller;
 
 import com.kasia.model.Budget;
+import com.kasia.model.OperationType;
 import com.kasia.model.User;
+import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.MyStringFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +15,13 @@ public class MyControllerAdvice {
     private MySessionController sessionC;
     @Autowired
     private MyStringFormatter formatter;
+    @Autowired
+    private BudgetService budgetS;
+
+    @ModelAttribute("isOwner")
+    public boolean isOwner() {
+        return budgetS.isOwner(sessionC.getBudget().getId(), sessionC.getUser().getId());
+    }
 
     @ModelAttribute("user")
     public User getUser() {
@@ -27,5 +36,15 @@ public class MyControllerAdvice {
     @ModelAttribute("myFormatter")
     public MyStringFormatter getMyFormatter() {
         return formatter;
+    }
+
+    @ModelAttribute("income")
+    public OperationType getIncome() {
+        return OperationType.INCOME;
+    }
+
+    @ModelAttribute("consumption")
+    public OperationType getConsumption() {
+        return OperationType.CONSUMPTION;
     }
 }

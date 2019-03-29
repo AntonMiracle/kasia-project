@@ -35,16 +35,6 @@ public class BudgetController {
         return sessionC.getWeekOperationHistory();
     }
 
-    @ModelAttribute("income")
-    public OperationType getIncome() {
-        return OperationType.INCOME;
-    }
-
-    @ModelAttribute("consumption")
-    public OperationType getConsumption() {
-        return OperationType.CONSUMPTION;
-    }
-
     @ModelAttribute("currencies")
     public Currencies[] getCurrencies() {
         return Currencies.values();

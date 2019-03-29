@@ -32,6 +32,7 @@ public class MyStringFormatterImp implements MyStringFormatter {
         User user = userS.findById(userId);
         NumberFormat formatter = NumberFormat.getInstance(user.getLocale());
         formatter.setMaximumFractionDigits(2);
+        formatter.setMinimumFractionDigits(2);
         formatter.setRoundingMode(RoundingMode.HALF_UP);
         return formatter.format(amount);
     }
@@ -42,10 +43,15 @@ public class MyStringFormatterImp implements MyStringFormatter {
         DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE HH:mm", user.getLocale());
         if (date.getYear() == LocalDateTime.now().getYear()) {
             f = DateTimeFormatter.ofPattern("dd-MM EE HH:mm", user.getLocale());
-            if(date.getMonth() == LocalDateTime.now().getMonth()){
-                f = DateTimeFormatter.ofPattern("dd EE HH:mm", user.getLocale());
-            }
         }
+        return convert(date, user.getZoneId()).format(f);
+    }
+
+    @Override
+    public String formatDate(long userId, LocalDateTime date) {
+        User user = userS.findById(userId);
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE HH:mm", user.getLocale());
+        f = DateTimeFormatter.ofPattern("dd-MM EE HH:mm", user.getLocale());
         return convert(date, user.getZoneId()).format(f);
     }
 
