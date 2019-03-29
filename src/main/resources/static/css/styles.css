@@ -110,6 +110,7 @@ html {
     text-align: left;
     vertical-align: bottom;
 }
+
 .myHistoryLabel {
     text-align: left;
     vertical-align: middle;
@@ -141,12 +142,44 @@ html {
     position: fixed;
 }
 
-#operationIncome {
+#operationIncomeWhite {
     color: darkgreen;
+    background-color: rgba(255, 255, 255, 0);
 }
 
-#operationConsumption {
+#operationIncomeBlack {
+    color: darkgreen;
+    background-color: rgba(0, 100, 0, 0.1);
+}
+
+#operationConsumptionWhite {
     color: red;
+    background-color: rgba(255, 255, 25, 0);
+}
+
+#operationConsumptionBlack {
+    color: red;
+    background-color: rgba(0, 100, 0, 0.1);
+}
+
+#operationConsumptionWhite:hover {
+    color: white;
+    background-color: rgba(0, 100, 0, 0.8);
+}
+
+#operationConsumptionBlack:hover {
+    color: white;
+    background-color: rgba(0, 100, 0, 0.8);
+}
+
+#operationIncomeBlack:hover {
+    color: white;
+    background-color: rgba(0, 100, 0, 0.8);
+}
+
+#operationIncomeWhite:hover {
+    color: white;
+    background-color: rgba(0, 100, 0, 0.8);
 }
 
 .operationChoose {
