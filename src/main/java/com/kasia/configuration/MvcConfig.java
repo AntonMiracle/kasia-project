@@ -40,14 +40,14 @@ public class MvcConfig implements WebMvcConfigurer {
     public void init() {
         User user1 = new User("anton@gmail.com", "Password2", Role.USER, LocalDateTime.now(), true, ZoneId.systemDefault(), Locale.getDefault());
         User user2 = new User("anton2@gmail.com", "Password2", Role.USER, LocalDateTime.now(), true, ZoneId.systemDefault(), Locale.getDefault());
-        user1.setZoneId(ZoneId.of("America/Atka"));
+        user1.setZoneId(ZoneId.systemDefault());
         user2.setZoneId(ZoneId.of("America/Atka"));
-        user1.setLocale(new Locale("zh", "HK"));
+        user1.setLocale(new Locale("pl", "PL"));
         user2.setLocale(new Locale("zh", "HK"));
         userS.save(user1);
         userS.save(user2);
-        Balance balance1 = new Balance(BigDecimal.TEN, Currencies.USD.name(), LocalDateTime.now());
-        Balance balance2 = new Balance(BigDecimal.valueOf(-100.2), Currencies.USD.name(), LocalDateTime.now());
+        Balance balance1 = new Balance(BigDecimal.TEN, Currencies.PLN.name(), LocalDateTime.now());
+        Balance balance2 = new Balance(BigDecimal.valueOf(-100.2), Currencies.EUR.name(), LocalDateTime.now());
         Budget budget1 = new Budget("Budżet rodziny", balance1, LocalDateTime.now());
         Budget budget2 = new Budget("Mój budżet", balance2, LocalDateTime.now());
         budgetS.save(budget1);

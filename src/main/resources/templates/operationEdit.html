@@ -14,9 +14,12 @@
         <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
         <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
         <!--/*@thymesVar id="income" type="com.kasia.model.OperationType"*/-->
+        <!--/*@thymesVar id="consumption" type="com.kasia.model.OperationType"*/-->
         <form th:action="@{/budget/operation/delete}" th:object="${operationEdit}" method="post">
             <tr>
-                <th th:colspan="3" th:text="#{title.operation}"></th>
+                <th th:colspan="3" th:if="${operationEdit.type == income }" th:text="#{title.income}"></th>
+                <th th:colspan="3" th:if="${operationEdit.type == consumption }" th:text="#{title.consumption}"
+                    style="background-color: red"></th>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.element}"></td>

@@ -34,7 +34,8 @@ public class MyStringFormatterImp implements MyStringFormatter {
         formatter.setMaximumFractionDigits(2);
         formatter.setMinimumFractionDigits(2);
         formatter.setRoundingMode(RoundingMode.HALF_UP);
-        return formatter.format(amount);
+        if (amount.compareTo(BigDecimal.ZERO) >= 0) return " " + formatter.format(amount);
+        else return formatter.format(amount);
     }
 
     @Override
