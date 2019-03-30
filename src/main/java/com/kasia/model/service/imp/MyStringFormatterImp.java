@@ -51,8 +51,7 @@ public class MyStringFormatterImp implements MyStringFormatter {
     @Override
     public String formatDate(long userId, LocalDateTime date) {
         User user = userS.findById(userId);
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM-yyyy EE HH:mm", user.getLocale());
-        f = DateTimeFormatter.ofPattern("dd-MM EE HH:mm", user.getLocale());
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd-MM EE HH:mm", user.getLocale());
         return convert(date, user.getZoneId()).format(f);
     }
 
