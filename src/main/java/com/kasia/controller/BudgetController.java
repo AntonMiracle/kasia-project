@@ -1,7 +1,7 @@
 package com.kasia.controller;
 
 import com.kasia.controller.dto.BudgetAdd;
-import com.kasia.controller.dto.WeekOperationHistory;
+import com.kasia.controller.dto.OperationsHistoryPages;
 import com.kasia.model.*;
 import com.kasia.model.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +30,9 @@ public class BudgetController {
         return dto;
     }
 
-    @ModelAttribute("weekOperations")
-    public WeekOperationHistory getWeekOperation() {
-        return sessionC.getWeekOperationHistory();
+    @ModelAttribute("operationsHistory")
+    public OperationsHistoryPages getWeekOperation() {
+        return sessionC.getOperationsHistoryPages();
     }
 
     @ModelAttribute("currencies")
@@ -83,13 +83,13 @@ public class BudgetController {
 
     @GetMapping(U_OPERATION_WEEK_NEXT)
     public String nextWeekOperationHistory() {
-        sessionC.getWeekOperationHistory().next();
+        sessionC.getOperationsHistoryPages().next();
         return V_BUDGET;
     }
 
     @GetMapping(U_OPERATION_WEEK_PREVIOUS)
     public String previousWeekOperationHistory() {
-        sessionC.getWeekOperationHistory().previous();
+        sessionC.getOperationsHistoryPages().previous();
         return V_BUDGET;
     }
 }

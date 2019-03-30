@@ -1,7 +1,7 @@
 package com.kasia.configuration;
 
 import com.kasia.controller.dto.OperationDTO;
-import com.kasia.controller.dto.WeekOperationHistory;
+import com.kasia.controller.dto.OperationsHistoryPages;
 import com.kasia.model.*;
 import com.kasia.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,8 +132,8 @@ public class MvcConfig implements WebMvcConfigurer {
         Operation operation10 = new Operation(user1, element11, place1, BigDecimal.valueOf(35), LocalDateTime.now().minusDays(1), "zabawka", OperationType.CONSUMPTION);
         Operation operation11 = new Operation(user1, element10, place9, BigDecimal.valueOf(35), LocalDateTime.now().minusDays(2), "", OperationType.CONSUMPTION);
         Operation operation12 = new Operation(user1, element12, place5, BigDecimal.valueOf(3500), LocalDateTime.now().minusDays(2), "", OperationType.INCOME);
-        Operation operation13 = new Operation(user1, element7, place2, BigDecimal.valueOf(120), LocalDateTime.now().plusHours(2), "", OperationType.CONSUMPTION);
-        Operation operation14 = new Operation(user1, element11, place7, BigDecimal.valueOf(120), LocalDateTime.now().plusDays(1), "zajęcia indywidualne", OperationType.CONSUMPTION);
+        Operation operation13 = new Operation(user1, element7, place2, BigDecimal.valueOf(120), LocalDateTime.now().minusMinutes(2), "", OperationType.CONSUMPTION);
+        Operation operation14 = new Operation(user1, element11, place7, BigDecimal.valueOf(120), LocalDateTime.now().minusDays(1), "zajęcia indywidualne", OperationType.CONSUMPTION);
         Operation operation15 = new Operation(user1, element6, place1, BigDecimal.valueOf(120), LocalDateTime.now().minusWeeks(1), "buty", OperationType.CONSUMPTION);
         operationS.save(operation1);
         operationS.save(operation2);
@@ -321,8 +321,8 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
-    public WeekOperationHistory sessionWeekOperationHistory() {
-        return new WeekOperationHistory();
+    public OperationsHistoryPages sessionWeekOperationHistory() {
+        return new OperationsHistoryPages();
     }
 
 }

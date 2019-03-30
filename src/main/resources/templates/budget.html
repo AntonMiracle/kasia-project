@@ -8,16 +8,15 @@
 <body>
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div th:id="mainContentWithoutMenu">
-    <table th:class="myTable" th:if="${weekOperations.isExist()}">
-        <!--/*@thymesVar id="weekOperations" type="com.kasia.controller.dto.WeekOperationHistory"*/-->
-        <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
-        <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
-        <!--/*@thymesVar id="income" type="com.kasia.model.OperationType"*/-->
-
+    <!--/*@thymesVar id="operationsHistory" type="com.kasia.controller.dto.OperationsHistoryPages"*/-->
+    <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <!--/*@thymesVar id="income" type="com.kasia.model.OperationType"*/-->
+    <table th:class="myTable" th:if="${operationsHistory.isExist()}">
         <tr>
             <th th:colspan="3" th:text="#{title.operation}"></th>
         </tr>
-        <tr th:each="operation,count : ${weekOperations.current()}"
+        <tr th:each="operation,count : ${operationsHistory.current()}"
             th:id="${operation.type eq income} ?
                 ${count.count%2!=0 ? 'operationIncomeWhite' : 'operationIncomeBlack'} :
                 ${count.count%2!=0 ? 'operationConsumptionWhite' : 'operationConsumptionBlack'} "
@@ -33,10 +32,10 @@
         </tr>
         <tr>
             <td th:class="withButton" th:colspan="3">
-                <button class="button" th:id="buttonInline" th:if="${!weekOperations.isStart()}"
+                <button class="button" th:id="buttonInline" th:if="${!operationsHistory.isStart()}"
                         th:onclick="'javascript:previousWeek();'"
                         type="button" th:text="#{button.previous}"></button>
-                <button class="button" th:id="buttonInline" th:if="${!weekOperations.isEnd()}"
+                <button class="button" th:id="buttonInline" th:if="${!operationsHistory.isEnd()}"
                         th:onclick="'javascript:nextWeek();'"
                         type="button" th:text="#{button.next}"></button>
             </td>
