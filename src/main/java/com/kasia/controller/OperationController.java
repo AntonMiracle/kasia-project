@@ -71,6 +71,7 @@ public class OperationController {
         sessionC.getOperationAdd().setPlaceId(id);
         sessionC.getOperationAdd().setPlaceName(placeS.findById(id).getName());
         sessionC.getOperationAdd().setPlaceDescription(placeS.findById(id).getDescription());
+        sessionC.getOperationAdd().setCurrency(sessionC.getBudget().getBalance().getCurrency());
         model.addAttribute("operationAdd", sessionC.getOperationAdd());
         return openOperation();
     }

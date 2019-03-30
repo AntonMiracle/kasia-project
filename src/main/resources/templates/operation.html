@@ -11,35 +11,55 @@
 
     <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
     <!--/*@thymesVar id="places" type="java.util.Set<com.kasia.model.Place>"*/-->
+    <!--/*@thymesVar id="operationAdd" type="com.kasia.controller.dto.OperationDTO"*/-->
+
     <div th:class="myTable" th:if="${elements.size() == 0}"
          th:text="#{tip.need.element}"></div>
     <div th:class="myTable" th:if="${places.size() == 0}"
          th:text="#{tip.need.place}"></div>
 
-    <!--/*@thymesVar id="operationAdd" type="com.kasia.controller.dto.OperationDTO"*/-->
-    <div th:if="${places.size() != 0 and operationAdd.placeId == 0}">
-        <div th:each="place : ${places}"
-             th:object="${operationAdd}"
-             th:class="operationChoose"
-             th:onclick="'javascript:pickPlace(\'' + ${place.id} + '\');'"
-             th:text="${place.name}">
-        </div>
-    </div>
+    <table th:class="myTable" th:if="${places.size() != 0 and operationAdd.placeId == 0}">
+        <tr>
+            <th th:colspan="2" th:if="${operationAdd.isIncome()}" th:text="#{title.income}"></th>
+            <th th:colspan="2" th:if="${operationAdd.isConsumption()}" th:text="#{title.consumption}"
+                style="background-color: red"></th>
+        </tr>
+        <tr>
+            <th colspan="2" th:text="#{title.pick.place}"></th>
+        </tr>
+        <tr th:each="place, count : ${places}"
+            th:id="${count.count%2!=0}? elementWhite:elementDark"
+            th:onclick="'javascript:pickPlace(\'' + ${place.id} + '\');'">
+            <td th:class="myLabel" th:text="${place.name}"></td>
+            <td th:class="myLabel" th:text="${place.description}"></td>
+        </tr>
+    </table>
 
-    <div th:if="${elements.size() != 0 and operationAdd.elementId==0 and operationAdd.placeId != 0}">
-        <div th:each="element : ${elements}"
-             th:object="${operationAdd}"
-             th:class="operationChoose"
-             th:onclick="'javascript:pickElement(\'' + ${element.id} + '\');'"
-             th:text="${element.name}">
-        </div>
-    </div>
+    <table th:class="myTable"
+           th:if="${elements.size() != 0 and operationAdd.elementId==0 and operationAdd.placeId != 0}">
+        <tr>
+            <th th:colspan="2" th:if="${operationAdd.isIncome()}" th:text="#{title.income}"></th>
+            <th th:colspan="2" th:if="${operationAdd.isConsumption()}" th:text="#{title.consumption}"
+                style="background-color: red"></th>
+        </tr>
+        <tr>
+            <th colspan="2" th:text="#{title.pick.element}"></th>
+        </tr>
+        <tr th:if="${elements.size() != 0}"
+            th:each="element,count : ${elements}"
+            th:id="${count.count%2!=0}? elementWhite:elementDark"
+            th:onclick="'javascript:pickElement(\'' + ${element.id} + '\');'">
+            <td th:class="myLabel" th:text="${element.name}"></td>
+            <td th:class="myLabel" th:text="${element.price} + ' ' + ${operationAdd.currency}"></td>
+        </tr>
+    </table>
 
     <form th:action="@{/budget/operation/add}" th:object="${operationAdd}" method="post">
         <table th:class="myTable" th:if="${operationAdd.elementId!=0 and operationAdd.placeId != 0}">
             <tr>
                 <th th:colspan="3" th:if="*{isIncome()}" th:text="#{title.income}"></th>
-                <th th:colspan="3" th:if="*{isConsumption()}" th:text="#{title.consumption}" style="background-color: red"></th>
+                <th th:colspan="3" th:if="*{isConsumption()}" th:text="#{title.consumption}"
+                    style="background-color: red"></th>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.place}"></td>
