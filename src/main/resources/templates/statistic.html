@@ -18,7 +18,7 @@
     <form th:action="@{/budget/statistic}" th:object="${statistic}" th:method="post">
         <table th:class="myTable">
             <tr>
-                <th th:colspan="4" th:text="#{title.statistic}"></th>
+                <th th:colspan="4" th:text="#{title.statistic.filter}"></th>
             </tr>
             <tr>
                 <!--element-->
@@ -55,6 +55,58 @@
                 <td th:colspan="4" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.get}"></button>
                 </td>
+            </tr>
+            <tr>
+                <th th:colspan="4" th:text="#{title.statistic}"></th>
+            </tr>
+            <tr th:if="*{isElementPicked()}">
+                <td>average price of element</td>
+                <td th:style="'color:darkgreen;'"
+                    th:text="${myFormatter.formatNumber(user.id,statistic.deltaByElement)}"></td>
+            </tr>
+            <tr th:if="*{isPlacePicked()}">
+                <td>average price in a place</td>
+                <td th:style="'color:darkgreen;'"
+                    th:text="${myFormatter.formatNumber(user.id,statistic.deltaByPlace)}"></td>
+            </tr>
+            <tr th:if="*{isIncomeExist()}">
+                <td>average income per operation</td>
+                <td th:style="'color:darkgreen;'"
+                    th:text="${myFormatter.formatNumber(user.id,statistic.deltaIncomePerOperation)}"></td>
+            </tr>
+            <tr th:if="*{isConsumptionExist()}">
+                <td>average consumption per operation</td>
+                <td th:style="'color:red;'"
+                    th:text="${myFormatter.formatNumber(true,user.id,statistic.deltaConsumptionPerOperation)}"></td>
+            </tr>
+            <tr th:if="*{maxIncome != null}">
+                <td>maximum income</td>
+                <td th:style="'color:darkgreen;'"
+                    th:text="${myFormatter.formatNumber(user.id,statistic.maxIncome.price)}"></td>
+                <td th:text="*{maxIncome.element.getName()}"></td>
+                <td th:text="*{maxIncome.place.getName()}"></td>
+            </tr>
+            <tr th:if="*{maxConsumption != null}">
+                <td>maximum consumption</td>
+                <td th:style="'color:red;'"
+                    th:text="${myFormatter.formatNumber(true,user.id,statistic.maxConsumption.price)}"></td>
+                <td th:text="*{maxConsumption.element.getName()}"></td>
+                <td th:text="*{maxConsumption.place.getName()}"></td>
+            </tr>
+            <tr th:if="*{isIncomeExist()}">
+                <td>sum of income</td>
+                <td th:style="'color:darkgreen;'"
+                    th:text="${myFormatter.formatNumber(user.id,statistic.sumIncome)}"></td>
+            </tr>
+            <tr th:if="*{isConsumptionExist()}">
+                <td>sum of consumption</td>
+                <td th:style="'color:red;'"
+                    th:text="${myFormatter.formatNumber(true,user.id,statistic.sumConsumption)}"></td>
+            </tr>
+            <tr th:if="*{isIncomeExist() or isConsumptionExist()}">
+                <td>balance changes</td>
+                <td th:style="'color:darkgreen;'"
+                    th:text="*{delta}"></td>
             </tr>
             <tr>
                 <th th:colspan="4" th:text="#{title.operation}"
