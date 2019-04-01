@@ -2,10 +2,15 @@ package com.kasia.controller;
 
 import com.kasia.controller.dto.BudgetAdd;
 import com.kasia.controller.dto.OperationsHistoryPages;
-import com.kasia.model.*;
+import com.kasia.model.Budget;
+import com.kasia.model.Currencies;
+import com.kasia.model.Statistic;
+import com.kasia.model.User;
 import com.kasia.model.service.BudgetService;
+import com.kasia.model.service.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.time.ZoneId;
 
 import static com.kasia.controller.ViewAndURLController.*;
 
@@ -22,6 +28,15 @@ public class BudgetController {
     private MySessionController sessionC;
     @Autowired
     private BudgetService budgetS;
+    @Autowired
+    private StatisticService stasticS;
+
+    @ModelAttribute("statistic")
+    public Statistic getStatistic() {
+        return stasticS.get(sessionC.getBudget().getId())
+                .calculate(sessionC.getUser().getZoneId());
+    }
+
 
     @ModelAttribute("budgetAdd")
     public BudgetAdd getBudgetAdd() {
@@ -91,5 +106,24 @@ public class BudgetController {
     public String previousWeekOperationHistory() {
         sessionC.getOperationsHistoryPages().previous();
         return V_BUDGET;
+    }
+
+    @GetMapping(U_BUDGET_STATISTIC)
+    public String openStatistic() {
+        if (sessionC.isBudgetOpen()) return V_STATISTIC;
+        return redirect(U_BUDGET);
+    }
+
+    @PostMapping(U_BUDGET_STATISTIC)
+    public String openStatistic(Model model, @ModelAttribute("statistic") Statistic dto) {
+        ZoneId zoneId = sessionC.getUser().getZoneId();
+        Statistic result = stasticS.get(sessionC.getBudget().getId());
+        result.setFrom(dto.getFrom());
+        result.setTo(dto.getTo());
+        result.setOfElement(dto.getOfElement());
+        result.setOfPlace(dto.getOfPlace());
+        model.addAttribute("statistic", result.calculate(zoneId));
+        //add to model view
+        return openStatistic();
     }
 }

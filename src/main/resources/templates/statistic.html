@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/base_head :: base_head"></div>
+    <title th:text="#{title.statistic}"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: budgetMenu"></div>
+<div th:id="mainContentWithoutMenu">
+
+    <!--/*@thymesVar id="statistic" type="com.kasia.model.Statistic"*/-->
+    <!--/*@thymesVar id="operationsHistory" type="com.kasia.controller.dto.OperationsHistoryPages"*/-->
+    <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <!--/*@thymesVar id="income" type="com.kasia.model.OperationType"*/-->
+
+    <form th:action="@{/budget/statistic}" th:object="${statistic}" th:method="post">
+        <table th:class="myTable">
+            <tr>
+                <th th:colspan="4" th:text="#{title.statistic}"></th>
+            </tr>
+            <tr>
+                <!--element-->
+                <td th:class="myLabel" th:text="#{label.element}"></td>
+                <td>
+                    <select th:field="*{ofElement}" th:style="'width:200px;'">
+                        <option th:each="type : *{getElements()}"
+                                th:value="${type.getName()}"
+                                th:text="${type.getName()}">
+                        </option>
+                    </select>
+                </td>
+                <!--from-->
+                <td th:class="myLabel" th:text="#{label.from}"></td>
+                <td><input type="date" th:field="*{from}"/></td>
+
+            </tr>
+            <tr>
+                <!--place-->
+                <td th:class="myLabel" th:text="#{label.place}"></td>
+                <td>
+                    <select th:field="*{ofPlace}" th:style="'width:200px;'">
+                        <option th:each="type : *{getPlaces()}"
+                                th:value="${type.getName()}"
+                                th:text="${type.getName()}">
+                        </option>
+                    </select>
+                </td>
+                <!--to-->
+                <td th:class="myLabel" th:text="#{label.to}"></td>
+                <td><input type="date" th:field="*{to}"/></td>
+            </tr>
+            <tr>
+                <td th:colspan="4" th:class="withButton">
+                    <button class="button" type="submit" th:text="#{button.get}"></button>
+                </td>
+            </tr>
+            <tr>
+                <th th:colspan="4" th:text="#{title.operation}"
+                    th:if="*{operations.size() > 0}">
+                </th>
+            </tr>
+            <tr th:each="operation,count : *{operations}"
+                th:if="*{operations.size() > 0}"
+                th:id="${operation.type eq income} ?
+                ${count.count%2!=0 ? 'operationIncomeWhite' : 'operationIncomeBlack'} :
+                ${count.count%2!=0 ? 'operationConsumptionWhite' : 'operationConsumptionBlack'} "
+                th:onclick="'javascript:operationEdit(\'' + ${operation.id} + '\');'">
+                <td th:class="myHistoryLabel" th:text="${operation.element.name}"></td>
+                <td th:class="myHistoryLabel" th:text="${operation.place.name}"></td>
+                <td th:class="myHistoryLabel"
+                    th:text="${operation.type eq income} ?
+                ${myFormatter.formatNumber(user.id,operation.price)}
+                : ${myFormatter.formatNumber(true,user.id,operation.price)}">
+                </td>
+                <td th:class="myHistoryLabel"
+                    th:text="${myFormatter.formatFullDate(user.id,operation.createOn)}"></td>
+            </tr>
+        </table>
+    </form>
+    <script th:inline="javascript">
+        function operationEdit(value) {
+            location.href = "/budget/operation/edit/" + value;
+        }
+    </script>
+</div>
+</body>
+</html>

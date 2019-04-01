@@ -13,6 +13,7 @@ public final class ViewAndURLController {
     public static final String V_MAIN = "main";
     public static final String V_OPERATION = "operation";
     public static final String V_OPERATION_EDIT = "operationEdit";
+    public static final String V_STATISTIC = "statistic";
 
     public static final String U_ROOT = "/";
     public static final String U_LOGIN = "/login";
@@ -22,6 +23,7 @@ public final class ViewAndURLController {
     public static final String U_BUDGET_OPEN = U_BUDGET + "/open";
     public static final String U_BUDGET_ADD = U_BUDGET + "/add";
     public static final String U_BUDGET_SAVE = U_BUDGET + "/save";
+    public static final String U_BUDGET_STATISTIC = U_BUDGET + "/statistic";
     public static final String U_REGISTRATION = "/registration";
     public static final String U_REGISTRATION_BACK = U_REGISTRATION + "/back";
     public static final String U_OPERATION = U_BUDGET + "/operation";
