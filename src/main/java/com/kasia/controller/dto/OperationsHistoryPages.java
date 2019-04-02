@@ -15,10 +15,9 @@ public class OperationsHistoryPages {
     public void setPages(Set<Operation> operations) {
         page = 0;
         pages = new TreeMap<>();
-
         int count = -1;
         for (Operation o : new TreeSet<>(operations)) {
-            if(++count % 10 == 0){
+            if (++count % 10 == 0) {
                 ++page;
                 pages.put(page, new TreeSet<>());
             }
