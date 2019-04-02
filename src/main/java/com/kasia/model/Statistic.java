@@ -23,59 +23,26 @@ public class Statistic {
     private final String nameOfAll = "-";
     private String ofElement;
     private String ofPlace;
-
-    private Operation maxIncome;
-    private Operation maxConsumption;
-    private BigDecimal deltaByElement;
-    private BigDecimal deltaByPlace;
-    private BigDecimal deltaIncomePerOperation;
-    private BigDecimal deltaConsumptionPerOperation;
-    private BigDecimal sumIncome;
-    private BigDecimal sumConsumption;
-    private BigDecimal delta;
+    private BigDecimal deltaIncomePerOperation;//
+    private BigDecimal deltaConsumptionPerOperation;//
+    private BigDecimal sumIncome;//
+    private BigDecimal sumConsumption;//
+    private BigDecimal delta; //
 
     private void setStatisticNumbers() {
         long countIncomeOperation = 0;
         long countConsumptionOperation = 0;
-        long countOfElementOperation = 0;
-        long countOfPlaceOperation = 0;
         sumIncome = BigDecimal.ZERO;
         sumConsumption = BigDecimal.ZERO;
-        deltaByElement = BigDecimal.ZERO;
-        deltaByPlace = BigDecimal.ZERO;
 
         for (Operation o : operations) {
             if (o.getType() == OperationType.INCOME) {
                 ++countIncomeOperation;
                 sumIncome = sumIncome.add(o.getPrice());
-                if (o.getElement().getName().equals(ofElement) && isElementPicked()) {
-                    ++countOfElementOperation;
-                    deltaByElement = deltaByElement.add(o.getPrice());
-                }
-                if (o.getPlace().getName().equals(ofPlace) && isPlacePicked()) {
-                    ++countOfPlaceOperation;
-                    deltaByPlace = deltaByPlace.add(o.getPrice());
-                }
+
             } else {
                 ++countConsumptionOperation;
                 sumConsumption = sumConsumption.add(o.getPrice());
-                if (o.getElement().getName().equals(ofElement) && isElementPicked()) {
-                    ++countOfElementOperation;
-                    deltaByElement = deltaByElement.add(o.getPrice());
-                }
-                if (o.getPlace().getName().equals(ofPlace) && isPlacePicked()) {
-                    ++countOfPlaceOperation;
-                    deltaByPlace = deltaByPlace.add(o.getPrice());
-                }
-            }
-
-            if (o.getType() == OperationType.INCOME) {
-                if (maxIncome == null) maxIncome = o;
-                maxIncome = o.getPrice().compareTo(maxIncome.getPrice()) > 0 ? o : maxIncome;
-            } else {
-
-                if (maxConsumption == null) maxConsumption = o;
-                maxConsumption = o.getPrice().compareTo(maxConsumption.getPrice()) > 0 ? o : maxConsumption;
             }
         }
         if (countIncomeOperation != 0) {
@@ -83,12 +50,6 @@ public class Statistic {
         }
         if (countConsumptionOperation != 0) {
             deltaConsumptionPerOperation = sumConsumption.divide(BigDecimal.valueOf(countConsumptionOperation), 2, RoundingMode.HALF_UP);
-        }
-        if (countOfElementOperation != 0) {
-            deltaByElement = deltaByElement.divide(BigDecimal.valueOf(countOfElementOperation), 2, RoundingMode.HALF_UP);
-        }
-        if (countOfPlaceOperation != 0) {
-            deltaByPlace = deltaByPlace.divide(BigDecimal.valueOf(countOfPlaceOperation), 2, RoundingMode.HALF_UP);
         }
         delta = sumIncome.subtract(sumConsumption);
     }
@@ -155,12 +116,8 @@ public class Statistic {
         return this;
     }
 
-    public boolean isElementPicked() {
-        return !ofElement.equals(nameOfAll);
-    }
-
-    public boolean isPlacePicked() {
-        return !ofPlace.equals(nameOfAll);
+    public boolean isDeltaPositive() {
+        return delta.compareTo(BigDecimal.ZERO) >= 0;
     }
 
     public boolean isIncomeExist() {
@@ -205,38 +162,6 @@ public class Statistic {
 
     public Set<Operation> getOperations() {
         return operations;
-    }
-
-    public Operation getMaxIncome() {
-        return maxIncome;
-    }
-
-    public void setMaxIncome(Operation maxIncome) {
-        this.maxIncome = maxIncome;
-    }
-
-    public Operation getMaxConsumption() {
-        return maxConsumption;
-    }
-
-    public void setMaxConsumption(Operation maxConsumption) {
-        this.maxConsumption = maxConsumption;
-    }
-
-    public BigDecimal getDeltaByElement() {
-        return deltaByElement;
-    }
-
-    public void setDeltaByElement(BigDecimal deltaByElement) {
-        this.deltaByElement = deltaByElement;
-    }
-
-    public BigDecimal getDeltaByPlace() {
-        return deltaByPlace;
-    }
-
-    public void setDeltaByPlace(BigDecimal deltaByPlace) {
-        this.deltaByPlace = deltaByPlace;
     }
 
     public BigDecimal getDeltaIncomePerOperation() {

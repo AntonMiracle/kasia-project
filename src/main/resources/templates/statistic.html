@@ -59,54 +59,35 @@
             <tr>
                 <th th:colspan="4" th:text="#{title.statistic}"></th>
             </tr>
-            <tr th:if="*{isElementPicked()}">
-                <td>average price of element</td>
-                <td th:style="'color:darkgreen;'"
-                    th:text="${myFormatter.formatNumber(user.id,statistic.deltaByElement)}"></td>
+
+            <tr th:if="*{isIncomeExist()}" th:id="operationIncomeBlack">
+
             </tr>
-            <tr th:if="*{isPlacePicked()}">
-                <td>average price in a place</td>
-                <td th:style="'color:darkgreen;'"
-                    th:text="${myFormatter.formatNumber(user.id,statistic.deltaByPlace)}"></td>
+            <tr th:if="*{isConsumptionExist()}" th:id="operationConsumptionBlack">
             </tr>
-            <tr th:if="*{isIncomeExist()}">
-                <td>average income per operation</td>
-                <td th:style="'color:darkgreen;'"
+
+            <tr th:if="*{isIncomeExist()}" th:id="operationIncomeBlack">
+                <td th:class="myLabel" th:text="#{title.income}"></td>
+                <td th:class="myLabel"
+                    th:text="${myFormatter.formatNumber(user.id,statistic.sumIncome)}"></td>
+                <td th:class="myLabel" th:text="#{title.statistic.average.income}"></td>
+                <td th:class="myLabel"
                     th:text="${myFormatter.formatNumber(user.id,statistic.deltaIncomePerOperation)}"></td>
             </tr>
-            <tr th:if="*{isConsumptionExist()}">
-                <td>average consumption per operation</td>
-                <td th:style="'color:red;'"
+            <tr th:if="*{isConsumptionExist()}" th:id="operationConsumptionBlack">
+                <td th:class="myLabel" th:text="#{title.consumption}"></td>
+                <td th:class="myLabel"
+                    th:text="${myFormatter.formatNumber(true,user.id,statistic.sumConsumption)}"></td>
+                <td th:class="myLabel" th:text="#{title.statistic.average.consumption}"></td>
+                <td th:class="myLabel"
                     th:text="${myFormatter.formatNumber(true,user.id,statistic.deltaConsumptionPerOperation)}"></td>
             </tr>
-            <tr th:if="*{maxIncome != null}">
-                <td>maximum income</td>
-                <td th:style="'color:darkgreen;'"
-                    th:text="${myFormatter.formatNumber(user.id,statistic.maxIncome.price)}"></td>
-                <td th:text="*{maxIncome.element.getName()}"></td>
-                <td th:text="*{maxIncome.place.getName()}"></td>
-            </tr>
-            <tr th:if="*{maxConsumption != null}">
-                <td>maximum consumption</td>
-                <td th:style="'color:red;'"
-                    th:text="${myFormatter.formatNumber(true,user.id,statistic.maxConsumption.price)}"></td>
-                <td th:text="*{maxConsumption.element.getName()}"></td>
-                <td th:text="*{maxConsumption.place.getName()}"></td>
-            </tr>
-            <tr th:if="*{isIncomeExist()}">
-                <td>sum of income</td>
-                <td th:style="'color:darkgreen;'"
-                    th:text="${myFormatter.formatNumber(user.id,statistic.sumIncome)}"></td>
-            </tr>
-            <tr th:if="*{isConsumptionExist()}">
-                <td>sum of consumption</td>
-                <td th:style="'color:red;'"
-                    th:text="${myFormatter.formatNumber(true,user.id,statistic.sumConsumption)}"></td>
-            </tr>
-            <tr th:if="*{isIncomeExist() or isConsumptionExist()}">
-                <td>balance changes</td>
-                <td th:style="'color:darkgreen;'"
-                    th:text="*{delta}"></td>
+            <tr th:if="*{isIncomeExist() or isConsumptionExist()}"
+                th:id="*{isDeltaPositive()} ? 'operationIncomeWhite' : 'operationConsumptionWhite'">
+                <td th:class="myLabel" th:text="#{title.statistic.balance.changes}"></td>
+                <td th:class="myLabel"
+                    th:text="${myFormatter.formatNumber(statistic.isDeltaPositive() ? false : true
+                    ,user.id,statistic.delta)}"></td>
             </tr>
             <tr>
                 <th th:colspan="4" th:text="#{title.operation}"
