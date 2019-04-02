@@ -7,6 +7,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -23,11 +24,12 @@ public class Statistic {
     private final String nameOfAll = "-";
     private String ofElement;
     private String ofPlace;
-    private BigDecimal deltaIncomePerOperation;//
-    private BigDecimal deltaConsumptionPerOperation;//
-    private BigDecimal sumIncome;//
-    private BigDecimal sumConsumption;//
-    private BigDecimal delta; //
+    private BigDecimal deltaIncomePerOperation;
+    private BigDecimal deltaConsumptionPerOperation;
+    private BigDecimal sumIncome;
+    private BigDecimal sumConsumption;
+    private BigDecimal delta;
+    private Sort sort = Sort.DATE;
 
     private void setStatisticNumbers() {
         long countIncomeOperation = 0;
@@ -113,7 +115,30 @@ public class Statistic {
         byPlace();
         byElement();
         setStatisticNumbers();
+        sort();
         return this;
+    }
+
+    private void sort() {
+        Set<Operation> sortedOperation;
+        switch (sort) {
+            case DATE:
+                sortedOperation = new TreeSet<>(Comparator.comparing(Operation::getCreateOn));
+                break;
+            case ELEMENT_NAME:
+                sortedOperation = new TreeSet<>(Comparator.comparing(o -> o.getElement().getName()));
+                break;
+            case PLACE_NAME:
+                sortedOperation = new TreeSet<>(Comparator.comparing(o -> o.getPlace().getName()));
+                break;
+            case PRICE:
+                sortedOperation = new TreeSet<>(Comparator.comparing(Operation::getPrice));
+                break;
+            default:
+                throw new RuntimeException("sort type do not exist");
+        }
+        sortedOperation.addAll(operations);
+        operations = sortedOperation;
     }
 
     public boolean isDeltaPositive() {
@@ -203,4 +228,18 @@ public class Statistic {
     public void setDelta(BigDecimal delta) {
         this.delta = delta;
     }
+
+    public Sort getSort() {
+        return sort;
+    }
+
+    public void setSort(Sort sort) {
+        this.sort = sort;
+    }
+
+    public enum Sort {
+        ELEMENT_NAME, PLACE_NAME, PRICE, DATE;
+    }
 }
+
+

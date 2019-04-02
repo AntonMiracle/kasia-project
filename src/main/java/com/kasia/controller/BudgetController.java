@@ -37,6 +37,24 @@ public class BudgetController {
                 .calculate(sessionC.getUser().getZoneId());
     }
 
+    @ModelAttribute("sortByDate")
+    public Statistic.Sort getSortByDate() {
+        return Statistic.Sort.DATE;
+    }
+
+    @ModelAttribute("sortByElementName")
+    public Statistic.Sort getSortByElementName() {
+        return Statistic.Sort.ELEMENT_NAME;
+    }
+
+    @ModelAttribute("sortByPlaceName")
+    public Statistic.Sort getSortByPlaceName() {
+        return Statistic.Sort.PLACE_NAME;
+    }
+    @ModelAttribute("sortByPrice")
+    public Statistic.Sort getSortByPrice() {
+        return Statistic.Sort.PRICE;
+    }
 
     @ModelAttribute("budgetAdd")
     public BudgetAdd getBudgetAdd() {
@@ -122,6 +140,7 @@ public class BudgetController {
         result.setTo(dto.getTo());
         result.setOfElement(dto.getOfElement());
         result.setOfPlace(dto.getOfPlace());
+        result.setSort(dto.getSort());
         model.addAttribute("statistic", result.calculate(zoneId));
         //add to model view
         return openStatistic();

@@ -52,6 +52,22 @@
                 <td><input type="date" th:field="*{to}"/></td>
             </tr>
             <tr>
+                <!--sort-->
+                <td th:class="myLabel" th:text="#{label.sort}"></td>
+                <td>
+                    <!--/*@thymesVar id="sortByDate" type="com.kasia.model.Statistic.Sort"*/-->
+                    <!--/*@thymesVar id="sortByElementName" type="com.kasia.model.Statistic.Sort"*/-->
+                    <!--/*@thymesVar id="sortByPlaceName" type="com.kasia.model.Statistic.Sort"*/-->
+                    <!--/*@thymesVar id="sortByPrice" type="com.kasia.model.Statistic.Sort"*/-->
+                    <select th:field="*{sort}" th:style="'width:200px;'">
+                        <option th:value="${sortByDate}" th:text="#{label.sort.date}"></option>
+                        <option th:value="${sortByElementName}" th:text="#{label.sort.element.name}"></option>
+                        <option th:value="${sortByPlaceName}" th:text="#{label.sort.place.name}"></option>
+                        <option th:value="${sortByPrice}" th:text="#{label.sort.price}"></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td th:colspan="4" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.get}"></button>
                 </td>
@@ -86,8 +102,8 @@
                 th:id="*{isDeltaPositive()} ? 'operationIncomeWhite' : 'operationConsumptionWhite'">
                 <td th:class="myLabel" th:text="#{title.statistic.balance.changes}"></td>
                 <td th:class="myLabel"
-                    th:text="${myFormatter.formatNumber(statistic.isDeltaPositive() ? false : true
-                    ,user.id,statistic.delta)}"></td>
+                    th:text="${myFormatter.formatNumber(statistic.isDeltaPositive() ? false : true ,user.id,statistic.delta)}"></td>
+                <td th:colspan="2"></td>
             </tr>
             <tr>
                 <th th:colspan="4" th:text="#{title.operation}"
