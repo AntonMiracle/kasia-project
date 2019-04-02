@@ -7,7 +7,6 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -123,16 +122,21 @@ public class Statistic {
         Set<Operation> sortedOperation;
         switch (sort) {
             case DATE:
-                sortedOperation = new TreeSet<>(Comparator.comparing(Operation::getCreateOn));
+                sortedOperation = new TreeSet<>((o1, o2) -> o1.getCreateOn().compareTo(o2.getCreateOn()) >= 0 ? 1 : -1);
                 break;
             case ELEMENT_NAME:
-                sortedOperation = new TreeSet<>(Comparator.comparing(o -> o.getElement().getName()));
+                sortedOperation = new TreeSet<>((o1, o2) -> o1.getElement().getName().compareTo(o2.getElement().getName()) >= 0 ? 1 : -1);
                 break;
             case PLACE_NAME:
-                sortedOperation = new TreeSet<>(Comparator.comparing(o -> o.getPlace().getName()));
+                sortedOperation = new TreeSet<>((o1, o2) -> o1.getPlace().getName().compareTo(o2.getPlace().getName()) >= 0 ? 1 : -1);
                 break;
             case PRICE:
-                sortedOperation = new TreeSet<>(Comparator.comparing(Operation::getPrice));
+//                sortedOperation = new TreeSet<>(Comparator.comparing(Operation::getPrice));
+                sortedOperation = new TreeSet<>((o1, o2) -> {
+                    BigDecimal p1 = o1.getType() == OperationType.INCOME ? o1.getPrice() : o1.getPrice().negate();
+                    BigDecimal p2 = o2.getType() == OperationType.INCOME ? o2.getPrice() : o2.getPrice().negate();
+                    return p2.compareTo(p1) >= 0 ? 1 : -1;
+                });
                 break;
             default:
                 throw new RuntimeException("sort type do not exist");
