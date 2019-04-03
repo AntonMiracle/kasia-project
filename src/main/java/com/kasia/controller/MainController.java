@@ -62,7 +62,7 @@ public class MainController {
             if (!userS.isEmailUnique(dto.getEmailToConnect()) && !sessionC.getUser().getEmail().equals(dto.getEmailToConnect())) {
                 long fromUserId = sessionC.getUser().getId();
                 long toUserId = userS.findByEmail(dto.getEmailToConnect()).getId();
-                budgetS.connectRequest(dto.getBudgetIdForConnect(), fromUserId, toUserId);
+                budgetS.requestConnect(dto.getBudgetIdForConnect(), fromUserId, toUserId);
             }
         }
 

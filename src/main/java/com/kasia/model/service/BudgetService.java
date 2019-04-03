@@ -53,5 +53,5 @@ public interface BudgetService {
 
     boolean connect(long budgetId, long userId);
 
-    boolean connectRequest(long budgetId, long fromUserId, long toUserId);
+    boolean requestConnect(long budgetId, long fromUserId, long toUserId);
 }

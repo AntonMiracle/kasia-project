@@ -271,7 +271,7 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
-    public boolean connectRequest(long budgetId, long fromUserId, long toUserId) {
+    public boolean requestConnect(long budgetId, long fromUserId, long toUserId) {
         UserConnectBudgetRequest ucbr = new UserConnectBudgetRequest();
         ucbr.setBudgetId(budgetId);
         ucbr.setFromUserId(fromUserId);
