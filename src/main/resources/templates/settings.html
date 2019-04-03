@@ -18,6 +18,9 @@
         <tr>
             <th th:colspan="2" th:text="#{title.settings}"></th>
         </tr>
+        <tr>
+            <th th:colspan="2" th:text="#{title.budgetDelete}"></th>
+        </tr>
         <form th:action="@{/main/settings/delete/budget}" th:object="${settings}" method="post">
             <tr>
                 <td th:class="myLabel" th:text="#{label.delete}"></td>
