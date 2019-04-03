@@ -21,6 +21,7 @@ public class MyControllerAdvice {
 
     @ModelAttribute("isOwner")
     public boolean isOwner() {
+        if (sessionC.getBudget() == null) return false;
         return budgetS.isOwner(sessionC.getBudget().getId(), sessionC.getUser().getId());
     }
 

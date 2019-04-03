@@ -1,9 +1,6 @@
 package com.kasia.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class UserConnectBudgetRequest implements Model {
@@ -13,6 +10,28 @@ public class UserConnectBudgetRequest implements Model {
     private long budgetId;
     private long fromUserId;
     private long toUserId;
+    @Transient
+    private User fromUser;
+    @Transient
+    private User toUser;
+    @Transient
+    private Budget budget;
+
+    public User getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public User getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(User toUser) {
+        this.toUser = toUser;
+    }
 
     public long getId() {
         return id;
@@ -44,6 +63,14 @@ public class UserConnectBudgetRequest implements Model {
 
     public void setToUserId(long toUserId) {
         this.toUserId = toUserId;
+    }
+
+    public Budget getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Budget budget) {
+        this.budget = budget;
     }
 
     @Override

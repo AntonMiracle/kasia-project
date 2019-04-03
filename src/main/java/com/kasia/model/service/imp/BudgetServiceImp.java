@@ -266,7 +266,7 @@ public class BudgetServiceImp implements BudgetService {
         if (ucb.getUser() == null) ucb.setUser(userS.findById(userId));
         Budget budget = findById(budgetId);
         if (!ucb.getConnectBudgets().contains(budget)) ucb.getConnectBudgets().add(budget);
-// save request to connect
+        userConnectBudgetR.save(ucb);
         return true;
     }
 
@@ -278,5 +278,48 @@ public class BudgetServiceImp implements BudgetService {
         ucbr.setToUserId(toUserId);
         ucbrR.save(ucbr);
         return true;
+    }
+
+    @Override
+    public Set<UserConnectBudgetRequest> findRequestFrom(long fromUserId) {
+        Set<UserConnectBudgetRequest> ucbr = ucbrR.findFromUserId(fromUserId);
+        for (UserConnectBudgetRequest o : ucbr) {
+            o.setToUser(userS.findById(o.getToUserId()));
+            o.setFromUser(userS.findById(o.getToUserId()));
+            o.setBudget(findById(o.getBudgetId()));
+        }
+        return ucbr != null ? ucbr : new HashSet<>();
+    }
+
+    @Override
+    public Set<UserConnectBudgetRequest> findRequestTo(long toUserId) {
+        Set<UserConnectBudgetRequest> ucbr = ucbrR.findToUserId(toUserId);
+        for (UserConnectBudgetRequest o : ucbr) {
+            o.setToUser(userS.findById(o.getToUserId()));
+            o.setFromUser(userS.findById(o.getToUserId()));
+            o.setBudget(findById(o.getBudgetId()));
+        }
+        return ucbr != null ? ucbr : new HashSet<>();
+    }
+
+    @Override
+    public UserConnectBudgetRequest findUserConnectBudgetRequestById(long ucbrId) {
+        return ucbrR.findById(ucbrId).orElse(null);
+    }
+
+    @Override
+    public boolean deleteConnectionRequest(long ucbrId) {
+        UserConnectBudgetRequest ucbr = findUserConnectBudgetRequestById(ucbrId);
+        if (ucbr != null) {
+            ucbrR.delete(ucbr);
+        }
+        return true;
+    }
+
+    @Override
+    public Set<Budget> findConnectionBudget(long userId) {
+        UserConnectBudget ucb = userConnectBudgetR.findByUserId(userId).orElse(new UserConnectBudget());
+        if (ucb.getUser() == null) return new HashSet<>();
+        return ucb.getConnectBudgets();
     }
 }

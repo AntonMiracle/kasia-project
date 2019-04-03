@@ -1,7 +1,11 @@
 package com.kasia.controller;
 
+import com.kasia.controller.dto.BudgetAdd;
 import com.kasia.controller.dto.Settings;
 import com.kasia.model.Budget;
+import com.kasia.model.Currencies;
+import com.kasia.model.User;
+import com.kasia.model.UserConnectBudgetRequest;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -32,9 +38,32 @@ public class MainController {
         return new TreeSet<>(sessionC.isUserLogin() ? budgetS.findOwnBudgets(sessionC.getUser().getId()) : new HashSet<>());
     }
 
+    @ModelAttribute("connectionBudgets")
+    public Set<Budget> getConnectionBudgets() {
+        return new TreeSet<>(sessionC.isUserLogin() ? budgetS.findConnectionBudget(sessionC.getUser().getId()) : new HashSet<>());
+    }
+
+    @ModelAttribute("requestTo")
+    public Set<UserConnectBudgetRequest> getToRequest() {
+        return sessionC.isUserLogin() ? budgetS.findRequestTo(sessionC.getUser().getId()) : new HashSet<>();
+    }
+
+    @ModelAttribute("budgetAdd")
+    public BudgetAdd getBudgetAdd() {
+        BudgetAdd dto = new BudgetAdd();
+        dto.setUserId(sessionC.getUser().getId());
+        return dto;
+    }
+
+    @ModelAttribute("currencies")
+    public Currencies[] getCurrencies() {
+        return Currencies.values();
+    }
+
     @GetMapping(U_MAIN)
     public String openHome() {
-        return sessionC.isUserLogin() ? V_MAIN : redirect(U_LOGIN);
+        if (!sessionC.isUserLogin()) redirect(U_LOGIN);
+        return V_MAIN;
     }
 
     @GetMapping(U_MAIN_SETTINGS)
@@ -68,5 +97,53 @@ public class MainController {
 
 
         return redirect(U_MAIN_SETTINGS);
+    }
+
+    @GetMapping(U_MAIN_CONNECTION_ACCEPT + "/{id}")
+    public String acceptConnection(@PathVariable long id) {
+        UserConnectBudgetRequest ucbr = budgetS.findUserConnectBudgetRequestById(id);
+        if (sessionC.isUserLogin() && ucbr != null) {
+            budgetS.connect(ucbr.getBudgetId(), ucbr.getToUserId());
+            budgetS.deleteConnectionRequest(id);
+        }
+        return redirect(U_MAIN);
+    }
+
+    @GetMapping(U_MAIN_CONNECTION_REJECT + "/{id}")
+    public String rejectConnection(@PathVariable long id) {
+        if (sessionC.isUserLogin()) {
+            budgetS.deleteConnectionRequest(id);
+        }
+        return redirect(U_MAIN);
+    }
+
+    @GetMapping(U_BUDGET_OPEN + "/{id}")
+    public String openBudget(@PathVariable long id) {
+        if (sessionC.isUserLogin()) {
+            User user = sessionC.getUser();
+            Budget budget = budgetS.findById(id);
+            if (user != null && budget != null) {
+                sessionC.setBudget(budget);
+                sessionC.setWeekOperationHistory();
+                return redirect(U_BUDGET);
+            }
+        }
+        return redirect(U_MAIN);
+    }
+
+    @GetMapping(U_BUDGET_ADD)
+    public String openBudgetAdd() {
+        return sessionC.isUserLogin() ? V_BUDGET_ADD : redirect(U_LOGIN);
+    }
+
+    @PostMapping(U_BUDGET_SAVE)
+    public String addNewBudget(@Valid @ModelAttribute BudgetAdd dto, BindingResult bResult) {
+        if (bResult.hasErrors()) return openBudgetAdd();
+
+        User user = sessionC.getUser();
+        Budget budget = budgetS.save(budgetS.convert(dto));
+        budgetS.setOwner(budget.getId(), user.getId());
+
+        return redirect(U_MAIN);
     }
 }

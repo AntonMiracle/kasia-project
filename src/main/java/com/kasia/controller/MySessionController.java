@@ -39,7 +39,9 @@ public class MySessionController {
     }
 
     public void setBudget(Budget budget) {
-        if (isUserLogin() && budgetS.findOwnBudgets(user.getId()).contains(budget))
+        if (isUserLogin() &&
+                (budgetS.findOwnBudgets(user.getId()).contains(budget)
+                        || budgetS.findConnectionBudget(user.getId()).contains(budget)))
             this.budget = budget;
     }
 

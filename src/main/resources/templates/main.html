@@ -9,11 +9,31 @@
 <div th:replace="fragments/header :: mainMenu"></div>
 <div th:id="mainContentWithoutMenu">
     <!--/*@thymesVar id="ownBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+    <!--/*@thymesVar id="connectionBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+    <!--/*@thymesVar id="requestTo" type="java.util.Set<com.kasia.model.UserConnectBudgetRequest>"*/-->
     <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <table th:class="myTable" th:if="${requestTo.size() != 0}">
+        <tr>
+            <th th:colspan="5" th:text="#{title.connection.request}"></th>
+        </tr>
+        <tr th:each="ucbr : ${requestTo}">
+            <td th:class="myLabel" th:text="${ucbr.getBudget().name}"></td>
+            <td th:class="myLabel" th:text="#{label.from}"></td>
+            <td th:class="myLabel" th:text="${ucbr.fromUser.email}"></td>
+            <td style="padding: 0px;">
+                <button th:onclick="'javascript:acceptReqest(\'' + ${ucbr.id} + '\');'"
+                        class="button" th:id="whiteButton" type="button" th:text="#{button.connect}"></button>
+            </td>
+            <td style="padding: 0px;">
+                <button th:onclick="'javascript:rejectReqest(\'' + ${ucbr.id} + '\');'"
+                        class="button" th:id="whiteButton" type="button" th:text="#{button.rejected}"></button>
+            </td>
+        </tr>
+    </table>
     <table th:class="myTable" th:if="${ownBudgets.size() != 0}">
         <tr>
-            <th colspan="3" th:text="#{title.budgetAll}"></th>
+            <th colspan="3" th:text="#{title.ownBudget}"></th>
         </tr>
         <tr th:each="ownBudget : ${ownBudgets}"
             th:id="whiteButton"
@@ -24,9 +44,28 @@
             <td th:text="${ownBudget.balance.currency}"></td>
         </tr>
     </table>
+    <table th:class="myTable" th:if="${connectionBudgets.size() != 0}">
+        <tr>
+            <th colspan="3" th:text="#{title.connectedBudget}"></th>
+        </tr>
+        <tr th:each="connectionBudget : ${connectionBudgets}"
+            th:id="whiteButton"
+            th:onclick="'javascript:openBudget(\'' + ${connectionBudget.id} + '\');'">
+            <td th:text="${connectionBudget.name}"></td>
+
+            <td th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
+            <td th:text="${connectionBudget.balance.currency}"></td>
+        </tr>
+    </table>
     <script th:inline="javascript">
         function openBudget(value) {
             location.href = "/budget/open/" + value;
+        }
+        function acceptReqest(value) {
+            location.href = "/main/connection/accept/" + value;
+        }
+        function rejectReqest(value) {
+            location.href = "/main/connection/reject/" + value;
         }
     </script>
 </div>

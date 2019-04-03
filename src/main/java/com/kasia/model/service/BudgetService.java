@@ -1,10 +1,7 @@
 package com.kasia.model.service;
 
 import com.kasia.controller.dto.BudgetAdd;
-import com.kasia.model.Budget;
-import com.kasia.model.Element;
-import com.kasia.model.Operation;
-import com.kasia.model.Place;
+import com.kasia.model.*;
 
 import java.util.Set;
 
@@ -54,4 +51,14 @@ public interface BudgetService {
     boolean connect(long budgetId, long userId);
 
     boolean requestConnect(long budgetId, long fromUserId, long toUserId);
+
+    Set<UserConnectBudgetRequest> findRequestFrom(long fromUserId);
+
+    Set<UserConnectBudgetRequest> findRequestTo(long toUserId);
+
+    UserConnectBudgetRequest findUserConnectBudgetRequestById(long ucbrId);
+
+    boolean deleteConnectionRequest(long ucbrId);
+
+    Set<Budget> findConnectionBudget(long userId);
 }
