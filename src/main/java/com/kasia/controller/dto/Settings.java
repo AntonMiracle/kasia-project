@@ -2,7 +2,9 @@ package com.kasia.controller.dto;
 
 public class Settings {
     private long budgetIdForDelete;
-    private String confirmPassword = "";
+    private long budgetIdForConnect;
+    private String confirmDelete = "";
+    private String confirmConnect = "";
     private long ownerUserId;
     private String emailToConnect = "";
     private boolean hasOwnBudget;
@@ -23,12 +25,12 @@ public class Settings {
         this.budgetIdForDelete = budgetIdForDelete;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public String getConfirmDelete() {
+        return confirmDelete;
     }
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
+    public void setConfirmDelete(String confirmDelete) {
+        this.confirmDelete = confirmDelete;
     }
 
     public long getOwnerUserId() {
@@ -47,11 +49,29 @@ public class Settings {
         this.emailToConnect = emailToConnect;
     }
 
+    public String getConfirmConnect() {
+        return confirmConnect;
+    }
+
+    public void setConfirmConnect(String confirmConnect) {
+        this.confirmConnect = confirmConnect;
+    }
+
+    public long getBudgetIdForConnect() {
+        return budgetIdForConnect;
+    }
+
+    public void setBudgetIdForConnect(long budgetIdForConnect) {
+        this.budgetIdForConnect = budgetIdForConnect;
+    }
+
     @Override
     public String toString() {
         return "Settings{" +
                 "budgetIdForDelete=" + budgetIdForDelete +
-                ", confirmPassword='" + confirmPassword + '\'' +
+                ", budgetIdForConnect=" + budgetIdForConnect +
+                ", confirmDelete='" + confirmDelete + '\'' +
+                ", confirmConnect='" + confirmConnect + '\'' +
                 ", ownerUserId=" + ownerUserId +
                 ", emailToConnect='" + emailToConnect + '\'' +
                 ", hasOwnBudget=" + hasOwnBudget +

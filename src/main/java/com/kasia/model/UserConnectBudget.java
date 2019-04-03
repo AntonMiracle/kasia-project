@@ -1,6 +1,7 @@
 package com.kasia.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -11,7 +12,7 @@ public class UserConnectBudget implements Model {
     @OneToOne(fetch = FetchType.EAGER)
     private User user;
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Budget> connectBudgets;
+    private Set<Budget> connectBudgets = new HashSet<>();
 
     public UserConnectBudget(User user, Set<Budget> connectBudgets) {
         this.user = user;

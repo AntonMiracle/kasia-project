@@ -36,6 +36,10 @@ public class BudgetServiceImp implements BudgetService {
     private ElementService elementS;
     @Autowired
     private OperationService operationS;
+    @Autowired
+    private UserConnectBudgetRepository userConnectBudgetR;
+    @Autowired
+    private UserConnectBudgetRequestRepository ucbrR;
 
     @Override
     public boolean setOwner(long budgetId, long userId) {
@@ -253,6 +257,26 @@ public class BudgetServiceImp implements BudgetService {
         }
         // add connection remove
         budgetR.delete(findById(budgetId));
+        return true;
+    }
+
+    @Override
+    public boolean connect(long budgetId, long userId) {
+        UserConnectBudget ucb = userConnectBudgetR.findByUserId(userId).orElse(new UserConnectBudget());
+        if (ucb.getUser() == null) ucb.setUser(userS.findById(userId));
+        Budget budget = findById(budgetId);
+        if (!ucb.getConnectBudgets().contains(budget)) ucb.getConnectBudgets().add(budget);
+// save request to connect
+        return true;
+    }
+
+    @Override
+    public boolean connectRequest(long budgetId, long fromUserId, long toUserId) {
+        UserConnectBudgetRequest ucbr = new UserConnectBudgetRequest();
+        ucbr.setBudgetId(budgetId);
+        ucbr.setFromUserId(fromUserId);
+        ucbr.setToUserId(toUserId);
+        ucbrR.save(ucbr);
         return true;
     }
 }

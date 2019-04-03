@@ -39,24 +39,34 @@ public class MainController {
 
     @GetMapping(U_MAIN_SETTINGS)
     public String openSettings() {
-        return V_SETTINGS;
+        if (budgetS.findOwnBudgets(sessionC.getUser().getId()).size() > 0) return V_SETTINGS;
+        else return redirect(U_MAIN);
     }
 
     @PostMapping(U_MAIN_SETTINGS_DELETE_BUDGET)
     public String deleteBudget(Model model, @ModelAttribute("settings") Settings dto, BindingResult bResult) {
         if (!sessionC.isUserLogin()) return redirect(U_MAIN);
 
-        if (dto.getBudgetIdForDelete() > 0) {
-            if (!sessionC.getUser().getPassword().equals(userS.cryptPassword(dto.getConfirmPassword()))) {
-                model.addAttribute("confirmError", true);
+        if (dto.getBudgetIdForDelete() > 0 && dto.getConfirmDelete().length() > 0) {
+            if (!sessionC.getUser().getPassword().equals(userS.cryptPassword(dto.getConfirmDelete()))) {
+                model.addAttribute("confirmDeleteError", true);
                 return openSettings();
-            } else {
-                Budget budget = budgetS.findById(dto.getBudgetIdForDelete());
-                budgetS.delete(budget.getId(), sessionC.getUser().getId());
+            }
+            budgetS.delete(dto.getBudgetIdForDelete(), sessionC.getUser().getId());
+        }
+        if (dto.getBudgetIdForConnect() > 0 && dto.getConfirmConnect().length() > 0) {
+            if (!sessionC.getUser().getPassword().equals(userS.cryptPassword(dto.getConfirmConnect()))) {
+                model.addAttribute("confirmConnectError", true);
+                return openSettings();
+            }
+            if (!userS.isEmailUnique(dto.getEmailToConnect()) && !sessionC.getUser().getEmail().equals(dto.getEmailToConnect())) {
+                long fromUserId = sessionC.getUser().getId();
+                long toUserId = userS.findByEmail(dto.getEmailToConnect()).getId();
+                budgetS.connectRequest(dto.getBudgetIdForConnect(), fromUserId, toUserId);
             }
         }
 
 
-        return redirect(U_MAIN);
+        return redirect(U_MAIN_SETTINGS);
     }
 }

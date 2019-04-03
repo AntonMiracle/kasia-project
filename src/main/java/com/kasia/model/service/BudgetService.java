@@ -50,4 +50,8 @@ public interface BudgetService {
     boolean removeOperation(long budgetId, long operationId);
 
     boolean delete(long budgetId, long userId);
+
+    boolean connect(long budgetId, long userId);
+
+    boolean connectRequest(long budgetId, long fromUserId, long toUserId);
 }

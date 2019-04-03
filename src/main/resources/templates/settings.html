@@ -15,13 +15,13 @@
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
 
     <table th:class="myTable">
-        <tr>
-            <th th:colspan="2" th:text="#{title.settings}"></th>
-        </tr>
-        <tr>
-            <th th:colspan="2" th:text="#{title.budgetDelete}"></th>
-        </tr>
         <form th:action="@{/main/settings/delete/budget}" th:object="${settings}" method="post">
+            <tr>
+                <th th:colspan="2" th:text="#{title.settings}"></th>
+            </tr>
+            <tr>
+                <th th:colspan="2" th:text="#{title.budgetDelete}"></th>
+            </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.delete}"></td>
                 <td th:class="myLabel">
@@ -37,19 +37,57 @@
                 </td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.password}"></td>
-                <!--/*@thymesVar id="confirmError" type="java.lang.Boolean"*/-->
+                <td th:class="myLabel" th:text="#{label.confirm} + ' ' + #{label.password}"></td>
+                <!--/*@thymesVar id="confirmDeleteError" type="java.lang.Boolean"*/-->
                 <td th:class="myLabelError"
-                    th:if="${confirmError}"
+                    th:if="${confirmDeleteError}"
                     th:text="#{validation.password.error}">
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="password" th:field="*{confirmPassword}"/></td>
+                <td th:colspan="2"><input type="password" th:field="*{confirmDelete}"/></td>
             </tr>
             <tr>
                 <td th:colspan="2" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.delete}"></button>
+                </td>
+            </tr>
+            <tr>
+                <th th:colspan="2" th:text="#{title.userConnect}"></th>
+            </tr>
+            <tr>
+                <td th:colspan="2" th:class="myLabel" th:text="#{label.email}"></td>
+            </tr>
+            <tr>
+                <td th:colspan="2"><input type="text" th:field="*{emailToConnect}"/></td>
+            </tr>
+            <tr>
+                <td th:class="myLabel" th:text="#{title.budget}"></td>
+                <td th:class="myLabel">
+                    <select th:field="*{budgetIdForConnect}">
+                        <option th:each="budget : ${ownBudgets}"
+                                th:value="${budget.id}"
+                                th:text="${budget.name}
+                                + ' ' + ${myFormatter.formatNumber(user.id,budget.balance.amount)}
+                                + ' ' + ${budget.balance.currency}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td th:class="myLabel" th:text="#{label.confirm} + ' ' + #{label.password}"></td>
+                <!--/*@thymesVar id="confirmConnectError" type="java.lang.Boolean"*/-->
+                <td th:class="myLabelError"
+                    th:if="${confirmConnectError}"
+                    th:text="#{validation.password.error}">
+                </td>
+            </tr>
+            <tr>
+                <td th:colspan="2"><input type="password" th:field="*{confirmConnect}"/></td>
+            </tr>
+            <tr>
+                <td th:colspan="2" th:class="withButton">
+                    <button class="button" type="submit" th:text="#{button.connect}"></button>
                 </td>
             </tr>
         </form>
