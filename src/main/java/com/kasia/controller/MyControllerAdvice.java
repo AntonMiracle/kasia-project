@@ -1,5 +1,6 @@
 package com.kasia.controller;
 
+import com.kasia.controller.dto.Settings;
 import com.kasia.model.Budget;
 import com.kasia.model.OperationType;
 import com.kasia.model.User;
@@ -46,5 +47,12 @@ public class MyControllerAdvice {
     @ModelAttribute("consumption")
     public OperationType getConsumption() {
         return OperationType.CONSUMPTION;
+    }
+
+    @ModelAttribute("settings")
+    public Settings getSettings() {
+        Settings settings = new Settings();
+        settings.setHasOwnBudget(budgetS.findOwnBudgets(sessionC.getUser().getId()).size() > 0);
+        return settings;
     }
 }

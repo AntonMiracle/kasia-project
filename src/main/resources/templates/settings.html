@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/base_head :: base_head"></div>
+    <title th:text="#{title.settings}"></title>
+</head>
+<body>
+<div th:replace="fragments/header :: mainMenu"></div>
+<div th:id="mainContentWithoutMenu">
+
+    <!--/*@thymesVar id="settings" type="com.kasia.controller.dto.Settings"*/-->
+    <!--/*@thymesVar id="ownBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+    <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+
+    <table th:class="myTable">
+        <tr>
+            <th th:colspan="2" th:text="#{title.settings}"></th>
+        </tr>
+        <form th:action="@{/main/settings/delete/budget}" th:object="${settings}" method="post">
+            <tr>
+                <td th:class="myLabel" th:text="#{label.delete}"></td>
+                <td th:class="myLabel">
+                    <select th:field="*{budgetIdForDelete}">
+                        <option th:value="0" th:text="'-'"></option>
+                        <option th:each="budget : ${ownBudgets}"
+                                th:value="${budget.id}"
+                                th:text="${budget.name}
+                                + ' ' + ${myFormatter.formatNumber(user.id,budget.balance.amount)}
+                                + ' ' + ${budget.balance.currency}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td th:class="myLabel" th:text="#{label.password}"></td>
+                <!--/*@thymesVar id="confirmError" type="java.lang.Boolean"*/-->
+                <td th:class="myLabelError"
+                    th:if="${confirmError}"
+                    th:text="#{validation.password.error}">
+                </td>
+            </tr>
+            <tr>
+                <td th:colspan="2"><input type="password" th:field="*{confirmPassword}"/></td>
+            </tr>
+            <tr>
+                <td th:colspan="2" th:class="withButton">
+                    <button class="button" type="submit" th:text="#{button.delete}"></button>
+                </td>
+            </tr>
+        </form>
+    </table>
+</div>
+</body>
+</html>

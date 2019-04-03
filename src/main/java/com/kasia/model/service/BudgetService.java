@@ -46,5 +46,8 @@ public interface BudgetService {
     Set<Operation> findAllOperations(long budgetId);
 
     boolean addOperation(long budgetId, long operationId);
+
     boolean removeOperation(long budgetId, long operationId);
+
+    boolean delete(long budgetId, long userId);
 }

@@ -14,6 +14,7 @@ public final class ViewAndURLController {
     public static final String V_OPERATION = "operation";
     public static final String V_OPERATION_EDIT = "operationEdit";
     public static final String V_STATISTIC = "statistic";
+    public static final String V_SETTINGS = "settings";
 
     public static final String U_ROOT = "/";
     public static final String U_LOGIN = "/login";
@@ -49,6 +50,8 @@ public final class ViewAndURLController {
     public static final String U_PLACE_UPDATE = U_PLACE + "/update";
     public static final String U_PLACE_DELETE = U_PLACE + "/delete";
     public static final String U_MAIN = "/main";
+    public static final String U_MAIN_SETTINGS = U_MAIN + "/settings";
+    public static final String U_MAIN_SETTINGS_DELETE_BUDGET = U_MAIN_SETTINGS + "/delete/budget";
 
     public static String redirect(String url) {
         if (url.startsWith("/")) return "redirect:" + url;

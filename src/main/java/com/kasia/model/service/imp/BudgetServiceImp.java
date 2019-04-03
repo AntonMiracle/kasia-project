@@ -236,4 +236,23 @@ public class BudgetServiceImp implements BudgetService {
         }
         return true;
     }
+
+    @Override
+    public boolean delete(long budgetId, long userId) {
+
+        Optional<BudgetOperation> bo = budgetOperationR.findByBudgetId(budgetId);
+        Optional<BudgetElement> be = budgetElementR.findByBudgetId(budgetId);
+        Optional<BudgetPlace> bp = budgetPlaceR.findByBudgetId(budgetId);
+        Optional<UserBudget> ub = userBudgetR.findByUserId(userId);
+        bo.ifPresent(budgetOperation -> budgetOperationR.delete(budgetOperation));
+        be.ifPresent(budgetElement -> budgetElementR.delete(budgetElement));
+        bp.ifPresent(budgetPlace -> budgetPlaceR.delete(budgetPlace));
+        if (ub.isPresent()) {
+            UserBudget userBudget = ub.get();
+            userBudget.getBudgets().remove(findById(budgetId));
+        }
+        // add connection remove
+        budgetR.delete(findById(budgetId));
+        return true;
+    }
 }

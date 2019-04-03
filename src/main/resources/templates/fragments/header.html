@@ -24,6 +24,13 @@
             <button class="button" th:id="whiteButton" type="submit" th:text="#{button.addBudget}"></button>
         </form>
     </div>
+    <!--/*@thymesVar id="isOwner" type="java.lang.Boolean"*/-->
+    <!--/*@thymesVar id="settings" type="com.kasia.controller.dto.Settings"*/-->
+    <div th:if="${settings != null} and ${settings.hasOwnBudget}">
+        <form th:action="@{/main/settings}">
+            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.settings}"></button>
+        </form>
+    </div>
 </div>
 
 <div class="header" th:fragment="budgetMenu">

@@ -142,7 +142,6 @@ public class BudgetController {
         result.setOfPlace(dto.getOfPlace());
         result.setSort(dto.getSort());
         model.addAttribute("statistic", result.calculate(zoneId));
-        //add to model view
         return openStatistic();
     }
 }
