@@ -2,26 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <div class="header" th:fragment="mainMenu">
-    <!--/*@thymesuserIdr id="user" type="com.kasia.model.User"*/-->
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
     <div th:class="idLabel" th:text="${user.email}"></div>
     <div>
         <form th:action="@{/logout}" method="post">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.logout}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.logout}">
+                <img th:id="buttonImg" th:src="@{/images/exit.png}"/>
+            </button>
         </form>
     </div>
     <div>
         <form th:action="@{/profile}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.profile}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.profile}">
+                <img th:id="buttonImg" th:src="@{/images/profile.svg}"/>
+            </button>
         </form>
     </div>
     <div>
         <form th:action="@{/main}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.main}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.main}">
+                <img th:id="buttonImg" th:src="@{/images/main.svg}"/>
+            </button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/add}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.addBudget}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.addBudget}">
+                <img th:id="buttonImg" th:src="@{/images/plus.png}"/>
+            </button>
         </form>
     </div>
     <!--/*@thymesVar id="isOwner" type="java.lang.Boolean"*/-->
@@ -29,7 +37,9 @@
     <!--/*@thymesVar id="connectionBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
     <div th:if="${settings.hasOwnBudget or settings.hasConnectBudget}">
         <form th:action="@{/main/settings}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.settings}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.settings}">
+                <img th:id="buttonImg" th:src="@{/images/settings.png}"/>
+            </button>
         </form>
     </div>
 </div>
@@ -51,37 +61,50 @@
     </div>
     <div>
         <form th:action="@{/main}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.main}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.main}">
+                <img th:id="buttonImg" th:src="@{/images/main.svg}"/>
         </form>
     </div>
     <div>
         <form th:action="@{/budget}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.budget}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.budget}">
+                <img th:id="buttonImg" th:src="@{/images/time.png}"/>
+            </button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/operation/income}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.income}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.income}">
+                <img th:id="buttonImg" th:src="@{/images/plus.png}"/>
+            </button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/operation/consumption}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.consumption}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.consumption}">
+                <img th:id="buttonImg" th:src="@{/images/minus.png}"/>
+            </button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/element}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.element}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.element}">
+                <img th:id="buttonImg" th:src="@{/images/element.png}"/>
+            </button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/place}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.place}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.place}">
+                <img th:id="buttonImg" th:src="@{/images/place.svg}"/>
+            </button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/statistic}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.statistic}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.statistic}">
+                <img th:id="buttonImg" th:src="@{/images/statistic.svg}"/>
+            </button>
         </form>
     </div>
 </div>

@@ -69,7 +69,9 @@
             </tr>
             <tr>
                 <td th:colspan="4" th:class="withButton">
-                    <button class="button" type="submit" th:text="#{button.get}"></button>
+                    <button class="button" type="submit" th:title="#{button.get}">
+                        <img th:id="buttonImg" src="../images/ok.png"/>
+                    </button>
                 </td>
             </tr>
             <tr>

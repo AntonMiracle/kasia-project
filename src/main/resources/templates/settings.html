@@ -52,7 +52,9 @@
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:colspan="4" th:class="withButton">
-                    <button class="button" type="submit" th:text="#{button.delete}"></button>
+                    <button class="button" type="submit" th:title="#{button.delete}">
+                        <img th:id="buttonImg" th:src="@{/images/delete.svg}"/>
+                    </button>
                 </td>
             </tr>
             <!--connect user-->
@@ -67,7 +69,7 @@
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{title.budget}"></td>
-                <td th:class="myLabel">
+                <td th:colspan="3" th:class="myLabel">
                     <select th:field="*{budgetIdForConnect}">
                         <option th:each="budget : ${ownBudgets}"
                                 th:value="${budget.id}"
@@ -91,10 +93,12 @@
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:colspan="4" th:class="withButton">
-                    <button class="button" type="submit" th:text="#{button.connect}"></button>
+                    <button class="button" type="submit" th:title="#{button.connect}">
+                        <img th:id="buttonImg" th:src="@{/images/ok.png}" />
+                    </button>
                 </td>
             </tr>
-            <!--connect budget for reject-->
+            <!--connect budget-->
             <tr th:if="*{hasConnectBudget}">
                 <th th:colspan="4" th:text="#{label.connections}"></th>
             </tr>
@@ -106,11 +110,12 @@
                 <td th:text="${connectionBudget.balance.currency}"></td>
                 <td style="padding: 0px;">
                     <button th:onclick="'javascript:disconnectFromBudget(\'' + ${connectionBudget.id} + '\');'"
-                            class="button" th:id="whiteButton" type="button" th:text="#{button.rejected}"></button>
+                            class="button" th:id="whiteButton" type="button" th:title="#{button.rejected}">
+                        <img th:id="buttonImg" th:src="@{/images/cancel.svg}" />
+                    </button>
                 </td>
             </tr>
             <!--user are connection to own budget-->
-
             <!--/*@thymesVar id="connectionUsers" type="java.util.Map<com.kasia.model.User, java.util.Set<com.kasia.model.Budget>"*/-->
             <tr th:if="*{hasConnectedUser}">
                 <th th:colspan="4" th:text="#{label.connected.user}"></th>
@@ -120,10 +125,12 @@
                 <tr th:each="budget, count : ${connectionUsers.get(connectedUser)}"
                     th:style="${count.count%2!=0? '':'background-color: rgba(0, 100, 0, 0.1);'}">
                     <td th:text="${budget.name}"></td>
-                    <td th:text="${connectedUser.email}"></td>
+                    <td th:colspan="2" th:text="${connectedUser.email}"></td>
                     <td style="padding: 0px;">
                         <button th:onclick="'javascript:disconnectUserFromBudget(\'' + ${connectedUser.id} + '\',\'' + ${budget.id} + '\');'"
-                                class="button" th:id="whiteButton" type="button" th:text="#{button.rejected}"></button>
+                                class="button" th:id="whiteButton" type="button" th:title="#{button.rejected}">
+                            <img th:id="buttonImg" th:src="@{/images/cancel.svg}" />
+                        </button>
                     </td>
                 </tr>
             </div>

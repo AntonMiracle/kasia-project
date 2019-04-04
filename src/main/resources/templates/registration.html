@@ -9,12 +9,14 @@
 <div class="header">
     <div>
         <form th:action="@{/registration/back}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.back}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.back}">
+                <img th:id="buttonImg" th:src="@{/images/back.png}" />
+            </button>
         </form>
     </div>
 </div>
 <div th:id="mainContentWithoutMenu">
-    <!--/*@thymesuserIdr id="registration" type="com.kasia.controller.dto.Registration"*/-->
+    <!--/*@thymesVar id="registration" type="com.kasia.controller.dto.Registration"*/-->
     <form th:action="@{/registration}" th:object="${registration}" method="post">
         <table th:class="myTable">
             <tr>
@@ -50,7 +52,8 @@
             </tr>
             <tr>
                 <td th:class="withButton" th:colspan="2">
-                    <button class="button" type="submit" th:text="#{button.complete}"></button>
+                    <button class="button" type="submit" th:title="#{button.complete}">
+                        <img th:id="buttonImg" th:src="@{/images/ok.png}" /></button>
                 </td>
             </tr>
         </table>

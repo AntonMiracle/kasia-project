@@ -34,10 +34,14 @@
             <td th:class="withButton" th:colspan="3">
                 <button class="button" th:id="buttonInline" th:if="${!operationsHistory.isStart()}"
                         th:onclick="'javascript:previousWeek();'"
-                        type="button" th:text="#{button.previous}"></button>
+                        type="button" th:title="#{button.previous}">
+                    <img th:id="buttonImg" th:src="@{/images/arrow-left.png}"/>
+                </button>
                 <button class="button" th:id="buttonInline" th:if="${!operationsHistory.isEnd()}"
                         th:onclick="'javascript:nextWeek();'"
-                        type="button" th:text="#{button.next}"></button>
+                        type="button" th:title="#{button.next}">
+                    <img th:id="buttonImg" th:src="@{/images/arrow-right.png}"/>
+                </button>
             </td>
         </tr>
     </table>

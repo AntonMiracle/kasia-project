@@ -23,11 +23,15 @@
             <td th:class="myLabel" th:text="${ucbr.fromUser.email}"></td>
             <td style="padding: 0px;">
                 <button th:onclick="'javascript:acceptReqest(\'' + ${ucbr.id} + '\');'"
-                        class="button" th:id="whiteButton" type="button" th:text="#{button.connect}"></button>
+                        class="button" th:id="whiteButton" type="button" th:title="#{button.connect}">
+                    <img th:id="buttonImg" th:src="@{/images/ok.png}" />
+                </button>
             </td>
             <td style="padding: 0px;">
                 <button th:onclick="'javascript:rejectReqest(\'' + ${ucbr.id} + '\');'"
-                        class="button" th:id="whiteButton" type="button" th:text="#{button.rejected}"></button>
+                        class="button" th:id="whiteButton" type="button" th:title="#{button.rejected}">
+                    <img th:id="buttonImg" th:src="@{/images/cancel.svg}" />
+                </button>
             </td>
         </tr>
     </table>

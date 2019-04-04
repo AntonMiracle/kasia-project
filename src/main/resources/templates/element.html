@@ -45,7 +45,9 @@
             </tr>
             <tr>
                 <td th:colspan="2" th:class="withButton">
-                    <button class="button" type="submit" th:text="#{button.add}"></button>
+                    <button class="button" type="submit" th:title="#{button.add}">
+                        <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
+                    </button>
                 </td>
             </tr>
         </table>

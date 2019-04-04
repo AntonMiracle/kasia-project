@@ -9,9 +9,9 @@
 <div th:replace="fragments/header :: mainMenu"></div>
 <div th:id="mainContentWithoutMenu">
 
-    <!--/*@thymesuserIdr id="updatePass" type="java.lang.String"*/-->
-    <!--/*@thymesuserIdr id="updateLocale" type="java.lang.String"*/-->
-    <!--/*@thymesuserIdr id="updateZoneId" type="java.lang.String"*/-->
+    <!--/*@thymesVar id="updatePass" type="java.lang.String"*/-->
+    <!--/*@thymesVar id="updateLocale" type="java.lang.String"*/-->
+    <!--/*@thymesVar id="updateZoneId" type="java.lang.String"*/-->
     <!--/*@thymesVar id="profile" type="com.kasia.controller.dto.Profile"*/-->
 
     <form th:action="@{/profile/update}" th:object="${profile}" method="post">
@@ -65,7 +65,9 @@
             </tr>
             <tr>
                 <td th:colspan="2" th:class="withButton">
-                    <button class="button" type="submit" th:text="#{button.save}"></button>
+                    <button class="button" type="submit" th:title="#{button.save}">
+                        <img th:id="buttonImg" th:src="@{/images/ok.png}" />
+                    </button>
                 </td>
             </tr>
         </table>

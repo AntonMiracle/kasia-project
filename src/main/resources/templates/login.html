@@ -8,7 +8,9 @@
 <div class="header">
     <div>
         <form th:action="@{/registration}" method="get">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.registration}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.registration}">
+                <img th:id="buttonImg" th:src="@{/images/reg.png}" />
+            </button>
         </form>
     </div>
 </div>
@@ -42,7 +44,9 @@
                         </tr>
                         <tr>
                             <td th:colspan="2" th:class="withButton">
-                                <button class="button" type="submit" th:text="#{button.login}"></button>
+                                <button class="button" type="submit" th:title="#{button.login}">
+                                    <img th:id="buttonImg" th:src="@{/images/enter.png}" />
+                                </button>
                             </td>
                         </tr>
                     </table>

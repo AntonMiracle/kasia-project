@@ -38,7 +38,9 @@
 
             <tr>
                 <td th:colspan="*{canBeDeleted} ? 1 : 2" th:class="withButton">
-                    <button class="button" type="submit" th:text="#{button.update}"></button>
+                    <button class="button" type="submit" th:title="#{button.update}">
+                        <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
+                    </button>
                 </td>
 
                 <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
@@ -50,7 +52,9 @@
         </form>
         <form th:action="@{/budget/place/delete}" th:object="${placeEdit}" method="post">
             <td th:if="*{canBeDeleted}" th:class="withButton">
-                <button class="button" type="submit" th:text="#{button.delete}"></button>
+                <button class="button" type="submit" th:title="#{button.delete}">
+                    <img th:id="buttonImg" th:src="@{/images/delete.svg}"/>
+                </button>
             </td>
             </tr>
             <input type="hidden" th:value="*{placeId}" name="placeId"/>
