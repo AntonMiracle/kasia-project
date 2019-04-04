@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static com.kasia.controller.ViewAndURLController.*;
 
@@ -41,6 +39,11 @@ public class MainController {
     @ModelAttribute("connectionBudgets")
     public Set<Budget> getConnectionBudgets() {
         return new TreeSet<>(sessionC.isUserLogin() ? budgetS.findConnectionBudget(sessionC.getUser().getId()) : new HashSet<>());
+    }
+
+    @ModelAttribute("connectionUsers")
+    public Map<User, Set<Budget>> getConnectionUsers() {
+        return sessionC.isUserLogin() ? budgetS.findConnectedUsers(sessionC.getUser().getId()) : new HashMap<>();
     }
 
     @ModelAttribute("requestTo")
@@ -68,7 +71,7 @@ public class MainController {
 
     @GetMapping(U_MAIN_SETTINGS)
     public String openSettings() {
-        if (budgetS.findOwnBudgets(sessionC.getUser().getId()).size() > 0) return V_SETTINGS;
+        if (sessionC.isUserLogin()) return V_SETTINGS;
         else return redirect(U_MAIN);
     }
 
@@ -94,8 +97,6 @@ public class MainController {
                 budgetS.requestConnect(dto.getBudgetIdForConnect(), fromUserId, toUserId);
             }
         }
-
-
         return redirect(U_MAIN_SETTINGS);
     }
 
@@ -113,6 +114,22 @@ public class MainController {
     public String rejectConnection(@PathVariable long id) {
         if (sessionC.isUserLogin()) {
             budgetS.deleteConnectionRequest(id);
+        }
+        return redirect(U_MAIN);
+    }
+
+    @GetMapping(U_MAIN_DISCONNECT_FROM_BUDGET + "/{id}")
+    public String disconnectFromBudget(@PathVariable long id) {
+        if (sessionC.isUserLogin()) {
+            budgetS.disconnectFromBudget(id, sessionC.getUser().getId());
+        }
+        return redirect(U_MAIN);
+    }
+
+    @GetMapping(U_MAIN_DISCONNECT_USER_FROM_BUDGET + "/{userId}" + "/{budgetId}")
+    public String disconnectUserFromBudget(@PathVariable long userId, @PathVariable long budgetId) {
+        if (sessionC.isUserLogin()) {
+            budgetS.disconnectUserFromBudget(userId, budgetId);
         }
         return redirect(U_MAIN);
     }

@@ -8,6 +8,24 @@ public class Settings {
     private long ownerUserId;
     private String emailToConnect = "";
     private boolean hasOwnBudget;
+    private boolean hasConnectBudget;
+    private boolean hasConnectedUser;
+
+    public boolean isHasConnectedUser() {
+        return hasConnectedUser;
+    }
+
+    public void setHasConnectedUser(boolean hasConnectedUser) {
+        this.hasConnectedUser = hasConnectedUser;
+    }
+
+    public boolean isHasConnectBudget() {
+        return hasConnectBudget;
+    }
+
+    public void setHasConnectBudget(boolean hasConnectBudget) {
+        this.hasConnectBudget = hasConnectBudget;
+    }
 
     public boolean isHasOwnBudget() {
         return hasOwnBudget;

@@ -54,6 +54,8 @@ public class MyControllerAdvice {
     public Settings getSettings() {
         Settings settings = new Settings();
         settings.setHasOwnBudget(budgetS.findOwnBudgets(sessionC.getUser().getId()).size() > 0);
+        settings.setHasConnectBudget(budgetS.findConnectionBudget(sessionC.getUser().getId()).size() > 0);
+        settings.setHasConnectedUser(budgetS.findConnectedUsers(sessionC.getUser().getId()).size() > 0);
         return settings;
     }
 }

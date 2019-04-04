@@ -10,10 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Service
 @Transactional
@@ -321,5 +318,43 @@ public class BudgetServiceImp implements BudgetService {
         UserConnectBudget ucb = userConnectBudgetR.findByUserId(userId).orElse(new UserConnectBudget());
         if (ucb.getUser() == null) return new HashSet<>();
         return ucb.getConnectBudgets();
+    }
+
+    @Override
+    public boolean disconnectFromBudget(long budgetId, long userId) {
+        Budget budget = findById(budgetId);
+        UserConnectBudget ucb = userConnectBudgetR.findByUserId(userId).orElse(new UserConnectBudget());
+        if (ucb.getUser() != null && budget != null) {
+            ucb.getConnectBudgets().remove(budget);
+            userConnectBudgetR.save(ucb);
+        }
+        return true;
+    }
+
+    @Override
+    public Map<User, Set<Budget>> findConnectedUsers(long budgetsOwnerUserId) {
+        Map<User, Set<Budget>> result = new TreeMap<>(Comparator.comparing(User::getEmail));
+        for (UserConnectBudget ucb : userConnectBudgetR.findAll()) {
+            for (Budget b : findOwnBudgets(budgetsOwnerUserId)) {
+                if (ucb.getConnectBudgets().contains(b)) {
+                    if (ucb.getUser() != null && result.get(ucb.getUser()) == null)
+                        result.put(ucb.getUser(), new TreeSet<>());
+                    if (ucb.getUser() != null) {
+                        result.get(ucb.getUser()).add(b);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean disconnectUserFromBudget(long disconnectUserId, long fromBudgetId) {
+        UserConnectBudget ucb = userConnectBudgetR.findByUserId(disconnectUserId).orElse(new UserConnectBudget());
+        if (ucb.getUser() != null) {
+            ucb.getConnectBudgets().remove(findById(fromBudgetId));
+            userConnectBudgetR.save(ucb);
+        }
+        return true;
     }
 }

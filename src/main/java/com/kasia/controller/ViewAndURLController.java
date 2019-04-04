@@ -52,6 +52,8 @@ public final class ViewAndURLController {
     public static final String U_MAIN = "/main";
     public static final String U_MAIN_CONNECTION_ACCEPT = U_MAIN + "/connection/accept";
     public static final String U_MAIN_CONNECTION_REJECT = U_MAIN + "/connection/reject";
+    public static final String U_MAIN_DISCONNECT_FROM_BUDGET = U_MAIN + "/disconnection/budget";
+    public static final String U_MAIN_DISCONNECT_USER_FROM_BUDGET = U_MAIN + "/disconnection/user";
     public static final String U_MAIN_SETTINGS = U_MAIN + "/settings";
     public static final String U_MAIN_SETTINGS_DELETE_BUDGET = U_MAIN_SETTINGS + "/delete/budget";
 

@@ -26,7 +26,8 @@
     </div>
     <!--/*@thymesVar id="isOwner" type="java.lang.Boolean"*/-->
     <!--/*@thymesVar id="settings" type="com.kasia.controller.dto.Settings"*/-->
-    <div th:if="${settings != null} and ${settings.hasOwnBudget}">
+    <!--/*@thymesVar id="connectionBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+    <div th:if="${settings.hasOwnBudget or settings.hasConnectBudget}">
         <form th:action="@{/main/settings}">
             <button class="button" th:id="whiteButton" type="submit" th:text="#{button.settings}"></button>
         </form>

@@ -11,19 +11,22 @@
 
     <!--/*@thymesVar id="settings" type="com.kasia.controller.dto.Settings"*/-->
     <!--/*@thymesVar id="ownBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+    <!--/*@thymesVar id="connectionBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
+    <!--/*@thymesVar id="connectionUsers" type="java.util.Set<com.kasia.model.User>"*/-->
     <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+    <!--/*@thymesVar id="confirmDeleteError" type="java.lang.Boolean"*/-->
 
     <table th:class="myTable">
         <form th:action="@{/main/settings/delete/budget}" th:object="${settings}" method="post">
             <tr>
-                <th th:colspan="2" th:text="#{title.settings}"></th>
+                <th th:colspan="4" th:text="#{title.settings}"></th>
             </tr>
             <!--delete budget-->
-            <tr>
-                <th th:colspan="2" th:text="#{title.budgetDelete}" style="background-color: red"></th>
+            <tr th:if="*{hasOwnBudget}">
+                <th th:colspan="4" th:text="#{title.budgetDelete}" style="background-color: red"></th>
             </tr>
-            <tr>
+            <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{label.delete}"></td>
                 <td th:class="myLabel">
                     <select th:field="*{budgetIdForDelete}">
@@ -37,33 +40,32 @@
                     </select>
                 </td>
             </tr>
-            <tr>
+            <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{label.confirm} + ' ' + #{label.password}"></td>
-                <!--/*@thymesVar id="confirmDeleteError" type="java.lang.Boolean"*/-->
                 <td th:class="myLabelError"
                     th:if="${confirmDeleteError}"
                     th:text="#{validation.password.error}">
                 </td>
             </tr>
-            <tr>
-                <td th:colspan="2"><input type="password" th:field="*{confirmDelete}"/></td>
+            <tr th:if="*{hasOwnBudget}">
+                <td th:colspan="4"><input type="password" th:field="*{confirmDelete}"/></td>
             </tr>
-            <tr>
-                <td th:colspan="2" th:class="withButton">
+            <tr th:if="*{hasOwnBudget}">
+                <td th:colspan="4" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.delete}"></button>
                 </td>
             </tr>
             <!--connect user-->
-            <tr>
-                <th th:colspan="2" th:text="#{title.userConnect}"></th>
+            <tr th:if="*{hasOwnBudget}">
+                <th th:colspan="4" th:text="#{title.userConnect}"></th>
             </tr>
-            <tr>
-                <td th:colspan="2" th:class="myLabel" th:text="#{label.email}"></td>
+            <tr th:if="*{hasOwnBudget}">
+                <td th:colspan="4" th:class="myLabel" th:text="#{label.email}"></td>
             </tr>
-            <tr>
-                <td th:colspan="2"><input type="text" th:field="*{emailToConnect}"/></td>
+            <tr th:if="*{hasOwnBudget}">
+                <td th:colspan="4"><input type="text" th:field="*{emailToConnect}"/></td>
             </tr>
-            <tr>
+            <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{title.budget}"></td>
                 <td th:class="myLabel">
                     <select th:field="*{budgetIdForConnect}">
@@ -76,7 +78,7 @@
                     </select>
                 </td>
             </tr>
-            <tr>
+            <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{label.confirm} + ' ' + #{label.password}"></td>
                 <!--/*@thymesVar id="confirmConnectError" type="java.lang.Boolean"*/-->
                 <td th:class="myLabelError"
@@ -84,16 +86,57 @@
                     th:text="#{validation.password.error}">
                 </td>
             </tr>
-            <tr>
-                <td th:colspan="2"><input type="password" th:field="*{confirmConnect}"/></td>
+            <tr th:if="*{hasOwnBudget}">
+                <td th:colspan="4"><input type="password" th:field="*{confirmConnect}"/></td>
             </tr>
-            <tr>
-                <td th:colspan="2" th:class="withButton">
+            <tr th:if="*{hasOwnBudget}">
+                <td th:colspan="4" th:class="withButton">
                     <button class="button" type="submit" th:text="#{button.connect}"></button>
                 </td>
             </tr>
+            <!--connect budget for reject-->
+            <tr th:if="*{hasConnectBudget}">
+                <th th:colspan="4" th:text="#{label.connections}"></th>
+            </tr>
+            <tr th:if="*{hasConnectBudget}"
+                th:each="connectionBudget, count : ${connectionBudgets}"
+                th:style="${count.count%2!=0? '':'background-color: rgba(0, 100, 0, 0.1);'}">
+                <td th:text="${connectionBudget.name}"></td>
+                <td th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
+                <td th:text="${connectionBudget.balance.currency}"></td>
+                <td style="padding: 0px;">
+                    <button th:onclick="'javascript:disconnectFromBudget(\'' + ${connectionBudget.id} + '\');'"
+                            class="button" th:id="whiteButton" type="button" th:text="#{button.rejected}"></button>
+                </td>
+            </tr>
+            <!--user are connection to own budget-->
+
+            <!--/*@thymesVar id="connectionUsers" type="java.util.Map<com.kasia.model.User, java.util.Set<com.kasia.model.Budget>"*/-->
+            <tr th:if="*{hasConnectedUser}">
+                <th th:colspan="4" th:text="#{label.connected.user}"></th>
+            </tr>
+
+            <div th:if="*{hasConnectedUser}" th:each="connectedUser : ${connectionUsers.keySet()}">
+                <tr th:each="budget, count : ${connectionUsers.get(connectedUser)}"
+                    th:style="${count.count%2!=0? '':'background-color: rgba(0, 100, 0, 0.1);'}">
+                    <td th:text="${budget.name}"></td>
+                    <td th:text="${connectedUser.email}"></td>
+                    <td style="padding: 0px;">
+                        <button th:onclick="'javascript:disconnectUserFromBudget(\'' + ${connectedUser.id} + '\',\'' + ${budget.id} + '\');'"
+                                class="button" th:id="whiteButton" type="button" th:text="#{button.rejected}"></button>
+                    </td>
+                </tr>
+            </div>
         </form>
     </table>
+    <script th:inline="javascript">
+        function disconnectFromBudget(value) {
+            location.href = "/main/disconnection/budget/" + value;
+        }
+        function disconnectUserFromBudget(userId, budgetId) {
+            location.href = "/main/disconnection/user/" + userId + "/" + budgetId;
+        }
+    </script>
 </div>
 </body>
 </html>

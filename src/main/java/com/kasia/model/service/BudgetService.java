@@ -3,6 +3,7 @@ package com.kasia.model.service;
 import com.kasia.controller.dto.BudgetAdd;
 import com.kasia.model.*;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface BudgetService {
@@ -61,4 +62,10 @@ public interface BudgetService {
     boolean deleteConnectionRequest(long ucbrId);
 
     Set<Budget> findConnectionBudget(long userId);
+
+    boolean disconnectFromBudget(long budgetId, long userId);
+
+    Map<User,Set<Budget>> findConnectedUsers(long budgetsOwnerUserId);
+
+    boolean disconnectUserFromBudget(long disconnectUserId, long fromBudgetId);
 }
