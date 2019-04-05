@@ -3,18 +3,13 @@
 <body>
 <div class="header" th:fragment="mainMenu">
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
-    <div th:class="idLabel" th:text="${user.email}"></div>
+    <!--/*@thymesVar id="isOwner" type="java.lang.Boolean"*/-->
+    <!--/*@thymesVar id="settings" type="com.kasia.controller.dto.Settings"*/-->
+    <!--/*@thymesVar id="connectionBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
     <div>
         <form th:action="@{/logout}" method="post">
             <button class="button" th:id="whiteButton" type="submit" th:title="#{button.logout}">
                 <img th:id="buttonImg" th:src="@{/images/exit.png}"/>
-            </button>
-        </form>
-    </div>
-    <div>
-        <form th:action="@{/profile}">
-            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.profile}">
-                <img th:id="buttonImg" th:src="@{/images/profile.svg}"/>
             </button>
         </form>
     </div>
@@ -32,9 +27,6 @@
             </button>
         </form>
     </div>
-    <!--/*@thymesVar id="isOwner" type="java.lang.Boolean"*/-->
-    <!--/*@thymesVar id="settings" type="com.kasia.controller.dto.Settings"*/-->
-    <!--/*@thymesVar id="connectionBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
     <div th:if="${settings.hasOwnBudget or settings.hasConnectBudget}">
         <form th:action="@{/main/settings}">
             <button class="button" th:id="whiteButton" type="submit" th:title="#{button.settings}">
@@ -42,23 +34,21 @@
             </button>
         </form>
     </div>
+    <div>
+        <form th:action="@{/profile}">
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.profile}">
+                <img th:id="buttonImg" th:src="@{/images/profile.png}"/>
+            </button>
+        </form>
+    </div>
+    <div th:class="idLabel" th:text="${user.email}">
+    </div>
 </div>
 
 <div class="header" th:fragment="budgetMenu">
-    <div th:class="idLabel">
-        <table style="width: 100%">
-            <tr>
-                <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
-                <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
-                <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
-
-                <td style="text-align: left; padding-left: 10px;" th:text="${budget.name}"></td>
-                <td style="text-align: right; padding-right: 10px;"
-                    th:text="${myFormatter.formatNumber(user.id,budget.balance.amount)} + '  ' + ${budget.balance.currency}"></td>
-            </tr>
-        </table>
-
-    </div>
+    <!--/*@thymesVar id="budget" type="com.kasia.model.Budget"*/-->
+    <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
+    <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
     <div>
         <form th:action="@{/main}">
             <button class="button" th:id="whiteButton" type="submit" th:title="#{button.main}">
@@ -75,14 +65,14 @@
     <div>
         <form th:action="@{/budget/operation/income}">
             <button class="button" th:id="whiteButton" type="submit" th:title="#{button.income}">
-                <img th:id="buttonImg" th:src="@{/images/plus.png}"/>
+                <img th:id="buttonImg" th:src="@{/images/income.png}"/>
             </button>
         </form>
     </div>
     <div>
         <form th:action="@{/budget/operation/consumption}">
             <button class="button" th:id="whiteButton" type="submit" th:title="#{button.consumption}">
-                <img th:id="buttonImg" th:src="@{/images/minus.png}"/>
+                <img th:id="buttonImg" th:src="@{/images/consumption.png}"/>
             </button>
         </form>
     </div>
@@ -106,6 +96,18 @@
                 <img th:id="buttonImg" th:src="@{/images/statistic.svg}"/>
             </button>
         </form>
+    </div>
+    <div>
+        <table>
+            <tr>
+                <td th:class="twoIdLabel" th:text="${budget.name}"></td>
+            </tr>
+            <tr>
+                <td th:class="twoIdLabel"
+                    th:text="|${myFormatter.formatNumber(user.id,budget.balance.amount)} ${budget.balance.currency}|">
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 </body>
