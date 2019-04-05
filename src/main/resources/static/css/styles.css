@@ -14,7 +14,7 @@ html {
 #kasiaLogo {
     margin: 10px;
     text-align: center;
-    font-size: 100px;
+    font-size: 60px;
     font-family: "Cinzel Decorative";
     font-weight: bold;
     color: black;
@@ -139,6 +139,7 @@ html {
 }
 
 .idLabel {
+    padding: 0 10px 0 10px;
     height: 60px;
     line-height: 60px;
     text-align: center;
@@ -146,6 +147,7 @@ html {
 }
 
 .twoIdLabel {
+    padding: 0 10px 0 10px;
     height: 30px;
     line-height: 30px;
     text-align: center;
