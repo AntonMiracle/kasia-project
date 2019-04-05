@@ -9,7 +9,9 @@
 <div class="header">
     <div>
         <form th:action="@{/login}">
-            <button class="button" th:id="whiteButton" type="submit" th:text="#{button.back}"></button>
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.main}">
+                <img th:id="buttonImg" th:src="@{/images/main.svg}"/>
+            </button>
         </form>
     </div>
 </div>
