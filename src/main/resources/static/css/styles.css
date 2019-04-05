@@ -53,6 +53,14 @@ html {
     border: 0px;
 }
 
+#labelImg {
+    height: 32px;
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+
+}
+
 .header {
     width: 100%;
     height: 60px;
@@ -114,6 +122,11 @@ html {
 
 .myLabel {
     text-align: left;
+    vertical-align: bottom;
+}
+
+.myLabelRight {
+    text-align: right;
     vertical-align: bottom;
 }
 

@@ -22,8 +22,10 @@
             </tr>
             <tr>
                 <!--element-->
-                <td th:class="myLabel" th:text="#{label.element}"></td>
-                <td>
+                <td th:class="myLabelRight" th:title="#{label.element}">
+                    <img th:id="labelImg" th:src="@{/images/element.png}"/>
+                </td>
+                <td th:class="myLabel">
                     <select th:field="*{ofElement}" th:style="'width:200px;'">
                         <option th:each="type : *{getElements()}"
                                 th:value="${type.getName()}"
@@ -32,14 +34,17 @@
                     </select>
                 </td>
                 <!--from-->
-                <td th:class="myLabel" th:text="#{label.from}"></td>
-                <td><input type="date" th:field="*{from}"/></td>
-
+                <td th:class="myLabelRight" th:title="#{label.from}">
+                    <img th:id="labelImg" th:src="@{/images/time-from.png}"/>
+                </td>
+                <td th:class="myLabel"><input type="date" th:field="*{from}"/></td>
             </tr>
             <tr>
                 <!--place-->
-                <td th:class="myLabel" th:text="#{label.place}"></td>
-                <td>
+                <td th:class="myLabelRight" th:title="#{label.place}">
+                    <img th:id="labelImg" th:src="@{/images/place.svg}"/>
+                </td>
+                <td th:class="myLabel">
                     <select th:field="*{ofPlace}" th:style="'width:200px;'">
                         <option th:each="type : *{getPlaces()}"
                                 th:value="${type.getName()}"
@@ -48,13 +53,17 @@
                     </select>
                 </td>
                 <!--to-->
-                <td th:class="myLabel" th:text="#{label.to}"></td>
-                <td><input type="date" th:field="*{to}"/></td>
+                <td th:class="myLabelRight" th:title="#{label.to}">
+                    <img th:id="labelImg" th:src="@{/images/time-to.png}"/>
+                </td>
+                <td th:class="myLabel"><input type="date" th:field="*{to}"/></td>
             </tr>
             <tr>
                 <!--sort-->
-                <td th:class="myLabel" th:text="#{label.sort}"></td>
-                <td>
+                <td th:class="myLabelRight" th:title="#{label.sort}">
+                    <img th:id="labelImg" th:src="@{/images/sort.png}"/>
+                </td>
+                <td th:class="myLabel">
                     <!--/*@thymesVar id="sortByDate" type="com.kasia.model.Statistic.Sort"*/-->
                     <!--/*@thymesVar id="sortByElementName" type="com.kasia.model.Statistic.Sort"*/-->
                     <!--/*@thymesVar id="sortByPlaceName" type="com.kasia.model.Statistic.Sort"*/-->
@@ -85,24 +94,34 @@
             </tr>
 
             <tr th:if="*{isIncomeExist()}" th:id="operationIncomeBlack">
-                <td th:class="myLabel" th:text="#{title.income}"></td>
+                <td th:class="myLabelRight" th:title="#{title.income}">
+                    <img th:id="labelImg" th:src="@{/images/income.png}"/>
+                </td>
                 <td th:class="myLabel"
                     th:text="${myFormatter.formatNumber(user.id,statistic.sumIncome)}"></td>
-                <td th:class="myLabel" th:text="#{title.statistic.average.income}"></td>
+                <td th:class="myLabelRight" th:title="#{title.statistic.average.income}">
+                    <img th:id="labelImg" th:src="@{/images/average.png}"/>
+                </td>
                 <td th:class="myLabel"
                     th:text="${myFormatter.formatNumber(user.id,statistic.deltaIncomePerOperation)}"></td>
             </tr>
             <tr th:if="*{isConsumptionExist()}" th:id="operationConsumptionBlack">
-                <td th:class="myLabel" th:text="#{title.consumption}"></td>
+                <td th:class="myLabelRight" th:title="#{title.consumption}">
+                    <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
+                </td>
                 <td th:class="myLabel"
                     th:text="${myFormatter.formatNumber(true,user.id,statistic.sumConsumption)}"></td>
-                <td th:class="myLabel" th:text="#{title.statistic.average.consumption}"></td>
+                <td th:class="myLabelRight" th:title="#{title.statistic.average.consumption}">
+                    <img th:id="labelImg" th:src="@{/images/average.png}"/>
+                </td>
                 <td th:class="myLabel"
                     th:text="${myFormatter.formatNumber(true,user.id,statistic.deltaConsumptionPerOperation)}"></td>
             </tr>
             <tr th:if="*{isIncomeExist() or isConsumptionExist()}"
                 th:id="*{isDeltaPositive()} ? 'operationIncomeWhite' : 'operationConsumptionWhite'">
-                <td th:class="myLabel" th:text="#{title.statistic.balance.changes}"></td>
+                <td th:class="myLabelRight" th:title="#{title.statistic.balance.changes}">
+                    <img th:id="labelImg" th:src="@{/images/delta-balance.png}"/>
+                </td>
                 <td th:class="myLabel"
                     th:text="${myFormatter.formatNumber(statistic.isDeltaPositive() ? false : true ,user.id,statistic.delta)}"></td>
                 <td th:colspan="2"></td>
