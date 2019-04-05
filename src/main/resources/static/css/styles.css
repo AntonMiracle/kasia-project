@@ -46,6 +46,10 @@ html {
     background-color: rgba(0, 100, 0, 1);
 }
 
+select {
+    font-size: 14px;
+}
+
 #buttonImg {
     height: 50px;
     padding: 0px;
