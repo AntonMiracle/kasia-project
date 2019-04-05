@@ -53,7 +53,7 @@
         <form th:action="@{/budget/place/delete}" th:object="${placeEdit}" method="post">
             <td th:if="*{canBeDeleted}" th:class="withButton">
                 <button class="button" type="submit" th:title="#{button.delete}">
-                    <img th:id="buttonImg" th:src="@{/images/delete.svg}"/>
+                    <img th:id="buttonImg" th:src="@{/images/delete.png}"/>
                 </button>
             </td>
             </tr>

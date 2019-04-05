@@ -8,9 +8,11 @@ html {
     padding: 0;
     text-align: center;
     font-family: "Cutive";
-    font-size: 25px;
+    font-size: 20px;
 }
-
+select{
+    height: 40px;
+}
 #kasiaLogo {
     margin: 10px;
     text-align: center;
@@ -25,6 +27,7 @@ html {
     vertical-align: text-top;
     font-weight: bold;
     font-family: "Cinzel Decorative";
+    font-size: 25px;
 }
 
 .button {
@@ -44,10 +47,6 @@ html {
 .button:hover {
     color: #ffffff;
     background-color: rgba(0, 100, 0, 1);
-}
-
-select {
-    font-size: 14px;
 }
 
 #buttonImg {
