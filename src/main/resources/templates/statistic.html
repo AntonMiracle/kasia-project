@@ -45,7 +45,7 @@
                     <img th:id="labelImg" th:src="@{/images/place.png}"/>
                 </td>
                 <td th:class="myLabel">
-                    <select th:field="*{ofPlace}" th:style="'width:200px;'">
+                    <select th:field="*{ofPlace}">
                         <option th:each="type : *{getPlaces()}"
                                 th:value="${type.getName()}"
                                 th:text="${type.getName()}">

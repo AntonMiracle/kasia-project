@@ -11,10 +11,6 @@ html {
     font-size: 20px;
 }
 
-select {
-    height: 40px;
-}
-
 #kasiaLogo {
     margin: 10px;
     text-align: center;
@@ -115,12 +111,12 @@ select {
     padding-left: 20px;
 }
 
-.myTable input {
+input {
     width: 100%;
     line-height: 60px;
 }
 
-select {
+option {
     line-height: 60px;
 }
 
