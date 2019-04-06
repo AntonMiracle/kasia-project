@@ -10,9 +10,11 @@ html {
     font-family: "Cutive";
     font-size: 20px;
 }
-select{
+
+select {
     height: 40px;
 }
+
 #kasiaLogo {
     margin: 10px;
     text-align: center;
@@ -115,12 +117,11 @@ select{
 
 .myTable input {
     width: 100%;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px 15px;
 }
+
 select {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px 15px;
 }
 
 .myTable th {
