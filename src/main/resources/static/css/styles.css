@@ -117,11 +117,11 @@ select {
 
 .myTable input {
     width: 100%;
-    padding: 15px 0 0 0;
+    line-height: 60px;
 }
 
 select {
-    padding: 15px 0 0 0;
+    line-height: 60px;
 }
 
 .myTable th {
