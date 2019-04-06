@@ -6,13 +6,17 @@ import com.kasia.model.Budget;
 import com.kasia.model.User;
 import com.kasia.model.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 
 @Controller
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MySessionController {
     @Autowired
     private BudgetService budgetS;

@@ -7,10 +7,14 @@ import com.kasia.model.User;
 import com.kasia.model.service.BudgetService;
 import com.kasia.model.service.MyStringFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.context.WebApplicationContext;
 
 @ControllerAdvice
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MyControllerAdvice {
     @Autowired
     private MySessionController sessionC;
