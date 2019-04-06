@@ -124,6 +124,9 @@ select {
     line-height: 60px;
     border: 1px solid darkgreen;
 }
+option{
+    line-height: 60px;
+}
 
 .myTable th {
     background-color: rgba(0, 100, 0, 0.8);
