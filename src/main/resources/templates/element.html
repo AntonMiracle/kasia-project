@@ -15,12 +15,8 @@
             <tr>
                 <th th:colspan="2" th:text="#{title.element}"></th>
             </tr>
-            <tr th:if="${elements.size() != 0}"
-                th:each="element,count : ${elements}"
-                th:id="${count.count%2!=0}? elementWhite:elementDark"
-                th:onclick="'javascript:editElement(\'' + ${element.id} + '\');'">
-                <td th:class="myLabel" th:text="${element.name}"></td>
-                <td th:class="myLabel" th:text="${element.price} + ' ' + *{currency}"></td>
+            <tr>
+                <th th:colspan="2" th:text="#{title.new}"></th>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>
@@ -52,6 +48,16 @@
                         <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
                     </button>
                 </td>
+            </tr>
+            <tr>
+                <th th:colspan="2" th:text="#{title.list}"></th>
+            </tr>
+            <tr th:if="${elements.size() != 0}"
+                th:each="element,count : ${elements}"
+                th:id="${count.count%2!=0}? elementWhite:elementDark"
+                th:onclick="'javascript:editElement(\'' + ${element.id} + '\');'">
+                <td th:class="myLabel" th:text="${element.name}"></td>
+                <td th:class="myLabel" th:text="${element.price} + ' ' + *{currency}"></td>
             </tr>
         </table>
     </form>

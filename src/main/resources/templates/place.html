@@ -16,15 +16,9 @@
             <tr>
                 <th colspan="2" th:text="#{title.place}"></th>
             </tr>
-
-            <div th:if="${places.size() != 0}">
-                <tr th:each="place, count : ${places}"
-                    th:id="${count.count%2!=0}? elementWhite:elementDark"
-                    th:onclick="'javascript:editPlace(\'' + ${place.id} + '\');'">
-                    <td th:class="myLabel" th:text="${place.name}"></td>
-                    <td th:class="myLabel" th:text="${place.description}"></td>
-                </tr>
-            </div>
+            <tr>
+                <th colspan="2" th:text="#{title.new}"></th>
+            </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>
                 <td th:class="myLabelError"
@@ -52,6 +46,17 @@
                     </button>
                 </td>
             </tr>
+            <tr>
+                <th th:colspan="2" th:text="#{title.list}"></th>
+            </tr>
+            <div th:if="${places.size() != 0}">
+                <tr th:each="place, count : ${places}"
+                    th:id="${count.count%2!=0}? elementWhite:elementDark"
+                    th:onclick="'javascript:editPlace(\'' + ${place.id} + '\');'">
+                    <td th:class="myLabel" th:text="${place.name}"></td>
+                    <td th:class="myLabel" th:text="${place.description}"></td>
+                </tr>
+            </div>
         </table>
     </form>
     <script th:inline="javascript">
