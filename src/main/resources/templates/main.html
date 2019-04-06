@@ -40,12 +40,11 @@
             <th colspan="3" th:text="#{title.ownBudget}"></th>
         </tr>
         <tr th:each="ownBudget : ${ownBudgets}"
-            th:id="whiteButton"
+            th:id="${ownBudget.balance.amount.toString().startsWith('-') ? 'operationConsumptionWhite' : 'operationIncomeWhite' }"
             th:onclick="'javascript:openBudget(\'' + ${ownBudget.id} + '\');'">
             <td th:text="${ownBudget.name}"></td>
 
-            <td th:style="${ownBudget.balance.amount.toString().startsWith('-')}? 'color:red;':'color:darkgreen;'"
-                th:text="${myFormatter.formatNumber(user.id,ownBudget.balance.amount)}"></td>
+            <td th:text="${myFormatter.formatNumber(user.id,ownBudget.balance.amount)}"></td>
             <td th:text="${ownBudget.balance.currency}"></td>
         </tr>
     </table>
@@ -54,12 +53,11 @@
             <th colspan="3" th:text="#{title.connectedBudget}"></th>
         </tr>
         <tr th:each="connectionBudget : ${connectionBudgets}"
-            th:id="whiteButton"
+            th:id="${connectionBudget.balance.amount.toString().startsWith('-') ? 'operationConsumptionWhite' : 'operationIncomeWhite' }"
             th:onclick="'javascript:openBudget(\'' + ${connectionBudget.id} + '\');'">
             <td th:text="${connectionBudget.name}"></td>
 
-            <td th:style="${connectionBudget.balance.amount.toString().startsWith('-')}? 'color:red;':'color:darkgreen;'"
-                th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
+            <td th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
             <td th:text="${connectionBudget.balance.currency}"></td>
         </tr>
     </table>
