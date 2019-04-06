@@ -114,6 +114,7 @@ html {
 input {
     width: 100%;
     line-height: 60px;
+    border: 1px solid darkgreen;
 }
 
 select {
