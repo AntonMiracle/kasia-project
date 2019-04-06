@@ -228,8 +228,13 @@ public class BudgetServiceImp implements BudgetService {
         if (operation == null || budget == null || bo.getBudget() == null) return true;
         if (bo.getOperations().contains(operation)) {
             bo.getOperations().remove(operation);
-            BigDecimal newAmount = budget.getBalance().getAmount();
-            newAmount = newAmount.subtract(operation.getPrice());
+            BigDecimal newAmount = BigDecimal.ZERO;
+
+            if (operation.getType() == OperationType.CONSUMPTION)
+                newAmount = budget.getBalance().getAmount().add(operation.getPrice());
+            else if (operation.getType() == OperationType.INCOME)
+                newAmount = budget.getBalance().getAmount().subtract(operation.getPrice());
+
             budget.getBalance().setAmount(newAmount);
             save(budget);
             budgetOperationR.save(bo);
