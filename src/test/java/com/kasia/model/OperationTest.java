@@ -68,4 +68,54 @@ public class OperationTest {
             assertThat(o.getId() == --id).isTrue();
         }
     }
+
+    @Test
+    public void priceRegexTest() {
+        String regex = "^(0*[1-9]\\d*)|(0*\\d*[.,][0-9]+)$";
+        System.out.println(regex);
+        String s1 = "000001";
+        String s2 = "0";
+        String s3 = "01";
+        String s4 = "1";
+        String s5 = "1000";
+        String s6 = "1000";
+        String s7 = "1111";
+        String s8 = "101";
+        String s9 = "0000";
+
+        String d1 = "0.000001";
+        String d2 = "0.";
+        String d3 = "0.1";
+        String d4 = "1.0";
+        String d5 = "1000.0";
+        String d6 = "1000.0";
+        String d7 = "1111.1";
+        String d8 = "101.0";
+        String d9 = "0.000";
+        String d10 = "00000000.0001";
+        String d11 = "00000000.1000";
+
+        assertThat(s1.matches(regex)).isTrue();
+        assertThat(s2.matches(regex)).isFalse();
+        assertThat(s3.matches(regex)).isTrue();
+        assertThat(s4.matches(regex)).isTrue();
+        assertThat(s5.matches(regex)).isTrue();
+        assertThat(s6.matches(regex)).isTrue();
+        assertThat(s7.matches(regex)).isTrue();
+        assertThat(s8.matches(regex)).isTrue();
+        assertThat(s9.matches(regex)).isFalse();
+
+        assertThat(d1.matches(regex)).isTrue();
+        assertThat(d2.matches(regex)).isFalse();
+        assertThat(d3.matches(regex)).isTrue();
+        assertThat(d4.matches(regex)).isTrue();
+        assertThat(d5.matches(regex)).isTrue();
+        assertThat(d6.matches(regex)).isTrue();
+        assertThat(d7.matches(regex)).isTrue();
+        assertThat(d8.matches(regex)).isTrue();
+        assertThat(d9.matches(regex)).isTrue();
+        assertThat(d10.matches(regex)).isTrue();
+        assertThat(d11.matches(regex)).isTrue();
+
+    }
 }

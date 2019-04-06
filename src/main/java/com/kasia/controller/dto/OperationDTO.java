@@ -5,7 +5,7 @@ import com.kasia.controller.dto.validator.constraint.PriceValid;
 import javax.validation.constraints.Size;
 
 @PriceValid(priceFN = "price"
-        , regex = "^[1-9](\\d*|\\d+[.,]\\d+|\\d+[.,]|[.,]\\d+)$"
+        , regex = "^(0*[1-9]\\d*)|(0*\\d*[.,][0-9]+)$"
         , message = "{validation.price.amount.error}")
 public class OperationDTO {
     private long elementId;

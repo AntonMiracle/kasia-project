@@ -32,7 +32,10 @@
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="text" th:field="*{price}" th:placeholder="#{tip.price}"/>
+                <td th:colspan="2"><input type="number"
+                                          onfocus="this.value=''"
+                                          step="0.01"
+                                          th:field="*{price}" th:placeholder="#{tip.price}"/>
                 </td>
             </tr>
             <tr>
