@@ -104,6 +104,7 @@
             </tr>
             <tr>
                 <td th:class="twoIdLabel"
+                    th:style="${budget.balance.amount.toString().startsWith('-')}? 'color:red;':'color:darkgreen'"
                     th:text="|${myFormatter.formatNumber(user.id,budget.balance.amount)} ${budget.balance.currency}|">
                 </td>
             </tr>

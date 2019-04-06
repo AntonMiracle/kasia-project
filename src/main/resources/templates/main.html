@@ -24,13 +24,13 @@
             <td style="padding: 0px;">
                 <button th:onclick="'javascript:acceptReqest(\'' + ${ucbr.id} + '\');'"
                         class="button" th:id="whiteButton" type="button" th:title="#{button.connect}">
-                    <img th:id="buttonImg" th:src="@{/images/ok.png}" />
+                    <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
                 </button>
             </td>
             <td style="padding: 0px;">
                 <button th:onclick="'javascript:rejectReqest(\'' + ${ucbr.id} + '\');'"
                         class="button" th:id="whiteButton" type="button" th:title="#{button.rejected}">
-                    <img th:id="buttonImg" th:src="@{/images/cancel.png}" />
+                    <img th:id="buttonImg" th:src="@{/images/cancel.png}"/>
                 </button>
             </td>
         </tr>
@@ -44,7 +44,8 @@
             th:onclick="'javascript:openBudget(\'' + ${ownBudget.id} + '\');'">
             <td th:text="${ownBudget.name}"></td>
 
-            <td th:text="${myFormatter.formatNumber(user.id,ownBudget.balance.amount)}"></td>
+            <td th:style="${ownBudget.balance.amount.toString().startsWith('-')}? 'color:red;':'color:darkgreen;'"
+                th:text="${myFormatter.formatNumber(user.id,ownBudget.balance.amount)}"></td>
             <td th:text="${ownBudget.balance.currency}"></td>
         </tr>
     </table>
@@ -57,7 +58,8 @@
             th:onclick="'javascript:openBudget(\'' + ${connectionBudget.id} + '\');'">
             <td th:text="${connectionBudget.name}"></td>
 
-            <td th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
+            <td th:style="${connectionBudget.balance.amount.toString().startsWith('-')}? 'color:red;':'color:darkgreen;'"
+                th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
             <td th:text="${connectionBudget.balance.currency}"></td>
         </tr>
     </table>
