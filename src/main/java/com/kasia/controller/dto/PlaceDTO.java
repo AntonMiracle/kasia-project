@@ -3,7 +3,7 @@ package com.kasia.controller.dto;
 import com.kasia.controller.dto.validator.constraint.DescriptionValid;
 import com.kasia.controller.dto.validator.constraint.PlaceNameValid;
 
-@PlaceNameValid(nameFN = "name", min = 4, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
+@PlaceNameValid(nameFN = "name", min = 1, max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.name.error}")
 @DescriptionValid(stringFN = "description", max = 64, regex = "^\\S+[[ ]?\\S+]*$", message = "{validation.description.error}")
 public class PlaceDTO {
     private String name = "";

@@ -6,7 +6,7 @@ import com.kasia.controller.dto.validator.constraint.PasswordValid;
 
 @EmailValid(emailFN = "email", min = 3, max = 64, regex = "^\\S+@\\S+$", message = "{validation.email.error}")
 @PasswordValid(passwordFN = "password", regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{4,64}$"
-        , message = "{validation.password.error}")
+        , message = "{validation.password.error.simple}")
 @ConfirmPasswordValid(passwordFN = "password", confirmFN = "confirm"
         , message = "{validation.password.confirm.error}")
 public class Registration {
