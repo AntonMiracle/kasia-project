@@ -42,10 +42,10 @@
         <tr th:each="ownBudget : ${ownBudgets}"
             th:id="${ownBudget.balance.amount.toString().startsWith('-') ? 'operationConsumptionWhite' : 'operationIncomeWhite' }"
             th:onclick="'javascript:openBudget(\'' + ${ownBudget.id} + '\');'">
-            <td th:text="${ownBudget.name}"></td>
+            <td th:class="myLabel" th:text="${ownBudget.name}"></td>
 
-            <td th:text="${myFormatter.formatNumber(user.id,ownBudget.balance.amount)}"></td>
-            <td th:text="${ownBudget.balance.currency}"></td>
+            <td th:class="myLabel" th:text="${myFormatter.formatNumber(user.id,ownBudget.balance.amount)}"></td>
+            <td th:class="myLabel" th:text="${ownBudget.balance.currency}"></td>
         </tr>
     </table>
     <table th:class="myTable" th:if="${connectionBudgets.size() != 0}">
@@ -55,10 +55,10 @@
         <tr th:each="connectionBudget : ${connectionBudgets}"
             th:id="${connectionBudget.balance.amount.toString().startsWith('-') ? 'operationConsumptionWhite' : 'operationIncomeWhite' }"
             th:onclick="'javascript:openBudget(\'' + ${connectionBudget.id} + '\');'">
-            <td th:text="${connectionBudget.name}"></td>
+            <td th:class="myLabel" th:text="${connectionBudget.name}"></td>
 
-            <td th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
-            <td th:text="${connectionBudget.balance.currency}"></td>
+            <td th:class="myLabel" th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
+            <td th:class="myLabel" th:text="${connectionBudget.balance.currency}"></td>
         </tr>
     </table>
     <script th:inline="javascript">
