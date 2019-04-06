@@ -7,8 +7,8 @@ html {
     margin: 0;
     padding: 0;
     text-align: center;
-    font-family: "Cutive";
-    font-size: 20px;
+    font-family: "Times New Roman", monospace;
+    font-size: 24px;
 }
 
 #kasiaLogo {
@@ -113,19 +113,16 @@ html {
 
 input {
     width: 100%;
-    padding: 15px 0 0 0;
-    line-height: 60px;
+    line-height: 30px;
     border: 1px solid darkgreen;
+    height: 40px;
 }
 
 select {
     width: 100%;
-    padding: 15px;
-    line-height: 60px;
+    line-height: 30px;
     border: 1px solid darkgreen;
-}
-option{
-    line-height: 60px;
+    height: 40px;
 }
 
 .myTable th {
