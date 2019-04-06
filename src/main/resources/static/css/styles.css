@@ -118,8 +118,10 @@ input {
 }
 
 select {
+    width: 100%;
     padding: 15px;
     line-height: 60px;
+    border: 1px solid darkgreen;
 }
 
 .myTable th {
