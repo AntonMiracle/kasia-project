@@ -116,7 +116,8 @@ input {
     line-height: 60px;
 }
 
-option {
+select {
+    padding: 15px;
     line-height: 60px;
 }
 

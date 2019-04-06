@@ -26,7 +26,7 @@
                     <img th:id="labelImg" th:src="@{/images/element.png}"/>
                 </td>
                 <td th:class="myLabel">
-                    <select th:field="*{ofElement}" th:style="'width:200px;'">
+                    <select th:field="*{ofElement}">
                         <option th:each="type : *{getElements()}"
                                 th:value="${type.getName()}"
                                 th:text="${type.getName()}">
@@ -68,7 +68,7 @@
                     <!--/*@thymesVar id="sortByElementName" type="com.kasia.model.Statistic.Sort"*/-->
                     <!--/*@thymesVar id="sortByPlaceName" type="com.kasia.model.Statistic.Sort"*/-->
                     <!--/*@thymesVar id="sortByPrice" type="com.kasia.model.Statistic.Sort"*/-->
-                    <select th:field="*{sort}" th:style="'width:200px;'">
+                    <select th:field="*{sort}">
                         <option th:value="${sortByDate}" th:text="#{label.sort.date}"></option>
                         <option th:value="${sortByElementName}" th:text="#{label.sort.element.name}"></option>
                         <option th:value="${sortByPlaceName}" th:text="#{label.sort.place.name}"></option>
