@@ -61,7 +61,7 @@ public class UserServiceImp implements UserService {
         ZoneId zoneId = ZoneId.of(registration.getZoneId());
         Locale locale = new Locale(registration.getLang(), registration.getCountry());
 
-        return new User(registration.getEmail(), registration.getPassword(), Role.USER
+        return new User(registration.getEmail().toLowerCase(), registration.getPassword(), Role.USER
                 , LocalDateTime.now(), true, zoneId, locale);
     }
 
@@ -100,7 +100,7 @@ public class UserServiceImp implements UserService {
 
     @Override/*method to work with Spring security from UserDetailsService*/
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = findByEmail(s);
+        User user = findByEmail(s.toLowerCase());
         if (user != null) {
             sessionC.setUser(user);
             return convertMyUserToSpringUserDetails(user);
