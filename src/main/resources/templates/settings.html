@@ -28,7 +28,7 @@
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{title.budget}"></td>
-                <td th:colspan="3" th:class="myLabel">
+                <td th:class="myLabel" th:colspan="3">
                     <select th:field="*{budgetIdForDelete}">
                         <option th:value="0" th:text="'-'"></option>
                         <option th:each="budget : ${ownBudgets}"
@@ -48,7 +48,7 @@
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{label.confirm} + ' ' + #{label.password}"></td>
-                <td th:colspan="3"><input type="password" th:field="*{confirmDelete}"/></td>
+                <td th:class="myLabel" th:colspan="3"><input type="password" th:field="*{confirmDelete}"/></td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:colspan="4" th:class="withButton">
@@ -63,7 +63,7 @@
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{label.email}"></td>
-                <td th:colspan="3"><input type="text" th:field="*{emailToConnect}"/></td>
+                <td th:class="myLabel" th:colspan="3"><input type="text" th:field="*{emailToConnect}"/></td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{title.budget}"></td>
@@ -87,7 +87,7 @@
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:text="#{label.confirm} + ' ' + #{label.password}"></td>
-                <td th:colspan="3"><input type="password" th:field="*{confirmConnect}"/></td>
+                <td th:class="myLabel" th:colspan="3"><input type="password" th:field="*{confirmConnect}"/></td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:colspan="4" th:class="withButton">
