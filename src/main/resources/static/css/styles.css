@@ -115,11 +115,12 @@ select{
 
 .myTable input {
     width: 100%;
-    height: 40px;
-    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 select {
-    padding: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .myTable th {
