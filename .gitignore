@@ -36,4 +36,4 @@ kasia-project.iml
 kasia-project.ipr
 kasia-project.iws
 
-productionDB*
+/src/main/resources/application.properties
