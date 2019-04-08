@@ -23,7 +23,7 @@
     <div>
         <form th:action="@{/budget/add}">
             <button class="button" th:id="whiteButton" type="submit" th:title="#{button.addBudget}">
-                <img th:id="buttonImg" th:src="@{/images/plus.png}"/>
+                <img th:id="buttonImg" th:src="@{/images/budget-add.png}"/>
             </button>
         </form>
     </div>
@@ -57,7 +57,7 @@
     </div>
     <div>
         <form th:action="@{/budget}">
-            <button class="button" th:id="whiteButton" type="submit" th:title="#{button.budget}">
+            <button class="button" th:id="whiteButton" type="submit" th:title="#{title.statistic.balance.changes}">
                 <img th:id="buttonImg" th:src="@{/images/time.png}"/>
             </button>
         </form>

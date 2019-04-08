@@ -6,7 +6,7 @@
     <title th:text="#{title.settings}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div th:replace="fragments/header :: mainMenu"></div>
 <div th:id="mainContentWithoutMenu">
 
@@ -21,14 +21,20 @@
     <table th:class="myTable">
         <form th:action="@{/main/settings/delete/budget}" th:object="${settings}" method="post">
             <tr>
-                <th th:colspan="4" th:text="#{title.settings}"></th>
+                <th th:colspan="4" th:title="#{title.settings}">
+                    <img th:id="labelImg" th:src="@{/images/settings.png}"/>
+                </th>
             </tr>
             <!--delete budget-->
             <tr th:if="*{hasOwnBudget}">
-                <th th:colspan="4" th:text="#{title.budgetDelete}" style="background-color: red"></th>
+                <th th:colspan="4" th:title="#{title.budgetDelete}" style="background-color: red">
+                    <img th:id="labelImg" th:src="@{/images/budget-delete.png}"/>
+                </th>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:class="myLabel" th:text="#{title.budget}"></td>
+                <td th:class="myLabelRight" th:title="#{title.budget}">
+                    <img th:id="labelImg" th:src="@{/images/budget.png}"/>
+                </td>
                 <td th:class="myLabel" th:colspan="3">
                     <select th:field="*{budgetIdForDelete}">
                         <option th:value="0" th:text="'-'"></option>
@@ -48,10 +54,16 @@
                 </td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:class="myLabel" th:text="#{label.confirm} + ' ' + #{label.password}"></td>
-                <td th:class="myLabel" th:colspan="3"><input type="password" th:field="*{confirmDelete}"/></td>
+                <td th:class="myLabelRight" th:title="#{label.confirm} + ' ' + #{label.password}">
+                    <img th:id="labelImg" th:src="@{/images/password.png}"/>
+                </td>
+                <td th:class="myLabel" th:colspan="3">
+                    <input type="password"
+                           th:field="*{confirmDelete}"
+                           th:placeholder="#{label.password}"/>
+                </td>
             </tr>
-            <tr th:if="*{hasOwnBudget}">
+            <tr th:if=" *{hasOwnBudget}">
                 <td th:colspan="4" th:class="withButton">
                     <button class="button" type="submit" th:title="#{button.delete}">
                         <img th:id="buttonImg" th:src="@{/images/delete.png}"/>
@@ -60,14 +72,23 @@
             </tr>
             <!--connect user-->
             <tr th:if="*{hasOwnBudget}">
-                <th th:colspan="4" th:text="#{title.userConnect}"></th>
+                <th th:colspan="4" th:title="#{title.userConnect}">
+                    <img th:id="labelImg" th:src="@{/images/connect-user-add.png}"/>
+                </th>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:class="myLabel" th:text="#{label.email}"></td>
-                <td th:class="myLabel" th:colspan="3"><input type="text" th:field="*{emailToConnect}"/></td>
+                <td th:class="myLabelRight" th:title="#{label.email}">
+                    <img th:id="labelImg" th:src="@{/images/email.png}"/>
+                </td>
+                <td th:class="myLabel" th:colspan="3">
+                    <input type="text"
+                           th:field="*{emailToConnect}"
+                           th:placeholder="#{label.email}"/></td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:class="myLabel" th:text="#{title.budget}"></td>
+                <td th:class="myLabelRight" th:title="#{title.budget}">
+                    <img th:id="labelImg" th:src="@{/images/budget.png}"/>
+                </td>
                 <td th:colspan="3" th:class="myLabel">
                     <select th:field="*{budgetIdForConnect}">
                         <option th:each="budget : ${ownBudgets}"
@@ -87,8 +108,14 @@
                 </td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:class="myLabel" th:text="#{label.confirm} + ' ' + #{label.password}"></td>
-                <td th:class="myLabel" th:colspan="3"><input type="password" th:field="*{confirmConnect}"/></td>
+                <td th:class="myLabelRight" th:title="#{label.confirm} + ' ' + #{label.password}">
+                    <img th:id="labelImg" th:src="@{/images/password.png}"/>
+                </td>
+                <td th:class="myLabel" th:colspan="3">
+                    <input type="password"
+                           th:field="*{confirmConnect}"
+                           th:placeholder="#{label.password}"/>
+                </td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:colspan="4" th:class="withButton">
@@ -99,7 +126,9 @@
             </tr>
             <!--connect budget-->
             <tr th:if="*{hasConnectBudget}">
-                <th th:colspan="4" th:text="#{label.connections}"></th>
+                <th th:colspan="4" th:title="#{label.connections}">
+                    <img th:id="labelImg" th:src="@{/images/connect-budget.png}"/>
+                </th>
             </tr>
             <tr th:if="*{hasConnectBudget}"
                 th:each="connectionBudget, count : ${connectionBudgets}"
@@ -117,7 +146,9 @@
             <!--user are connection to own budget-->
             <!--/*@thymesVar id="connectionUsers" type="java.util.Map<com.kasia.model.User, java.util.Set<com.kasia.model.Budget>"*/-->
             <tr th:if="*{hasConnectedUser}">
-                <th th:colspan="4" th:text="#{label.connected.user}"></th>
+                <th th:colspan="4" th:title="#{label.connected.user}">
+                    <img th:id="labelImg" th:src="@{/images/connect-user.png}"/>
+                </th>
             </tr>
 
             <div th:if="*{hasConnectedUser}" th:each="connectedUser : ${connectionUsers.keySet()}">

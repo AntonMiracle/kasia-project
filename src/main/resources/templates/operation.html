@@ -21,12 +21,18 @@
 
     <table th:class="myTable" th:if="${places.size() != 0 and operationAdd.placeId == 0}">
         <tr>
-            <th th:colspan="2" th:if="${operationAdd.isIncome()}" th:text="#{title.income}"></th>
-            <th th:colspan="2" th:if="${operationAdd.isConsumption()}" th:text="#{title.consumption}"
-                style="background-color: red"></th>
+            <th th:colspan="2" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
+                <img th:id="labelImg" th:src="@{/images/income.png}"/>
+            </th>
+            <th th:colspan="2" th:if="${operationAdd.isConsumption()}" th:title="#{title.consumption}"
+                style="background-color: red">
+                <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
+            </th>
         </tr>
         <tr>
-            <th colspan="2" th:text="#{title.pick.place}"></th>
+            <th colspan="2" th:title="#{title.pick.place}">
+                <img th:id="labelImg" th:src="@{/images/place.png}"/>
+            </th>
         </tr>
         <tr th:each="place, count : ${places}"
             th:id="${count.count%2!=0}? elementWhite:elementDark"
@@ -39,12 +45,18 @@
     <table th:class="myTable"
            th:if="${elements.size() != 0 and operationAdd.elementId==0 and operationAdd.placeId != 0}">
         <tr>
-            <th th:colspan="2" th:if="${operationAdd.isIncome()}" th:text="#{title.income}"></th>
-            <th th:colspan="2" th:if="${operationAdd.isConsumption()}" th:text="#{title.consumption}"
-                style="background-color: red"></th>
+            <th th:colspan="2" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
+                <img th:id="labelImg" th:src="@{/images/income.png}"/>
+            </th>
+            <th th:colspan="2" th:if="${operationAdd.isConsumption()}" th:title="#{title.consumption}"
+                style="background-color: red">
+                <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
+            </th>
         </tr>
         <tr>
-            <th colspan="2" th:text="#{title.pick.element}"></th>
+            <th colspan="2" th:title="#{title.pick.element}">
+                <img th:id="labelImg" th:src="@{/images/element.png}"/>
+            </th>
         </tr>
         <tr th:if="${elements.size() != 0}"
             th:each="element,count : ${elements}"
@@ -58,22 +70,30 @@
     <form th:action="@{/budget/operation/add}" th:object="${operationAdd}" method="post">
         <table th:class="myTable" th:if="${operationAdd.elementId!=0 and operationAdd.placeId != 0}">
             <tr>
-                <th th:colspan="3" th:if="*{isIncome()}" th:text="#{title.income}"></th>
-                <th th:colspan="3" th:if="*{isConsumption()}" th:text="#{title.consumption}"
-                    style="background-color: red"></th>
+                <th th:colspan="3" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
+                    <img th:id="labelImg" th:src="@{/images/income.png}"/>
+                </th>
+                <th th:colspan="3" th:if="${operationAdd.isConsumption()}" th:title="#{title.consumption}"
+                    style="background-color: red">
+                    <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
+                </th>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.place}"></td>
+                <td th:class="myLabel" th:title="#{label.place}">
+                    <img th:id="labelImg" th:src="@{/images/place.png}"/>
+                </td>
                 <td th:class="myLabel" th:text="*{placeName}"></td>
                 <td th:class="myLabel" th:text="*{placeDescription}"></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.element}"></td>
+                <td th:class="myLabel" th:title="#{label.element}">
+                    <img th:id="labelImg" th:src="@{/images/element.png}"/>
+                </td>
                 <td th:class="myLabel" th:colspan="2" th:text="*{elementName}"></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.price}"></td>
                 <td th:class="myLabel"
+                    th:colspan="2"
                     th:text="*{currency}">
                 </td>
                 <td th:class="myLabelError"
@@ -89,7 +109,9 @@
                                           th:field="*{price}" th:placeholder="#{tip.price}"/></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.description}"></td>
+                <td th:class="myLabel" th:title="#{label.description}">
+                    <img th:id="labelImg" th:src="@{/images/description.png}"/>
+                </td>
                 <td th:class="myLabelError"
                     th:if="${#fields.hasErrors('description')}"
                     th:errors="*{description}">

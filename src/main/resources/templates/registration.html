@@ -21,7 +21,9 @@
     <form th:action="@{/registration}" th:object="${registration}" method="post">
         <table th:class="myTable">
             <tr>
-                <th th:colspan="3" th:text="#{title.registration}"></th>
+                <th th:colspan="3" th:title="#{title.registration}">
+                    <img th:id="labelImg" th:src="@{/images/reg.png}"/>
+                </th>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.email}"></td>
@@ -43,7 +45,7 @@
                 <td th:colspan="2"><input type="password" th:field="*{password}" th:placeholder="#{tip.password}"/></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.confirm}"></td>
+                <td th:class="myLabel" th:text="|#{label.confirm} #{label.password}|"></td>
                 <td th:class="myLabelError"
                     th:if="${#fields.hasErrors('confirm')}"
                     th:errors="*{confirm}"></td>

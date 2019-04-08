@@ -15,7 +15,9 @@
     <!--/*@thymesVar id="income" type="com.kasia.model.OperationType"*/-->
     <table th:class="myTable" th:if="${operationsHistory.isExist()}">
         <tr>
-            <th th:colspan="3" th:text="#{title.operation}"></th>
+            <th th:colspan="3" th:title="#{title.statistic.balance.changes}">
+                <img th:id="labelImg" th:src="@{/images/delta-balance.png}"/>
+            </th>
         </tr>
         <tr th:each="operation,count : ${operationsHistory.current()}"
             th:id="${operation.type eq income} ?

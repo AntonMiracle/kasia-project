@@ -14,7 +14,14 @@
         <!--/*@thymesVar id="placeEdit" type="com.kasia.controller.dto.PlaceDTO"*/-->
         <form th:action="@{/budget/place/update}" th:object="${placeEdit}" method="post">
             <tr>
-                <th colspan="2" th:text="#{title.edit}"></th>
+                <th colspan="2" th:title="#{title.edit}">
+                    <img th:id="labelImg" th:src="@{/images/settings.png}"/>
+                </th>
+            </tr>
+            <tr>
+                <th th:colspan="2" th:title="#{title.place}">
+                    <img th:id="labelImg" th:src="@{/images/place.png}"/>
+                </th>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>

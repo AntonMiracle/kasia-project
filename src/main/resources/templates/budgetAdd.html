@@ -14,7 +14,9 @@
     <form th:action="@{/budget/save}" th:object="${budgetAdd}" method="post">
         <table th:class="myTable">
             <tr>
-                <th colspan="2" th:text="#{title.budget}"></th>
+                <th colspan="2" th:title="#{title.budget}">
+                    <img th:id="labelImg" th:src="@{/images/budget-add.png}"/>
+                </th>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>

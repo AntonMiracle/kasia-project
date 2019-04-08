@@ -5,12 +5,12 @@
     <title th:text="#{title.kasia}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div class="header">
     <div>
         <form th:action="@{/registration}" method="get">
             <button class="button" th:id="whiteButton" type="submit" th:title="#{button.registration}">
-                <img th:id="buttonImg" th:src="@{/images/reg.png}" />
+                <img th:id="buttonImg" th:src="@{/images/reg.png}"/>
             </button>
         </form>
     </div>
@@ -31,25 +31,33 @@
                 <td>
                     <table th:class="myTable">
                         <tr>
-                            <td th:class="myLabel" th:text="#{label.email}"></td>
-                            <td th:class="myLabelError" th:if="${param.error}" th:text="#{text.login.error}"></td>
-                            <td th:class="myLabelSuccess" th:if="${param.logout}" th:text="#{text.logout}"></td>
+                            <td th:class="myLabel" th:title="#{label.email}">
+                                <img th:id="labelImg" th:src="@{/images/email.png}"/>
+                            </td>
+                            <td th:class="myLabelError" th:if="${param.error}"
+                                th:text="#{text.login.error}"></td>
+                            <td th:class="myLabelSuccess" th:if="${param.logout}"
+                                th:text="#{text.logout}"></td>
                             <td th:class="myLabelSuccess" th:if="${param.registration}"
                                 th:text="#{text.registration.success}"></td>
                         </tr>
                         <tr>
-                            <td th:colspan="2"><input type="text" name="username" th:autofocus="autofocus"/></td>
+                            <td><input type="text" name="username" th:autofocus="autofocus"
+                                       th:placeholder="#{label.email}"/></td>
                         </tr>
                         <tr>
-                            <td th:class="myLabel" th:text="#{label.password}"></td>
+                            <td th:colspan="2" th:class="myLabel" th:title="#{label.password}">
+                                <img th:id="labelImg" th:src="@{/images/password.png}"/>
+                            </td>
                         </tr>
                         <tr>
-                            <td th:colspan="2"><input type="password" name="password"/></td>
+                            <td th:colspan="2"><input type="password" name="password"
+                                                      th:placeholder="#{label.password}"/></td>
                         </tr>
                         <tr>
                             <td th:colspan="2" th:class="withButton">
                                 <button class="button" type="submit" th:title="#{button.login}">
-                                    <img th:id="buttonImg" th:src="@{/images/enter.png}" />
+                                    <img th:id="buttonImg" th:src="@{/images/enter.png}"/>
                                 </button>
                             </td>
                         </tr>

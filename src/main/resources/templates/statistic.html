@@ -6,7 +6,7 @@
     <title th:text="#{title.statistic}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div th:id="mainContentWithoutMenu">
 
@@ -19,7 +19,9 @@
     <form th:action="@{/budget/statistic}" th:object="${statistic}" th:method="post">
         <table th:class="myTable">
             <tr>
-                <th th:colspan="4" th:text="#{title.statistic.filter}"></th>
+                <th th:colspan="4" th:title="#{title.statistic.filter}">
+                    <img th:id="labelImg" th:src="@{/images/filter.png}"/>
+                </th>
             </tr>
             <tr>
                 <!--element-->
@@ -85,7 +87,9 @@
                 </td>
             </tr>
             <tr>
-                <th th:colspan="4" th:text="#{title.statistic}"></th>
+                <th th:colspan="4" th:title="#{title.statistic}">
+                    <img th:id="labelImg" th:src="@{/images/statistic.png}"/>
+                </th>
             </tr>
 
             <tr th:if="*{isIncomeExist()}" th:id="operationIncomeBlack">
@@ -128,8 +132,9 @@
                 <td th:colspan="2"></td>
             </tr>
             <tr>
-                <th th:colspan="4" th:text="#{title.operation}"
+                <th th:colspan="4" th:title="#{title.operation}"
                     th:if="*{operations.size() > 0}">
+                    <img th:id="labelImg" th:src="@{/images/delta-balance.png}"/>
                 </th>
             </tr>
             <tr th:each="operation,count : *{operations}"

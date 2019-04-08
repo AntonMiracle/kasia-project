@@ -16,7 +16,9 @@
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
     <table th:class="myTable" th:if="${requestTo.size() != 0}">
         <tr>
-            <th th:colspan="5" th:text="#{title.connection.request}"></th>
+            <th th:colspan="5" th:title="#{title.connection.request}">
+                <img th:id="labelImg" th:src="@{/images/connect-budget-add.png}"/>
+            </th>
         </tr>
         <tr th:each="ucbr : ${requestTo}">
             <td th:class="myLabel" th:text="${ucbr.getBudget().name}"></td>
@@ -38,7 +40,9 @@
     </table>
     <table th:class="myTable" th:if="${ownBudgets.size() != 0}">
         <tr>
-            <th colspan="3" th:text="#{title.ownBudget}"></th>
+            <th colspan="3" th:title="#{title.ownBudget}">
+                <img th:id="labelImg" th:src="@{/images/budget.png}"/>
+            </th>
         </tr>
         <tr th:each="ownBudget : ${ownBudgets}"
             th:id="${ownBudget.balance.amount.toString().startsWith('-') ? 'operationConsumptionWhite' : 'operationIncomeWhite' }"
@@ -51,7 +55,9 @@
     </table>
     <table th:class="myTable" th:if="${connectionBudgets.size() != 0}">
         <tr>
-            <th colspan="3" th:text="#{title.connectedBudget}"></th>
+            <th colspan="3" th:title="#{title.connectedBudget}">
+                <img th:id="labelImg" th:src="@{/images/budget-connect.png}"/>
+            </th>
         </tr>
         <tr th:each="connectionBudget : ${connectionBudgets}"
             th:id="${connectionBudget.balance.amount.toString().startsWith('-') ? 'operationConsumptionWhite' : 'operationIncomeWhite' }"

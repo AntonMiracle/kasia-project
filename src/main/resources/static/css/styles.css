@@ -121,8 +121,7 @@ img.bg {
 
 .myTable td {
     height: 45px;
-    padding-right: 20px;
-    padding-left: 20px;
+    padding: 0 15px 0 15px;
 }
 
 input {
@@ -142,6 +141,8 @@ select {
 .myTable th {
     background-color: rgba(0, 100, 0, 0.8);
     color: white;
+    vertical-align: middle;
+    padding: 10px;
 }
 
 .myLabel {

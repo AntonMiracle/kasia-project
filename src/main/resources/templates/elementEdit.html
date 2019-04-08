@@ -14,7 +14,14 @@
         <!--/*@thymesVar id="elementEdit" type="com.kasia.controller.dto.ElementDTO"*/-->
         <form th:action="@{/budget/element/update}" th:object="${elementEdit}" method="post">
             <tr>
-                <th th:colspan="2" th:text="#{title.edit}"></th>
+                <th th:colspan="2" th:title="#{title.edit}">
+                    <img th:id="labelImg" th:src="@{/images/settings.png}"/>
+                </th>
+            </tr>
+            <tr>
+                <th th:colspan="2" th:title="#{title.element}">
+                    <img th:id="labelImg" th:src="@{/images/element.png}"/>
+                </th>
             </tr>
             <tr>
                 <td th:class="myLabel" th:text="#{label.name}"></td>
@@ -26,7 +33,7 @@
                 <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.price} + ' ' +  *{currency}"></td>
+                <td th:class="myLabel" th:text="*{currency}"></td>
                 <td th:class="myLabelError"
                     th:if="${#fields.hasErrors('price')}"
                     th:errors="*{price}">Error

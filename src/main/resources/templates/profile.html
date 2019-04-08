@@ -18,7 +18,9 @@
     <form th:action="@{/profile/update}" th:object="${profile}" method="post">
         <table th:class="myTable">
             <tr>
-                <th th:colspan="2" th:text="#{title.profile}"></th>
+                <th th:colspan="2" th:title="#{title.profile}">
+                    <img th:id="labelImg" th:src="@{/images/profile.png}"/>
+                </th>
             </tr>
 
             <tr>
