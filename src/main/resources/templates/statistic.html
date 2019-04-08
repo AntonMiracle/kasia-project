@@ -92,11 +92,8 @@
                 </th>
             </tr>
 
-            <tr th:if="*{isIncomeExist()}" th:id="operationIncomeBlack">
-
-            </tr>
-            <tr th:if="*{isConsumptionExist()}" th:id="operationConsumptionBlack">
-            </tr>
+            <tr th:if="*{isIncomeExist()}" th:id="operationIncomeBlack"></tr>
+            <tr th:if="*{isConsumptionExist()}" th:id="operationConsumptionBlack"></tr>
 
             <tr th:if="*{isIncomeExist()}" th:id="operationIncomeBlack">
                 <td th:class="myLabelRight" th:title="#{title.income}">

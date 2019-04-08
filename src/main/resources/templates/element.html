@@ -51,7 +51,8 @@
                 </td>
             </tr>
             <tr>
-                <th th:colspan="2" th:title="#{title.element}">
+                <th th:if="${elements.size() != 0}"
+                    th:colspan="2" th:title="#{title.element}">
                     <img th:id="labelImg" th:src="@{/images/element.png}"/>
                 </th>
             </tr>
@@ -60,7 +61,7 @@
                 th:id="${count.count%2!=0}? elementWhite:elementDark"
                 th:onclick="'javascript:editElement(\'' + ${element.id} + '\');'">
                 <td th:class="myLabel" th:text="${element.name}"></td>
-                <td th:class="myLabel" th:text="${element.price} + ' ' + *{currency}"></td>
+                <td th:class="myLabel" th:text="${element.price}"></td>
             </tr>
         </table>
     </form>

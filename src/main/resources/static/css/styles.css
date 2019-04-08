@@ -42,7 +42,7 @@ img.bg {
 
 .button {
     margin: 10px;
-    padding: 5px 15px 5px 15px;
+    padding: 0;
     height: 60px;
     border: 1px solid #006400;
     border-radius: 0px;
