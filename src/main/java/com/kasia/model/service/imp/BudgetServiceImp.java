@@ -256,8 +256,14 @@ public class BudgetServiceImp implements BudgetService {
         if (ub.isPresent()) {
             UserBudget userBudget = ub.get();
             userBudget.getBudgets().remove(findById(budgetId));
+            userBudgetR.save(userBudget);
         }
-        // add connection remove
+        Budget budget = findById(budgetId);
+        for(UserConnectBudget ucb : userConnectBudgetR.findAll()){
+            if(ucb.getConnectBudgets().contains(budget)){
+                disconnectUserFromBudget(ucb.getUser().getId(),budgetId);
+            }
+        }
         budgetR.delete(findById(budgetId));
         return true;
     }
