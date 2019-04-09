@@ -21,8 +21,8 @@
             </th>
         </tr>
         <tr th:each="ucbr : ${requestTo}">
-            <td>
-                <img th:id="labelImg" th:src="@{/images/budget.png}"/>
+            <td th:title="#{title.budget}">
+                <img th:id="labelImg" th:src="@{/images/connect-budget.png}"/>
             </td>
             <td th:class="myLabel" th:text="${ucbr.getBudget().name}"></td>
             <td th:class="myLabel" th:title="#{label.from}">
