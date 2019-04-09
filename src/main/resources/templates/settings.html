@@ -18,16 +18,13 @@
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
     <!--/*@thymesVar id="confirmDeleteError" type="java.lang.Boolean"*/-->
 
-    <table th:class="myTable">
-        <form th:action="@{/main/settings/delete/budget}" th:object="${settings}" method="post">
-            <tr>
-                <th th:colspan="4" th:title="#{title.settings}">
-                    <img th:id="labelImg" th:src="@{/images/settings.png}"/>
-                </th>
-            </tr>
-            <!--delete budget-->
+
+    <form th:action="@{/main/settings/delete/budget}" th:object="${settings}" method="post">
+
+        <!--delete budget-->
+        <table th:class="myTable">
             <tr th:if="*{hasOwnBudget}">
-                <th th:colspan="4" th:title="#{title.budgetDelete}" style="background-color: red">
+                <th th:colspan="3" th:title="#{title.budgetDelete}" style="background-color: red">
                     <img th:id="labelImg" th:src="@{/images/budget-delete.png}"/>
                 </th>
             </tr>
@@ -35,7 +32,7 @@
                 <td th:class="myLabelRight" th:title="#{title.budget}">
                     <img th:id="labelImg" th:src="@{/images/budget.png}"/>
                 </td>
-                <td th:class="myLabel" th:colspan="3">
+                <td th:class="myLabel">
                     <select th:field="*{budgetIdForDelete}">
                         <option th:value="0" th:text="'-'"></option>
                         <option th:each="budget : ${ownBudgets}"
@@ -46,22 +43,24 @@
                         </option>
                     </select>
                 </td>
+                <td th:class="myTipLabel" th:text="#{tip.delete.budget.pick}"></td>
             </tr>
             <tr th:if="*{hasOwnBudget} and ${confirmDeleteError}">
-                <td th:colspan="4"
+                <td th:colspan="3"
                     th:class="myLabelError"
                     th:text="#{validation.password.error}">
                 </td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:class="myLabelRight" th:title="#{label.confirm} + ' ' + #{label.password}">
+                <td th:class="myLabelRight" th:title="|#{label.confirm} #{label.password}|">
                     <img th:id="labelImg" th:src="@{/images/password.png}"/>
                 </td>
-                <td th:class="myLabel" th:colspan="3">
+                <td th:class="myLabel">
                     <input type="password"
                            th:field="*{confirmDelete}"
-                           th:placeholder="#{label.password}"/>
+                           th:placeholder="|#{label.confirm} #{label.password}|"/>
                 </td>
+                <td th:class="myTipLabel" th:text="#{tip.delete.password.confirmation}"></td>
             </tr>
             <tr th:if=" *{hasOwnBudget}">
                 <td th:colspan="4" th:class="withButton">
@@ -70,26 +69,31 @@
                     </button>
                 </td>
             </tr>
-            <!--connect user-->
+        </table>
+
+        <!--connect user to budget-->
+        <table th:class="myTable">
             <tr th:if="*{hasOwnBudget}">
-                <th th:colspan="4" th:title="#{title.userConnect}">
+                <th th:colspan="3" th:title="#{title.userConnect}">
                     <img th:id="labelImg" th:src="@{/images/connect-user-add.png}"/>
                 </th>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:class="myLabelRight" th:title="#{label.email}">
-                    <img th:id="labelImg" th:src="@{/images/email.png}"/>
+                <td th:class="myLabel" th:title="#{label.email}">
+                    <img th:id="labelImg" th:src="@{/images/connect-email.png}"/>
                 </td>
-                <td th:class="myLabel" th:colspan="3">
+                <td th:class="myLabel">
                     <input type="text"
                            th:field="*{emailToConnect}"
-                           th:placeholder="#{label.email}"/></td>
+                           th:placeholder="#{label.connect.email}"/>
+                </td>
+                <td th:class="myTipLabel" th:text="#{tip.connect.email}"></td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:class="myLabelRight" th:title="#{title.budget}">
+                <td th:class="myLabel" th:title="#{title.budget}">
                     <img th:id="labelImg" th:src="@{/images/budget.png}"/>
                 </td>
-                <td th:colspan="3" th:class="myLabel">
+                <td th:class="myLabel">
                     <select th:field="*{budgetIdForConnect}">
                         <option th:each="budget : ${ownBudgets}"
                                 th:value="${budget.id}"
@@ -99,32 +103,37 @@
                         </option>
                     </select>
                 </td>
+                <td th:class="myTipLabel" th:text="#{tip.connect.budget}"></td>
             </tr>
             <tr th:if="*{hasOwnBudget} and ${confirmConnectError}">
                 <!--/*@thymesVar id="confirmConnectError" type="java.lang.Boolean"*/-->
-                <td th:colspan="4"
+                <td th:colspan="3"
                     th:class="myLabelError"
                     th:text="#{validation.password.error}">
                 </td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:class="myLabelRight" th:title="#{label.confirm} + ' ' + #{label.password}">
+                <td th:class="myLabel" th:title="#{label.confirm} + ' ' + #{label.password}">
                     <img th:id="labelImg" th:src="@{/images/password.png}"/>
                 </td>
-                <td th:class="myLabel" th:colspan="3">
+                <td th:class="myLabel">
                     <input type="password"
                            th:field="*{confirmConnect}"
-                           th:placeholder="#{label.password}"/>
+                           th:placeholder="|#{label.confirm} #{label.password}|"/>
                 </td>
+                <td th:class="myTipLabel" th:text="#{tip.delete.password.confirmation}"></td>
             </tr>
             <tr th:if="*{hasOwnBudget}">
-                <td th:colspan="4" th:class="withButton">
+                <td th:colspan="3" th:class="withButton">
                     <button class="button" type="submit" th:title="#{button.connect}">
                         <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
                     </button>
                 </td>
             </tr>
-            <!--connect budget-->
+        </table>
+
+        <!--connected budget-->
+        <table th:class="myTable">
             <tr th:if="*{hasConnectBudget}">
                 <th th:colspan="4" th:title="#{label.connections}">
                     <img th:id="labelImg" th:src="@{/images/connect-budget.png}"/>
@@ -133,9 +142,10 @@
             <tr th:if="*{hasConnectBudget}"
                 th:each="connectionBudget, count : ${connectionBudgets}"
                 th:style="${count.count%2!=0? '':'background-color: rgba(0, 100, 0, 0.1);'}">
-                <td th:text="${connectionBudget.name}"></td>
-                <td th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
-                <td th:text="${connectionBudget.balance.currency}"></td>
+                <td th:class="myLabel" th:text="${connectionBudget.name}"></td>
+                <td th:class="myLabel"
+                    th:text="${myFormatter.formatNumber(user.id,connectionBudget.balance.amount)}"></td>
+                <td th:class="myLabel" th:text="${connectionBudget.balance.currency}"></td>
                 <td style="padding: 0px;">
                     <button th:onclick="'javascript:disconnectFromBudget(\'' + ${connectionBudget.id} + '\');'"
                             class="button" th:id="whiteButton" type="button" th:title="#{button.rejected}">
@@ -143,19 +153,25 @@
                     </button>
                 </td>
             </tr>
-            <!--user are connection to own budget-->
-            <!--/*@thymesVar id="connectionUsers" type="java.util.Map<com.kasia.model.User, java.util.Set<com.kasia.model.Budget>"*/-->
+        </table>
+
+        <!--connection users to own budget-->
+        <!--/*@thymesVar id="connectionUsers" type="java.util.Map<com.kasia.model.User, java.util.Set<com.kasia.model.Budget>"*/-->
+        <table th:class="myTable">
             <tr th:if="*{hasConnectedUser}">
-                <th th:colspan="4" th:title="#{label.connected.user}">
+                <th th:colspan="5" th:title="#{label.connected.user}">
                     <img th:id="labelImg" th:src="@{/images/connect-user.png}"/>
                 </th>
             </tr>
-
             <div th:if="*{hasConnectedUser}" th:each="connectedUser : ${connectionUsers.keySet()}">
                 <tr th:each="budget, count : ${connectionUsers.get(connectedUser)}"
                     th:style="${count.count%2!=0? '':'background-color: rgba(0, 100, 0, 0.1);'}">
+                    <td th:title="#{title.budget}"><img th:id="labelImg" th:src="@{/images/budget.png}"/></td>
                     <td th:text="${budget.name}"></td>
-                    <td th:colspan="2" th:text="${connectedUser.email}"></td>
+                    <td th:class="myLabel" th:title="#{label.from}">
+                        <img th:id="labelImg" th:src="@{/images/connect-user.png}"/>
+                    </td>
+                    <td th:text="${connectedUser.email}"></td>
                     <td style="padding: 0px;">
                         <button th:onclick="'javascript:disconnectUserFromBudget(\'' + ${connectedUser.id} + '\',\'' + ${budget.id} + '\');'"
                                 class="button" th:id="whiteButton" type="button" th:title="#{button.rejected}">
@@ -164,8 +180,8 @@
                     </td>
                 </tr>
             </div>
-        </form>
-    </table>
+        </table>
+    </form>
     <script th:inline="javascript">
         function disconnectFromBudget(value) {
             location.href = "/main/disconnection/budget/" + value;

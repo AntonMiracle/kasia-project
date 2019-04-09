@@ -21,13 +21,9 @@
             </th>
         </tr>
         <tr th:each="ucbr : ${requestTo}">
-            <td th:title="#{title.budget}">
-                <img th:id="labelImg" th:src="@{/images/connect-budget.png}"/>
-            </td>
+            <td th:title="#{title.budget}"><img th:id="labelImg" th:src="@{/images/connect-budget.png}"/></td>
             <td th:class="myLabel" th:text="${ucbr.getBudget().name}"></td>
-            <td th:class="myLabel" th:title="#{label.from}">
-                <img th:id="labelImg" th:src="@{/images/profile.png}"/>
-            </td>
+            <td th:class="myLabel" th:title="#{label.from}"><img th:id="labelImg" th:src="@{/images/profile.png}"/></td>
             <td th:class="myLabel" th:text="${ucbr.fromUser.email}"></td>
             <td style="padding: 0px;">
                 <button th:onclick="'javascript:acceptReqest(\'' + ${ucbr.id} + '\');'"
