@@ -13,7 +13,16 @@
     <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
     <!--/*@thymesVar id="places" type="java.util.Set<com.kasia.model.Place>"*/-->
     <!--/*@thymesVar id="operationAdd" type="com.kasia.controller.dto.OperationDTO"*/-->
-    <table th:class="myTable">
+    <table th:class="myTable" th:if="${places.size() == 0} or ${elements.size() == 0}">
+        <tr>
+            <th th:colspan="3" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
+                <img th:id="labelImg" th:src="@{/images/income.png}"/>
+            </th>
+            <th th:colspan="3" th:if="${operationAdd.isConsumption()}" th:title="#{title.consumption}"
+                style="background-color: red">
+                <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
+            </th>
+        </tr>
         <tr th:if="${places.size() == 0}">
             <td th:class="myLabel" th:text="#{tip.need.place}"></td>
             <td>

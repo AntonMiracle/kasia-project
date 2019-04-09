@@ -6,13 +6,75 @@
     <title th:text="#{title.budget}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div th:id="mainContentWithoutMenu">
     <!--/*@thymesVar id="operationsHistory" type="com.kasia.controller.dto.OperationsHistoryPages"*/-->
     <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
     <!--/*@thymesVar id="income" type="com.kasia.model.OperationType"*/-->
+    <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
+    <!--/*@thymesVar id="places" type="java.util.Set<com.kasia.model.Place>"*/-->
+
+    <table th:class="myTable" th:if="${operationsHistory.isExist() == false}">
+        <tr>
+            <th th:colspan="2" th:text="#{hello}"></th>
+        </tr>
+        <tr>
+            <td th:colspan="2" th:text="#{start.with}" th:style="'width:400px;'"></td>
+        </tr>
+        <tr>
+            <td th:class="myLabel" th:text="#{tip.need.place}"></td>
+            <td>
+                <form th:action="@{/budget/place}">
+                    <button class="button" th:id="whiteButton" type="submit" th:title="#{button.place}">
+                        <img th:id="buttonImg" th:src="@{/images/place.png}"/>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td th:class="myLabel" th:text="#{tip.need.element}"></td>
+            <td>
+                <form th:action="@{/budget/element}">
+                    <button class="button" th:id="whiteButton" type="submit" th:title="#{button.element}">
+                        <img th:id="buttonImg" th:src="@{/images/element.png}"/>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td th:class="myLabel" th:text="#{tip.first.income}"></td>
+            <td>
+                <form th:action="@{/budget/operation/income}">
+                    <button class="button" th:id="whiteButton" type="submit" th:title="#{button.income}">
+                        <img th:id="buttonImg" th:src="@{/images/income.png}"/>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td th:class="myLabel" th:text="#{tip.first.consumption}"></td>
+            <td>
+                <form th:action="@{/budget/operation/consumption}">
+                    <button class="button" th:id="whiteButton" type="submit" th:title="#{button.consumption}">
+                        <img th:id="buttonImg" th:src="@{/images/consumption.png}"/>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td th:class="myLabel" th:text="#{tip.statistic.first.look}"></td>
+            <td>
+                <form th:action="@{/budget/statistic}">
+                    <button class="button" th:id="whiteButton" type="submit" th:title="#{button.statistic}">
+                        <img th:id="buttonImg" th:src="@{/images/statistic.png}"/>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
     <table th:class="myTable" th:if="${operationsHistory.isExist()}">
         <tr>
             <th th:colspan="8" th:title="#{title.statistic.balance.changes}">
