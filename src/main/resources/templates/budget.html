@@ -15,7 +15,7 @@
     <!--/*@thymesVar id="income" type="com.kasia.model.OperationType"*/-->
     <table th:class="myTable" th:if="${operationsHistory.isExist()}">
         <tr>
-            <th th:colspan="3" th:title="#{title.statistic.balance.changes}">
+            <th th:colspan="6" th:title="#{title.statistic.balance.changes}">
                 <img th:id="labelImg" th:src="@{/images/delta-balance.png}"/>
             </th>
         </tr>
@@ -24,17 +24,27 @@
                 ${count.count%2!=0 ? 'operationIncomeWhite' : 'operationIncomeBlack'} :
                 ${count.count%2!=0 ? 'operationConsumptionWhite' : 'operationConsumptionBlack'} "
             th:onclick="'javascript:operationEdit(\'' + ${operation.id} + '\');'">
+            <td th:class="myHistoryLabel">
+                <img th:id="labelImg" th:src="@{/images/element.png}"/>
+            </td>
             <td th:class="myHistoryLabel" th:text="${operation.element.name}"></td>
+            <td th:class="myHistoryLabel">
+                <img th:id="labelImg" th:src="${operation.type eq income} ?
+                @{/images/income.png} : @{/images/consumption.png}"/>
+            </td>
             <td th:class="myHistoryLabel"
                 th:text="${operation.type eq income} ?
                 ${myFormatter.formatNumber(user.id,operation.price)}
                 : ${myFormatter.formatNumber(true,user.id,operation.price)}">
             </td>
+            <td th:class="myHistoryLabel">
+                <img th:id="labelImg" th:src="@{/images/time.png}"/>
+            </td>
             <td th:class="myHistoryLabel"
                 th:text="${myFormatter.formatFullDate(user.id,operation.createOn)}"></td>
         </tr>
         <tr th:if="${!operationsHistory.isStart() or !operationsHistory.isEnd()}">
-            <td th:class="withButton" th:colspan="3">
+            <td th:class="withButton" th:colspan="6">
                 <button class="button" th:id="buttonInline" th:if="${!operationsHistory.isStart()}"
                         th:onclick="'javascript:previousWeek();'"
                         type="button" th:title="#{button.previous}">
