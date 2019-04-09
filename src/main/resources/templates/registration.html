@@ -21,51 +21,54 @@
     <form th:action="@{/registration}" th:object="${registration}" method="post">
         <table th:class="myTable">
             <tr>
-                <th th:colspan="3" th:title="#{title.registration}">
+                <th th:colspan="4" th:title="#{title.registration}">
                     <img th:id="labelImg" th:src="@{/images/reg.png}"/>
                 </th>
+            </tr>
+            <tr>
+                <td th:colspan="3"
+                    th:class="myLabelError"
+                    th:if="${#fields.hasErrors('email')}"
+                    th:errors="*{email}"></td>
             </tr>
             <tr>
                 <td th:class="myLabel" th:title="#{label.email}">
                     <img th:id="labelImg" th:src="@{/images/email.png}"/>
                 </td>
-                <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('email')}"
-                    th:errors="*{email}"></td>
-            </tr>
-            <tr>
                 <td><input type="text" th:field="*{email}" th:placeholder="#{label.email}"/></td>
                 <td th:class="myTipLabel" th:text="#{tip.email}"></td>
             </tr>
 
             <tr>
-                <td th:class="myLabel" th:title="#{label.password}">
-                    <img th:id="labelImg" th:src="@{/images/password.png}"/>
-                </td>
-                <td th:class="myLabelError"
+                <td th:colspan="3"
+                    th:class="myLabelError"
                     th:if="${#fields.hasErrors('password')}"
                     th:errors="*{password}"></td>
             </tr>
             <tr>
+                <td th:class="myLabel" th:title="#{label.password}">
+                    <img th:id="labelImg" th:src="@{/images/password.png}"/>
+                </td>
                 <td><input type="password" th:field="*{password}" th:placeholder="#{label.password}"/></td>
                 <td th:class="myTipLabel" th:text="#{tip.password}"></td>
+            </tr>
+            <tr>
+                <td th:colspan="3"
+                    th:class="myLabelError"
+                    th:if="${#fields.hasErrors('confirm')}"
+                    th:errors="*{confirm}"></td>
             </tr>
             <tr>
                 <td th:class="myLabel" th:title="|#{label.confirm} #{label.password}|">
                     <img th:id="labelImg" th:src="@{/images/password.png}"/>
                 </td>
-                <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('confirm')}"
-                    th:errors="*{confirm}"></td>
-            </tr>
-            <tr>
                 <td>
                     <input type="password" th:field="*{confirm}" th:placeholder="|#{label.confirm} #{label.password}|"/>
                 </td>
                 <td th:class="myTipLabel" th:text="#{tip.confirm.password}"></td>
             </tr>
             <tr>
-                <td th:class="withButton" th:colspan="2">
+                <td th:class="withButton" th:colspan="3">
                     <button class="button" type="submit" th:title="#{button.complete}">
                         <img th:id="buttonImg" th:src="@{/images/ok.png}"/></button>
                 </td>

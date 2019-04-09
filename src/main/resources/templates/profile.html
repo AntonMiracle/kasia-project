@@ -6,7 +6,7 @@
     <title th:text="#{title.profile}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div th:replace="fragments/header :: mainMenu"></div>
 <div th:id="mainContentWithoutMenu">
 
@@ -18,58 +18,76 @@
     <form th:action="@{/profile/update}" th:object="${profile}" method="post">
         <table th:class="myTable">
             <tr>
-                <th th:colspan="2" th:title="#{title.profile}">
+                <th th:colspan="3" th:title="#{title.profile}">
                     <img th:id="labelImg" th:src="@{/images/profile.png}"/>
                 </th>
             </tr>
-
             <tr>
-                <td th:class="myLabel" th:text="#{label.password.new}"></td>
-                <td th:class="myLabelSuccess"
+                <td th:colspan="3"
+                    th:class="myLabelSuccess"
                     th:if="*{passwordUpdated}"
                     th:text="#{text.password.update}">
                 </td>
-                <td th:class="myLabelError"
+                <td th:colspan="3"
+                    th:class="myLabelError"
                     th:if="${#fields.hasErrors('password')} and *{password!=null and #strings.length(password)&gt;0}"
                     th:errors="*{password}">
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="password" th:field="*{password}" th:placeholder="#{tip.password}"/></td>
+                <td th:class="myLabel" th:title="#{label.password.new}">
+                    <img th:id="labelImg" th:src="@{/images/password.png}"/>
+                </td>
+                <td><input type="password" th:field="*{password}" th:placeholder="#{label.password.new}"/></td>
+                <td th:class="myTipLabel" th:text="#{tip.password}"></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.confirm}"></td>
-                <td th:class="myLabelError"
+                <td th:colspan="3"
+                    th:class="myLabelError"
                     th:if="${#fields.hasErrors('confirm')}"
                     th:errors="*{confirm}">
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="password" th:field="*{confirm}"/></td>
+                <td th:class="myLabel" th:title="#{label.confirm}">
+                    <img th:id="labelImg" th:src="@{/images/password.png}"/>
+                </td>
+                <td>
+                    <input type="password" th:field="*{confirm}" th:placeholder="|#{label.confirm} #{label.password}|"/>
+                </td>
+                <td th:class="myTipLabel" th:text="#{tip.confirm.password}"></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.locale.update}"></td>
-                <td colspan="2" th:class="myLabelSuccess"
+                <td th:colspan="3"
+                    th:class="myLabelSuccess"
                     th:if="*{localeUpdated}"
                     th:text="#{text.locale.update}">
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="checkbox" th:field="*{updateLocale}"/></td>
+                <td th:class="myLabel" th:title="#{label.locale.update}">
+                    <img th:id="labelImg" th:src="@{/images/local.png}"/>
+                </td>
+                <td th:class="myLabel"><input type="checkbox" th:field="*{updateLocale}"/></td>
+                <td th:class="myTipLabel" th:text="#{tip.locale}"></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.zoneid.update}"></td>
-                <td colspan="2" th:class="myLabelSuccess"
+                <td th:colspan="3"
+                    th:class="myLabelSuccess"
                     th:if="*{zoneIdUpdated}"
                     th:text="#{text.zone.update}"></td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="checkbox" th:field="*{updateZone}"/></td>
+                <td th:class="myLabel" th:title="#{label.zoneid.update}">
+                    <img th:id="labelImg" th:src="@{/images/time.png}"/>
+                </td>
+                <td th:class="myLabel"><input type="checkbox" th:field="*{updateZone}"/></td>
+                <td th:class="myTipLabel" th:text="#{tip.zoneid}"></td>
             </tr>
             <tr>
-                <td th:colspan="2" th:class="withButton">
+                <td th:colspan="3" th:class="withButton">
                     <button class="button" type="submit" th:title="#{button.save}">
-                        <img th:id="buttonImg" th:src="@{/images/ok.png}" />
+                        <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
                     </button>
                 </td>
             </tr>

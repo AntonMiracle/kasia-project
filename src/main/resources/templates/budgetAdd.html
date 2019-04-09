@@ -6,7 +6,7 @@
     <title th:text="#{title.budgetAdd}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div th:insert="fragments/header :: mainMenu"></div>
 <div th:id="mainContentWithoutMenu">
     <!--/*@thymesVar id="currencies" type="com.kasia.model.Currencies"*/-->
@@ -14,35 +14,44 @@
     <form th:action="@{/budget/save}" th:object="${budgetAdd}" method="post">
         <table th:class="myTable">
             <tr>
-                <th colspan="2" th:title="#{title.budget}">
+                <th colspan="3" th:title="#{title.budget}">
                     <img th:id="labelImg" th:src="@{/images/budget-add.png}"/>
                 </th>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.name}"></td>
                 <td th:class="myLabelError"
                     th:if="${#fields.hasErrors('name')}"
                     th:errors="*{name}">
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
+                <td th:class="myLabel" th:title="#{label.name}">
+                    <img th:id="labelImg" th:src="@{/images/name.png}"/>
+                </td>
+                <td><input type="text" th:field="*{name}" th:placeholder="#{label.name}"/></td>
+                <td th:class="myTipLabel" th:text="#{tip.name}"></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.price.init}"></td>
                 <td th:class="myLabelError"
                     th:if="${#fields.hasErrors('price')}"
                     th:errors="*{price}">Error
                 </td>
             </tr>
             <tr>
-                <td colspan="2"><input type="number"
-                                       onfocus="this.value=''"
-                                       step="0.01"
-                                       th:field="*{price}" th:placeholder="#{tip.price}"/></td>
+                <td th:class="myLabel" th:title="#{label.price.init}">
+                    <img th:id="labelImg" th:src="@{/images/init-balance.png}"/>
+                </td>
+                <td><input type="number"
+                           onfocus="this.value=''"
+                           step="0.01"
+                           th:field="*{price}" th:placeholder="#{label.price}"/>
+                </td>
+                <td th:class="myTipLabel" th:text="#{tip.price}"></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.currency}"></td>
+                <td th:class="myLabel" th:title="#{label.currency}">
+                    <img th:id="labelImg" th:src="@{/images/currency.png}"/>
+                </td>
                 <td th:class="myLabel">
                     <select th:field="*{currency}">
                         <option th:each="type : ${currencies}"
@@ -51,11 +60,12 @@
                         </option>
                     </select>
                 </td>
+                <td th:class="myTipLabel" th:text="#{tip.currency}"></td>
             </tr>
             <tr>
-                <td th:colspan="2" th:class="withButton">
+                <td th:colspan="3" th:class="withButton">
                     <button class="button" type="submit" th:title="#{button.add}">
-                        <img th:id="buttonImg" th:src="@{/images/ok.png}" />
+                        <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
                     </button>
                 </td>
             </tr>
