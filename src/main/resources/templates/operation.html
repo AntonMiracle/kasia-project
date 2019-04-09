@@ -6,69 +6,58 @@
     <title th:text="#{title.operation}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div th:id="mainContentWithoutMenu">
 
     <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
     <!--/*@thymesVar id="places" type="java.util.Set<com.kasia.model.Place>"*/-->
     <!--/*@thymesVar id="operationAdd" type="com.kasia.controller.dto.OperationDTO"*/-->
-
-    <div th:class="myTable" th:if="${elements.size() == 0}"
-         th:text="#{tip.need.element}"></div>
-    <div th:class="myTable" th:if="${places.size() == 0}"
-         th:text="#{tip.need.place}"></div>
-
-    <table th:class="myTable" th:if="${places.size() != 0 and operationAdd.placeId == 0}">
+    <table th:class="myTable">
         <tr>
-            <th th:colspan="2" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
+            <th th:colspan="3" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
                 <img th:id="labelImg" th:src="@{/images/income.png}"/>
             </th>
-            <th th:colspan="2" th:if="${operationAdd.isConsumption()}" th:title="#{title.consumption}"
+            <th th:colspan="3" th:if="${operationAdd.isConsumption()}" th:title="#{title.consumption}"
                 style="background-color: red">
                 <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
             </th>
         </tr>
-        <tr>
-            <th colspan="2" th:title="#{title.pick.place}">
-                <img th:id="labelImg" th:src="@{/images/place.png}"/>
-            </th>
+        <tr th:if="${places.size() == 0}">
+            <td th:class="myLabel" th:text="#{tip.need.place}"></td>
+            <td>
+                <form th:action="@{/budget/place}">
+                    <button class="button" th:id="whiteButton" type="submit" th:title="#{button.place}">
+                        <img th:id="buttonImg" th:src="@{/images/place-add.png}"/>
+                    </button>
+                </form>
+            </td>
         </tr>
-        <tr th:each="place, count : ${places}"
-            th:id="${count.count%2!=0}? elementWhite:elementDark"
-            th:onclick="'javascript:pickPlace(\'' + ${place.id} + '\');'">
-            <td th:class="myLabel" th:text="${place.name}"></td>
-            <td th:class="myLabel" th:text="${place.description}"></td>
-        </tr>
-    </table>
-
-    <table th:class="myTable"
-           th:if="${elements.size() != 0 and operationAdd.elementId==0 and operationAdd.placeId != 0}">
-        <tr>
-            <th th:colspan="2" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
-                <img th:id="labelImg" th:src="@{/images/income.png}"/>
-            </th>
-            <th th:colspan="2" th:if="${operationAdd.isConsumption()}" th:title="#{title.consumption}"
-                style="background-color: red">
-                <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
-            </th>
-        </tr>
-        <tr>
-            <th colspan="2" th:title="#{title.pick.element}">
-                <img th:id="labelImg" th:src="@{/images/element.png}"/>
-            </th>
-        </tr>
-        <tr th:if="${elements.size() != 0}"
-            th:each="element,count : ${elements}"
-            th:id="${count.count%2!=0}? elementWhite:elementDark"
-            th:onclick="'javascript:pickElement(\'' + ${element.id} + '\');'">
-            <td th:class="myLabel" th:text="${element.name}"></td>
-            <td th:class="myLabel" th:text="${element.price} + ' ' + ${operationAdd.currency}"></td>
+        <tr th:if="${elements.size() == 0}">
+            <td th:class="myLabel" th:text="#{tip.need.element}"></td>
+            <td>
+                <form th:action="@{/budget/element}">
+                    <button class="button" th:id="whiteButton" type="submit" th:title="#{button.element}">
+                        <img th:id="buttonImg" th:src="@{/images/element-add.png}"/>
+                    </button>
+                </form>
+            </td>
         </tr>
     </table>
 
-    <form th:action="@{/budget/operation/add}" th:object="${operationAdd}" method="post">
-        <table th:class="myTable" th:if="${operationAdd.elementId!=0 and operationAdd.placeId != 0}">
+    <div th:if="${elements.size() != 0} and ${places.size() != 0}">
+        <!--pick place-->
+        <table th:class="myTable" th:if="${places.size() != 0 and operationAdd.placeId == 0}">
+            <tr>
+                <td th:colspan="3"
+                    th:if="${operationAdd.isConsumption()}"
+                    th:text="#{text.operation.consumption.pick.place}">
+                </td>
+                <td th:colspan="3"
+                    th:if="${operationAdd.isIncome()}"
+                    th:text="#{text.operation.income.pick.place}">
+                </td>
+            </tr>
             <tr>
                 <th th:colspan="3" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
                     <img th:id="labelImg" th:src="@{/images/income.png}"/>
@@ -78,58 +67,129 @@
                     <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
                 </th>
             </tr>
-            <tr>
-                <td th:class="myLabel" th:title="#{label.place}">
+            <tr th:each="place, count : ${places}"
+                th:id="${count.count%2!=0}? elementWhite:elementDark"
+                th:onclick="'javascript:pickPlace(\'' + ${place.id} + '\');'">
+                <td th:class="myLabel" th:title="#{title.pick.place}">
                     <img th:id="labelImg" th:src="@{/images/place.png}"/>
                 </td>
-                <td th:class="myLabel" th:text="*{placeName}"></td>
-                <td th:class="myLabel" th:text="*{placeDescription}"></td>
-            </tr>
-            <tr>
-                <td th:class="myLabel" th:title="#{label.element}">
-                    <img th:id="labelImg" th:src="@{/images/element.png}"/>
-                </td>
-                <td th:class="myLabel" th:colspan="2" th:text="*{elementName}"></td>
-            </tr>
-            <tr>
-                <td th:class="myLabel"
-                    th:colspan="2"
-                    th:text="*{currency}">
-                </td>
-                <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('price')}"
-                    th:errors="*{price}">
-                </td>
-            </tr>
-            <tr>
-                <!--onfocus="this.value=''"-->
-                <td th:colspan="3"><input type="number"
-                                          onfocus="this.value=''"
-                                          step="0.01"
-                                          th:field="*{price}" th:placeholder="#{tip.price}"/></td>
-            </tr>
-            <tr>
-                <td th:class="myLabel" th:title="#{label.description}">
-                    <img th:id="labelImg" th:src="@{/images/description.png}"/>
-                </td>
-                <td th:class="myLabelError"
-                    th:if="${#fields.hasErrors('description')}"
-                    th:errors="*{description}">
-                </td>
-            </tr>
-            <tr>
-                <td th:colspan="3"><input type="text" th:field="*{description}"/>
-                </td>
-            </tr>
-            <tr>
-                <td th:colspan="3" th:class="withButton">
-                    <button class="button" type="submit" th:title="#{button.add}">
-                        <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
-                    </button>
-                </td>
+                <td th:class="myLabel" th:text="${place.name}"></td>
+                <td th:class="myLabel" th:text="${place.description}"></td>
             </tr>
         </table>
-    </form>
+
+        <!--pick element-->
+        <table th:class="myTable"
+               th:if="${elements.size() != 0 and operationAdd.elementId==0 and operationAdd.placeId != 0}">
+            <tr>
+                <td th:colspan="3"
+                    th:if="${operationAdd.isConsumption()}"
+                    th:text="#{text.operation.consumption.pick.element}">
+                </td>
+                <td th:colspan="3"
+                    th:if="${operationAdd.isIncome()}"
+                    th:text="#{text.operation.income.pick.element}">
+                </td>
+            </tr>
+            <tr>
+                <th th:colspan="3" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
+                    <img th:id="labelImg" th:src="@{/images/income.png}"/>
+                </th>
+                <th th:colspan="3" th:if="${operationAdd.isConsumption()}" th:title="#{title.consumption}"
+                    style="background-color: red">
+                    <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
+                </th>
+            </tr>
+            <tr th:if="${elements.size() != 0}"
+                th:each="element,count : ${elements}"
+                th:id="${count.count%2!=0}? elementWhite:elementDark"
+                th:onclick="'javascript:pickElement(\'' + ${element.id} + '\');'">
+                <td th:class="myLabel" th:title="#{title.pick.place}">
+                    <img th:id="labelImg" th:src="@{/images/element.png}"/>
+                </td>
+                <td th:class="myLabel" th:text="${element.name}"></td>
+                <td th:class="myLabel" th:text="${element.price} + ' ' + ${operationAdd.currency}"></td>
+            </tr>
+        </table>
+
+        <!--result confirm-->
+        <form th:action="@{/budget/operation/add}" th:object="${operationAdd}" method="post">
+            <table th:class="myTable" th:if="${operationAdd.elementId!=0 and operationAdd.placeId != 0}">
+                <tr>
+                    <td th:colspan="4"
+                        th:text="#{text.operation.set.price}">
+                    </td>
+                </tr>
+                <tr>
+                    <th th:colspan="4" th:if="${operationAdd.isIncome()}" th:title="#{title.income}">
+                        <img th:id="labelImg" th:src="@{/images/income.png}"/>
+                    </th>
+                    <th th:colspan="4" th:if="${operationAdd.isConsumption()}" th:title="#{title.consumption}"
+                        style="background-color: red">
+                        <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
+                    </th>
+                </tr>
+                <tr>
+                    <td th:class="myLabel" th:title="#{label.place}">
+                        <img th:id="labelImg" th:src="@{/images/place.png}"/>
+                    </td>
+                    <td th:class="myLabel" th:text="*{placeName}"></td>
+                    <td th:class="myLabel" th:if="*{placeDescription.length() > 0}" th:title="#{label.description}">
+                        <img th:id="labelImg" th:src="@{/images/description.png}"/>
+                    </td>
+                    <td th:class="myLabel" th:text="*{placeDescription}"></td>
+                </tr>
+                <tr>
+                    <td th:class="myLabel" th:title="#{label.element}">
+                        <img th:id="labelImg" th:src="@{/images/element.png}"/>
+                    </td>
+                    <td th:class="myLabel" th:colspan="3" th:text="*{elementName}"></td>
+                </tr>
+                <tr>
+                    <td th:class="myLabelError"
+                        th:colspan="4"
+                        th:if="${#fields.hasErrors('price')}"
+                        th:errors="*{price}">
+                    </td>
+                </tr>
+                <tr>
+                    <td th:class="myHistoryLabel">
+                        <img th:id="labelImg" th:src="${operationAdd.isIncome()} ?
+                    @{/images/income.png} : @{/images/consumption.png}"/>
+                    </td>
+                    <td th:class="myLabel"
+                        th:text="*{currency}">
+                    </td>
+                    <!--onfocus="this.value=''"-->
+                    <td th:colspan="2"><input type="number"
+                                              onfocus="this.value=''"
+                                              step="0.01"
+                                              th:field="*{price}" th:placeholder="#{tip.price}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td th:class="myLabelError"
+                        th:colspan="4"
+                        th:if="${#fields.hasErrors('description')}"
+                        th:errors="*{description}">
+                    </td>
+                </tr>
+                <tr>
+                    <td th:class="myLabel" th:title="#{label.description}">
+                        <img th:id="labelImg" th:src="@{/images/description.png}"/>
+                    </td>
+                    <td th:colspan="3"><input type="text" th:field="*{description}"/></td>
+                </tr>
+                <tr>
+                    <td th:colspan="4" th:class="withButton">
+                        <button class="button" type="submit" th:title="#{button.add}">
+                            <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
     <script th:inline="javascript">
         function pickPlace(value) {
             location.href = "/budget/operation/pick/place/" + value;
