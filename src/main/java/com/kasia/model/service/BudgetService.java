@@ -70,4 +70,6 @@ public interface BudgetService {
     Map<User, Set<Budget>> findConnectedUsers(long budgetsOwnerUserId);
 
     boolean disconnectUserFromBudget(long disconnectUserId, long fromBudgetId);
+
+    boolean isConnectedToBudget(long budgetId, long userId);
 }

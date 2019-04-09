@@ -379,4 +379,13 @@ public class BudgetServiceImp implements BudgetService {
         }
         return true;
     }
+
+    @Override
+    public boolean isConnectedToBudget(long budgetId, long userId) {
+        Set<Budget> connectionBudget = findConnectionBudget(userId);
+        for (Budget b : connectionBudget) {
+            if (b.equals(findById(budgetId))) return true;
+        }
+        return false;
+    }
 }
