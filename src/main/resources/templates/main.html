@@ -6,7 +6,7 @@
     <title th:text="#{title.main}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div th:replace="fragments/header :: mainMenu"></div>
 <div th:id="mainContentWithoutMenu">
     <!--/*@thymesVar id="ownBudgets" type="java.util.Set<com.kasia.model.Budget>"*/-->
@@ -21,8 +21,13 @@
             </th>
         </tr>
         <tr th:each="ucbr : ${requestTo}">
+            <td>
+                <img th:id="labelImg" th:src="@{/images/budget.png}"/>
+            </td>
             <td th:class="myLabel" th:text="${ucbr.getBudget().name}"></td>
-            <td th:class="myLabel" th:text="#{label.from}"></td>
+            <td th:class="myLabel" th:title="#{label.from}">
+                <img th:id="labelImg" th:src="@{/images/profile.png}"/>
+            </td>
             <td th:class="myLabel" th:text="${ucbr.fromUser.email}"></td>
             <td style="padding: 0px;">
                 <button th:onclick="'javascript:acceptReqest(\'' + ${ucbr.id} + '\');'"
