@@ -14,4 +14,7 @@ public interface UserConnectBudgetRequestRepository extends CrudRepository<UserC
 
     @Query("SELECT ucbr FROM UserConnectBudgetRequest ucbr WHERE ucbr.toUserId=:id")
     Set<UserConnectBudgetRequest> findToUserId(@Param("id") long id);
+
+    @Query("SELECT ucbr FROM UserConnectBudgetRequest ucbr WHERE ucbr.toUserId=:toId AND ucbr.fromUserId=:fromId ")
+    Set<UserConnectBudgetRequest> findToUserIdAndFromUserId(@Param("toId") long toId, @Param("fromId") long fromId);
 }

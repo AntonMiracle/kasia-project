@@ -98,7 +98,9 @@ public class MainController {
             if (!userS.isEmailUnique(dto.getEmailToConnect()) && !sessionC.getUser().getEmail().equals(dto.getEmailToConnect())) {
                 long fromUserId = sessionC.getUser().getId();
                 long toUserId = userS.findByEmail(dto.getEmailToConnect()).getId();
-                budgetS.requestConnect(dto.getBudgetIdForConnect(), fromUserId, toUserId);
+                if (!budgetS.isRequestConnectExist(dto.getBudgetIdForConnect(), fromUserId, toUserId)) {
+                    budgetS.requestConnect(dto.getBudgetIdForConnect(), fromUserId, toUserId);
+                }
             }
         }
         return redirect(U_MAIN_SETTINGS);

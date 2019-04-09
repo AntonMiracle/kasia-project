@@ -259,9 +259,9 @@ public class BudgetServiceImp implements BudgetService {
             userBudgetR.save(userBudget);
         }
         Budget budget = findById(budgetId);
-        for(UserConnectBudget ucb : userConnectBudgetR.findAll()){
-            if(ucb.getConnectBudgets().contains(budget)){
-                disconnectUserFromBudget(ucb.getUser().getId(),budgetId);
+        for (UserConnectBudget ucb : userConnectBudgetR.findAll()) {
+            if (ucb.getConnectBudgets().contains(budget)) {
+                disconnectUserFromBudget(ucb.getUser().getId(), budgetId);
             }
         }
         budgetR.delete(findById(budgetId));
@@ -289,6 +289,17 @@ public class BudgetServiceImp implements BudgetService {
     }
 
     @Override
+    public boolean isRequestConnectExist(long budgetId, long fromUserId, long toUserId) {
+        Set<UserConnectBudgetRequest> sets = ucbrR.findToUserIdAndFromUserId(toUserId, fromUserId);
+        if (sets != null && sets.size() > 0) {
+            for (UserConnectBudgetRequest ucbr : sets) {
+                if (ucbr.getBudgetId() == budgetId) return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public Set<UserConnectBudgetRequest> findRequestFrom(long fromUserId) {
         Set<UserConnectBudgetRequest> ucbr = ucbrR.findFromUserId(fromUserId);
         for (UserConnectBudgetRequest o : ucbr) {
@@ -304,7 +315,7 @@ public class BudgetServiceImp implements BudgetService {
         Set<UserConnectBudgetRequest> ucbr = ucbrR.findToUserId(toUserId);
         for (UserConnectBudgetRequest o : ucbr) {
             o.setToUser(userS.findById(o.getToUserId()));
-            o.setFromUser(userS.findById(o.getToUserId()));
+            o.setFromUser(userS.findById(o.getFromUserId()));
             o.setBudget(findById(o.getBudgetId()));
         }
         return ucbr != null ? ucbr : new HashSet<>();

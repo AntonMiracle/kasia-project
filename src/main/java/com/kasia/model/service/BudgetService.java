@@ -53,6 +53,8 @@ public interface BudgetService {
 
     boolean requestConnect(long budgetId, long fromUserId, long toUserId);
 
+    boolean isRequestConnectExist(long budgetId, long fromUserId, long toUserId);
+
     Set<UserConnectBudgetRequest> findRequestFrom(long fromUserId);
 
     Set<UserConnectBudgetRequest> findRequestTo(long toUserId);
@@ -65,7 +67,7 @@ public interface BudgetService {
 
     boolean disconnectFromBudget(long budgetId, long userId);
 
-    Map<User,Set<Budget>> findConnectedUsers(long budgetsOwnerUserId);
+    Map<User, Set<Budget>> findConnectedUsers(long budgetsOwnerUserId);
 
     boolean disconnectUserFromBudget(long disconnectUserId, long fromBudgetId);
 }
