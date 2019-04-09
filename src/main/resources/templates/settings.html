@@ -28,6 +28,10 @@
                     <img th:id="labelImg" th:src="@{/images/budget-delete.png}"/>
                 </th>
             </tr>
+            <tr>
+               <!--/*@thymesVar id="deleteSuccess" type="java.lang.Boolean"*/-->
+               <td th:class="myLabelSuccess" th:colspan="3" th:if="${deleteSuccess}" th:text="#{text.budget.delete.success}"></td>
+            </tr>
             <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabelRight" th:title="#{title.budget}">
                     <img th:id="labelImg" th:src="@{/images/budget.png}"/>
@@ -78,6 +82,12 @@
                     <img th:id="labelImg" th:src="@{/images/connect-user-add.png}"/>
                 </th>
             </tr>
+            <tr>
+                <!--/*@thymesVar id="connectRequestSuccess" type="java.lang.Boolean"*/-->
+                <td th:class="myLabelSuccess" th:colspan="3" th:if="${connectRequestSuccess}"
+                    th:text="#{text.user.connect.request.success}"></td>
+            </tr>
+
             <tr th:if="*{hasOwnBudget}">
                 <td th:class="myLabel" th:title="#{label.email}">
                     <img th:id="labelImg" th:src="@{/images/connect-email.png}"/>

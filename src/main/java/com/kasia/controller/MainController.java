@@ -79,6 +79,14 @@ public class MainController {
         else return redirect(U_MAIN);
     }
 
+    private Settings updateSettings() {
+        Settings settings = new Settings();
+        settings.setHasOwnBudget(budgetS.findOwnBudgets(sessionC.getUser().getId()).size() > 0);
+        settings.setHasConnectBudget(budgetS.findConnectionBudget(sessionC.getUser().getId()).size() > 0);
+        settings.setHasConnectedUser(budgetS.findConnectedUsers(sessionC.getUser().getId()).size() > 0);
+        return settings;
+    }
+
     @PostMapping(U_MAIN_SETTINGS_DELETE_BUDGET)
     public String deleteBudget(Model model, @ModelAttribute("settings") Settings dto, BindingResult bResult) {
         if (!sessionC.isUserLogin()) return redirect(U_MAIN);
@@ -89,6 +97,10 @@ public class MainController {
                 return openSettings();
             }
             budgetS.delete(dto.getBudgetIdForDelete(), sessionC.getUser().getId());
+            model.addAttribute("deleteSuccess", true);
+            model.addAttribute("settings", updateSettings());
+            model.addAttribute("ownBudgets", getBudgets());
+            return openSettings();
         }
         if (dto.getBudgetIdForConnect() > 0 && dto.getConfirmConnect().length() > 0) {
             if (!sessionC.getUser().getPassword().equals(userS.cryptPassword(dto.getConfirmConnect()))) {
@@ -103,8 +115,11 @@ public class MainController {
                     budgetS.requestConnect(dto.getBudgetIdForConnect(), fromUserId, toUserId);
                 }
             }
+            model.addAttribute("connectRequestSuccess", true);
+            model.addAttribute("settings", updateSettings());
+            return openSettings();
         }
-        return redirect(U_MAIN_SETTINGS);
+        return openSettings();
     }
 
     @GetMapping(U_MAIN_CONNECTION_ACCEPT + "/{id}")
