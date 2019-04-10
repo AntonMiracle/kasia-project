@@ -46,7 +46,6 @@
                 <td><input type="text" th:field="*{description}" th:placeholder="#{label.description}"/></td>
                 <td th:class="myTipLabel" th:text="#{tip.description}"></td>
             </tr>
-
             <tr>
                 <td th:colspan="*{canBeDeleted} ? 2 : 3" th:class="withButton">
                     <button class="button" type="submit" th:title="#{button.update}">

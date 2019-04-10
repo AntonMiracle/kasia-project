@@ -6,7 +6,7 @@
     <title th:text="#{title.element}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div th:id="mainContentWithoutMenu">
 
@@ -14,40 +14,45 @@
         <!--/*@thymesVar id="elementEdit" type="com.kasia.controller.dto.ElementDTO"*/-->
         <form th:action="@{/budget/element/update}" th:object="${elementEdit}" method="post">
             <tr>
-                <th th:colspan="2" th:title="#{title.edit}">
-                    <img th:id="labelImg" th:src="@{/images/settings.png}"/>
-                </th>
-            </tr>
-            <tr>
-                <th th:colspan="2" th:title="#{title.element}">
+                <th th:colspan="4" th:title="#{title.edit}">
+                    <img th:id="labelImg" th:src="@{/images/edit.png}"/>
                     <img th:id="labelImg" th:src="@{/images/element.png}"/>
                 </th>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.name}"></td>
                 <td th:class="myLabelError"
+                    th:colspan="4"
                     th:if="${#fields.hasErrors('name')} and *{name != oldName}"
                     th:errors="*{name}">
                 </td>
             <tr>
-                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
+                <td th:class="myLabel" th:title="#{label.name}">
+                    <img th:id="labelImg" th:src="@{/images/name.png}"/>
+                </td>
+                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{label.name}"/></td>
+                <td th:class="myTipLabel" th:text="#{tip.name}"></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="*{currency}"></td>
                 <td th:class="myLabelError"
+                    th:colspan="4"
                     th:if="${#fields.hasErrors('price')}"
                     th:errors="*{price}">Error
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="number"
-                                          onfocus="this.value=''"
-                                          step="0.01"
-                                          th:field="*{price}" th:placeholder="#{tip.price}"/>
+                <td th:class="myLabel" th:title="#{label.price}">
+                    <img th:id="labelImg" th:src="@{/images/init-balance.png}"/>
                 </td>
+                <td th:class="myLabel" th:text="*{currency}"></td>
+                <td><input type="number"
+                           onfocus="this.value=''"
+                           step="0.01"
+                           th:field="*{price}" th:placeholder="#{tip.price}"/>
+                </td>
+                <td th:class="myTipLabel" th:text="#{tip.price}"></td>
             </tr>
             <tr>
-                <td th:colspan="*{canBeDeleted} ? 1 : 2" th:class="withButton">
+                <td th:colspan="*{canBeDeleted} ? 3 : 4" th:class="withButton">
                     <button class="button" type="submit" th:title="#{button.update}">
                         <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
                     </button>
@@ -60,11 +65,11 @@
                 <input type="hidden" th:value="*{currency}" name="currency"/>
         </form>
         <form th:action="@{/budget/element/delete}" th:object="${elementEdit}" method="post">
-                <td th:if="*{canBeDeleted}" th:class="withButton">
-                    <button class="button" type="submit" th:title="#{button.delete}">
-                        <img th:id="buttonImg" th:src="@{/images/delete.png}"/>
-                    </button>
-                </td>
+            <td th:if="*{canBeDeleted}" th:class="withButton">
+                <button class="button" type="submit" th:title="#{button.delete}">
+                    <img th:id="buttonImg" th:src="@{/images/delete.png}"/>
+                </button>
+            </td>
             <input type="hidden" th:value="*{canBeDeleted}" name="canBeDeleted"/>
             <input type="hidden" th:value="*{budgetId}" name="budgetId"/>
             <input type="hidden" th:value="*{elementId}" name="elementId"/>

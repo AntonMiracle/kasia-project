@@ -6,53 +6,65 @@
     <title th:text="#{title.element}"></title>
 </head>
 <body>
-<img th:class="bg" th:src="@{/images/login_bg.jpg}" />
+<img th:class="bg" th:src="@{/images/login_bg.jpg}"/>
 <div th:replace="fragments/header :: budgetMenu"></div>
 <div th:id="mainContentWithoutMenu">
     <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
     <!--/*@thymesVar id="elementAdd" type="com.kasia.controller.dto.ElementDTO"*/-->
     <form th:action="@{/budget/element/add}" th:object="${elementAdd}" method="post">
         <table th:class="myTable">
-
             <tr>
-                <th th:colspan="2" th:title="#{title.new}">
+                <th th:colspan="4" th:title="#{title.new}">
                     <img th:id="labelImg" th:src="@{/images/element-add.png}"/>
                 </th>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="#{label.name}"></td>
                 <td th:class="myLabelError"
+                    th:colspan="4"
                     th:if="${#fields.hasErrors('name')}"
                     th:errors="*{name}">
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{tip.name}"/></td>
+                <td th:class="myLabel" th:title="#{label.name}">
+                    <img th:id="labelImg" th:src="@{/images/name.png}"/>
+                </td>
+                <td th:colspan="2"><input type="text" th:field="*{name}" th:placeholder="#{label.name}"/></td>
+                <td th:class="myTipLabel" th:text="#{tip.name}"></td>
             </tr>
             <tr>
-                <td th:class="myLabel" th:text="*{currency}"></td>
                 <td th:class="myLabelError"
+                    th:colspan="4"
                     th:if="${#fields.hasErrors('price')}"
                     th:errors="*{price}">Error
                 </td>
             </tr>
             <tr>
-                <td th:colspan="2"><input type="number"
-                                          onfocus="this.value=''"
-                                          step="0.01"
-                                          th:field="*{price}" th:placeholder="#{tip.price}"/>
+                <td th:class="myLabel" th:title="#{label.price}">
+                    <img th:id="labelImg" th:src="@{/images/init-balance.png}"/>
                 </td>
+                <td th:class="myLabel" th:text="*{currency}"></td>
+                <td><input type="number"
+                           onfocus="this.value=''"
+                           step="0.01"
+                           th:field="*{price}" th:placeholder="#{label.price}"/>
+                </td>
+                <td th:class="myTipLabel" th:text="#{tip.price}"></td>
             </tr>
             <tr>
-                <td th:colspan="2" th:class="withButton">
+                <td th:colspan="4" th:class="withButton">
                     <button class="button" type="submit" th:title="#{button.add}">
                         <img th:id="buttonImg" th:src="@{/images/ok.png}"/>
                     </button>
                 </td>
             </tr>
+        </table>
+
+        <!--place list-->
+        <table th:class="myTable">
             <tr>
                 <th th:if="${elements.size() != 0}"
-                    th:colspan="2" th:title="#{title.element}">
+                    th:colspan="5" th:title="#{title.element}">
                     <img th:id="labelImg" th:src="@{/images/element.png}"/>
                 </th>
             </tr>
@@ -60,8 +72,15 @@
                 th:each="element,count : ${elements}"
                 th:id="${count.count%2!=0}? elementWhite:elementDark"
                 th:onclick="'javascript:editElement(\'' + ${element.id} + '\');'">
+                <td th:class="myLabel" th:title="#{label.name}">
+                    <img th:id="labelImg" th:src="@{/images/name.png}"/>
+                </td>
                 <td th:class="myLabel" th:text="${element.name}"></td>
+                <td th:class="myLabel" th:title="#{label.price}">
+                    <img th:id="labelImg" th:src="@{/images/init-balance.png}"/>
+                </td>
                 <td th:class="myLabel" th:text="${element.price}"></td>
+                <td th:class="myLabel" th:text="*{currency}"></td>
             </tr>
         </table>
     </form>
