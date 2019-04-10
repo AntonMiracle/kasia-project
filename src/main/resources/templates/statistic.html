@@ -15,8 +15,10 @@
     <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
     <!--/*@thymesVar id="income" type="com.kasia.model.OperationType"*/-->
+    <!--/*@thymesVar id="consumption" type="com.kasia.model.OperationType"*/-->
 
     <form th:action="@{/budget/statistic}" th:object="${statistic}" th:method="post">
+        <!--filter-->
         <table th:class="myTable">
             <tr>
                 <th th:colspan="4" th:title="#{title.statistic.filter}">
@@ -86,26 +88,26 @@
                     </button>
                 </td>
             </tr>
+        </table>
+
+        <!-- statistic-->
+        <table th:class="myTable">
             <tr>
                 <th th:colspan="4" th:title="#{title.statistic}">
                     <img th:id="labelImg" th:src="@{/images/statistic.png}"/>
                 </th>
             </tr>
-
-            <tr th:if="*{isIncomeExist()}" th:id="operationIncomeBlack"></tr>
-            <tr th:if="*{isConsumptionExist()}" th:id="operationConsumptionBlack"></tr>
-
             <tr th:if="*{isIncomeExist()}" th:id="operationIncomeBlack">
                 <td th:class="myLabelRight" th:title="#{title.income}">
                     <img th:id="labelImg" th:src="@{/images/income.png}"/>
                 </td>
-                <td th:class="myLabel"
-                    th:text="${myFormatter.formatNumber(user.id,statistic.sumIncome)}"></td>
+                <td th:class="myLabel" th:text="${myFormatter.formatNumber(user.id,statistic.sumIncome)}"></td>
                 <td th:class="myLabelRight" th:title="#{title.statistic.average.income}">
                     <img th:id="labelImg" th:src="@{/images/average.png}"/>
                 </td>
                 <td th:class="myLabel"
-                    th:text="${myFormatter.formatNumber(user.id,statistic.deltaIncomePerOperation)}"></td>
+                    th:text="${myFormatter.formatNumber(user.id,statistic.deltaIncomePerOperation)}">
+                </td>
             </tr>
             <tr th:if="*{isConsumptionExist()}" th:id="operationConsumptionBlack">
                 <td th:class="myLabelRight" th:title="#{title.consumption}">
@@ -117,7 +119,8 @@
                     <img th:id="labelImg" th:src="@{/images/average.png}"/>
                 </td>
                 <td th:class="myLabel"
-                    th:text="${myFormatter.formatNumber(true,user.id,statistic.deltaConsumptionPerOperation)}"></td>
+                    th:text="${myFormatter.formatNumber(true,user.id,statistic.deltaConsumptionPerOperation)}">
+                </td>
             </tr>
             <tr th:if="*{isIncomeExist() or isConsumptionExist()}"
                 th:id="*{isDeltaPositive()} ? 'operationIncomeWhite' : 'operationConsumptionWhite'">
@@ -128,8 +131,12 @@
                     th:text="${myFormatter.formatNumber(statistic.isDeltaPositive() ? false : true ,user.id,statistic.delta)}"></td>
                 <td th:colspan="2"></td>
             </tr>
+        </table>
+
+        <!--filter operation history-->
+        <table th:class="myTable">
             <tr>
-                <th th:colspan="4" th:title="#{title.operation}"
+                <th th:colspan="8" th:title="#{title.operation}"
                     th:if="*{operations.size() > 0}">
                     <img th:id="labelImg" th:src="@{/images/delta-balance.png}"/>
                 </th>
@@ -140,12 +147,29 @@
                 ${count.count%2!=0 ? 'operationIncomeWhite' : 'operationIncomeBlack'} :
                 ${count.count%2!=0 ? 'operationConsumptionWhite' : 'operationConsumptionBlack'} "
                 th:onclick="'javascript:operationEdit(\'' + ${operation.id} + '\');'">
-                <td th:class="myHistoryLabel" th:text="${operation.element.name}"></td>
+                <td th:class="myHistoryLabel">
+                    <img th:id="labelImg" th:src="@{/images/place.png}"/>
+                </td>
                 <td th:class="myHistoryLabel" th:text="${operation.place.name}"></td>
+                <td th:class="myHistoryLabel">
+                    <img th:id="labelImg" th:src="@{/images/element.png}"/>
+                </td>
+                <td th:class="myHistoryLabel" th:text="${operation.element.name}"></td>
+                <td th:class="myHistoryLabel" th:if="${operation.type == income }"
+                    th:title="#{title.income}">
+                    <img th:id="labelImg" th:src="@{/images/income.png}"/>
+                </td>
+                <td th:class="myHistoryLabel" th:if="${operation.type == consumption }"
+                    th:title="#{title.consumption}">
+                    <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
+                </td>
                 <td th:class="myHistoryLabel"
                     th:text="${operation.type eq income} ?
                 ${myFormatter.formatNumber(user.id,operation.price)}
                 : ${myFormatter.formatNumber(true,user.id,operation.price)}">
+                </td>
+                <td th:class="myHistoryLabel" th:title="#{label.created}">
+                    <img th:id="labelImg" th:src="@{/images/time.png}"/>
                 </td>
                 <td th:class="myHistoryLabel"
                     th:text="${myFormatter.formatFullDate(user.id,operation.createOn)}"></td>
