@@ -14,6 +14,38 @@
     <!--/*@thymesVar id="requestTo" type="java.util.Set<com.kasia.model.UserConnectBudgetRequest>"*/-->
     <!--/*@thymesVar id="myFormatter" type="com.kasia.model.service.MyStringFormatter"*/-->
     <!--/*@thymesVar id="user" type="com.kasia.model.User"*/-->
+
+    <!--first open, first instruction-->
+    <table th:class="myTable" th:if="${ownBudgets.size() == 0} and ${connectionBudgets.size() == 0}">
+        <tr>
+            <th th:colspan="2" th:text="#{hello}"></th>
+        </tr>
+        <tr>
+            <td th:colspan="2" th:text="#{start.with.main}" th:style="'width:400px;'"></td>
+        </tr>
+        <tr>
+            <td th:class="myLabel" th:text="#{tip.need.budget}" th:style="'width:400px;'"></td>
+            <td>
+                <form th:action="@{/budget/add}">
+                    <button class="button" th:id="whiteButton" type="submit" th:title="#{button.addBudget}">
+                        <img th:id="buttonImg" th:src="@{/images/budget-add.png}"/>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td th:class="myLabel" th:text="#{tip.need.settngs}" th:style="'width:400px;'"></td>
+            <td>
+                <form th:action="@{/main/settings}">
+                    <button class="button" th:id="whiteButton" type="submit" th:title="#{button.settings}">
+                        <img th:id="buttonImg" th:src="@{/images/settings.png}"/>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <!--connect request list-->
     <table th:class="myTable" th:if="${requestTo.size() != 0}">
         <tr>
             <th th:colspan="6" th:title="#{title.connection.request}">
@@ -39,6 +71,8 @@
             </td>
         </tr>
     </table>
+
+    <!--own budget list-->
     <table th:class="myTable" th:if="${ownBudgets.size() != 0}">
         <tr>
             <th colspan="3" th:title="#{title.ownBudget}">
@@ -54,6 +88,8 @@
             <td th:class="myLabel" th:text="${ownBudget.balance.currency}"></td>
         </tr>
     </table>
+
+    <!--connected budget list-->
     <table th:class="myTable" th:if="${connectionBudgets.size() != 0}">
         <tr>
             <th colspan="3" th:title="#{title.connectedBudget}">

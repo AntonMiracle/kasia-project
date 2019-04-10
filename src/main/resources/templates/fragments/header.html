@@ -27,7 +27,7 @@
             </button>
         </form>
     </div>
-    <div th:if="${settings.hasOwnBudget or settings.hasConnectBudget}">
+    <div>
         <form th:action="@{/main/settings}">
             <button class="button" th:id="whiteButton" type="submit" th:title="#{button.settings}">
                 <img th:id="buttonImg" th:src="@{/images/settings.png}"/>

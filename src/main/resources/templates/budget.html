@@ -16,12 +16,13 @@
     <!--/*@thymesVar id="elements" type="java.util.Set<com.kasia.model.Element>"*/-->
     <!--/*@thymesVar id="places" type="java.util.Set<com.kasia.model.Place>"*/-->
 
+    <!--first open, first instruction-->
     <table th:class="myTable" th:if="${operationsHistory.isExist() == false}">
         <tr>
-            <th th:colspan="2" th:text="#{hello}"></th>
+            <th th:colspan="2" th:text="#{title.budget}"></th>
         </tr>
         <tr>
-            <td th:colspan="2" th:text="#{start.with}" th:style="'width:400px;'"></td>
+            <td th:colspan="2" th:text="#{start.with.budget}" th:style="'width:400px;'"></td>
         </tr>
         <tr>
             <td th:class="myLabel" th:text="#{tip.need.place}"></td>
@@ -75,6 +76,7 @@
         </tr>
     </table>
 
+    <!--operation hitory-->
     <table th:class="myTable" th:if="${operationsHistory.isExist()}">
         <tr>
             <th th:colspan="8" th:title="#{title.statistic.balance.changes}">
