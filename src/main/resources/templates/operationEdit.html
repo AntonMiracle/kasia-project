@@ -18,10 +18,10 @@
         <!--/*@thymesVar id="consumption" type="com.kasia.model.OperationType"*/-->
         <form th:action="@{/budget/operation/delete}" th:object="${operationEdit}" method="post">
             <tr>
-                <th th:colspan="3" th:if="${operationEdit.type == income }" th:title="#{title.income}">
+                <th th:colspan="4" th:if="${operationEdit.type == income }" th:title="#{title.income}">
                     <img th:id="labelImg" th:src="@{/images/income.png}"/>
                 </th>
-                <th th:colspan="3" th:if="${operationEdit.type == consumption }" th:title="#{title.consumption}"
+                <th th:colspan="4" th:if="${operationEdit.type == consumption }" th:title="#{title.consumption}"
                     style="background-color: red">
                     <img th:id="labelImg" th:src="@{/images/consumption.png}"/>
                 </th>
@@ -31,13 +31,16 @@
                     <img th:id="labelImg" th:src="@{/images/place.png}"/>
                 </td>
                 <td th:class="myLabel" th:text="*{place.name}"></td>
+                <td th:class="myLabel">
+                    <img th:id="labelImg" th:src="@{/images/description.png}"/>
+                </td>
                 <td th:class="myLabel" th:text="*{place.description}"></td>
             </tr>
             <tr style="background-color: rgba(0, 100, 0, 0.1);">
                 <td th:class="myLabel" th:title="#{label.element}">
                     <img th:id="labelImg" th:src="@{/images/element.png}"/>
                 </td>
-                <td th:class="myLabel" th:colspan="2" th:text="*{element.name}"></td>
+                <td th:class="myLabel" th:colspan="3" th:text="*{element.name}"></td>
             </tr>
             <tr>
                 <td th:class="myLabel" th:if="${operationEdit.type == income }"
@@ -58,24 +61,24 @@
                 <td th:class="myLabel" th:title="#{label.description}">
                     <img th:id="labelImg" th:src="@{/images/description.png}"/>
                 </td>
-                <td th:class="myLabel" th:colspan="2" th:text="*{description}"></td>
+                <td th:class="myLabel" th:colspan="3" th:text="*{description}"></td>
             </tr>
             <tr>
                 <td th:class="myLabel" th:title="#{label.creator}">
                     <img th:id="labelImg" th:src="@{/images/profile.png}"/>
                 </td>
-                <td th:class="myLabel" th:colspan="2" th:text="*{user.email}"></td>
+                <td th:class="myLabel" th:colspan="3" th:text="*{user.email}"></td>
             </tr>
             <tr style="background-color: rgba(0, 100, 0, 0.1);">
                 <td th:class="myLabel" th:title="#{label.created}">
                     <img th:id="labelImg" th:src="@{/images/time.png}"/>
                 </td>
-                <td th:class="myLabel" th:colspan="2"
+                <td th:class="myLabel" th:colspan="3"
                     th:text="${myFormatter.formatDate(user.id,operationEdit.createOn)}"></td>
             </tr>
             <tr>
                 <!--/*@thymesVar id="isOwner" type="java.lang.Boolean"*/-->
-                <td th:colspan="3" th:if="${isOwner}" th:class="withButton">
+                <td th:colspan="4" th:if="${isOwner}" th:class="withButton">
                     <button class="button" type="submit" th:title="#{button.delete}">
                         <img th:id="buttonImg" th:src="@{/images/delete.png}"/>
                     </button>
