@@ -68,7 +68,7 @@
                 <tr th:each="place, count : ${places}"
                     th:id="${count.count%2!=0}? elementWhite:elementDark"
                     th:onclick="'javascript:editPlace(\'' + ${place.id} + '\');'">
-                    <td th:class="myLabel"><img th:id="labelImg" th:src="@{/images/place.png}"/></td>
+                    <td th:class="myLabel"><img th:id="labelImg" th:src="@{/images/name.png}"/></td>
                     <td th:class="myLabel" th:text="${place.name}"></td>
                     <td th:class="myLabel">
                         <img th:id="labelImg" th:src="@{/images/description.png}"/>
